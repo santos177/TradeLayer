@@ -1,31 +1,17 @@
-#ifndef OMNICORE_TALLY_H
-#define OMNICORE_TALLY_H
+#ifndef BITCOIN_OMNICORE_TALLY_H
+#define BITCOIN_OMNICORE_TALLY_H
 
 #include <stdint.h>
 #include <map>
 
 //! Balance record types
 enum TallyType {
-        BALANCE = 0,
-        SELLOFFER_RESERVE = 1,
-        ACCEPT_RESERVE = 2,
-        PENDING = 3,
-        METADEX_RESERVE = 4,
-        CONTRACTDEX_RESERVE = 5, // margin acount
-        POSSITIVE_BALANCE = 6,
-        NEGATIVE_BALANCE = 7,
-        REALIZED_PROFIT = 8,
-        REALIZED_LOSSES = 9,
-        COUNT = 10,
-        REMAINING = 11,
-        LIQUIDATION_PRICE = 12,
-        UPNL = 13, // positive
-        NUPNL = 14, // negative
-	      UNVESTED = 15,
-        CONTRACTDEX_MARGIN = 16,   //TODO: need save to db
-        CHANNEL_RESERVE = 17,
-        //////////////////////////////////////
-        TALLY_TYPE_COUNT
+    BALANCE = 0,
+    SELLOFFER_RESERVE = 1,
+    ACCEPT_RESERVE = 2,
+    PENDING = 3,
+    METADEX_RESERVE = 4,
+    TALLY_TYPE_COUNT
 };
 
 /** Balance records of a single entity.
@@ -63,6 +49,9 @@ public:
     /** Returns the number of available tokens. */
     int64_t getMoneyAvailable(uint32_t propertyId) const;
 
+    /** Returns the number of reserved tokens. */
+    int64_t getMoneyReserved(uint32_t propertyId) const;
+
     /** Compares the tally with another tally and returns true, if they are equal. */
     bool operator==(const CMPTally& rhs) const;
 
@@ -74,4 +63,4 @@ public:
 };
 
 
-#endif // OMNICORE_TALLY_H
+#endif // BITCOIN_OMNICORE_TALLY_H

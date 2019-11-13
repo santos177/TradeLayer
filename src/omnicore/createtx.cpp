@@ -1,15 +1,16 @@
-#include "omnicore/createtx.h"
+#include <omnicore/createtx.h>
 
-#include "omnicore/encoding.h"
-#include "omnicore/script.h"
+#include <omnicore/encoding.h>
+#include <omnicore/script.h>
 
-#include "base58.h"
-#include "coins.h"
-#include "primitives/transaction.h"
-#include "pubkey.h"
-#include "script/script.h"
-#include "script/standard.h"
-#include "uint256.h"
+#include <base58.h>
+#include <coins.h>
+#include <key_io.h>
+#include <primitives/transaction.h>
+#include <pubkey.h>
+#include <script/script.h>
+#include <script/standard.h>
+#include <uint256.h>
 
 #include <stdint.h>
 #include <string>
@@ -53,7 +54,7 @@ TxBuilder& TxBuilder::addInput(const uint256& txid, uint32_t nOut)
 /** Adds an output to the transaction. */
 TxBuilder& TxBuilder::addOutput(const CScript& scriptPubKey, int64_t value)
 {
-    CTxOut txOutput(CAmount(value), scriptPubKey);
+    CTxOut txOutput(value, scriptPubKey);
     transaction.vout.push_back(txOutput);
 
     return *this;
@@ -82,7 +83,7 @@ TxBuilder& TxBuilder::addChange(const CTxDestination& destination, const CCoinsV
     CScript scriptPubKey = GetScriptForDestination(destination);
 
     int64_t txChange = view.GetValueIn(tx) - tx.GetValueOut() - txFee;
-    int64_t minValue = GetDustThld(scriptPubKey);
+    int64_t minValue = OmniGetDustThreshold(scriptPubKey);
 
     if (txChange < minValue) {
         return *this;
@@ -131,22 +132,33 @@ OmniTxBuilder& OmniTxBuilder::addInputs(const std::vector<PrevTxsEntry>& prevTxs
 /** Adds an output for the reference address. */
 OmniTxBuilder& OmniTxBuilder::addReference(const std::string& destination, int64_t value)
 {
+    CTxDestination dest = DecodeDestination(destination);
+    CScript scriptPubKey = GetScriptForDestination(dest);
 
-    CTxDestination address = DecodeDestination(destination);
-    CScript scriptPubKey = GetScriptForDestination(address);
-
-    int64_t minValue = GetDustThld(scriptPubKey);
+    int64_t minValue = OmniGetDustThreshold(scriptPubKey);
     value = std::max(minValue, value);
 
     return (OmniTxBuilder&) TxBuilder::addOutput(scriptPubKey, value);
 }
 
-/** Embeds a payload with class D (op-return) encoding. */
+/** Embeds a payload with class C (op-return) encoding. */
 OmniTxBuilder& OmniTxBuilder::addOpReturn(const std::vector<unsigned char>& data)
 {
     std::vector<std::pair<CScript, int64_t> > outputs;
 
-    if (!OmniCore_Encode_ClassD(data, outputs)) {
+    if (!OmniCore_Encode_ClassC(data, outputs)) {
+        return *this;
+    }
+
+    return (OmniTxBuilder&) TxBuilder::addOutputs(outputs);
+}
+
+/** Embeds a payload with class B (bare-multisig) encoding. */
+OmniTxBuilder& OmniTxBuilder::addMultisig(const std::vector<unsigned char>& data, const std::string& seed, const CPubKey& pubKey)
+{
+    std::vector<std::pair<CScript, int64_t> > outputs;
+
+    if (!OmniCore_Encode_ClassB(seed, pubKey, data, outputs)) {
         return *this;
     }
 
@@ -156,18 +168,19 @@ OmniTxBuilder& OmniTxBuilder::addOpReturn(const std::vector<unsigned char>& data
 /** Adds an output for change. */
 OmniTxBuilder& OmniTxBuilder::addChange(const std::string& destination, const CCoinsViewCache& view, int64_t txFee, uint32_t position)
 {
-    CTxDestination addr = DecodeDestination(destination);
+    CTxDestination dest = DecodeDestination(destination);
 
-    return (OmniTxBuilder&) TxBuilder::addChange(addr, view, txFee, position);
+    return (OmniTxBuilder&) TxBuilder::addChange(dest, view, txFee, position);
 }
 
 /** Adds previous transaction outputs to coins view. */
 void InputsToView(const std::vector<PrevTxsEntry>& prevTxs, CCoinsViewCache& view)
 {
-    for (std::vector<PrevTxsEntry>::const_iterator it = prevTxs.begin(); it != prevTxs.end(); ++it)
-    {
-  	    const Coin alreadyCoin = AccessByTxid(view, it->outPoint.hash);
-  	    Coin newCoin(it->txOut, alreadyCoin.GetHeight(), alreadyCoin.IsCoinBase());
-  	    view.AddCoin(it->outPoint, std::move(newCoin), false);
+    for (std::vector<PrevTxsEntry>::const_iterator it = prevTxs.begin(); it != prevTxs.end(); ++it) {
+        Coin newcoin;
+        newcoin.out.scriptPubKey = it->txOut.scriptPubKey;
+        newcoin.out.nValue = it->txOut.nValue;
+        view.AddCoin(it->outPoint, std::move(newcoin), true);
     }
 }
+

@@ -75,10 +75,10 @@ am__make_running_with_option = \
   test $$has_opt = yes
 am__make_dryrun = (target_option=n; $(am__make_running_with_option))
 am__make_keepgoing = (target_option=k; $(am__make_running_with_option))
-pkgdatadir = $(datadir)/litecoin
-pkgincludedir = $(includedir)/litecoin
-pkglibdir = $(libdir)/litecoin
-pkglibexecdir = $(libexecdir)/litecoin
+pkgdatadir = $(datadir)/omnicore
+pkgincludedir = $(includedir)/omnicore
+pkglibdir = $(libdir)/omnicore
+pkglibexecdir = $(libexecdir)/omnicore
 am__cd = CDPATH="$${ZSH_VERSION+.}$(PATH_SEPARATOR)" && cd
 install_sh_DATA = $(install_sh) -c -m 644
 install_sh_PROGRAM = $(install_sh) -c
@@ -99,7 +99,6 @@ ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
 am__aclocal_m4_deps = $(top_srcdir)/build-aux/m4/ax_boost_base.m4 \
 	$(top_srcdir)/build-aux/m4/ax_boost_chrono.m4 \
 	$(top_srcdir)/build-aux/m4/ax_boost_filesystem.m4 \
-	$(top_srcdir)/build-aux/m4/ax_boost_program_options.m4 \
 	$(top_srcdir)/build-aux/m4/ax_boost_system.m4 \
 	$(top_srcdir)/build-aux/m4/ax_boost_thread.m4 \
 	$(top_srcdir)/build-aux/m4/ax_boost_unit_test_framework.m4 \
@@ -130,9 +129,11 @@ mkinstalldirs = $(install_sh) -d
 CONFIG_HEADER = $(top_builddir)/src/config/bitcoin-config.h
 CONFIG_CLEAN_FILES = libbitcoinconsensus.pc share/setup.nsi \
 	share/qt/Info.plist test/config.ini \
+	src/omnicore/res/omnicore-setup-win.nsi \
 	contrib/devtools/split-debug.sh doc/Doxyfile
 CONFIG_CLEAN_VPATH_FILES = contrib/filter-lcov.py \
-	test/functional/test_runner.py test/util/bitcoin-util-test.py
+	test/functional/test_runner.py test/util/bitcoin-util-test.py \
+	test/util/rpcauth-test.py
 SCRIPTS = $(dist_noinst_SCRIPTS)
 AM_V_P = $(am__v_P_$(V))
 am__v_P_ = $(am__v_P_$(AM_DEFAULT_VERBOSITY))
@@ -233,10 +234,12 @@ am__DIST_COMMON = $(srcdir)/Makefile.in \
 	$(top_srcdir)/share/qt/Info.plist.in \
 	$(top_srcdir)/share/setup.nsi.in \
 	$(top_srcdir)/src/config/bitcoin-config.h.in \
+	$(top_srcdir)/src/omnicore/res/omnicore-setup-win.nsi.in \
 	$(top_srcdir)/test/config.ini.in \
 	$(top_srcdir)/test/functional/test_runner.py \
-	$(top_srcdir)/test/util/bitcoin-util-test.py build-aux/compile \
-	build-aux/config.guess build-aux/config.sub \
+	$(top_srcdir)/test/util/bitcoin-util-test.py \
+	$(top_srcdir)/test/util/rpcauth-test.py COPYING \
+	build-aux/compile build-aux/config.guess build-aux/config.sub \
 	build-aux/install-sh build-aux/ltmain.sh build-aux/missing
 DISTFILES = $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST)
 distdir = $(PACKAGE)-$(VERSION)
@@ -280,28 +283,29 @@ distuninstallcheck_listfiles = find . -type f -print
 am__distuninstallcheck_listfiles = $(distuninstallcheck_listfiles) \
   | sed 's|^\./|$(prefix)/|' | grep -v '$(infodir)/dir$$'
 distcleancheck_listfiles = find . -type f -print
-ACLOCAL = ${SHELL} /home/ale/Escritorio/AWork/exodus/build-aux/missing aclocal-1.15
+ACLOCAL = ${SHELL} /home/ale/Escritorio/AWork/tl-bitcoin/build-aux/missing aclocal-1.15
 AMTAR = $${TAR-tar}
 AM_DEFAULT_VERBOSITY = 0
 AR = /usr/bin/ar
 ARFLAGS = cr
-AUTOCONF = ${SHELL} /home/ale/Escritorio/AWork/exodus/build-aux/missing autoconf
-AUTOHEADER = ${SHELL} /home/ale/Escritorio/AWork/exodus/build-aux/missing autoheader
-AUTOMAKE = ${SHELL} /home/ale/Escritorio/AWork/exodus/build-aux/missing automake-1.15
+AUTOCONF = ${SHELL} /home/ale/Escritorio/AWork/tl-bitcoin/build-aux/missing autoconf
+AUTOHEADER = ${SHELL} /home/ale/Escritorio/AWork/tl-bitcoin/build-aux/missing autoheader
+AUTOMAKE = ${SHELL} /home/ale/Escritorio/AWork/tl-bitcoin/build-aux/missing automake-1.15
+AVX2_CXXFLAGS = -mavx -mavx2
 AWK = gawk
 BDB_CFLAGS = 
 BDB_CPPFLAGS = 
 BDB_LIBS = -ldb_cxx-4.8
-BITCOIN_CLI_NAME = litecoin-cli
-BITCOIN_DAEMON_NAME = litecoind
-BITCOIN_GUI_NAME = litecoin-qt
-BITCOIN_TX_NAME = litecoin-tx
+BITCOIN_CLI_NAME = omnicore-cli
+BITCOIN_DAEMON_NAME = omnicored
+BITCOIN_GUI_NAME = omnicore-qt
+BITCOIN_TX_NAME = bitcoin-tx
+BITCOIN_WALLET_TOOL_NAME = bitcoin-wallet
 BOOST_CHRONO_LIB = -lboost_chrono
 BOOST_CPPFLAGS = -DBOOST_SP_USE_STD_ATOMIC -DBOOST_AC_USE_STD_ATOMIC -pthread -I/usr/include
 BOOST_FILESYSTEM_LIB = -lboost_filesystem
 BOOST_LDFLAGS = -L/usr/lib/x86_64-linux-gnu
-BOOST_LIBS = -L/usr/lib/x86_64-linux-gnu -lboost_system -lboost_filesystem -lboost_program_options -lboost_thread -lboost_chrono
-BOOST_PROGRAM_OPTIONS_LIB = -lboost_program_options
+BOOST_LIBS = -L/usr/lib/x86_64-linux-gnu -lboost_system -lboost_filesystem -lboost_thread -lboost_chrono
 BOOST_SYSTEM_LIB = -lboost_system
 BOOST_THREAD_LIB = -lboost_thread
 BOOST_UNIT_TEST_FRAMEWORK_LIB = -lboost_unit_test_framework
@@ -309,29 +313,33 @@ BREW =
 CC = gcc
 CCACHE = 
 CCDEPMODE = depmode=gcc3
-CFLAGS = -g -O2
+CFLAGS = -g -O2 -fPIC
 CLIENT_VERSION_BUILD = 0
 CLIENT_VERSION_IS_RELEASE = true
 CLIENT_VERSION_MAJOR = 0
-CLIENT_VERSION_MINOR = 16
-CLIENT_VERSION_REVISION = 3
+CLIENT_VERSION_MINOR = 18
+CLIENT_VERSION_REVISION = 1
+COMPAT_LDFLAGS = 
 COPYRIGHT_HOLDERS = The %s developers
-COPYRIGHT_HOLDERS_FINAL = The Litecoin Core developers
-COPYRIGHT_HOLDERS_SUBSTITUTION = Litecoin Core
-COPYRIGHT_YEAR = 2018
+COPYRIGHT_HOLDERS_FINAL = The Bitcoin Core and Omni Core developers
+COPYRIGHT_HOLDERS_SUBSTITUTION = Bitcoin Core and Omni Core
+COPYRIGHT_YEAR = 2019
 CPP = gcc -E
 CPPFILT = /usr/bin/c++filt
-CPPFLAGS =  -DHAVE_BUILD_INFO -D__STDC_FORMAT_MACROS
+CPPFLAGS =  -DHAVE_BUILD_INFO -D__STDC_FORMAT_MACROS -fPIC
 CRYPTO_CFLAGS = 
 CRYPTO_LIBS = -lcrypto
 CXX = g++ -std=c++11
 CXXCPP = g++ -std=c++11 -E
 CXXDEPMODE = depmode=gcc3
-CXXFLAGS = -g -O2 -Wall -Wextra -Wformat -Wvla -Wformat-security -Wno-unused-parameter -Wno-implicit-fallthrough
+CXXFLAGS = -g -O2 -fPIC
 CYGPATH_W = echo
+DEBUG_CPPFLAGS = 
+DEBUG_CXXFLAGS = 
 DEFS = -DHAVE_CONFIG_H
 DEPDIR = .deps
 DLLTOOL = false
+DOXYGEN = 
 DSYMUTIL = 
 DUMPBIN = 
 ECHO_C = 
@@ -350,9 +358,11 @@ GCOV = /usr/bin/gcov
 GENHTML = 
 GENISOIMAGE = 
 GIT = /usr/bin/git
+GPROF_CXXFLAGS = 
+GPROF_LDFLAGS = 
 GREP = /bin/grep
 HARDENED_CPPFLAGS =  -U_FORTIFY_SOURCE -D_FORTIFY_SOURCE=2
-HARDENED_CXXFLAGS =  -Wstack-protector -fstack-protector-all
+HARDENED_CXXFLAGS =  -fstack-reuse=none -Wstack-protector -fstack-protector-all
 HARDENED_LDFLAGS =  -Wl,-z,relro -Wl,-z,now -pie
 HAVE_CXX11 = 1
 HEXDUMP = /usr/bin/hexdump
@@ -382,7 +392,7 @@ LTLIBOBJS =
 LT_SYS_LIBRARY_PATH = 
 LUPDATE = 
 MAINT = 
-MAKEINFO = ${SHELL} /home/ale/Escritorio/AWork/exodus/build-aux/missing makeinfo
+MAKEINFO = ${SHELL} /home/ale/Escritorio/AWork/tl-bitcoin/build-aux/missing makeinfo
 MAKENSIS = 
 MANIFEST_TOOL = :
 MINIUPNPC_CPPFLAGS = 
@@ -392,28 +402,32 @@ MOC =
 MOC_DEFS = -DHAVE_CONFIG_H -I$(srcdir)
 NM = /usr/bin/nm -B
 NMEDIT = 
+NOWARN_CXXFLAGS =  -Wno-unused-parameter -Wno-implicit-fallthrough
 OBJCOPY = /usr/bin/objcopy
 OBJCXX = g++ -std=c++11
 OBJCXXDEPMODE = depmode=gcc3
 OBJCXXFLAGS = 
 OBJDUMP = objdump
 OBJEXT = o
+OMNICORE_VERSION_BUILD = 0
+OMNICORE_VERSION_MAJOR = 0
+OMNICORE_VERSION_MINOR = 7
+OMNICORE_VERSION_PATCH = 0
 OTOOL = 
 OTOOL64 = 
-PACKAGE = litecoin
-PACKAGE_BUGREPORT = https://github.com/litecoin-project/litecoin/issues
-PACKAGE_NAME = Litecoin Core
-PACKAGE_STRING = Litecoin Core 0.16.3
-PACKAGE_TARNAME = litecoin
-PACKAGE_URL = https://litecoin.org/
-PACKAGE_VERSION = 0.16.3
+PACKAGE = omnicore
+PACKAGE_BUGREPORT = https://github.com/OmniLayer/omnicore/issues
+PACKAGE_NAME = Omni Core
+PACKAGE_STRING = Omni Core 0.7.0
+PACKAGE_TARNAME = omnicore
+PACKAGE_URL = http://www.omnilayer.org/
+PACKAGE_VERSION = 0.7.0
 PATH_SEPARATOR = :
 PIC_FLAGS = -fPIC
 PIE_FLAGS = -fPIE
 PKG_CONFIG = /usr/bin/pkg-config
 PKG_CONFIG_LIBDIR = 
 PKG_CONFIG_PATH = 
-PORT = 
 PROTOBUF_CFLAGS = 
 PROTOBUF_LIBS = 
 PROTOC = 
@@ -424,14 +438,28 @@ PYTHON = /usr/bin/python3.6
 PYTHONPATH = 
 QR_CFLAGS = 
 QR_LIBS = 
-QT4_CFLAGS = 
-QT4_LIBS = 
 QT5_CFLAGS = 
 QT5_LIBS = 
+QTACCESSIBILITY_CFLAGS = 
+QTACCESSIBILITY_LIBS = 
+QTCGL_CFLAGS = 
+QTCGL_LIBS = 
+QTCLIPBOARD_CFLAGS = 
+QTCLIPBOARD_LIBS = 
+QTDEVICEDISCOVERY_CFLAGS = 
+QTDEVICEDISCOVERY_LIBS = 
+QTEVENTDISPATCHER_CFLAGS = 
+QTEVENTDISPATCHER_LIBS = 
+QTFB_CFLAGS = 
+QTFB_LIBS = 
+QTFONTDATABASE_CFLAGS = 
+QTFONTDATABASE_LIBS = 
+QTGRAPHICS_CFLAGS = 
+QTGRAPHICS_LIBS = 
 QTPLATFORM_CFLAGS = 
 QTPLATFORM_LIBS = 
-QTPRINT_CFLAGS = 
-QTPRINT_LIBS = 
+QTTHEME_CFLAGS = 
+QTTHEME_LIBS = 
 QTXCBQPA_CFLAGS = 
 QTXCBQPA_LIBS = 
 QT_DBUS_CFLAGS = 
@@ -447,13 +475,18 @@ QT_TEST_INCLUDES =
 QT_TEST_LIBS = 
 QT_TRANSLATION_DIR = 
 RANLIB = /usr/bin/ranlib
+RAPIDCHECK_LIBS = 
 RCC = 
 READELF = /usr/bin/readelf
 RELDFLAGS = 
 RSVG_CONVERT = 
+SANITIZER_CXXFLAGS = 
+SANITIZER_LDFLAGS = 
 SED = /bin/sed
 SET_MAKE = 
+SHANI_CXXFLAGS = -msse4 -msha
 SHELL = /bin/bash
+SSE41_CXXFLAGS = -msse4.1
 SSE42_CXXFLAGS = -msse4.2
 SSL_CFLAGS = 
 SSL_LIBS = -lssl
@@ -464,9 +497,9 @@ UIC =
 UNIVALUE_CFLAGS = -I$(srcdir)/univalue/include
 UNIVALUE_LIBS = univalue/libunivalue.la
 USE_QRCODE = 
-USE_SSE2 = 
 USE_UPNP = 
-VERSION = 0.16.3
+VERSION = 0.7.0
+WARN_CXXFLAGS =  -Wall -Wextra -Wformat -Wvla -Wformat-security -Wredundant-decls
 WINDOWS_BITS = 
 WINDRES = 
 X11XCB_CFLAGS = 
@@ -474,10 +507,10 @@ X11XCB_LIBS =
 XGETTEXT = /usr/bin/xgettext
 ZMQ_CFLAGS = 
 ZMQ_LIBS = -lzmq
-abs_builddir = /home/ale/Escritorio/AWork/exodus
-abs_srcdir = /home/ale/Escritorio/AWork/exodus
-abs_top_builddir = /home/ale/Escritorio/AWork/exodus
-abs_top_srcdir = /home/ale/Escritorio/AWork/exodus
+abs_builddir = /home/ale/Escritorio/AWork/tl-bitcoin
+abs_srcdir = /home/ale/Escritorio/AWork/tl-bitcoin
+abs_top_builddir = /home/ale/Escritorio/AWork/tl-bitcoin
+abs_top_srcdir = /home/ale/Escritorio/AWork/tl-bitcoin
 ac_ct_AR = ar
 ac_ct_CC = gcc
 ac_ct_CXX = g++
@@ -509,7 +542,7 @@ host_vendor = pc
 htmldir = ${docdir}
 includedir = ${prefix}/include
 infodir = ${datarootdir}/info
-install_sh = ${SHELL} /home/ale/Escritorio/AWork/exodus/build-aux/install-sh
+install_sh = ${SHELL} /home/ale/Escritorio/AWork/tl-bitcoin/build-aux/install-sh
 libdir = ${exec_prefix}/lib
 libexecdir = ${exec_prefix}/libexec
 localedir = ${datarootdir}/locale
@@ -538,10 +571,12 @@ pkgconfig_DATA = libbitcoinconsensus.pc
 BITCOIND_BIN = $(top_builddir)/src/$(BITCOIN_DAEMON_NAME)$(EXEEXT)
 BITCOIN_QT_BIN = $(top_builddir)/src/qt/$(BITCOIN_GUI_NAME)$(EXEEXT)
 BITCOIN_CLI_BIN = $(top_builddir)/src/$(BITCOIN_CLI_NAME)$(EXEEXT)
+BITCOIN_TX_BIN = $(top_builddir)/src/$(BITCOIN_TX_NAME)$(EXEEXT)
+BITCOIN_WALLET_BIN = $(top_builddir)/src/$(BITCOIN_WALLET_TOOL_NAME)$(EXEEXT)
 BITCOIN_WIN_INSTALLER = $(PACKAGE)-$(PACKAGE_VERSION)-win$(WINDOWS_BITS)-setup$(EXEEXT)
 empty := 
 space := $(empty) $(empty)
-OSX_APP = Litecoin-Qt.app
+OSX_APP = OmniCore-Qt.app
 OSX_VOLNAME = $(subst $(space),-,$(PACKAGE_NAME))
 OSX_DMG = $(OSX_VOLNAME).dmg
 OSX_BACKGROUND_SVG = background.svg
@@ -553,13 +588,16 @@ OSX_FANCY_PLIST = $(top_srcdir)/contrib/macdeploy/fancy.plist
 OSX_INSTALLER_ICONS = $(top_srcdir)/src/qt/res/icons/bitcoin.icns
 OSX_PLIST = $(top_builddir)/share/qt/Info.plist #not installed
 OSX_QT_TRANSLATIONS = da,de,es,hu,ru,uk,zh_CN,zh_TW
-DIST_DOCS = $(wildcard doc/*.md) $(wildcard doc/release-notes/*.md)
+DIST_DOCS = $(wildcard doc/*.md) $(wildcard doc/release-notes/*.md) \
+  $(wildcard src/omnicore/*.md) \
+  $(wildcard src/omnicore/doc/*.md) \
+  $(wildcard src/omnicore/doc/release-notes/*.md)
+
 DIST_CONTRIB = $(top_srcdir)/contrib/bitcoin-cli.bash-completion \
 	       $(top_srcdir)/contrib/bitcoin-tx.bash-completion \
 	       $(top_srcdir)/contrib/bitcoind.bash-completion \
 	       $(top_srcdir)/contrib/init \
-	       $(top_srcdir)/contrib/install_db4.sh \
-	       $(top_srcdir)/contrib/rpm
+	       $(top_srcdir)/contrib/install_db4.sh
 
 DIST_SHARE = \
   $(top_srcdir)/share/genbuild.sh \
@@ -582,21 +620,21 @@ OSX_PACKAGING = $(OSX_DEPLOY_SCRIPT) $(OSX_FANCY_PLIST) $(OSX_INSTALLER_ICONS) \
 COVERAGE_INFO = baseline.info \
   test_bitcoin_filtered.info total_coverage.info \
   baseline_filtered.info functional_test.info functional_test_filtered.info \
+  omnicore_test.info omnicore_test_filtered.info \
   test_bitcoin_coverage.info test_bitcoin.info
 
 OSX_APP_BUILT = $(OSX_APP)/Contents/PkgInfo $(OSX_APP)/Contents/Resources/empty.lproj \
   $(OSX_APP)/Contents/Resources/bitcoin.icns $(OSX_APP)/Contents/Info.plist \
-  $(OSX_APP)/Contents/MacOS/Litecoin-Qt $(OSX_APP)/Contents/Resources/Base.lproj/InfoPlist.strings
+  $(OSX_APP)/Contents/MacOS/OmniCore-Qt $(OSX_APP)/Contents/Resources/Base.lproj/InfoPlist.strings
 
 APP_DIST_DIR = $(top_builddir)/dist
 APP_DIST_EXTRAS = $(APP_DIST_DIR)/.background/$(OSX_BACKGROUND_IMAGE) $(APP_DIST_DIR)/.DS_Store $(APP_DIST_DIR)/Applications
 OSX_BACKGROUND_IMAGE_DPIFILES := $(foreach dpi,$(OSX_BACKGROUND_IMAGE_DPIS),dpi$(dpi).$(OSX_BACKGROUND_IMAGE))
-#LCOV_FILTER_PATTERN = -p "/usr/include/" -p "src/leveldb/" -p "src/bench/" -p "src/univalue" -p "src/crypto/ctaes" -p "src/secp256k1"
+#LCOV_FILTER_PATTERN = -p "/usr/include/" -p "/usr/lib/" -p "src/leveldb/" -p "src/bench/" -p "src/univalue" -p "src/crypto/ctaes" -p "src/secp256k1"
 dist_noinst_SCRIPTS = autogen.sh
-EXTRA_DIST = $(DIST_SHARE) test/functional/test_runner.py \
-	test/functional $(DIST_CONTRIB) $(DIST_DOCS) \
+EXTRA_DIST = $(DIST_SHARE) $(DIST_CONTRIB) $(DIST_DOCS) \
 	$(WINDOWS_PACKAGING) $(OSX_PACKAGING) $(BIN_CHECKS) \
-	test/util/bitcoin-util-test.py \
+	test/functional test/fuzz test/util/bitcoin-util-test.py \
 	test/util/data/bitcoin-util-test.json \
 	test/util/data/blanktxv1.hex test/util/data/blanktxv1.json \
 	test/util/data/blanktxv2.hex test/util/data/blanktxv2.json \
@@ -641,7 +679,7 @@ EXTRA_DIST = $(DIST_SHARE) test/functional/test_runner.py \
 	test/util/data/txcreatescript4.json \
 	test/util/data/txcreatesignv1.hex \
 	test/util/data/txcreatesignv1.json \
-	test/util/data/txcreatesignv2.hex
+	test/util/data/txcreatesignv2.hex test/util/rpcauth-test.py
 CLEANFILES = $(OSX_DMG) $(BITCOIN_WIN_INSTALLER)
 DISTCHECK_CONFIGURE_FLAGS = --enable-man
 all: all-recursive
@@ -703,10 +741,12 @@ share/qt/Info.plist: $(top_builddir)/config.status $(top_srcdir)/share/qt/Info.p
 	cd $(top_builddir) && $(SHELL) ./config.status $@
 test/config.ini: $(top_builddir)/config.status $(top_srcdir)/test/config.ini.in
 	cd $(top_builddir) && $(SHELL) ./config.status $@
+src/omnicore/res/omnicore-setup-win.nsi: $(top_builddir)/config.status $(top_srcdir)/src/omnicore/res/omnicore-setup-win.nsi.in
+	cd $(top_builddir) && $(SHELL) ./config.status $@
 contrib/devtools/split-debug.sh: $(top_builddir)/config.status $(top_srcdir)/contrib/devtools/split-debug.sh.in
 	cd $(top_builddir) && $(SHELL) ./config.status $@
-doc/Doxyfile: $(top_builddir)/config.status $(top_srcdir)/doc/Doxyfile.in
-	cd $(top_builddir) && $(SHELL) ./config.status $@
+#doc/Doxyfile: $(top_builddir)/config.status $(top_srcdir)/doc/Doxyfile.in
+#	cd $(top_builddir) && $(SHELL) ./config.status $@
 
 mostlyclean-libtool:
 	-rm -f *.lo
@@ -1178,7 +1218,9 @@ $(BITCOIN_WIN_INSTALLER): all-recursive
 	STRIPPROG="$(STRIP)" $(INSTALL_STRIP_PROGRAM) $(BITCOIND_BIN) $(top_builddir)/release
 	STRIPPROG="$(STRIP)" $(INSTALL_STRIP_PROGRAM) $(BITCOIN_QT_BIN) $(top_builddir)/release
 	STRIPPROG="$(STRIP)" $(INSTALL_STRIP_PROGRAM) $(BITCOIN_CLI_BIN) $(top_builddir)/release
-	@test -f $(MAKENSIS) && $(MAKENSIS) -V2 $(top_builddir)/share/setup.nsi || \
+	STRIPPROG="$(STRIP)" $(INSTALL_STRIP_PROGRAM) $(BITCOIN_TX_BIN) $(top_builddir)/release
+	STRIPPROG="$(STRIP)" $(INSTALL_STRIP_PROGRAM) $(BITCOIN_WALLET_BIN) $(top_builddir)/release
+	@test -f $(MAKENSIS) && $(MAKENSIS) -V2 $(top_builddir)/src/omnicore/res/omnicore-setup-win.nsi || \
 	  echo error: could not build $@
 	@echo built $@
 
@@ -1198,9 +1240,9 @@ $(OSX_APP)/Contents/Resources/bitcoin.icns: $(OSX_INSTALLER_ICONS)
 	$(MKDIR_P) $(@D)
 	$(INSTALL_DATA) $< $@
 
-$(OSX_APP)/Contents/MacOS/Litecoin-Qt: $(BITCOIN_QT_BIN)
+$(OSX_APP)/Contents/MacOS/OmniCore-Qt: all-recursive
 	$(MKDIR_P) $(@D)
-	STRIPPROG="$(STRIP)" $(INSTALL_STRIP_PROGRAM)  $< $@
+	STRIPPROG="$(STRIP)" $(INSTALL_STRIP_PROGRAM)  $(BITCOIN_QT_BIN) $@
 
 $(OSX_APP)/Contents/Resources/Base.lproj/InfoPlist.strings:
 	$(MKDIR_P) $(@D)
@@ -1225,7 +1267,7 @@ $(APP_DIST_DIR)/Applications:
 	@rm -f $@
 	@cd $(@D); $(LN_S) /Applications $(@F)
 
-$(APP_DIST_EXTRAS): $(APP_DIST_DIR)/$(OSX_APP)/Contents/MacOS/Litecoin-Qt
+$(APP_DIST_EXTRAS): $(APP_DIST_DIR)/$(OSX_APP)/Contents/MacOS/OmniCore-Qt
 
 $(OSX_DMG): $(APP_DIST_EXTRAS)
 	$(GENISOIMAGE) -no-cache-inodes -D -l -probe -V "$(OSX_VOLNAME)" -no-pad -r -dir-mode 0755 -apple -o $@ dist
@@ -1239,7 +1281,7 @@ $(APP_DIST_DIR)/.background/$(OSX_BACKGROUND_IMAGE): $(OSX_BACKGROUND_IMAGE_DPIF
 $(APP_DIST_DIR)/.DS_Store: $(OSX_DSSTORE_GEN)
 	$(PYTHON) $< "$@" "$(OSX_VOLNAME)"
 
-$(APP_DIST_DIR)/$(OSX_APP)/Contents/MacOS/Litecoin-Qt: $(OSX_APP_BUILT) $(OSX_PACKAGING)
+$(APP_DIST_DIR)/$(OSX_APP)/Contents/MacOS/OmniCore-Qt: $(OSX_APP_BUILT) $(OSX_PACKAGING)
 	INSTALLNAMETOOL=$(INSTALLNAMETOOL)  OTOOL=$(OTOOL) STRIP=$(STRIP) $(PYTHON) $(OSX_DEPLOY_SCRIPT) $(OSX_APP) -translations-dir=$(QT_TRANSLATION_DIR) -add-qt-tr $(OSX_QT_TRANSLATIONS) -verbose 2
 
 deploydir: $(APP_DIST_EXTRAS)
@@ -1257,6 +1299,12 @@ $(BITCOIND_BIN): FORCE
 $(BITCOIN_CLI_BIN): FORCE
 	$(MAKE) -C src $(@F)
 
+$(BITCOIN_TX_BIN): FORCE
+	$(MAKE) -C src $(@F)
+
+$(BITCOIN_WALLET_BIN): FORCE
+	$(MAKE) -C src $(@F)
+
 #baseline.info:
 #	$(LCOV) -c -i -d $(abs_builddir)/src -o $@
 
@@ -1266,7 +1314,7 @@ $(BITCOIN_CLI_BIN): FORCE
 
 #test_bitcoin.info: baseline_filtered.info
 #	$(MAKE) -C src/ check
-#	$(LCOV) -c $(LCOV_OPTS) -d $(abs_builddir)/src -t test_bitcoin -o $@
+#	$(LCOV) -c $(LCOV_OPTS) -d $(abs_builddir)/src -t test_omnicore -o $@
 #	$(LCOV) -z $(LCOV_OPTS) -d $(abs_builddir)/src
 
 #test_bitcoin_filtered.info: test_bitcoin.info
@@ -1300,9 +1348,21 @@ $(BITCOIN_CLI_BIN): FORCE
 
 .INTERMEDIATE: $(COVERAGE_INFO)
 
-clean-local:
+doc/doxygen/.stamp: doc/Doxyfile FORCE
+	$(MKDIR_P) $(@D)
+	$(DOXYGEN) $^
+	$(AM_V_at) touch $@
+
+#docs: doc/doxygen/.stamp
+docs:
+	@echo "error: doxygen not found"
+
+clean-docs:
+	rm -rf doc/doxygen
+
+clean-local: clean-docs
 	rm -rf coverage_percent.txt test_bitcoin.coverage/ total.coverage/ test/tmp/ cache/ $(OSX_APP)
-	rm -rf test/functional/__pycache__ test/functional/test_framework/__pycache__ test/cache
+	rm -rf test/functional/__pycache__ test/functional/test_framework/__pycache__ test/cache share/rpcauth/__pycache__
 
 # Tell versions [3.59,3.63) of GNU make to not export all variables.
 # Otherwise a system limit (for SysV at least) may be exceeded.

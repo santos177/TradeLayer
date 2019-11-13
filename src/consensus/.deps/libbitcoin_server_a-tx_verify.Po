@@ -86,7 +86,13 @@ consensus/libbitcoin_server_a-tx_verify.o: consensus/tx_verify.cpp \
  /usr/include/x86_64-linux-gnu/bits/strings_fortified.h \
  /usr/include/x86_64-linux-gnu/bits/string_fortified.h compat/endian.h \
  compat/byteswap.h /usr/include/byteswap.h prevector.h \
- /usr/include/assert.h /usr/include/c++/7/iterator \
+ /usr/include/assert.h /usr/include/c++/7/algorithm \
+ /usr/include/c++/7/utility /usr/include/c++/7/bits/stl_relops.h \
+ /usr/include/c++/7/bits/stl_algo.h \
+ /usr/include/c++/7/bits/algorithmfwd.h \
+ /usr/include/c++/7/bits/stl_heap.h /usr/include/c++/7/bits/stl_tempbuf.h \
+ /usr/include/c++/7/bits/uniform_int_dist.h /usr/include/c++/7/limits \
+ /usr/include/c++/7/cstddef /usr/include/c++/7/iterator \
  /usr/include/c++/7/ostream /usr/include/c++/7/ios \
  /usr/include/c++/7/iosfwd /usr/include/c++/7/bits/stringfwd.h \
  /usr/include/c++/7/bits/postypes.h /usr/include/c++/7/cwchar \
@@ -148,11 +154,6 @@ consensus/libbitcoin_server_a-tx_verify.o: consensus/tx_verify.cpp \
  /usr/include/c++/7/bits/ostream.tcc /usr/include/c++/7/istream \
  /usr/include/c++/7/bits/istream.tcc \
  /usr/include/c++/7/bits/stream_iterator.h serialize.h \
- /usr/include/c++/7/algorithm /usr/include/c++/7/utility \
- /usr/include/c++/7/bits/stl_relops.h /usr/include/c++/7/bits/stl_algo.h \
- /usr/include/c++/7/bits/algorithmfwd.h \
- /usr/include/c++/7/bits/stl_heap.h /usr/include/c++/7/bits/stl_tempbuf.h \
- /usr/include/c++/7/bits/uniform_int_dist.h /usr/include/c++/7/limits \
  /usr/include/c++/7/map /usr/include/c++/7/bits/stl_tree.h \
  /usr/include/c++/7/ext/aligned_buffer.h \
  /usr/include/c++/7/bits/stl_map.h /usr/include/c++/7/tuple \
@@ -170,7 +171,7 @@ consensus/libbitcoin_server_a-tx_verify.o: consensus/tx_verify.cpp \
  /usr/include/c++/7/bits/atomic_lockfree_defines.h \
  /usr/include/c++/7/backward/auto_ptr.h /usr/include/c++/7/set \
  /usr/include/c++/7/bits/stl_set.h /usr/include/c++/7/bits/stl_multiset.h \
- /usr/include/c++/7/climits \
+ span.h /usr/include/c++/7/climits \
  /usr/lib/gcc/x86_64-linux-gnu/7/include-fixed/limits.h \
  /usr/lib/gcc/x86_64-linux-gnu/7/include-fixed/syslimits.h \
  /usr/include/limits.h /usr/include/x86_64-linux-gnu/bits/posix1_lim.h \
@@ -181,15 +182,15 @@ consensus/libbitcoin_server_a-tx_verify.o: consensus/tx_verify.cpp \
  /usr/include/x86_64-linux-gnu/bits/uio_lim.h uint256.h \
  /usr/include/c++/7/cstring script/interpreter.h script/script_error.h \
  consensus/validation.h version.h primitives/block.h chain.h \
- arith_uint256.h pow.h consensus/params.h tinyformat.h \
+ arith_uint256.h consensus/params.h tinyformat.h \
  /usr/include/c++/7/cassert /usr/include/c++/7/iostream \
  /usr/include/c++/7/sstream /usr/include/c++/7/bits/sstream.tcc coins.h \
  compressor.h core_memusage.h memusage.h indirectmap.h \
  /usr/include/c++/7/unordered_map /usr/include/c++/7/bits/hashtable.h \
  /usr/include/c++/7/bits/hashtable_policy.h \
  /usr/include/c++/7/bits/unordered_map.h /usr/include/c++/7/unordered_set \
- /usr/include/c++/7/bits/unordered_set.h hash.h crypto/ripemd160.h \
- crypto/sha256.h utilmoneystr.h
+ /usr/include/c++/7/bits/unordered_set.h crypto/siphash.h util/moneystr.h \
+ attributes.h
 
 /usr/include/stdc-predef.h:
 
@@ -413,6 +414,26 @@ prevector.h:
 
 /usr/include/assert.h:
 
+/usr/include/c++/7/algorithm:
+
+/usr/include/c++/7/utility:
+
+/usr/include/c++/7/bits/stl_relops.h:
+
+/usr/include/c++/7/bits/stl_algo.h:
+
+/usr/include/c++/7/bits/algorithmfwd.h:
+
+/usr/include/c++/7/bits/stl_heap.h:
+
+/usr/include/c++/7/bits/stl_tempbuf.h:
+
+/usr/include/c++/7/bits/uniform_int_dist.h:
+
+/usr/include/c++/7/limits:
+
+/usr/include/c++/7/cstddef:
+
 /usr/include/c++/7/iterator:
 
 /usr/include/c++/7/ostream:
@@ -581,24 +602,6 @@ prevector.h:
 
 serialize.h:
 
-/usr/include/c++/7/algorithm:
-
-/usr/include/c++/7/utility:
-
-/usr/include/c++/7/bits/stl_relops.h:
-
-/usr/include/c++/7/bits/stl_algo.h:
-
-/usr/include/c++/7/bits/algorithmfwd.h:
-
-/usr/include/c++/7/bits/stl_heap.h:
-
-/usr/include/c++/7/bits/stl_tempbuf.h:
-
-/usr/include/c++/7/bits/uniform_int_dist.h:
-
-/usr/include/c++/7/limits:
-
 /usr/include/c++/7/map:
 
 /usr/include/c++/7/bits/stl_tree.h:
@@ -647,6 +650,8 @@ serialize.h:
 
 /usr/include/c++/7/bits/stl_multiset.h:
 
+span.h:
+
 /usr/include/c++/7/climits:
 
 /usr/lib/gcc/x86_64-linux-gnu/7/include-fixed/limits.h:
@@ -685,8 +690,6 @@ chain.h:
 
 arith_uint256.h:
 
-pow.h:
-
 consensus/params.h:
 
 tinyformat.h:
@@ -721,10 +724,8 @@ indirectmap.h:
 
 /usr/include/c++/7/bits/unordered_set.h:
 
-hash.h:
+crypto/siphash.h:
 
-crypto/ripemd160.h:
+util/moneystr.h:
 
-crypto/sha256.h:
-
-utilmoneystr.h:
+attributes.h:

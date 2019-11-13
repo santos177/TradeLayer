@@ -1,11 +1,10 @@
-#include "omnicore/tally.h"
+#include <omnicore/tally.h>
 
-#include "test/test_bitcoin.h"
+#include <test/test_bitcoin.h>
 
 #include <stdint.h>
 
 #include <boost/test/unit_test.hpp>
-
 
 BOOST_FIXTURE_TEST_SUITE(omnicore_tally_tests, BasicTestingSetup)
 
@@ -17,31 +16,20 @@ BOOST_AUTO_TEST_CASE(empty_tally)
     BOOST_CHECK_EQUAL(0, tally.getMoney(0, ACCEPT_RESERVE));
     BOOST_CHECK_EQUAL(0, tally.getMoney(0, PENDING));
     BOOST_CHECK_EQUAL(0, tally.getMoney(0, METADEX_RESERVE));
-
-    BOOST_CHECK_EQUAL(0, tally.getMoney(0, CONTRACTDEX_RESERVE));
-    BOOST_CHECK_EQUAL(0, tally.getMoney(0, POSSITIVE_BALANCE));
-    BOOST_CHECK_EQUAL(0, tally.getMoney(0, NEGATIVE_BALANCE));
-    BOOST_CHECK_EQUAL(0, tally.getMoney(0, REALIZED_PROFIT));
-    BOOST_CHECK_EQUAL(0, tally.getMoney(0, REALIZED_LOSSES));
-    BOOST_CHECK_EQUAL(0, tally.getMoney(0, COUNT));
-    BOOST_CHECK_EQUAL(0, tally.getMoney(0, REMAINING));
-    BOOST_CHECK_EQUAL(0, tally.getMoney(0, LIQUIDATION_PRICE));
-    BOOST_CHECK_EQUAL(0, tally.getMoney(0, UPNL));
-
-
     // TallyType out of range:
-    BOOST_CHECK_EQUAL(0, tally.getMoney(0, static_cast<TallyType>(14)));
-    BOOST_CHECK_EQUAL(0, tally.getMoney(0, static_cast<TallyType>(15)));
-
+    BOOST_CHECK_EQUAL(0, tally.getMoney(0, static_cast<TallyType>(5)));
+    BOOST_CHECK_EQUAL(0, tally.getMoney(0, static_cast<TallyType>(6)));
     // TallyType out of range:
-    BOOST_CHECK(!tally.updateMoney(0, 1, static_cast<TallyType>(14)));
-    BOOST_CHECK(!tally.updateMoney(0, 1, static_cast<TallyType>(15)));
+    BOOST_CHECK(!tally.updateMoney(0, 1, static_cast<TallyType>(5)));
+    BOOST_CHECK(!tally.updateMoney(0, 1, static_cast<TallyType>(6)));
 
     BOOST_CHECK_EQUAL(0, tally.init());
     BOOST_CHECK_EQUAL(0, tally.next());
 
     BOOST_CHECK_EQUAL(0, tally.getMoneyAvailable(0));
+    BOOST_CHECK_EQUAL(0, tally.getMoneyReserved(0));
     BOOST_CHECK_EQUAL(0, tally.getMoneyAvailable(55));
+    BOOST_CHECK_EQUAL(0, tally.getMoneyReserved(55));
 }
 
 BOOST_AUTO_TEST_CASE(filled_tally)
@@ -52,110 +40,57 @@ BOOST_AUTO_TEST_CASE(filled_tally)
     BOOST_CHECK(!tally.updateMoney(0, 0, ACCEPT_RESERVE));
     BOOST_CHECK(!tally.updateMoney(0, 0, PENDING));
     BOOST_CHECK(!tally.updateMoney(0, 0, METADEX_RESERVE));
-    BOOST_CHECK(!tally.updateMoney(0, 0, CONTRACTDEX_RESERVE));
-    BOOST_CHECK(!tally.updateMoney(0, 0, POSSITIVE_BALANCE));
-    BOOST_CHECK(!tally.updateMoney(0, 0, NEGATIVE_BALANCE));
-    BOOST_CHECK(!tally.updateMoney(0, 0, REALIZED_PROFIT));
-    BOOST_CHECK(!tally.updateMoney(0, 0, REALIZED_LOSSES));
-    BOOST_CHECK(!tally.updateMoney(0, 0, COUNT));
-    BOOST_CHECK(!tally.updateMoney(0, 0, REMAINING));
-    BOOST_CHECK(!tally.updateMoney(0, 0, LIQUIDATION_PRICE));
-    BOOST_CHECK(!tally.updateMoney(0, 0, UPNL));
 
     BOOST_CHECK_EQUAL(0, tally.getMoney(0, BALANCE));
     BOOST_CHECK_EQUAL(0, tally.getMoney(0, SELLOFFER_RESERVE));
     BOOST_CHECK_EQUAL(0, tally.getMoney(0, ACCEPT_RESERVE));
     BOOST_CHECK_EQUAL(0, tally.getMoney(0, PENDING));
     BOOST_CHECK_EQUAL(0, tally.getMoney(0, METADEX_RESERVE));
-    BOOST_CHECK_EQUAL(0, tally.getMoney(0, CONTRACTDEX_RESERVE));
-    BOOST_CHECK_EQUAL(0, tally.getMoney(0, POSSITIVE_BALANCE));
-    BOOST_CHECK_EQUAL(0, tally.getMoney(0, NEGATIVE_BALANCE));
-    BOOST_CHECK_EQUAL(0, tally.getMoney(0, REALIZED_PROFIT));
-    BOOST_CHECK_EQUAL(0, tally.getMoney(0, REALIZED_LOSSES));
-    BOOST_CHECK_EQUAL(0, tally.getMoney(0, COUNT));
-    BOOST_CHECK_EQUAL(0, tally.getMoney(0, REMAINING));
-    BOOST_CHECK_EQUAL(0, tally.getMoney(0, LIQUIDATION_PRICE));
-    BOOST_CHECK_EQUAL(0, tally.getMoney(0, UPNL));
 
     BOOST_CHECK_EQUAL(0, tally.getMoneyAvailable(0));
+    BOOST_CHECK_EQUAL(0, tally.getMoneyReserved(0));
 
     BOOST_CHECK(tally.updateMoney(0, 1, BALANCE));
     BOOST_CHECK(tally.updateMoney(0, 100, SELLOFFER_RESERVE));
     BOOST_CHECK(tally.updateMoney(1, int64_t(9223372036854775807LL), ACCEPT_RESERVE));
     BOOST_CHECK(tally.updateMoney(2, (-int64_t(9223372036854775807LL)-1), PENDING));
     BOOST_CHECK(tally.updateMoney(5, int64_t(4294967296L), METADEX_RESERVE));
-    BOOST_CHECK(tally.updateMoney(0, 1, CONTRACTDEX_RESERVE));
-    BOOST_CHECK(tally.updateMoney(0, 100, POSSITIVE_BALANCE));
-    BOOST_CHECK(tally.updateMoney(1, int64_t(9223372036854775807LL), NEGATIVE_BALANCE));
-    BOOST_CHECK(tally.updateMoney(2, int64_t(9223372036854775807LL), REALIZED_PROFIT ));
-    BOOST_CHECK(tally.updateMoney(5, int64_t(4294967296L), REALIZED_LOSSES));
-    BOOST_CHECK(tally.updateMoney(0, 2, REMAINING));
-    BOOST_CHECK(tally.updateMoney(0, 20, LIQUIDATION_PRICE));
-    BOOST_CHECK(tally.updateMoney(0, 200, UPNL));
 
     BOOST_CHECK_EQUAL(tally.getMoney(0, BALANCE), 1);
     BOOST_CHECK_EQUAL(tally.getMoney(0, SELLOFFER_RESERVE), 100);
     BOOST_CHECK_EQUAL(tally.getMoney(0, ACCEPT_RESERVE), 0);
     BOOST_CHECK_EQUAL(tally.getMoney(0, PENDING), 0);
     BOOST_CHECK_EQUAL(tally.getMoney(0, METADEX_RESERVE), 0);
-    BOOST_CHECK_EQUAL(tally.getMoney(0, CONTRACTDEX_RESERVE), 1);
-    BOOST_CHECK_EQUAL(tally.getMoney(0, POSSITIVE_BALANCE), 100);
-    BOOST_CHECK_EQUAL(tally.getMoney(0, NEGATIVE_BALANCE), 0);
-    BOOST_CHECK_EQUAL(tally.getMoney(0, REALIZED_PROFIT), 0);
-    BOOST_CHECK_EQUAL(tally.getMoney(0, REALIZED_LOSSES), 0);
-    BOOST_CHECK_EQUAL(tally.getMoney(0, REMAINING), 2);
-    BOOST_CHECK_EQUAL(tally.getMoney(0, LIQUIDATION_PRICE), 20);
-    BOOST_CHECK_EQUAL(tally.getMoney(0, UPNL), 200);
 
     BOOST_CHECK_EQUAL(tally.getMoneyAvailable(0), 1);
-
+    BOOST_CHECK_EQUAL(tally.getMoneyReserved(0), 100);
+    
     BOOST_CHECK_EQUAL(tally.getMoney(1, BALANCE), 0);
     BOOST_CHECK_EQUAL(tally.getMoney(1, SELLOFFER_RESERVE), 0);
     BOOST_CHECK_EQUAL(tally.getMoney(1, ACCEPT_RESERVE), int64_t(9223372036854775807LL));
     BOOST_CHECK_EQUAL(tally.getMoney(1, PENDING), 0);
     BOOST_CHECK_EQUAL(tally.getMoney(1, METADEX_RESERVE), 0);
-    BOOST_CHECK_EQUAL(tally.getMoney(1, CONTRACTDEX_RESERVE), 0);
-    BOOST_CHECK_EQUAL(tally.getMoney(1, POSSITIVE_BALANCE), 0);
-    BOOST_CHECK_EQUAL(tally.getMoney(1, NEGATIVE_BALANCE), int64_t(9223372036854775807LL));
-    BOOST_CHECK_EQUAL(tally.getMoney(1, REALIZED_PROFIT), 0);
-    BOOST_CHECK_EQUAL(tally.getMoney(1, REALIZED_LOSSES), 0);
-    BOOST_CHECK_EQUAL(tally.getMoney(1, REMAINING), 0);
-    BOOST_CHECK_EQUAL(tally.getMoney(1, LIQUIDATION_PRICE), 0);
-    BOOST_CHECK_EQUAL(tally.getMoney(1, UPNL),0);
 
     BOOST_CHECK_EQUAL(tally.getMoneyAvailable(1), 0);
+    BOOST_CHECK_EQUAL(tally.getMoneyReserved(1), int64_t(9223372036854775807LL));
 
     BOOST_CHECK_EQUAL(tally.getMoney(2, BALANCE), 0);
     BOOST_CHECK_EQUAL(tally.getMoney(2, SELLOFFER_RESERVE), 0);
     BOOST_CHECK_EQUAL(tally.getMoney(2, ACCEPT_RESERVE), 0);
     BOOST_CHECK_EQUAL(tally.getMoney(2, PENDING), (-int64_t(9223372036854775807LL)-1));
     BOOST_CHECK_EQUAL(tally.getMoney(2, METADEX_RESERVE), 0);
-    BOOST_CHECK_EQUAL(tally.getMoney(2, CONTRACTDEX_RESERVE), 0);
-    BOOST_CHECK_EQUAL(tally.getMoney(2, POSSITIVE_BALANCE), 0);
-    BOOST_CHECK_EQUAL(tally.getMoney(2, NEGATIVE_BALANCE),0);
-    BOOST_CHECK_EQUAL(tally.getMoney(2, REALIZED_PROFIT), int64_t(9223372036854775807LL));
-    BOOST_CHECK_EQUAL(tally.getMoney(2, REALIZED_LOSSES), 0);
-    BOOST_CHECK_EQUAL(tally.getMoney(2, REMAINING), 0);
-    BOOST_CHECK_EQUAL(tally.getMoney(2, LIQUIDATION_PRICE), 0);
-    BOOST_CHECK_EQUAL(tally.getMoney(2, UPNL),0);
 
     BOOST_CHECK_EQUAL(tally.getMoneyAvailable(2), (-int64_t(9223372036854775807LL)-1));
+    BOOST_CHECK_EQUAL(tally.getMoneyReserved(2), 0);
 
     BOOST_CHECK_EQUAL(tally.getMoney(5, BALANCE), 0);
     BOOST_CHECK_EQUAL(tally.getMoney(5, SELLOFFER_RESERVE), 0);
     BOOST_CHECK_EQUAL(tally.getMoney(5, ACCEPT_RESERVE), 0);
     BOOST_CHECK_EQUAL(tally.getMoney(5, PENDING), 0);
     BOOST_CHECK_EQUAL(tally.getMoney(5, METADEX_RESERVE), int64_t(4294967296L));
-    BOOST_CHECK_EQUAL(tally.getMoney(5, CONTRACTDEX_RESERVE), 0);
-    BOOST_CHECK_EQUAL(tally.getMoney(5, POSSITIVE_BALANCE), 0);
-    BOOST_CHECK_EQUAL(tally.getMoney(5, NEGATIVE_BALANCE), 0);
-    BOOST_CHECK_EQUAL(tally.getMoney(5, REALIZED_PROFIT), 0);
-    BOOST_CHECK_EQUAL(tally.getMoney(5, REALIZED_LOSSES), int64_t(4294967296L));
-    BOOST_CHECK_EQUAL(tally.getMoney(5, REMAINING), 0);
-    BOOST_CHECK_EQUAL(tally.getMoney(5, LIQUIDATION_PRICE), 0);
-    BOOST_CHECK_EQUAL(tally.getMoney(5, UPNL),0);
 
     BOOST_CHECK_EQUAL(tally.getMoneyAvailable(5), 0);
+    BOOST_CHECK_EQUAL(tally.getMoneyReserved(5), int64_t(4294967296L));
 
     /**
      * Note:
@@ -201,14 +136,6 @@ BOOST_AUTO_TEST_CASE(tally_entry_order)
     BOOST_CHECK(tally.updateMoney(2, 1, METADEX_RESERVE));
     BOOST_CHECK(tally.updateMoney(4, -1, PENDING));
     BOOST_CHECK(tally.updateMoney(2, -1, PENDING));
-    BOOST_CHECK(tally.updateMoney(7, 3, CONTRACTDEX_RESERVE));
-    BOOST_CHECK(tally.updateMoney(6, 2, POSSITIVE_BALANCE));
-    BOOST_CHECK(tally.updateMoney(5, 1, NEGATIVE_BALANCE));
-    BOOST_CHECK(tally.updateMoney(4, 6, REALIZED_PROFIT));
-    BOOST_CHECK(tally.updateMoney(3, 7, REALIZED_LOSSES));
-    BOOST_CHECK(tally.updateMoney(2, 1, REMAINING));
-    BOOST_CHECK(tally.updateMoney(1, 1, LIQUIDATION_PRICE));
-    BOOST_CHECK(tally.updateMoney(1, 9, UPNL));
 
     BOOST_CHECK_EQUAL(1, tally.init());
     // Begin iterations:
@@ -226,15 +153,25 @@ BOOST_AUTO_TEST_CASE(tally_entry_order)
     BOOST_CHECK_EQUAL(0, tally.next());
 
     BOOST_CHECK_EQUAL(tally.getMoneyAvailable(1), 2);
+    BOOST_CHECK_EQUAL(tally.getMoneyReserved(1), 0);
     BOOST_CHECK_EQUAL(tally.getMoneyAvailable(2), -2);
+    BOOST_CHECK_EQUAL(tally.getMoneyReserved(2), 1);
     BOOST_CHECK_EQUAL(tally.getMoneyAvailable(3), 0);
+    BOOST_CHECK_EQUAL(tally.getMoneyReserved(3), 2);
     BOOST_CHECK_EQUAL(tally.getMoneyAvailable(4), -1);
+    BOOST_CHECK_EQUAL(tally.getMoneyReserved(4), 2);
     BOOST_CHECK_EQUAL(tally.getMoneyAvailable(5), 1);
+    BOOST_CHECK_EQUAL(tally.getMoneyReserved(5), 1);
     BOOST_CHECK_EQUAL(tally.getMoneyAvailable(6), 1);
+    BOOST_CHECK_EQUAL(tally.getMoneyReserved(6), 0);
     BOOST_CHECK_EQUAL(tally.getMoneyAvailable(7), 0);
+    BOOST_CHECK_EQUAL(tally.getMoneyReserved(7), 1);
     BOOST_CHECK_EQUAL(tally.getMoneyAvailable(8), 1);
+    BOOST_CHECK_EQUAL(tally.getMoneyReserved(8), 1);
     BOOST_CHECK_EQUAL(tally.getMoneyAvailable(9), -2);
+    BOOST_CHECK_EQUAL(tally.getMoneyReserved(9), 10);
     BOOST_CHECK_EQUAL(tally.getMoneyAvailable(70), 1);
+    BOOST_CHECK_EQUAL(tally.getMoneyReserved(70), 0);
 }
 
 BOOST_AUTO_TEST_CASE(tally_equality)
@@ -253,16 +190,6 @@ BOOST_AUTO_TEST_CASE(tally_equality)
     BOOST_CHECK(tally1.updateMoney(1, 50, BALANCE));
     BOOST_CHECK(tally1.updateMoney(1, -3, BALANCE));
     BOOST_CHECK(tally1.updateMoney(1, -3, PENDING));
-    BOOST_CHECK(tally1.updateMoney(0, 1, CONTRACTDEX_RESERVE));
-    BOOST_CHECK(tally1.updateMoney(0, -1, CONTRACTDEX_RESERVE));
-    BOOST_CHECK(tally1.updateMoney(0, 100, POSSITIVE_BALANCE));
-    BOOST_CHECK(tally1.updateMoney(1, 5, NEGATIVE_BALANCE));
-    BOOST_CHECK(tally1.updateMoney(1, 4, REALIZED_PROFIT ));
-    BOOST_CHECK(tally1.updateMoney(3, 3, REALIZED_LOSSES));
-    BOOST_CHECK(tally1.updateMoney(3, 2, REMAINING));
-    BOOST_CHECK(tally1.updateMoney(4, 20, LIQUIDATION_PRICE));
-    BOOST_CHECK(tally1.updateMoney(9, 200, UPNL));
-
 
     BOOST_CHECK(tally2.updateMoney(3, 4, SELLOFFER_RESERVE));
     BOOST_CHECK(tally2.updateMoney(1, 20, BALANCE));
@@ -275,15 +202,7 @@ BOOST_AUTO_TEST_CASE(tally_equality)
     BOOST_CHECK(tally2.updateMoney(1, 28, BALANCE));
     BOOST_CHECK(tally2.updateMoney(1, -6, BALANCE));
     BOOST_CHECK(tally2.updateMoney(1, -3, PENDING));
-    BOOST_CHECK(tally2.updateMoney(0, 1, CONTRACTDEX_RESERVE));
-    BOOST_CHECK(tally2.updateMoney(0, -1, CONTRACTDEX_RESERVE));
-    BOOST_CHECK(tally2.updateMoney(0, 100, POSSITIVE_BALANCE));
-    BOOST_CHECK(tally2.updateMoney(1, 5, NEGATIVE_BALANCE));
-    BOOST_CHECK(tally2.updateMoney(1, 4, REALIZED_PROFIT ));
-    BOOST_CHECK(tally2.updateMoney(3, 3, REALIZED_LOSSES));
-    BOOST_CHECK(tally2.updateMoney(3, 2, REMAINING));
-    BOOST_CHECK(tally2.updateMoney(4, 20, LIQUIDATION_PRICE));
-    BOOST_CHECK(tally2.updateMoney(9, 200, UPNL));
+
     BOOST_CHECK(tally1 == tally2);
     BOOST_CHECK(tally2 == tally1);
 
@@ -293,16 +212,22 @@ BOOST_AUTO_TEST_CASE(tally_equality)
     BOOST_CHECK(tally1.getMoneyAvailable(9) == tally2.getMoneyAvailable(9));
     BOOST_CHECK(tally1.getMoneyAvailable(0) == tally2.getMoneyAvailable(0));
 
-    BOOST_CHECK_EQUAL(0, tally1.init());
-    BOOST_CHECK_EQUAL(0, tally1.next());
+    BOOST_CHECK(tally2.getMoneyReserved(1) == tally1.getMoneyReserved(1));
+    BOOST_CHECK(tally2.getMoneyReserved(3) == tally1.getMoneyReserved(3));
+    BOOST_CHECK(tally2.getMoneyReserved(4) == tally1.getMoneyReserved(4));
+    BOOST_CHECK(tally2.getMoneyReserved(9) == tally1.getMoneyReserved(9));
+    BOOST_CHECK(tally2.getMoneyReserved(0) == tally1.getMoneyReserved(0));
+
+    BOOST_CHECK_EQUAL(1, tally1.init());
     BOOST_CHECK_EQUAL(1, tally1.next());
     BOOST_CHECK_EQUAL(3, tally1.next());
     BOOST_CHECK_EQUAL(4, tally1.next());
     BOOST_CHECK_EQUAL(9, tally1.next());
-    BOOST_CHECK_EQUAL(0, tally2.init());
-    BOOST_CHECK_EQUAL(0, tally2.next());
+    BOOST_CHECK_EQUAL(0, tally1.next());
+    BOOST_CHECK_EQUAL(1, tally2.init());
     BOOST_CHECK_EQUAL(1, tally2.next());
     BOOST_CHECK_EQUAL(3, tally2.next());
+    BOOST_CHECK_EQUAL(4, tally2.next());
 
     BOOST_CHECK(tally1 == tally2);
 
@@ -314,13 +239,15 @@ BOOST_AUTO_TEST_CASE(tally_equality)
 
     BOOST_CHECK(tally1.updateMoney(8, 3, METADEX_RESERVE));
     BOOST_CHECK(tally1 != tally2);
-
+    BOOST_CHECK(tally1.getMoneyReserved(8) == 3);
 
     BOOST_CHECK(tally2.updateMoney(8, 4, METADEX_RESERVE));
     BOOST_CHECK(tally1 != tally2);
+    BOOST_CHECK(tally2.getMoneyReserved(8) == 4);
 
     BOOST_CHECK(tally2.updateMoney(8, -1, METADEX_RESERVE));
     BOOST_CHECK(tally1 == tally2);
+    BOOST_CHECK(tally1.getMoneyReserved(8) == 3);
 
     BOOST_CHECK(tally1.updateMoney(7, 1, BALANCE));
     BOOST_CHECK(tally2.updateMoney(5, 1, BALANCE));
@@ -334,17 +261,6 @@ BOOST_AUTO_TEST_CASE(tally_equality)
     BOOST_CHECK(tally1.getMoneyAvailable(7) == 1);
     BOOST_CHECK(tally2.getMoneyAvailable(5) == 1);
     BOOST_CHECK(tally2.getMoneyAvailable(7) == 1);
-
-    BOOST_CHECK(tally1.updateMoney(8, 3, POSSITIVE_BALANCE));
-    BOOST_CHECK(tally1 != tally2);
-
-    BOOST_CHECK(tally2.updateMoney(8, 6, POSSITIVE_BALANCE));
-    BOOST_CHECK(tally1 != tally2);
-
-    BOOST_CHECK(tally2.updateMoney(8, -3, POSSITIVE_BALANCE));
-    BOOST_CHECK(tally1 == tally2);
-
-
 }
 
 BOOST_AUTO_TEST_CASE(tally_overflow)
@@ -374,41 +290,32 @@ BOOST_AUTO_TEST_CASE(tally_overflow)
     BOOST_CHECK_EQUAL(tally.getMoney(1, PENDING), (-int64_t(9223372036854775807LL)-1));
     BOOST_CHECK_EQUAL(tally.getMoneyAvailable(1), -1);
 
-    BOOST_CHECK(tally.updateMoney(1, int64_t(9223372036854775807LL), CONTRACTDEX_RESERVE));
-    BOOST_CHECK_EQUAL(tally.getMoney(1, CONTRACTDEX_RESERVE), int64_t(9223372036854775807LL));
-    BOOST_CHECK_EQUAL(tally.getMoneyAvailable(1), -1);
+    BOOST_CHECK(tally.updateMoney(1, int64_t(9223372036854775807LL), ACCEPT_RESERVE));
+    BOOST_CHECK(tally.updateMoney(2, int64_t(9223372036854775807LL), SELLOFFER_RESERVE));
+    BOOST_CHECK(tally.updateMoney(3, int64_t(9223372036854775807LL), SELLOFFER_RESERVE));
+    BOOST_CHECK_EQUAL(tally.getMoneyReserved(1), int64_t(9223372036854775807LL));
+    BOOST_CHECK_EQUAL(tally.getMoneyReserved(2), int64_t(9223372036854775807LL));
+    BOOST_CHECK_EQUAL(tally.getMoneyReserved(3), int64_t(9223372036854775807LL));
 
-    BOOST_CHECK(tally.updateMoney(1, int64_t(9223372036854775807LL), POSSITIVE_BALANCE));
-    BOOST_CHECK_EQUAL(tally.getMoney(1, POSSITIVE_BALANCE), int64_t(9223372036854775807LL));
-    BOOST_CHECK_EQUAL(tally.getMoneyAvailable(1), -1);
+    BOOST_CHECK(!tally.updateMoney(3, int64_t(9223372036854775807LL), SELLOFFER_RESERVE));
+    BOOST_CHECK(!tally.updateMoney(3, (-int64_t(9223372036854775807LL)-1), SELLOFFER_RESERVE));
+    BOOST_CHECK_EQUAL(tally.getMoneyReserved(3), int64_t(9223372036854775807LL));
 
-    BOOST_CHECK(tally.updateMoney(1, int64_t(9223372036854775807LL), NEGATIVE_BALANCE));
-    BOOST_CHECK_EQUAL(tally.getMoney(1, NEGATIVE_BALANCE), int64_t(9223372036854775807LL));
-    BOOST_CHECK_EQUAL(tally.getMoneyAvailable(1), -1);
-
-    BOOST_CHECK(tally.updateMoney(1, int64_t(9223372036854775807LL), REALIZED_PROFIT));
-    BOOST_CHECK_EQUAL(tally.getMoney(1, REALIZED_PROFIT), int64_t(9223372036854775807LL));
-    BOOST_CHECK_EQUAL(tally.getMoneyAvailable(1), -1);
-
-    BOOST_CHECK(tally.updateMoney(1, int64_t(9223372036854775807LL), REALIZED_LOSSES));
-    BOOST_CHECK_EQUAL(tally.getMoney(1, REALIZED_LOSSES), int64_t(9223372036854775807LL));
-    BOOST_CHECK_EQUAL(tally.getMoneyAvailable(1), -1);
-
-    BOOST_CHECK(tally.updateMoney(1, int64_t(9223372036854775807LL), REMAINING));
-    BOOST_CHECK_EQUAL(tally.getMoney(1, REMAINING), int64_t(9223372036854775807LL));
-    BOOST_CHECK_EQUAL(tally.getMoneyAvailable(1), -1);
-
-    BOOST_CHECK(tally.updateMoney(1, int64_t(9223372036854775807LL), LIQUIDATION_PRICE));
-    BOOST_CHECK_EQUAL(tally.getMoney(1, LIQUIDATION_PRICE), int64_t(9223372036854775807LL));
-    BOOST_CHECK_EQUAL(tally.getMoneyAvailable(1), -1);
-
-    BOOST_CHECK(tally.updateMoney(1, int64_t(9223372036854775807LL), UPNL));
-    BOOST_CHECK_EQUAL(tally.getMoney(1, UPNL), int64_t(9223372036854775807LL));
-    BOOST_CHECK_EQUAL(tally.getMoneyAvailable(1), -1);
-
+    BOOST_CHECK(tally.updateMoney(1, -int64_t(9223372036854775807), ACCEPT_RESERVE));
+    BOOST_CHECK(tally.updateMoney(1, 10000001, ACCEPT_RESERVE));
+    BOOST_CHECK(tally.updateMoney(1, 20000001, SELLOFFER_RESERVE));
+    BOOST_CHECK(tally.updateMoney(1, 30000001, SELLOFFER_RESERVE));
+    BOOST_CHECK(tally.updateMoney(1, 40000001, SELLOFFER_RESERVE));
+    BOOST_CHECK(tally.updateMoney(1, 50000001, METADEX_RESERVE));
+    BOOST_CHECK_EQUAL(tally.getMoneyReserved(1), 150000005);
 
     BOOST_CHECK(!tally.updateMoney(1, 1, BALANCE));
-
+    BOOST_CHECK_EQUAL(tally.getMoneyAvailable(1), -1);
+    BOOST_CHECK_EQUAL(tally.getMoneyAvailable(2), 0);
+    BOOST_CHECK_EQUAL(tally.getMoneyAvailable(3), 0);
+    BOOST_CHECK_EQUAL(tally.getMoneyReserved(1), 150000005);
+    BOOST_CHECK_EQUAL(tally.getMoneyReserved(2), int64_t(9223372036854775807LL));
+    BOOST_CHECK_EQUAL(tally.getMoneyReserved(3), int64_t(9223372036854775807LL));
 }
 
 

@@ -144,7 +144,10 @@ support/libbitcoin_util_a-lockedpool.o: support/lockedpool.cpp \
  /usr/include/c++/7/bits/shared_ptr_atomic.h \
  /usr/include/c++/7/bits/atomic_base.h \
  /usr/include/c++/7/bits/atomic_lockfree_defines.h \
- /usr/include/c++/7/backward/auto_ptr.h support/cleanse.h \
+ /usr/include/c++/7/backward/auto_ptr.h /usr/include/c++/7/unordered_map \
+ /usr/include/c++/7/bits/hashtable.h \
+ /usr/include/c++/7/bits/hashtable_policy.h \
+ /usr/include/c++/7/bits/unordered_map.h support/cleanse.h \
  /usr/include/c++/7/stdlib.h config/bitcoin-config.h \
  /usr/include/x86_64-linux-gnu/sys/mman.h \
  /usr/include/x86_64-linux-gnu/bits/mman.h \
@@ -543,6 +546,14 @@ support/lockedpool.h:
 /usr/include/c++/7/bits/atomic_lockfree_defines.h:
 
 /usr/include/c++/7/backward/auto_ptr.h:
+
+/usr/include/c++/7/unordered_map:
+
+/usr/include/c++/7/bits/hashtable.h:
+
+/usr/include/c++/7/bits/hashtable_policy.h:
+
+/usr/include/c++/7/bits/unordered_map.h:
 
 support/cleanse.h:
 

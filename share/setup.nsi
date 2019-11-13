@@ -1,29 +1,28 @@
-Name "Litecoin Core (-bit)"
+Name "Omni Core (-bit)"
 
 RequestExecutionLevel highest
 SetCompressor /SOLID lzma
 
 # General Symbol Definitions
 !define REGKEY "SOFTWARE\$(^Name)"
-!define VERSION 0.16.3
-!define COMPANY "Litecoin Core project"
-!define URL https://litecoin.org/
+!define COMPANY "Omni Core project"
+!define URL http://www.omnilayer.org/
 
 # MUI Symbol Definitions
-!define MUI_ICON "/home/ale/Escritorio/AWork/exodus/share/pixmaps/bitcoin.ico"
-!define MUI_WELCOMEFINISHPAGE_BITMAP "/home/ale/Escritorio/AWork/exodus/share/pixmaps/nsis-wizard.bmp"
+!define MUI_ICON "/home/ale/Escritorio/AWork/tl-bitcoin/share/pixmaps/bitcoin.ico"
+!define MUI_WELCOMEFINISHPAGE_BITMAP "/home/ale/Escritorio/AWork/tl-bitcoin/share/pixmaps/nsis-wizard.bmp"
 !define MUI_HEADERIMAGE
 !define MUI_HEADERIMAGE_RIGHT
-!define MUI_HEADERIMAGE_BITMAP "/home/ale/Escritorio/AWork/exodus/share/pixmaps/nsis-header.bmp"
+!define MUI_HEADERIMAGE_BITMAP "/home/ale/Escritorio/AWork/tl-bitcoin/share/pixmaps/nsis-header.bmp"
 !define MUI_FINISHPAGE_NOAUTOCLOSE
 !define MUI_STARTMENUPAGE_REGISTRY_ROOT HKLM
 !define MUI_STARTMENUPAGE_REGISTRY_KEY ${REGKEY}
 !define MUI_STARTMENUPAGE_REGISTRY_VALUENAME StartMenuGroup
-!define MUI_STARTMENUPAGE_DEFAULTFOLDER "Litecoin Core"
+!define MUI_STARTMENUPAGE_DEFAULTFOLDER "Omni Core"
 !define MUI_FINISHPAGE_RUN "$WINDIR\explorer.exe"
-!define MUI_FINISHPAGE_RUN_PARAMETERS $INSTDIR\litecoin-qt
+!define MUI_FINISHPAGE_RUN_PARAMETERS $INSTDIR\omnicore-qt
 !define MUI_UNICON "${NSISDIR}\Contrib\Graphics\Icons\modern-uninstall.ico"
-!define MUI_UNWELCOMEFINISHPAGE_BITMAP "/home/ale/Escritorio/AWork/exodus/share/pixmaps/nsis-wizard.bmp"
+!define MUI_UNWELCOMEFINISHPAGE_BITMAP "/home/ale/Escritorio/AWork/tl-bitcoin/share/pixmaps/nsis-wizard.bmp"
 !define MUI_UNFINISHPAGE_NOAUTOCLOSE
 
 # Included files
@@ -49,22 +48,22 @@ Var StartMenuGroup
 !insertmacro MUI_LANGUAGE English
 
 # Installer attributes
-OutFile /home/ale/Escritorio/AWork/exodus/litecoin-${VERSION}-win-setup.exe
+OutFile /home/ale/Escritorio/AWork/tl-bitcoin/omnicore-0.7.0-win-setup.exe
 !if "" == "64"
-InstallDir $PROGRAMFILES64\Litecoin
+InstallDir $PROGRAMFILES64\Bitcoin
 !else
-InstallDir $PROGRAMFILES\Litecoin
+InstallDir $PROGRAMFILES\Bitcoin
 !endif
 CRCCheck on
 XPStyle on
 BrandingText " "
 ShowInstDetails show
-VIProductVersion ${VERSION}.0
-VIAddVersionKey ProductName "Litecoin Core"
-VIAddVersionKey ProductVersion "${VERSION}"
+VIProductVersion 0.18.1.0
+VIAddVersionKey ProductName "Omni Core"
+VIAddVersionKey ProductVersion "0.7.0"
 VIAddVersionKey CompanyName "${COMPANY}"
 VIAddVersionKey CompanyWebsite "${URL}"
-VIAddVersionKey FileVersion "${VERSION}"
+VIAddVersionKey FileVersion "0.7.0"
 VIAddVersionKey FileDescription ""
 VIAddVersionKey LegalCopyright ""
 InstallDirRegKey HKCU "${REGKEY}" Path
@@ -74,14 +73,16 @@ ShowUninstDetails show
 Section -Main SEC0000
     SetOutPath $INSTDIR
     SetOverwrite on
-    File /home/ale/Escritorio/AWork/exodus/release/litecoin-qt
-    File /oname=COPYING.txt /home/ale/Escritorio/AWork/exodus/COPYING
-    File /oname=readme.txt /home/ale/Escritorio/AWork/exodus/doc/README_windows.txt
+    File /home/ale/Escritorio/AWork/tl-bitcoin/release/omnicore-qt
+    File /oname=COPYING.txt /home/ale/Escritorio/AWork/tl-bitcoin/COPYING
+    File /oname=readme.txt /home/ale/Escritorio/AWork/tl-bitcoin/doc/README_windows.txt
     SetOutPath $INSTDIR\daemon
-    File /home/ale/Escritorio/AWork/exodus/release/litecoind
-    File /home/ale/Escritorio/AWork/exodus/release/litecoin-cli
+    File /home/ale/Escritorio/AWork/tl-bitcoin/release/omnicored
+    File /home/ale/Escritorio/AWork/tl-bitcoin/release/omnicore-cli
+    File /home/ale/Escritorio/AWork/tl-bitcoin/release/bitcoin-tx
+    File /home/ale/Escritorio/AWork/tl-bitcoin/release/bitcoin-wallet
     SetOutPath $INSTDIR\doc
-    File /r /home/ale/Escritorio/AWork/exodus/doc\*.*
+    File /r /x Makefile* /home/ale/Escritorio/AWork/tl-bitcoin/doc\*.*
     SetOutPath $INSTDIR
     WriteRegStr HKCU "${REGKEY}\Components" Main 1
 SectionEnd
@@ -92,22 +93,22 @@ Section -post SEC0001
     WriteUninstaller $INSTDIR\uninstall.exe
     !insertmacro MUI_STARTMENU_WRITE_BEGIN Application
     CreateDirectory $SMPROGRAMS\$StartMenuGroup
-    CreateShortcut "$SMPROGRAMS\$StartMenuGroup\$(^Name).lnk" $INSTDIR\litecoin-qt
-    CreateShortcut "$SMPROGRAMS\$StartMenuGroup\Litecoin Core (testnet, -bit).lnk" "$INSTDIR\litecoin-qt" "-testnet" "$INSTDIR\litecoin-qt" 1
+    CreateShortcut "$SMPROGRAMS\$StartMenuGroup\$(^Name).lnk" $INSTDIR\omnicore-qt
+    CreateShortcut "$SMPROGRAMS\$StartMenuGroup\Omni Core (testnet, -bit).lnk" "$INSTDIR\omnicore-qt" "-testnet" "$INSTDIR\omnicore-qt" 1
     CreateShortcut "$SMPROGRAMS\$StartMenuGroup\Uninstall $(^Name).lnk" $INSTDIR\uninstall.exe
     !insertmacro MUI_STARTMENU_WRITE_END
     WriteRegStr HKCU "SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\$(^Name)" DisplayName "$(^Name)"
-    WriteRegStr HKCU "SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\$(^Name)" DisplayVersion "${VERSION}"
+    WriteRegStr HKCU "SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\$(^Name)" DisplayVersion "0.7.0"
     WriteRegStr HKCU "SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\$(^Name)" Publisher "${COMPANY}"
     WriteRegStr HKCU "SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\$(^Name)" URLInfoAbout "${URL}"
     WriteRegStr HKCU "SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\$(^Name)" DisplayIcon $INSTDIR\uninstall.exe
     WriteRegStr HKCU "SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\$(^Name)" UninstallString $INSTDIR\uninstall.exe
     WriteRegDWORD HKCU "SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\$(^Name)" NoModify 1
     WriteRegDWORD HKCU "SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\$(^Name)" NoRepair 1
-    WriteRegStr HKCR "litecoin" "URL Protocol" ""
-    WriteRegStr HKCR "litecoin" "" "URL:Litecoin"
-    WriteRegStr HKCR "litecoin\DefaultIcon" "" $INSTDIR\litecoin-qt
-    WriteRegStr HKCR "litecoin\shell\open\command" "" '"$INSTDIR\litecoin-qt" "%1"'
+    WriteRegStr HKCR "omnicore" "URL Protocol" ""
+    WriteRegStr HKCR "omnicore" "" "URL:Bitcoin"
+    WriteRegStr HKCR "omnicore\DefaultIcon" "" $INSTDIR\omnicore-qt
+    WriteRegStr HKCR "omnicore\shell\open\command" "" '"$INSTDIR\omnicore-qt" "%1"'
 SectionEnd
 
 # Macro for selecting uninstaller sections
@@ -125,7 +126,7 @@ done${UNSECTION_ID}:
 
 # Uninstaller sections
 Section /o -un.Main UNSEC0000
-    Delete /REBOOTOK $INSTDIR\litecoin-qt
+    Delete /REBOOTOK $INSTDIR\omnicore-qt
     Delete /REBOOTOK $INSTDIR\COPYING.txt
     Delete /REBOOTOK $INSTDIR\readme.txt
     RMDir /r /REBOOTOK $INSTDIR\daemon
@@ -137,8 +138,8 @@ Section -un.post UNSEC0001
     DeleteRegKey HKCU "SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\$(^Name)"
     Delete /REBOOTOK "$SMPROGRAMS\$StartMenuGroup\Uninstall $(^Name).lnk"
     Delete /REBOOTOK "$SMPROGRAMS\$StartMenuGroup\$(^Name).lnk"
-    Delete /REBOOTOK "$SMPROGRAMS\$StartMenuGroup\Litecoin Core (testnet, -bit).lnk"
-    Delete /REBOOTOK "$SMSTARTUP\Litecoin.lnk"
+    Delete /REBOOTOK "$SMPROGRAMS\$StartMenuGroup\Omni Core (testnet, -bit).lnk"
+    Delete /REBOOTOK "$SMSTARTUP\Bitcoin.lnk"
     Delete /REBOOTOK $INSTDIR\uninstall.exe
     Delete /REBOOTOK $INSTDIR\debug.log
     Delete /REBOOTOK $INSTDIR\db.log
@@ -146,7 +147,7 @@ Section -un.post UNSEC0001
     DeleteRegValue HKCU "${REGKEY}" Path
     DeleteRegKey /IfEmpty HKCU "${REGKEY}\Components"
     DeleteRegKey /IfEmpty HKCU "${REGKEY}"
-    DeleteRegKey HKCR "litecoin"
+    DeleteRegKey HKCR "omnicore"
     RmDir /REBOOTOK $SMPROGRAMS\$StartMenuGroup
     RmDir /REBOOTOK $INSTDIR
     Push $R0

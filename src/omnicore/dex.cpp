@@ -4,23 +4,21 @@
  * This file contains DEx logic.
  */
 
-#include "omnicore/dex.h"
-#include "omnicore/mdex.h"
+#include <omnicore/dex.h>
 
-#include "omnicore/convert.h"
-#include "omnicore/errors.h"
-#include "omnicore/log.h"
-#include "omnicore/omnicore.h"
-#include "omnicore/rules.h"
-#include "omnicore/sp.h"
-#include "omnicore/uint256_extensions.h"
+#include <omnicore/convert.h>
+#include <omnicore/dbtxlist.h>
+#include <omnicore/log.h>
+#include <omnicore/rules.h>
+#include <omnicore/uint256_extensions.h>
 
-#include "arith_uint256.h"
-#include "tinyformat.h"
-#include "uint256.h"
+#include <arith_uint256.h>
+#include <validation.h>
+#include <tinyformat.h>
+#include <uint256.h>
 
 #include <boost/algorithm/string.hpp>
-#include <boost/format.hpp>
+#include <boost/lexical_cast.hpp>
 
 #include <openssl/sha.h>
 
@@ -33,13 +31,8 @@
 #include <utility>
 #include <vector>
 
-extern int64_t factorE;
-extern uint64_t marketP[NPTYPES];
-
 namespace mastercore
 {
-
-extern CMPSPInfo *_my_sps;
 /**
  * Checks, if such a sell offer exists.
  */
@@ -48,6 +41,57 @@ bool DEx_offerExists(const std::string& addressSeller, uint32_t propertyId)
     std::string key = STR_SELLOFFER_ADDR_PROP_COMBO(addressSeller, propertyId);
 
     return !(my_offers.find(key) == my_offers.end());
+}
+
+/**
+ * Checks, if the seller has any open offer.
+ */
+bool DEx_hasOffer(const std::string& addressSeller)
+{
+    for (auto const& offer : my_offers) {
+        if (offer.first.find(addressSeller) == 0) {
+            return true;
+        }
+    }
+
+    return false;
+}
+
+/**
+ * Retrieves the identifier of the token for sale.
+ *
+ * NOTE: special care, if there are multiple open offers!
+ * NOTE: the assumption is there can only be one active offer per seller!
+ *
+ * @param addressSeller The address of the seller with an open offer
+ * @param retTokenId    The token identifier for sale
+ * @return True, if there is an open offer
+ */
+bool DEx_getTokenForSale(const std::string& addressSeller, uint32_t& retTokenId)
+{
+    for (auto const& offer : my_offers) {
+        if (offer.first.find(addressSeller) == 0) {
+
+            // Format is: "address-tokenid"
+            std::vector<std::string> vstr;
+            boost::split(vstr, offer.first, boost::is_any_of("-"), boost::token_compress_on);
+
+            if (vstr.size() != 2) {
+                PrintToLog("ERROR: failed to parse token for sale: %s\n", __func__, offer.first);
+                return false;
+            }
+
+            try {
+                retTokenId = boost::lexical_cast<uint32_t>(vstr[1]);
+                return true;
+            }
+            catch (boost::bad_lexical_cast const& e) {
+                PrintToLog("ERROR: failed to parse token for sale: %s (%s)\n", __func__, offer.first, e.what());
+            }
+        }
+    }
+
+    return false;
 }
 
 /**
@@ -64,7 +108,7 @@ CMPOffer* DEx_getOffer(const std::string& addressSeller, uint32_t propertyId)
 
     if (it != my_offers.end()) return &(it->second);
 
-    return NULL;
+    return nullptr;
 }
 
 /**
@@ -91,9 +135,8 @@ CMPAccept* DEx_getAccept(const std::string& addressSeller, uint32_t propertyId, 
 
     if (it != my_accepts.end()) return &(it->second);
 
-    return NULL;
+    return nullptr;
 }
-
 
 namespace legacy
 {
@@ -162,10 +205,17 @@ int DEx_offerCreate(const std::string& addressSeller, uint32_t propertyId, int64
         return (DEX_ERROR_SELLOFFER -10); // offer already exists
     }
 
-    const std::string key = STR_SELLOFFER_ADDR_PROP_COMBO(addressSeller, propertyId);
-    if (msc_debug_dex) PrintToLog("%s(%s|%s), nValue=%d)\n &&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&", __func__, addressSeller, key, amountOffered);
+    // Ensure further there can only be one active offer
+    if (IsFeatureActivated(FEATURE_FREEDEX, block)) {
+        if (DEx_hasOffer(addressSeller)) {
+            return (DEX_ERROR_SELLOFFER -10); // offer already exists
+        }
+    }
 
-    const int64_t balanceReallyAvailable = getMPbalance(addressSeller, propertyId, BALANCE);
+    const std::string key = STR_SELLOFFER_ADDR_PROP_COMBO(addressSeller, propertyId);
+    if (msc_debug_dex) PrintToLog("%s(%s|%s), nValue=%d)\n", __func__, addressSeller, key, amountOffered);
+
+    const int64_t balanceReallyAvailable = GetTokenBalance(addressSeller, propertyId, BALANCE);
 
     /**
      * After this feature is enabled, it is no longer valid to create orders, which offer more than
@@ -201,7 +251,8 @@ int DEx_offerCreate(const std::string& addressSeller, uint32_t propertyId, int64
     if (amountOffered > 0) {
         assert(update_tally_map(addressSeller, propertyId, -amountOffered, BALANCE));
         assert(update_tally_map(addressSeller, propertyId, amountOffered, SELLOFFER_RESERVE));
-        CMPOffer sellOffer(block, amountOffered, propertyId, amountDesired, minAcceptFee, paymentWindow, txid, 2);
+
+        CMPOffer sellOffer(block, amountOffered, propertyId, amountDesired, minAcceptFee, paymentWindow, txid);
         my_offers.insert(std::make_pair(key, sellOffer));
 
         rc = 0;
@@ -210,88 +261,8 @@ int DEx_offerCreate(const std::string& addressSeller, uint32_t propertyId, int64
     return rc;
 }
 
-int DEx_BuyOfferCreate(const std::string& addressMaker, uint32_t propertyId, int64_t amountOffered, int block, int64_t price, int64_t minAcceptFee, uint8_t paymentWindow, const uint256& txid, uint64_t* nAmended)
-{
-    bool ready = false;
-    int rc = DEX_ERROR_SELLOFFER;
-
-    // sanity checks
-    if (paymentWindow == 0)
-    {
-        if (msc_debug_dex) PrintToLog("DEX_ERROR_SELLOFFER\n");
-        return (DEX_ERROR_SELLOFFER -101);
-    }
-
-    if (price == 0)
-    {
-        if (msc_debug_dex) PrintToLog("DEX_ERROR_SELLOFFER\n");
-        return (DEX_ERROR_SELLOFFER -101);
-    }
-
-    if (DEx_getOffer(addressMaker, propertyId))
-    {
-        if (msc_debug_dex) PrintToLog("DEX_ERROR_SELLOFFER\n");
-        return (DEX_ERROR_SELLOFFER -10); // offer already exists
-    }
-
-    const std::string key = STR_SELLOFFER_ADDR_PROP_COMBO(addressMaker, propertyId);
-    if (msc_debug_dex) PrintToLog("%s(%s|%s), nValue=%d)\n", __func__, addressMaker, key, amountOffered);
-
-    // ------------------------------------------------------------------------
-    // On this part we need to put in reserve synth Litecoins.
-    LOCK(cs_tally);
-
-    arith_uint256 sumValues;
-    uint32_t nextSPID = _my_sps->peekNextSPID(1);
-
-    for (uint32_t propertyId = 1; propertyId < nextSPID; propertyId++)
-    {
-        CMPSPInfo::Entry sp;
-        if (_my_sps->getSP(propertyId, sp))
-        {
-            if (msc_debug_dex) PrintToLog("Property Id: %d\n",propertyId);
-            if (sp.prop_type != ALL_PROPERTY_TYPE_CONTRACT)
-	              continue;
-
-            int64_t longs = getMPbalance(addressMaker, propertyId, POSSITIVE_BALANCE);
-            int64_t shorts = getMPbalance(addressMaker, propertyId, NEGATIVE_BALANCE);
-            int64_t notional = static_cast<int64_t>(sp.notional_size);
-
-            if (msc_debug_dex) PrintToLog("%s(): longs: %d, shorts: %d, notional: %d\n",__func__, longs, shorts, notional);
-
-            // price of one sLTC in ALLs
-            int64_t pair = getPairMarketPrice("sLTC", "ALL");
-
-            if (msc_debug_dex) PrintToLog("pair: %d\n", pair);
-
-            if (longs >= 0 && shorts == 0)
-	              sumValues += (ConvertTo256(longs) * ConvertTo256(notional)) * ConvertTo256(pair) / ConvertTo256(factorE);
-            else if (longs == 0 && shorts >= 0)
-	              sumValues += (ConvertTo256(shorts) * ConvertTo256(notional)) * ConvertTo256(pair) / ConvertTo256(factorE);
-
-	          if (sumValues > ConvertTo256(price))
-            {
-                // price = price of entire order   .
-	              if (msc_debug_dex) PrintToLog("You can buy tokens now\n");
-	              ready = true;
-	              break;
-            }
-        }
-    }
-
-    if (ready)
-    {
-        CMPOffer sellOffer(block, amountOffered, propertyId, price, minAcceptFee, paymentWindow, txid, 1);
-        my_offers.insert(std::make_pair(key, sellOffer));
-    } else {
-        if (msc_debug_dex) PrintToLog("You can't buy tokens, you need more position value\n");
-        return -1;
-    }
-
-    return rc;
-}
 /**
- * Destorys a sell offer.
+ * Destroys a sell offer.
  *
  * The remaining amount reserved for the offer is returned to the available balance.
  *
@@ -303,7 +274,7 @@ int DEx_offerDestroy(const std::string& addressSeller, uint32_t propertyId)
         return (DEX_ERROR_SELLOFFER -11); // offer does not exist
     }
 
-    const int64_t amountReserved = getMPbalance(addressSeller, propertyId, SELLOFFER_RESERVE);
+    const int64_t amountReserved = GetTokenBalance(addressSeller, propertyId, SELLOFFER_RESERVE);
 
     // return the remaining reserved amount back to the seller
     if (amountReserved > 0) {
@@ -352,11 +323,11 @@ int DEx_offerUpdate(const std::string& addressSeller, uint32_t propertyId, int64
  * TODO: change nAmended: uint64_t -> int64_t
  * @return 0 if everything is OK
  */
-int DEx_acceptCreate(const std::string& addressTaker, const std::string& addressMaker, uint32_t propertyId, int64_t amountAccepted, int block, int64_t feePaid, uint64_t* nAmended)
+int DEx_acceptCreate(const std::string& addressBuyer, const std::string& addressSeller, uint32_t propertyId, int64_t amountAccepted, int block, int64_t feePaid, uint64_t* nAmended)
 {
     int rc = DEX_ERROR_ACCEPT -10;
-    const std::string keySellOffer = STR_SELLOFFER_ADDR_PROP_COMBO(addressMaker, propertyId);
-    const std::string keyAcceptOrder = STR_ACCEPT_ADDR_PROP_ADDR_COMBO(addressMaker, addressTaker, propertyId);
+    const std::string keySellOffer = STR_SELLOFFER_ADDR_PROP_COMBO(addressSeller, propertyId);
+    const std::string keyAcceptOrder = STR_ACCEPT_ADDR_PROP_ADDR_COMBO(addressSeller, addressBuyer, propertyId);
 
     OfferMap::const_iterator my_it = my_offers.find(keySellOffer);
 
@@ -367,12 +338,12 @@ int DEx_acceptCreate(const std::string& addressTaker, const std::string& address
 
     const CMPOffer& offer = my_it->second;
 
-    if (msc_debug_dex) PrintToLog("%s: found a matching sell offer [seller: %s, buyer: %s, property: %d)\n", __func__,
-                    addressMaker, addressTaker, propertyId);
+    PrintToLog("%s: found a matching sell offer [seller: %s, buyer: %s, property: %d)\n", __func__,
+                    addressSeller, addressBuyer, propertyId);
 
     // the older accept is the valid one: do not accept any new ones!
-    if (DEx_acceptExists(addressMaker, propertyId, addressTaker)) {
-        PrintToLog("%s: rejected: an accept order from this same maker for this same offer already exists\n", __func__);
+    if (DEx_acceptExists(addressSeller, propertyId, addressBuyer)) {
+        PrintToLog("%s: rejected: an accept order from this same seller for this same offer already exists\n", __func__);
         return DEX_ERROR_ACCEPT -205;
     }
 
@@ -382,36 +353,8 @@ int DEx_acceptCreate(const std::string& addressTaker, const std::string& address
         return DEX_ERROR_ACCEPT -105;
     }
 
-    if (offer.getOption() == 1)
-    {   // if we are buying tokens
-
-        if (msc_debug_dex)
-        {
-            PrintToLog("getProperty: %d\n",offer.getProperty());
-            PrintToLog("getOfferAmountOriginal: %d\n",offer.getOfferAmountOriginal());
-            PrintToLog("getBTCDesiredOriginal: %d\n",offer.getBTCDesiredOriginal());
-        }
-
-        if (amountAccepted > offer.getOfferAmountOriginal()) {
-            amountAccepted = offer.getOfferAmountOriginal();
-        }
-
-        int64_t amountInBalance = getMPbalance(addressTaker, propertyId, BALANCE);
-        if (amountInBalance >= amountAccepted) {
-            assert(update_tally_map(addressTaker, propertyId, -amountAccepted, BALANCE));
-            assert(update_tally_map(addressTaker, propertyId, amountAccepted, ACCEPT_RESERVE));
-        } else {
-            PrintToLog("amountInBalance < amountAccepted ???\n");
-        }
-
-        CMPAccept acceptOffer(amountAccepted, block, offer.getBlockTimeLimit(), offer.getProperty(), offer.getOfferAmountOriginal(), offer.getBTCDesiredOriginal(), offer.getHash());
-        my_accepts.insert(std::make_pair(keyAcceptOrder, acceptOffer));
-
-        return 0;
-    }
-
     int64_t amountReserved = 0;
-    int64_t amountRemainingForSale = getMPbalance(addressMaker, propertyId, SELLOFFER_RESERVE);
+    int64_t amountRemainingForSale = GetTokenBalance(addressSeller, propertyId, SELLOFFER_RESERVE);
 
     // ensure the buyer only can reserve the amount that is still available
     if (amountRemainingForSale >= amountAccepted) {
@@ -422,8 +365,8 @@ int DEx_acceptCreate(const std::string& addressTaker, const std::string& address
     }
 
     if (amountReserved > 0) {
-        assert(update_tally_map(addressMaker, propertyId, -amountReserved, SELLOFFER_RESERVE));
-        assert(update_tally_map(addressMaker, propertyId, amountReserved, ACCEPT_RESERVE));
+        assert(update_tally_map(addressSeller, propertyId, -amountReserved, SELLOFFER_RESERVE));
+        assert(update_tally_map(addressSeller, propertyId, amountReserved, ACCEPT_RESERVE));
 
         CMPAccept acceptOffer(amountReserved, block, offer.getBlockTimeLimit(), offer.getProperty(), offer.getOfferAmountOriginal(), offer.getBTCDesiredOriginal(), offer.getHash());
         my_accepts.insert(std::make_pair(keyAcceptOrder, acceptOffer));
@@ -515,27 +458,14 @@ static int64_t calculateDExPurchase(const int64_t amountOffered, const int64_t a
     const double BTC_desired_original = acceptBTCDesired;
     const double offer_amount_original = acceptOfferAmount;
 
-    if (msc_debug_dex)
-    {
-        PrintToLog("BTC_paid : %d\n", BTC_paid);
-        PrintToLog("BTC_desired_original : %d\n", BTC_desired_original);
-    }
-
     double perc_X = (double) BTC_paid / BTC_desired_original;
     double Purchased = offer_amount_original * perc_X;
 
     uint64_t units_purchased = rounduint64(Purchased);
 
-    if (msc_debug_dex)
-    {
-        PrintToLog("Purchased : %d\n", Purchased);
-        PrintToLog("units_purchased : %d\n", units_purchased);
-    }
-
     return static_cast<int64_t>(units_purchased);
 }
-
-} // namespace legacy
+}
 
 /**
  * Determines the purchased amount of tokens.
@@ -563,80 +493,71 @@ int64_t calculateDExPurchase(const int64_t amountOffered, const int64_t amountDe
 }
 
 /**
- * Handles incoming BTC payment for the offer in omnicore.cpp
+ * Handles incoming BTC payment for the offer.
  * TODO: change nAmended: uint64_t -> int64_t
  */
 int DEx_payment(const uint256& txid, unsigned int vout, const std::string& addressSeller, const std::string& addressBuyer, int64_t amountPaid, int block, uint64_t* nAmended)
 {
     if (msc_debug_dex) PrintToLog("%s(%s, %s)\n", __func__, addressSeller, addressBuyer);
+
     int rc = DEX_ERROR_PAYMENT;
-    uint32_t propertyId;
 
-    CMPAccept* p_accept;
+    uint32_t propertyId = OMNI_PROPERTY_MSC;
+    CMPAccept* p_accept = NULL;
 
-    // logic here: we look only into main properties if there's some match
-    for (propertyId = 1; propertyId < _my_sps->peekNextSPID(1); propertyId++)
-    {
-        CMPSPInfo::Entry sp;
-        if (msc_debug_dex) PrintToLog("propertyId: %d\n",propertyId);
-        if (!_my_sps->getSP(propertyId, sp)) continue;
-
-        // seller market maker?
+    /**
+     * When the feature is not activated, first check, if there is an open offer
+     * for OMNI, and if not, check if there is an open offer for TOMNI.
+     *
+     * If the feature is activated, simply retrieve the token identifier of the
+     * token for sale.
+     */
+    if (!IsFeatureActivated(FEATURE_FREEDEX, block)) {
+        propertyId = OMNI_PROPERTY_MSC;  // test for OMNI accept first
         p_accept = DEx_getAccept(addressSeller, propertyId, addressBuyer);
 
-        if (p_accept)
-        {
-            if (msc_debug_dex) PrintToLog("Found seller market maker!\n");
-            break;
+        if (!p_accept) {
+            propertyId = OMNI_PROPERTY_TMSC; // test for TOMNI accept second
+            p_accept = DEx_getAccept(addressSeller, propertyId, addressBuyer);
         }
+    } else {
+        // Retrieve and get the token for sale for that seller
 
-        // buyer market maker?
-        p_accept = DEx_getAccept(addressBuyer, propertyId, addressSeller);
-
-        if (p_accept)
-        {
-            if (msc_debug_dex) PrintToLog("Found buyer market maker!\n");
-            break;
+        if (DEx_getTokenForSale(addressSeller, propertyId)) {
+            p_accept = DEx_getAccept(addressSeller, propertyId, addressBuyer);
         }
-
-
     }
 
-    if (!p_accept && msc_debug_dex)
-    {
-       // there must be an active accept order for this payment
-       PrintToLog("first return!\n");
-       return (DEX_ERROR_PAYMENT -1);
+    if (!p_accept) {
+        // there must be an active accept order for this payment
+        return (DEX_ERROR_PAYMENT -1);
     }
 
     // -------------------------------------------------------------------------
+
     const int64_t amountDesired = p_accept->getBTCDesiredOriginal();
     const int64_t amountOffered = p_accept->getOfferAmountOriginal();
 
-    if (msc_debug_dex) PrintToLog("%s(): amountDesired : %d, amountOffered : %d\n",__func__, amountDesired, amountOffered);
-
     // divide by 0 protection
-    if (0 == amountDesired)
-    {
+    if (0 == amountDesired) {
         if (msc_debug_dex) PrintToLog("%s: ERROR: desired amount of accept order is zero", __func__);
+
         return (DEX_ERROR_PAYMENT -2);
     }
 
     int64_t amountPurchased = 0;
 
-   /**
-    * As long as this feature is disabled, floating point math is used to
-    * determine the purchased amount.
-    *
-    * After this feature is enabled, plain integer math is used to determine
-    * the purchased amount. The purchased amount is rounded up, which may be
-    * in favor of the buyer, to avoid small leftovers of 1 willet.
-    *
-    * This is not exploitable due to transaction fees.
-    */
-    if (IsFeatureActivated(FEATURE_DEXMATH, block))
-    {
-        PrintToLog("IsFeatureActivated(FEATURE_DEXMATH, block) true\n");
+    /**
+     * As long as this feature is disabled, floating point math is used to
+     * determine the purchased amount.
+     *
+     * After this feature is enabled, plain integer math is used to determine
+     * the purchased amount. The purchased amount is rounded up, which may be
+     * in favor of the buyer, to avoid small leftovers of 1 willet.
+     *
+     * This is not exploitable due to transaction fees.
+     */
+    if (IsFeatureActivated(FEATURE_DEXMATH, block)) {
         amountPurchased = calculateDExPurchase(amountOffered, amountDesired, amountPaid);
     } else {
         // Fallback to original calculation:
@@ -645,63 +566,49 @@ int DEx_payment(const uint256& txid, unsigned int vout, const std::string& addre
 
     // -------------------------------------------------------------------------
 
-    if (msc_debug_dex) PrintToLog("amountPurchased: %d\n",amountPurchased);
     const int64_t amountRemaining = p_accept->getAcceptAmountRemaining(); // actual amount desired, in the Accept
 
     if (msc_debug_dex) PrintToLog(
-    "%s: LTC desired: %s, offered amount: %s, amount to purchase: %s, amount remaining: %s\n", __func__,
-    FormatDivisibleMP(amountDesired), FormatDivisibleMP(amountOffered),
-    FormatDivisibleMP(amountPurchased), FormatDivisibleMP(amountRemaining));
-
+            "%s: BTC desired: %s, offered amount: %s, amount to purchase: %s, amount remaining: %s\n", __func__,
+            FormatDivisibleMP(amountDesired), FormatDivisibleMP(amountOffered),
+            FormatDivisibleMP(amountPurchased), FormatDivisibleMP(amountRemaining));
 
     // if units_purchased is greater than what's in the Accept, the buyer gets only what's in the Accept
-    if (amountRemaining < amountPurchased)
-    {
-
+    if (amountRemaining < amountPurchased) {
         amountPurchased = amountRemaining;
 
         if (nAmended) *nAmended = amountPurchased;
     }
 
-    if (msc_debug_dex) PrintToLog("amountPurchased: %d",amountPurchased);
+    if (amountPurchased > 0) {
+        PrintToLog("%s: seller %s offered %s %s for %s BTC\n", __func__,
+                addressSeller, FormatDivisibleMP(amountOffered), strMPProperty(propertyId), FormatDivisibleMP(amountDesired));
+        PrintToLog("%s: buyer %s pays %s BTC to purchase %s %s\n", __func__,
+                addressBuyer, FormatDivisibleMP(amountPaid), FormatDivisibleMP(amountPurchased), strMPProperty(propertyId));
 
-    if (amountPurchased > 0)
-    {
-        PrintToLog("%s: seller %s offered %s %s for %s LTC\n", __func__,
-	      addressSeller, FormatDivisibleMP(amountOffered), strMPProperty(propertyId), FormatDivisibleMP(amountDesired));
-        PrintToLog("%s: buyer %s pays %s LTC to purchase %s %s\n", __func__,
-	      addressBuyer, FormatDivisibleMP(amountPaid), FormatDivisibleMP(amountPurchased), strMPProperty(propertyId));
         assert(update_tally_map(addressSeller, propertyId, -amountPurchased, ACCEPT_RESERVE));
         assert(update_tally_map(addressBuyer, propertyId, amountPurchased, BALANCE));
-        PrintToLog("AmountPurchased : %d\n",amountPurchased);
+
         bool valid = true;
-        // p_txlistdb->recordPaymentTX(txid, valid, block, vout, propertyId, amountPurchased, addressBuyer, addressSeller);
+        pDbTransactionList->recordPaymentTX(txid, valid, block, vout, propertyId, amountPurchased, addressBuyer, addressSeller);
 
         rc = 0;
         PrintToLog("#######################################################\n");
     }
 
     // reduce the amount of units still desired by the buyer and if 0 destroy the Accept order
-    if (p_accept->reduceAcceptAmountRemaining_andIsZero(amountPurchased))
-    {
-        PrintToLog("p_accept->reduceAcceptAmountRemaining_andIsZero true\n");
-        const int64_t reserveSell = getMPbalance(addressSeller, propertyId, SELLOFFER_RESERVE);
-        const int64_t reserveAccept = getMPbalance(addressSeller, propertyId, ACCEPT_RESERVE);
-
-        PrintToLog("reserveSell: %d, reserveAccept: %d\n",reserveSell, reserveAccept);
-
+    if (p_accept->reduceAcceptAmountRemaining_andIsZero(amountPurchased)) {
+        const int64_t reserveSell = GetTokenBalance(addressSeller, propertyId, SELLOFFER_RESERVE);
+        const int64_t reserveAccept = GetTokenBalance(addressSeller, propertyId, ACCEPT_RESERVE);
 
         DEx_acceptDestroy(addressBuyer, addressSeller, propertyId, true);
 
         // delete the Offer object if there is nothing in its Reserves -- everything got puchased and paid for
-        if (0 == reserveSell && 0 == reserveAccept)
-        {
-            PrintToLog(" 0 == reserveSell && 0 == reserveAccept true\n");
+        if ((0 == reserveSell) && (0 == reserveAccept)) {
             DEx_offerDestroy(addressSeller, propertyId);
         }
     }
 
-    rc = 0;
     return rc;
 }
 

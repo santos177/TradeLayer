@@ -16,8 +16,8 @@ libbitcoinconsensus_la-arith_uint256.lo: arith_uint256.cpp \
  /usr/include/strings.h \
  /usr/include/x86_64-linux-gnu/bits/strings_fortified.h \
  /usr/include/x86_64-linux-gnu/bits/string_fortified.h \
- /usr/include/c++/7/stdexcept /usr/include/c++/7/exception \
- /usr/include/c++/7/bits/exception.h \
+ /usr/include/c++/7/limits /usr/include/c++/7/stdexcept \
+ /usr/include/c++/7/exception /usr/include/c++/7/bits/exception.h \
  /usr/include/c++/7/bits/exception_ptr.h \
  /usr/include/c++/7/bits/exception_defines.h \
  /usr/include/c++/7/bits/cxxabi_init_exception.h \
@@ -127,8 +127,9 @@ libbitcoinconsensus_la-arith_uint256.lo: arith_uint256.cpp \
  /usr/include/c++/7/bits/stl_uninitialized.h \
  /usr/include/c++/7/bits/stl_vector.h \
  /usr/include/c++/7/bits/stl_bvector.h /usr/include/c++/7/bits/vector.tcc \
- uint256.h crypto/common.h config/bitcoin-config.h compat/endian.h \
- compat/byteswap.h /usr/include/byteswap.h utilstrencodings.h
+ uint256.h util/strencodings.h attributes.h crypto/common.h \
+ config/bitcoin-config.h compat/endian.h compat/byteswap.h \
+ /usr/include/byteswap.h
 
 /usr/include/stdc-predef.h:
 
@@ -171,6 +172,8 @@ arith_uint256.h:
 /usr/include/x86_64-linux-gnu/bits/strings_fortified.h:
 
 /usr/include/x86_64-linux-gnu/bits/string_fortified.h:
+
+/usr/include/c++/7/limits:
 
 /usr/include/c++/7/stdexcept:
 
@@ -452,6 +455,10 @@ arith_uint256.h:
 
 uint256.h:
 
+util/strencodings.h:
+
+attributes.h:
+
 crypto/common.h:
 
 config/bitcoin-config.h:
@@ -461,5 +468,3 @@ compat/endian.h:
 compat/byteswap.h:
 
 /usr/include/byteswap.h:
-
-utilstrencodings.h:

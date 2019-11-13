@@ -55,18 +55,39 @@ script/libbitcoin_common_a-standard.o: script/standard.cpp \
  /usr/include/x86_64-linux-gnu/bits/stdlib-bsearch.h \
  /usr/include/x86_64-linux-gnu/bits/stdlib-float.h \
  /usr/include/x86_64-linux-gnu/bits/stdlib.h \
- /usr/include/c++/7/bits/std_abs.h /usr/include/c++/7/iterator \
+ /usr/include/c++/7/bits/std_abs.h /usr/include/c++/7/algorithm \
+ /usr/include/c++/7/utility /usr/include/c++/7/bits/stl_relops.h \
+ /usr/include/c++/7/bits/stl_pair.h /usr/include/c++/7/bits/move.h \
+ /usr/include/c++/7/bits/concept_check.h /usr/include/c++/7/type_traits \
+ /usr/include/c++/7/initializer_list \
+ /usr/include/c++/7/bits/stl_algobase.h \
+ /usr/include/c++/7/bits/functexcept.h \
+ /usr/include/c++/7/bits/exception_defines.h \
+ /usr/include/c++/7/bits/cpp_type_traits.h \
+ /usr/include/c++/7/ext/type_traits.h \
+ /usr/include/c++/7/ext/numeric_traits.h \
  /usr/include/c++/7/bits/stl_iterator_base_types.h \
- /usr/include/c++/7/type_traits \
  /usr/include/c++/7/bits/stl_iterator_base_funcs.h \
- /usr/include/c++/7/bits/concept_check.h \
  /usr/include/c++/7/debug/assertions.h \
  /usr/include/c++/7/bits/stl_iterator.h \
- /usr/include/c++/7/bits/cpp_type_traits.h \
- /usr/include/c++/7/ext/type_traits.h /usr/include/c++/7/bits/move.h \
- /usr/include/c++/7/bits/ptr_traits.h /usr/include/c++/7/ostream \
- /usr/include/c++/7/ios /usr/include/c++/7/iosfwd \
- /usr/include/c++/7/bits/stringfwd.h /usr/include/c++/7/bits/memoryfwd.h \
+ /usr/include/c++/7/bits/ptr_traits.h /usr/include/c++/7/debug/debug.h \
+ /usr/include/c++/7/bits/predefined_ops.h \
+ /usr/include/c++/7/bits/stl_algo.h \
+ /usr/include/c++/7/bits/algorithmfwd.h \
+ /usr/include/c++/7/bits/stl_heap.h /usr/include/c++/7/bits/stl_tempbuf.h \
+ /usr/include/c++/7/bits/stl_construct.h /usr/include/c++/7/new \
+ /usr/include/c++/7/exception /usr/include/c++/7/bits/exception.h \
+ /usr/include/c++/7/bits/exception_ptr.h \
+ /usr/include/c++/7/bits/cxxabi_init_exception.h \
+ /usr/include/c++/7/typeinfo /usr/include/c++/7/bits/hash_bytes.h \
+ /usr/include/c++/7/bits/nested_exception.h \
+ /usr/include/c++/7/ext/alloc_traits.h \
+ /usr/include/c++/7/bits/alloc_traits.h \
+ /usr/include/c++/7/bits/memoryfwd.h \
+ /usr/include/c++/7/bits/uniform_int_dist.h /usr/include/c++/7/limits \
+ /usr/include/c++/7/cstddef /usr/include/c++/7/iterator \
+ /usr/include/c++/7/ostream /usr/include/c++/7/ios \
+ /usr/include/c++/7/iosfwd /usr/include/c++/7/bits/stringfwd.h \
  /usr/include/c++/7/bits/postypes.h /usr/include/c++/7/cwchar \
  /usr/include/wchar.h /usr/lib/gcc/x86_64-linux-gnu/7/include/stdarg.h \
  /usr/include/x86_64-linux-gnu/bits/types/wint_t.h \
@@ -74,19 +95,8 @@ script/libbitcoin_common_a-standard.o: script/standard.cpp \
  /usr/include/x86_64-linux-gnu/bits/types/__mbstate_t.h \
  /usr/include/x86_64-linux-gnu/bits/types/__FILE.h \
  /usr/include/x86_64-linux-gnu/bits/types/FILE.h \
- /usr/include/x86_64-linux-gnu/bits/wchar2.h /usr/include/c++/7/exception \
- /usr/include/c++/7/bits/exception.h \
- /usr/include/c++/7/bits/exception_ptr.h \
- /usr/include/c++/7/bits/exception_defines.h \
- /usr/include/c++/7/bits/cxxabi_init_exception.h \
- /usr/include/c++/7/typeinfo /usr/include/c++/7/bits/hash_bytes.h \
- /usr/include/c++/7/new /usr/include/c++/7/bits/nested_exception.h \
- /usr/include/c++/7/bits/char_traits.h \
- /usr/include/c++/7/bits/stl_algobase.h \
- /usr/include/c++/7/bits/functexcept.h \
- /usr/include/c++/7/ext/numeric_traits.h \
- /usr/include/c++/7/bits/stl_pair.h /usr/include/c++/7/debug/debug.h \
- /usr/include/c++/7/bits/predefined_ops.h /usr/include/c++/7/cstdint \
+ /usr/include/x86_64-linux-gnu/bits/wchar2.h \
+ /usr/include/c++/7/bits/char_traits.h /usr/include/c++/7/cstdint \
  /usr/include/c++/7/bits/localefwd.h \
  /usr/include/x86_64-linux-gnu/c++/7/bits/c++locale.h \
  /usr/include/c++/7/clocale /usr/include/locale.h \
@@ -113,10 +123,7 @@ script/libbitcoin_common_a-standard.o: script/standard.cpp \
  /usr/include/c++/7/bits/stl_function.h \
  /usr/include/c++/7/backward/binders.h \
  /usr/include/c++/7/bits/range_access.h \
- /usr/include/c++/7/initializer_list \
  /usr/include/c++/7/bits/basic_string.h \
- /usr/include/c++/7/ext/alloc_traits.h \
- /usr/include/c++/7/bits/alloc_traits.h \
  /usr/include/c++/7/ext/string_conversions.h /usr/include/c++/7/cstdio \
  /usr/include/stdio.h /usr/include/x86_64-linux-gnu/bits/libio.h \
  /usr/include/x86_64-linux-gnu/bits/_G_config.h \
@@ -145,12 +152,6 @@ script/libbitcoin_common_a-standard.o: script/standard.cpp \
  /usr/include/c++/7/bits/ostream.tcc /usr/include/c++/7/istream \
  /usr/include/c++/7/bits/istream.tcc \
  /usr/include/c++/7/bits/stream_iterator.h serialize.h \
- /usr/include/c++/7/algorithm /usr/include/c++/7/utility \
- /usr/include/c++/7/bits/stl_relops.h /usr/include/c++/7/bits/stl_algo.h \
- /usr/include/c++/7/bits/algorithmfwd.h \
- /usr/include/c++/7/bits/stl_heap.h /usr/include/c++/7/bits/stl_tempbuf.h \
- /usr/include/c++/7/bits/stl_construct.h \
- /usr/include/c++/7/bits/uniform_int_dist.h /usr/include/c++/7/limits \
  /usr/include/c++/7/map /usr/include/c++/7/bits/stl_tree.h \
  /usr/include/c++/7/ext/aligned_buffer.h \
  /usr/include/c++/7/bits/stl_map.h /usr/include/c++/7/tuple \
@@ -171,7 +172,7 @@ script/libbitcoin_common_a-standard.o: script/standard.cpp \
  /usr/include/c++/7/bits/stl_set.h /usr/include/c++/7/bits/stl_multiset.h \
  /usr/include/c++/7/vector /usr/include/c++/7/bits/stl_vector.h \
  /usr/include/c++/7/bits/stl_bvector.h /usr/include/c++/7/bits/vector.tcc \
- /usr/include/c++/7/climits \
+ span.h /usr/include/c++/7/climits \
  /usr/lib/gcc/x86_64-linux-gnu/7/include-fixed/limits.h \
  /usr/lib/gcc/x86_64-linux-gnu/7/include-fixed/syslimits.h \
  /usr/include/limits.h /usr/include/x86_64-linux-gnu/bits/posix1_lim.h \
@@ -181,9 +182,8 @@ script/libbitcoin_common_a-standard.o: script/standard.cpp \
  /usr/include/x86_64-linux-gnu/bits/xopen_lim.h \
  /usr/include/x86_64-linux-gnu/bits/uio_lim.h uint256.h \
  /usr/include/c++/7/cstring /usr/include/boost/variant.hpp \
- /usr/include/boost/variant/variant.hpp /usr/include/c++/7/cstddef \
- /usr/include/boost/type_index.hpp /usr/include/boost/config.hpp \
- /usr/include/boost/config/user.hpp \
+ /usr/include/boost/variant/variant.hpp /usr/include/boost/type_index.hpp \
+ /usr/include/boost/config.hpp /usr/include/boost/config/user.hpp \
  /usr/include/boost/config/detail/select_compiler_config.hpp \
  /usr/include/boost/config/compiler/gcc.hpp \
  /usr/include/boost/config/detail/select_stdlib_config.hpp \
@@ -604,8 +604,8 @@ script/libbitcoin_common_a-standard.o: script/standard.cpp \
  /usr/include/boost/variant/detail/element_index.hpp \
  /usr/include/boost/type_traits/add_pointer.hpp \
  /usr/include/boost/variant/visitor_ptr.hpp \
- /usr/include/boost/variant/bad_visit.hpp pubkey.h hash.h \
- crypto/ripemd160.h crypto/sha256.h version.h util.h compat.h \
+ /usr/include/boost/variant/bad_visit.hpp crypto/sha256.h pubkey.h hash.h \
+ crypto/ripemd160.h version.h util/system.h attributes.h compat.h \
  /usr/include/fcntl.h /usr/include/x86_64-linux-gnu/bits/fcntl.h \
  /usr/include/x86_64-linux-gnu/bits/fcntl-linux.h \
  /usr/include/x86_64-linux-gnu/bits/types/struct_iovec.h \
@@ -630,7 +630,7 @@ script/libbitcoin_common_a-standard.o: script/standard.cpp \
  /usr/include/ifaddrs.h /usr/include/netdb.h /usr/include/rpc/netdb.h \
  /usr/include/x86_64-linux-gnu/bits/types/sigevent_t.h \
  /usr/include/x86_64-linux-gnu/bits/types/__sigval_t.h \
- /usr/include/x86_64-linux-gnu/bits/netdb.h fs.h \
+ /usr/include/x86_64-linux-gnu/bits/netdb.h compat/assumptions.h fs.h \
  /usr/include/boost/filesystem.hpp \
  /usr/include/boost/filesystem/config.hpp \
  /usr/include/boost/system/api_config.hpp \
@@ -829,90 +829,17 @@ script/libbitcoin_common_a-standard.o: script/standard.cpp \
  /usr/include/boost/filesystem/fstream.hpp /usr/include/c++/7/fstream \
  /usr/include/x86_64-linux-gnu/c++/7/bits/basic_file.h \
  /usr/include/x86_64-linux-gnu/c++/7/bits/c++io.h \
- /usr/include/c++/7/bits/fstream.tcc \
- /usr/include/boost/filesystem/detail/utf8_codecvt_facet.hpp \
- /usr/include/boost/detail/utf8_codecvt_facet.hpp sync.h threadsafety.h \
- /usr/include/c++/7/condition_variable /usr/include/c++/7/chrono \
- /usr/include/c++/7/ratio /usr/include/c++/7/bits/parse_numbers.h \
- /usr/include/c++/7/bits/std_mutex.h /usr/include/c++/7/thread \
- /usr/include/c++/7/mutex tinyformat.h /usr/include/c++/7/iostream \
- /usr/include/c++/7/sstream /usr/include/c++/7/bits/sstream.tcc \
- utiltime.h /usr/include/boost/signals2/signal.hpp \
- /usr/include/boost/function.hpp \
- /usr/include/boost/function/detail/prologue.hpp \
- /usr/include/boost/config/no_tr1/functional.hpp \
- /usr/include/boost/function/function_base.hpp \
- /usr/include/boost/integer.hpp /usr/include/boost/integer_traits.hpp \
- /usr/include/boost/type_traits/composite_traits.hpp \
- /usr/include/boost/type_traits/is_union.hpp /usr/include/boost/ref.hpp \
- /usr/include/boost/core/ref.hpp /usr/include/boost/function_equal.hpp \
- /usr/include/boost/function/function_fwd.hpp \
- /usr/include/boost/mem_fn.hpp /usr/include/boost/bind/mem_fn.hpp \
- /usr/include/boost/get_pointer.hpp \
- /usr/include/boost/bind/mem_fn_template.hpp \
- /usr/include/boost/bind/mem_fn_cc.hpp \
- /usr/include/boost/function/detail/function_iterate.hpp \
- /usr/include/boost/function/detail/maybe_include.hpp \
- /usr/include/boost/function/function_template.hpp \
- /usr/include/boost/signals2/connection.hpp \
- /usr/include/boost/signals2/detail/auto_buffer.hpp \
- /usr/include/boost/iterator/reverse_iterator.hpp \
- /usr/include/boost/iterator/iterator_adaptor.hpp \
- /usr/include/boost/multi_index/detail/scope_guard.hpp \
- /usr/include/boost/swap.hpp /usr/include/boost/core/swap.hpp \
- /usr/include/boost/type_traits/has_trivial_assign.hpp \
- /usr/include/boost/signals2/detail/null_output_iterator.hpp \
- /usr/include/boost/function_output_iterator.hpp \
- /usr/include/boost/signals2/detail/unique_lock.hpp \
- /usr/include/boost/signals2/slot.hpp /usr/include/boost/bind.hpp \
- /usr/include/boost/bind/bind.hpp /usr/include/boost/type.hpp \
- /usr/include/boost/is_placeholder.hpp /usr/include/boost/bind/arg.hpp \
- /usr/include/boost/visit_each.hpp /usr/include/boost/core/is_same.hpp \
- /usr/include/boost/bind/storage.hpp /usr/include/boost/bind/bind_cc.hpp \
- /usr/include/boost/bind/bind_mf_cc.hpp \
- /usr/include/boost/bind/bind_mf2_cc.hpp \
- /usr/include/boost/bind/placeholders.hpp \
- /usr/include/boost/signals2/detail/signals_common.hpp \
- /usr/include/boost/signals2/signal_base.hpp \
- /usr/include/boost/type_traits/is_base_of.hpp \
- /usr/include/boost/signals2/detail/signals_common_macros.hpp \
- /usr/include/boost/signals2/detail/tracked_objects_visitor.hpp \
- /usr/include/boost/signals2/slot_base.hpp \
- /usr/include/boost/weak_ptr.hpp \
- /usr/include/boost/smart_ptr/weak_ptr.hpp \
- /usr/include/boost/signals2/detail/foreign_ptr.hpp \
- /usr/include/boost/scoped_ptr.hpp \
- /usr/include/boost/smart_ptr/scoped_ptr.hpp \
- /usr/include/boost/utility/swap.hpp \
- /usr/include/boost/signals2/expired_slot.hpp \
- /usr/include/boost/signals2/trackable.hpp \
- /usr/include/boost/signals2/variadic_slot.hpp \
- /usr/include/boost/signals2/detail/variadic_arg_type.hpp \
- /usr/include/boost/signals2/detail/slot_template.hpp \
- /usr/include/boost/signals2/detail/replace_slot_function.hpp \
- /usr/include/boost/signals2/detail/result_type_wrapper.hpp \
- /usr/include/boost/signals2/detail/slot_groups.hpp \
- /usr/include/boost/optional.hpp /usr/include/boost/optional/optional.hpp \
- /usr/include/boost/core/explicit_operator_bool.hpp \
- /usr/include/boost/optional/bad_optional_access.hpp \
- /usr/include/boost/none.hpp /usr/include/boost/none_t.hpp \
- /usr/include/boost/utility/compare_pointees.hpp \
- /usr/include/boost/optional/optional_fwd.hpp \
- /usr/include/boost/optional/detail/optional_config.hpp \
- /usr/include/boost/optional/detail/optional_factory_support.hpp \
- /usr/include/boost/optional/detail/optional_aligned_storage.hpp \
- /usr/include/boost/optional/detail/optional_reference_spec.hpp \
- /usr/include/boost/optional/detail/optional_relops.hpp \
- /usr/include/boost/optional/detail/optional_swap.hpp \
- /usr/include/boost/signals2/detail/slot_call_iterator.hpp \
- /usr/include/boost/signals2/optional_last_value.hpp \
- /usr/include/boost/signals2/mutex.hpp \
- /usr/include/boost/signals2/detail/lwm_pthreads.hpp \
- /usr/include/boost/signals2/variadic_signal.hpp \
- /usr/include/boost/preprocessor/control/expr_if.hpp \
- /usr/include/boost/signals2/detail/variadic_slot_invoker.hpp \
- /usr/include/boost/type_traits/function_traits.hpp \
- /usr/include/boost/signals2/detail/signal_template.hpp \
+ /usr/include/c++/7/bits/fstream.tcc logging.h tinyformat.h \
+ /usr/include/c++/7/iostream /usr/include/c++/7/sstream \
+ /usr/include/c++/7/bits/sstream.tcc /usr/include/c++/7/mutex \
+ /usr/include/c++/7/chrono /usr/include/c++/7/ratio \
+ /usr/include/c++/7/bits/parse_numbers.h \
+ /usr/include/c++/7/bits/std_mutex.h sync.h threadsafety.h \
+ /usr/include/c++/7/condition_variable /usr/include/c++/7/thread \
+ util/memory.h util/time.h /usr/include/c++/7/unordered_set \
+ /usr/include/c++/7/bits/hashtable.h \
+ /usr/include/c++/7/bits/hashtable_policy.h \
+ /usr/include/c++/7/bits/unordered_set.h \
  /usr/include/boost/thread/condition_variable.hpp \
  /usr/include/boost/thread/detail/platform.hpp \
  /usr/include/boost/config/requires_threads.hpp \
@@ -954,6 +881,7 @@ script/libbitcoin_common_a-standard.o: script/standard.cpp \
  /usr/include/boost/date_time/gregorian/greg_calendar.hpp \
  /usr/include/boost/date_time/gregorian/greg_weekday.hpp \
  /usr/include/boost/date_time/constrained_value.hpp \
+ /usr/include/boost/type_traits/is_base_of.hpp \
  /usr/include/boost/date_time/date_defs.hpp \
  /usr/include/boost/date_time/gregorian/greg_day_of_year.hpp \
  /usr/include/boost/date_time/gregorian_calendar.hpp \
@@ -991,6 +919,7 @@ script/libbitcoin_common_a-standard.o: script/standard.cpp \
  /usr/include/boost/ratio/detail/mpl/gcd.hpp \
  /usr/include/boost/mpl/aux_/config/dependent_nttp.hpp \
  /usr/include/boost/ratio/detail/mpl/lcm.hpp \
+ /usr/include/boost/integer_traits.hpp \
  /usr/include/boost/ratio/ratio_fwd.hpp \
  /usr/include/boost/ratio/detail/overflow_helpers.hpp \
  /usr/include/boost/type_traits/common_type.hpp \
@@ -1020,7 +949,7 @@ script/libbitcoin_common_a-standard.o: script/standard.cpp \
  /usr/include/boost/thread/cv_status.hpp \
  /usr/include/boost/enable_shared_from_this.hpp \
  /usr/include/boost/smart_ptr/enable_shared_from_this.hpp \
- utilstrencodings.h
+ /usr/include/boost/smart_ptr/weak_ptr.hpp util/strencodings.h
 
 /usr/include/stdc-predef.h:
 
@@ -1166,27 +1095,87 @@ prevector.h:
 
 /usr/include/c++/7/bits/std_abs.h:
 
-/usr/include/c++/7/iterator:
+/usr/include/c++/7/algorithm:
 
-/usr/include/c++/7/bits/stl_iterator_base_types.h:
+/usr/include/c++/7/utility:
 
-/usr/include/c++/7/type_traits:
+/usr/include/c++/7/bits/stl_relops.h:
 
-/usr/include/c++/7/bits/stl_iterator_base_funcs.h:
+/usr/include/c++/7/bits/stl_pair.h:
+
+/usr/include/c++/7/bits/move.h:
 
 /usr/include/c++/7/bits/concept_check.h:
 
-/usr/include/c++/7/debug/assertions.h:
+/usr/include/c++/7/type_traits:
 
-/usr/include/c++/7/bits/stl_iterator.h:
+/usr/include/c++/7/initializer_list:
+
+/usr/include/c++/7/bits/stl_algobase.h:
+
+/usr/include/c++/7/bits/functexcept.h:
+
+/usr/include/c++/7/bits/exception_defines.h:
 
 /usr/include/c++/7/bits/cpp_type_traits.h:
 
 /usr/include/c++/7/ext/type_traits.h:
 
-/usr/include/c++/7/bits/move.h:
+/usr/include/c++/7/ext/numeric_traits.h:
+
+/usr/include/c++/7/bits/stl_iterator_base_types.h:
+
+/usr/include/c++/7/bits/stl_iterator_base_funcs.h:
+
+/usr/include/c++/7/debug/assertions.h:
+
+/usr/include/c++/7/bits/stl_iterator.h:
 
 /usr/include/c++/7/bits/ptr_traits.h:
+
+/usr/include/c++/7/debug/debug.h:
+
+/usr/include/c++/7/bits/predefined_ops.h:
+
+/usr/include/c++/7/bits/stl_algo.h:
+
+/usr/include/c++/7/bits/algorithmfwd.h:
+
+/usr/include/c++/7/bits/stl_heap.h:
+
+/usr/include/c++/7/bits/stl_tempbuf.h:
+
+/usr/include/c++/7/bits/stl_construct.h:
+
+/usr/include/c++/7/new:
+
+/usr/include/c++/7/exception:
+
+/usr/include/c++/7/bits/exception.h:
+
+/usr/include/c++/7/bits/exception_ptr.h:
+
+/usr/include/c++/7/bits/cxxabi_init_exception.h:
+
+/usr/include/c++/7/typeinfo:
+
+/usr/include/c++/7/bits/hash_bytes.h:
+
+/usr/include/c++/7/bits/nested_exception.h:
+
+/usr/include/c++/7/ext/alloc_traits.h:
+
+/usr/include/c++/7/bits/alloc_traits.h:
+
+/usr/include/c++/7/bits/memoryfwd.h:
+
+/usr/include/c++/7/bits/uniform_int_dist.h:
+
+/usr/include/c++/7/limits:
+
+/usr/include/c++/7/cstddef:
+
+/usr/include/c++/7/iterator:
 
 /usr/include/c++/7/ostream:
 
@@ -1195,8 +1184,6 @@ prevector.h:
 /usr/include/c++/7/iosfwd:
 
 /usr/include/c++/7/bits/stringfwd.h:
-
-/usr/include/c++/7/bits/memoryfwd.h:
 
 /usr/include/c++/7/bits/postypes.h:
 
@@ -1218,37 +1205,7 @@ prevector.h:
 
 /usr/include/x86_64-linux-gnu/bits/wchar2.h:
 
-/usr/include/c++/7/exception:
-
-/usr/include/c++/7/bits/exception.h:
-
-/usr/include/c++/7/bits/exception_ptr.h:
-
-/usr/include/c++/7/bits/exception_defines.h:
-
-/usr/include/c++/7/bits/cxxabi_init_exception.h:
-
-/usr/include/c++/7/typeinfo:
-
-/usr/include/c++/7/bits/hash_bytes.h:
-
-/usr/include/c++/7/new:
-
-/usr/include/c++/7/bits/nested_exception.h:
-
 /usr/include/c++/7/bits/char_traits.h:
-
-/usr/include/c++/7/bits/stl_algobase.h:
-
-/usr/include/c++/7/bits/functexcept.h:
-
-/usr/include/c++/7/ext/numeric_traits.h:
-
-/usr/include/c++/7/bits/stl_pair.h:
-
-/usr/include/c++/7/debug/debug.h:
-
-/usr/include/c++/7/bits/predefined_ops.h:
 
 /usr/include/c++/7/cstdint:
 
@@ -1316,13 +1273,7 @@ prevector.h:
 
 /usr/include/c++/7/bits/range_access.h:
 
-/usr/include/c++/7/initializer_list:
-
 /usr/include/c++/7/bits/basic_string.h:
-
-/usr/include/c++/7/ext/alloc_traits.h:
-
-/usr/include/c++/7/bits/alloc_traits.h:
 
 /usr/include/c++/7/ext/string_conversions.h:
 
@@ -1402,26 +1353,6 @@ prevector.h:
 
 serialize.h:
 
-/usr/include/c++/7/algorithm:
-
-/usr/include/c++/7/utility:
-
-/usr/include/c++/7/bits/stl_relops.h:
-
-/usr/include/c++/7/bits/stl_algo.h:
-
-/usr/include/c++/7/bits/algorithmfwd.h:
-
-/usr/include/c++/7/bits/stl_heap.h:
-
-/usr/include/c++/7/bits/stl_tempbuf.h:
-
-/usr/include/c++/7/bits/stl_construct.h:
-
-/usr/include/c++/7/bits/uniform_int_dist.h:
-
-/usr/include/c++/7/limits:
-
 /usr/include/c++/7/map:
 
 /usr/include/c++/7/bits/stl_tree.h:
@@ -1480,6 +1411,8 @@ serialize.h:
 
 /usr/include/c++/7/bits/vector.tcc:
 
+span.h:
+
 /usr/include/c++/7/climits:
 
 /usr/lib/gcc/x86_64-linux-gnu/7/include-fixed/limits.h:
@@ -1507,8 +1440,6 @@ uint256.h:
 /usr/include/boost/variant.hpp:
 
 /usr/include/boost/variant/variant.hpp:
-
-/usr/include/c++/7/cstddef:
 
 /usr/include/boost/type_index.hpp:
 
@@ -2404,17 +2335,19 @@ uint256.h:
 
 /usr/include/boost/variant/bad_visit.hpp:
 
+crypto/sha256.h:
+
 pubkey.h:
 
 hash.h:
 
 crypto/ripemd160.h:
 
-crypto/sha256.h:
-
 version.h:
 
-util.h:
+util/system.h:
+
+attributes.h:
 
 compat.h:
 
@@ -2481,6 +2414,8 @@ compat.h:
 /usr/include/x86_64-linux-gnu/bits/types/__sigval_t.h:
 
 /usr/include/x86_64-linux-gnu/bits/netdb.h:
+
+compat/assumptions.h:
 
 fs.h:
 
@@ -2928,27 +2863,7 @@ fs.h:
 
 /usr/include/c++/7/bits/fstream.tcc:
 
-/usr/include/boost/filesystem/detail/utf8_codecvt_facet.hpp:
-
-/usr/include/boost/detail/utf8_codecvt_facet.hpp:
-
-sync.h:
-
-threadsafety.h:
-
-/usr/include/c++/7/condition_variable:
-
-/usr/include/c++/7/chrono:
-
-/usr/include/c++/7/ratio:
-
-/usr/include/c++/7/bits/parse_numbers.h:
-
-/usr/include/c++/7/bits/std_mutex.h:
-
-/usr/include/c++/7/thread:
-
-/usr/include/c++/7/mutex:
+logging.h:
 
 tinyformat.h:
 
@@ -2958,183 +2873,35 @@ tinyformat.h:
 
 /usr/include/c++/7/bits/sstream.tcc:
 
-utiltime.h:
+/usr/include/c++/7/mutex:
 
-/usr/include/boost/signals2/signal.hpp:
+/usr/include/c++/7/chrono:
 
-/usr/include/boost/function.hpp:
+/usr/include/c++/7/ratio:
 
-/usr/include/boost/function/detail/prologue.hpp:
+/usr/include/c++/7/bits/parse_numbers.h:
 
-/usr/include/boost/config/no_tr1/functional.hpp:
+/usr/include/c++/7/bits/std_mutex.h:
 
-/usr/include/boost/function/function_base.hpp:
+sync.h:
 
-/usr/include/boost/integer.hpp:
+threadsafety.h:
 
-/usr/include/boost/integer_traits.hpp:
+/usr/include/c++/7/condition_variable:
 
-/usr/include/boost/type_traits/composite_traits.hpp:
+/usr/include/c++/7/thread:
 
-/usr/include/boost/type_traits/is_union.hpp:
+util/memory.h:
 
-/usr/include/boost/ref.hpp:
+util/time.h:
 
-/usr/include/boost/core/ref.hpp:
+/usr/include/c++/7/unordered_set:
 
-/usr/include/boost/function_equal.hpp:
+/usr/include/c++/7/bits/hashtable.h:
 
-/usr/include/boost/function/function_fwd.hpp:
+/usr/include/c++/7/bits/hashtable_policy.h:
 
-/usr/include/boost/mem_fn.hpp:
-
-/usr/include/boost/bind/mem_fn.hpp:
-
-/usr/include/boost/get_pointer.hpp:
-
-/usr/include/boost/bind/mem_fn_template.hpp:
-
-/usr/include/boost/bind/mem_fn_cc.hpp:
-
-/usr/include/boost/function/detail/function_iterate.hpp:
-
-/usr/include/boost/function/detail/maybe_include.hpp:
-
-/usr/include/boost/function/function_template.hpp:
-
-/usr/include/boost/signals2/connection.hpp:
-
-/usr/include/boost/signals2/detail/auto_buffer.hpp:
-
-/usr/include/boost/iterator/reverse_iterator.hpp:
-
-/usr/include/boost/iterator/iterator_adaptor.hpp:
-
-/usr/include/boost/multi_index/detail/scope_guard.hpp:
-
-/usr/include/boost/swap.hpp:
-
-/usr/include/boost/core/swap.hpp:
-
-/usr/include/boost/type_traits/has_trivial_assign.hpp:
-
-/usr/include/boost/signals2/detail/null_output_iterator.hpp:
-
-/usr/include/boost/function_output_iterator.hpp:
-
-/usr/include/boost/signals2/detail/unique_lock.hpp:
-
-/usr/include/boost/signals2/slot.hpp:
-
-/usr/include/boost/bind.hpp:
-
-/usr/include/boost/bind/bind.hpp:
-
-/usr/include/boost/type.hpp:
-
-/usr/include/boost/is_placeholder.hpp:
-
-/usr/include/boost/bind/arg.hpp:
-
-/usr/include/boost/visit_each.hpp:
-
-/usr/include/boost/core/is_same.hpp:
-
-/usr/include/boost/bind/storage.hpp:
-
-/usr/include/boost/bind/bind_cc.hpp:
-
-/usr/include/boost/bind/bind_mf_cc.hpp:
-
-/usr/include/boost/bind/bind_mf2_cc.hpp:
-
-/usr/include/boost/bind/placeholders.hpp:
-
-/usr/include/boost/signals2/detail/signals_common.hpp:
-
-/usr/include/boost/signals2/signal_base.hpp:
-
-/usr/include/boost/type_traits/is_base_of.hpp:
-
-/usr/include/boost/signals2/detail/signals_common_macros.hpp:
-
-/usr/include/boost/signals2/detail/tracked_objects_visitor.hpp:
-
-/usr/include/boost/signals2/slot_base.hpp:
-
-/usr/include/boost/weak_ptr.hpp:
-
-/usr/include/boost/smart_ptr/weak_ptr.hpp:
-
-/usr/include/boost/signals2/detail/foreign_ptr.hpp:
-
-/usr/include/boost/scoped_ptr.hpp:
-
-/usr/include/boost/smart_ptr/scoped_ptr.hpp:
-
-/usr/include/boost/utility/swap.hpp:
-
-/usr/include/boost/signals2/expired_slot.hpp:
-
-/usr/include/boost/signals2/trackable.hpp:
-
-/usr/include/boost/signals2/variadic_slot.hpp:
-
-/usr/include/boost/signals2/detail/variadic_arg_type.hpp:
-
-/usr/include/boost/signals2/detail/slot_template.hpp:
-
-/usr/include/boost/signals2/detail/replace_slot_function.hpp:
-
-/usr/include/boost/signals2/detail/result_type_wrapper.hpp:
-
-/usr/include/boost/signals2/detail/slot_groups.hpp:
-
-/usr/include/boost/optional.hpp:
-
-/usr/include/boost/optional/optional.hpp:
-
-/usr/include/boost/core/explicit_operator_bool.hpp:
-
-/usr/include/boost/optional/bad_optional_access.hpp:
-
-/usr/include/boost/none.hpp:
-
-/usr/include/boost/none_t.hpp:
-
-/usr/include/boost/utility/compare_pointees.hpp:
-
-/usr/include/boost/optional/optional_fwd.hpp:
-
-/usr/include/boost/optional/detail/optional_config.hpp:
-
-/usr/include/boost/optional/detail/optional_factory_support.hpp:
-
-/usr/include/boost/optional/detail/optional_aligned_storage.hpp:
-
-/usr/include/boost/optional/detail/optional_reference_spec.hpp:
-
-/usr/include/boost/optional/detail/optional_relops.hpp:
-
-/usr/include/boost/optional/detail/optional_swap.hpp:
-
-/usr/include/boost/signals2/detail/slot_call_iterator.hpp:
-
-/usr/include/boost/signals2/optional_last_value.hpp:
-
-/usr/include/boost/signals2/mutex.hpp:
-
-/usr/include/boost/signals2/detail/lwm_pthreads.hpp:
-
-/usr/include/boost/signals2/variadic_signal.hpp:
-
-/usr/include/boost/preprocessor/control/expr_if.hpp:
-
-/usr/include/boost/signals2/detail/variadic_slot_invoker.hpp:
-
-/usr/include/boost/type_traits/function_traits.hpp:
-
-/usr/include/boost/signals2/detail/signal_template.hpp:
+/usr/include/c++/7/bits/unordered_set.h:
 
 /usr/include/boost/thread/condition_variable.hpp:
 
@@ -3222,6 +2989,8 @@ utiltime.h:
 
 /usr/include/boost/date_time/constrained_value.hpp:
 
+/usr/include/boost/type_traits/is_base_of.hpp:
+
 /usr/include/boost/date_time/date_defs.hpp:
 
 /usr/include/boost/date_time/gregorian/greg_day_of_year.hpp:
@@ -3298,6 +3067,8 @@ utiltime.h:
 
 /usr/include/boost/ratio/detail/mpl/lcm.hpp:
 
+/usr/include/boost/integer_traits.hpp:
+
 /usr/include/boost/ratio/ratio_fwd.hpp:
 
 /usr/include/boost/ratio/detail/overflow_helpers.hpp:
@@ -3356,4 +3127,6 @@ utiltime.h:
 
 /usr/include/boost/smart_ptr/enable_shared_from_this.hpp:
 
-utilstrencodings.h:
+/usr/include/boost/smart_ptr/weak_ptr.hpp:
+
+util/strencodings.h:

@@ -1,14 +1,14 @@
-#include "omnicore/pending.h"
+#include <omnicore/pending.h>
 
-#include "omnicore/log.h"
-#include "omnicore/omnicore.h"
-#include "omnicore/sp.h"
-#include "omnicore/walletcache.h"
+#include <omnicore/log.h>
+#include <omnicore/sp.h>
 
-#include "amount.h"
-#include "sync.h"
-#include "uint256.h"
-#include "ui_interface.h"
+#include <amount.h>
+#include <validation.h>
+#include <sync.h>
+#include <txmempool.h>
+#include <uint256.h>
+#include <ui_interface.h>
 
 #include <string>
 
@@ -47,7 +47,7 @@ void PendingAdd(const uint256& txid, const std::string& sendingAddress, uint16_t
     }
     // after adding a transaction to pending the available balance may now be reduced, refresh wallet totals
     CheckWalletUpdate(true); // force an update since some outbound pending (eg MetaDEx cancel) may not change balances
-    // uiInterface.OmniPendingChanged(true);
+    uiInterface.OmniPendingChanged(true);
 }
 
 /**
@@ -62,14 +62,40 @@ void PendingDelete(const uint256& txid)
     PendingMap::iterator it = my_pending.find(txid);
     if (it != my_pending.end()) {
         const CMPPending& pending = it->second;
-        int64_t src_amount = getMPbalance(pending.src, pending.prop, PENDING);
+        int64_t src_amount = GetTokenBalance(pending.src, pending.prop, PENDING);
         if (msc_debug_pending) PrintToLog("%s(%s): amount=%d\n", __FUNCTION__, txid.GetHex(), src_amount);
         if (src_amount) update_tally_map(pending.src, pending.prop, pending.amount, PENDING);
         my_pending.erase(it);
 
         // if pending map is now empty following deletion, trigger a status change
-        // if (my_pending.empty()) uiInterface.OmniPendingChanged(false);
+        if (my_pending.empty()) uiInterface.OmniPendingChanged(false);
     }
+}
+
+/**
+ * Performs a check to ensure all pending transactions are still in the mempool.
+ *
+ * NOTE: Transactions no longer in the mempool (eg orphaned) are deleted from
+ *       the pending map and credited back to the pending tally.
+ */
+void PendingCheck()
+{
+    LOCK(cs_pending);
+
+    std::vector<uint256> vecMemPoolTxids;
+    std::vector<uint256> txidsForDeletion;
+    mempool.queryHashes(vecMemPoolTxids);
+
+    for (PendingMap::iterator it = my_pending.begin(); it != my_pending.end(); ++it) {
+        const uint256& txid = it->first;
+        if (std::find(vecMemPoolTxids.begin(), vecMemPoolTxids.end(), txid) == vecMemPoolTxids.end()) {
+            PrintToLog("WARNING: Pending transaction %s is no longer in this nodes mempool and will be discarded\n", txid.GetHex());
+            txidsForDeletion.push_back(txid);
+        }
+    }
+
+    for (auto& txid : txidsForDeletion)
+        PendingDelete(txid);
 }
 
 } // namespace mastercore
@@ -81,3 +107,4 @@ void CMPPending::print(const uint256& txid) const
 {
     PrintToConsole("%s : %s %d %d %d %s\n", txid.GetHex(), src, prop, amount, type);
 }
+

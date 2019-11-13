@@ -1,5 +1,6 @@
 omnicore/libbitcoin_server_a-version.o: omnicore/version.cpp \
- /usr/include/stdc-predef.h omnicore/version.h /usr/include/c++/7/string \
+ /usr/include/stdc-predef.h omnicore/version.h config/bitcoin-config.h \
+ /usr/include/c++/7/string \
  /usr/include/x86_64-linux-gnu/c++/7/bits/c++config.h \
  /usr/include/x86_64-linux-gnu/c++/7/bits/os_defines.h \
  /usr/include/features.h /usr/include/x86_64-linux-gnu/sys/cdefs.h \
@@ -118,8 +119,7 @@ omnicore/libbitcoin_server_a-version.o: omnicore/version.cpp \
  /usr/include/asm-generic/errno.h /usr/include/asm-generic/errno-base.h \
  /usr/include/c++/7/bits/functional_hash.h \
  /usr/include/c++/7/bits/basic_string.tcc clientversion.h \
- config/bitcoin-config.h /usr/include/c++/7/vector \
- /usr/include/c++/7/bits/stl_construct.h \
+ /usr/include/c++/7/vector /usr/include/c++/7/bits/stl_construct.h \
  /usr/include/c++/7/bits/stl_uninitialized.h \
  /usr/include/c++/7/bits/stl_vector.h \
  /usr/include/c++/7/bits/stl_bvector.h /usr/include/c++/7/bits/vector.tcc \
@@ -147,11 +147,13 @@ omnicore/libbitcoin_server_a-version.o: omnicore/version.cpp \
  /usr/include/c++/7/bits/basic_ios.tcc \
  /usr/include/c++/7/bits/ostream.tcc /usr/include/c++/7/istream \
  /usr/include/c++/7/bits/istream.tcc /usr/include/c++/7/sstream \
- /usr/include/c++/7/bits/sstream.tcc
+ /usr/include/c++/7/bits/sstream.tcc obj/build.h
 
 /usr/include/stdc-predef.h:
 
 omnicore/version.h:
+
+config/bitcoin-config.h:
 
 /usr/include/c++/7/string:
 
@@ -445,8 +447,6 @@ omnicore/version.h:
 
 clientversion.h:
 
-config/bitcoin-config.h:
-
 /usr/include/c++/7/vector:
 
 /usr/include/c++/7/bits/stl_construct.h:
@@ -534,3 +534,5 @@ tinyformat.h:
 /usr/include/c++/7/sstream:
 
 /usr/include/c++/7/bits/sstream.tcc:
+
+obj/build.h:

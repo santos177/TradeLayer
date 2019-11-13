@@ -8,6 +8,9 @@
 /* Define if building universal (internal helper macro) */
 /* #undef AC_APPLE_UNIVERSAL_BUILD */
 
+/* Define this symbol if type char equals int8_t */
+/* #undef CHAR_EQUALS_INT8 */
+
 /* Version Build */
 #define CLIENT_VERSION_BUILD 0
 
@@ -18,22 +21,34 @@
 #define CLIENT_VERSION_MAJOR 0
 
 /* Minor version */
-#define CLIENT_VERSION_MINOR 16
+#define CLIENT_VERSION_MINOR 18
 
 /* Build revision */
-#define CLIENT_VERSION_REVISION 3
+#define CLIENT_VERSION_REVISION 1
 
 /* Copyright holder(s) before %s replacement */
 #define COPYRIGHT_HOLDERS "The %s developers"
 
 /* Copyright holder(s) */
-#define COPYRIGHT_HOLDERS_FINAL "The Litecoin Core developers"
+#define COPYRIGHT_HOLDERS_FINAL "The Bitcoin Core and Omni Core developers"
 
 /* Replacement for %s in copyright holders string */
-#define COPYRIGHT_HOLDERS_SUBSTITUTION "Litecoin Core"
+#define COPYRIGHT_HOLDERS_SUBSTITUTION "Bitcoin Core and Omni Core"
 
 /* Copyright year */
-#define COPYRIGHT_YEAR 2018
+#define COPYRIGHT_YEAR 2019
+
+/* Define this symbol to build code that uses AVX2 intrinsics */
+#define ENABLE_AVX2 1
+
+/* Define if BIP70 support should be compiled in */
+/* #undef ENABLE_BIP70 */
+
+/* Define this symbol to build code that uses SHA-NI intrinsics */
+#define ENABLE_SHANI 1
+
+/* Define this symbol to build code that uses SSE4.1 intrinsics */
+#define ENABLE_SSE41 1
 
 /* Define to 1 to enable wallet functions */
 #define ENABLE_WALLET 1
@@ -52,9 +67,6 @@
 
 /* define if the Boost::Filesystem library is available */
 #define HAVE_BOOST_FILESYSTEM /**/
-
-/* define if the Boost::PROGRAM_OPTIONS library is available */
-#define HAVE_BOOST_PROGRAM_OPTIONS /**/
 
 /* define if the Boost::System library is available */
 #define HAVE_BOOST_SYSTEM /**/
@@ -105,6 +117,14 @@
 /* Define to 1 if you have the declaration of `EVP_MD_CTX_new', and to 0 if
    you don't. */
 #define HAVE_DECL_EVP_MD_CTX_NEW 0
+
+/* Define to 1 if you have the declaration of `freeifaddrs', and to 0 if you
+   don't. */
+#define HAVE_DECL_FREEIFADDRS 1
+
+/* Define to 1 if you have the declaration of `getifaddrs', and to 0 if you
+   don't. */
+#define HAVE_DECL_GETIFADDRS 1
 
 /* Define to 1 if you have the declaration of `htobe16', and to 0 if you
    don't. */
@@ -277,17 +297,14 @@
 /* Define to 1 if you have the <miniupnpc/upnperrors.h> header file. */
 #define HAVE_MINIUPNPC_UPNPERRORS_H 1
 
-/* Define this symbol if you have MSG_DONTWAIT */
-#define HAVE_MSG_DONTWAIT 1
-
-/* Define this symbol if you have MSG_NOSIGNAL */
-#define HAVE_MSG_NOSIGNAL 1
-
 /* Define if you have POSIX threads libraries and header files. */
 #define HAVE_PTHREAD 1
 
 /* Have PTHREAD_PRIO_INHERIT. */
 #define HAVE_PTHREAD_PRIO_INHERIT 1
+
+/* Define to 1 if you have the <rapidcheck.h> header file. */
+/* #undef HAVE_RAPIDCHECK_H */
 
 /* Define to 1 if you have the <stdint.h> header file. */
 #define HAVE_STDINT_H 1
@@ -346,23 +363,35 @@
 /* Define to the sub-directory where libtool stores uninstalled libraries. */
 #define LT_OBJDIR ".libs/"
 
+/* Omni Core build number */
+#define OMNICORE_VERSION_BUILD 0
+
+/* Omni Core major version */
+#define OMNICORE_VERSION_MAJOR 0
+
+/* Omni Core minor version */
+#define OMNICORE_VERSION_MINOR 7
+
+/* Omni Core patch version */
+#define OMNICORE_VERSION_PATCH 0
+
 /* Define to the address where bug reports for this package should be sent. */
-#define PACKAGE_BUGREPORT "https://github.com/litecoin-project/litecoin/issues"
+#define PACKAGE_BUGREPORT "https://github.com/OmniLayer/omnicore/issues"
 
 /* Define to the full name of this package. */
-#define PACKAGE_NAME "Litecoin Core"
+#define PACKAGE_NAME "Omni Core"
 
 /* Define to the full name and version of this package. */
-#define PACKAGE_STRING "Litecoin Core 0.16.3"
+#define PACKAGE_STRING "Omni Core 0.7.0"
 
 /* Define to the one symbol short name of this package. */
-#define PACKAGE_TARNAME "litecoin"
+#define PACKAGE_TARNAME "omnicore"
 
 /* Define to the home page for this package. */
-#define PACKAGE_URL "https://litecoin.org/"
+#define PACKAGE_URL "http://www.omnilayer.org/"
 
 /* Define to the version of this package. */
-#define PACKAGE_VERSION "0.16.3"
+#define PACKAGE_VERSION "0.7.0"
 
 /* Define to necessary symbol if this constant uses a non-standard name on
    your system. */
@@ -400,9 +429,6 @@
 
 /* Define if QR support should be compiled in */
 /* #undef USE_QRCODE */
-
-/* Define if SSE2 support should be compiled in */
-/* #undef USE_SSE2 */
 
 /* UPnP support not compiled if undefined, otherwise value (0 or 1) determines
    default state */

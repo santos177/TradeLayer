@@ -163,11 +163,12 @@ policy/libbitcoin_server_a-fees.o: policy/fees.cpp \
  /usr/include/x86_64-linux-gnu/bits/string_fortified.h \
  /usr/include/c++/7/vector /usr/include/c++/7/bits/stl_vector.h \
  /usr/include/c++/7/bits/stl_bvector.h /usr/include/c++/7/bits/vector.tcc \
- prevector.h /usr/include/c++/7/stdlib.h /usr/include/c++/7/iterator \
- /usr/include/c++/7/ostream /usr/include/c++/7/bits/ostream.tcc \
- /usr/include/c++/7/istream /usr/include/c++/7/bits/istream.tcc \
- /usr/include/c++/7/bits/stream_iterator.h uint256.h \
- /usr/include/c++/7/cstring crypto/common.h random.h crypto/chacha20.h \
+ prevector.h /usr/include/c++/7/stdlib.h /usr/include/c++/7/cstddef \
+ /usr/include/c++/7/iterator /usr/include/c++/7/ostream \
+ /usr/include/c++/7/bits/ostream.tcc /usr/include/c++/7/istream \
+ /usr/include/c++/7/bits/istream.tcc \
+ /usr/include/c++/7/bits/stream_iterator.h span.h uint256.h \
+ /usr/include/c++/7/cstring random.h crypto/chacha20.h crypto/common.h \
  sync.h threadsafety.h /usr/include/c++/7/condition_variable \
  /usr/include/c++/7/chrono /usr/include/c++/7/ratio \
  /usr/include/c++/7/ctime /usr/include/c++/7/bits/parse_numbers.h \
@@ -184,8 +185,8 @@ policy/libbitcoin_server_a-fees.o: policy/fees.cpp \
  /usr/include/x86_64-linux-gnu/bits/xopen_lim.h \
  /usr/include/x86_64-linux-gnu/bits/uio_lim.h script/standard.h \
  /usr/include/boost/variant.hpp /usr/include/boost/variant/variant.hpp \
- /usr/include/c++/7/cstddef /usr/include/boost/type_index.hpp \
- /usr/include/boost/config.hpp /usr/include/boost/config/user.hpp \
+ /usr/include/boost/type_index.hpp /usr/include/boost/config.hpp \
+ /usr/include/boost/config/user.hpp \
  /usr/include/boost/config/detail/select_compiler_config.hpp \
  /usr/include/boost/config/compiler/gcc.hpp \
  /usr/include/boost/config/detail/select_stdlib_config.hpp \
@@ -612,8 +613,8 @@ policy/libbitcoin_server_a-fees.o: policy/fees.cpp \
  /usr/include/c++/7/unordered_map /usr/include/c++/7/bits/hashtable.h \
  /usr/include/c++/7/bits/hashtable_policy.h \
  /usr/include/c++/7/bits/unordered_map.h /usr/include/c++/7/unordered_set \
- /usr/include/c++/7/bits/unordered_set.h hash.h crypto/ripemd160.h \
- crypto/sha256.h version.h /usr/include/boost/multi_index_container.hpp \
+ /usr/include/c++/7/bits/unordered_set.h crypto/siphash.h \
+ /usr/include/boost/multi_index_container.hpp \
  /usr/include/boost/detail/allocator_utilities.hpp \
  /usr/include/boost/mpl/at.hpp /usr/include/boost/mpl/at_fwd.hpp \
  /usr/include/boost/mpl/aux_/at_impl.hpp \
@@ -1045,8 +1046,9 @@ policy/libbitcoin_server_a-fees.o: policy/fees.cpp \
  /usr/include/boost/signals2/detail/lwm_pthreads.hpp \
  /usr/include/boost/signals2/variadic_signal.hpp \
  /usr/include/boost/signals2/detail/variadic_slot_invoker.hpp \
- /usr/include/boost/signals2/detail/signal_template.hpp util.h compat.h \
- /usr/include/fcntl.h /usr/include/x86_64-linux-gnu/bits/fcntl.h \
+ /usr/include/boost/signals2/detail/signal_template.hpp util/system.h \
+ attributes.h compat.h /usr/include/fcntl.h \
+ /usr/include/x86_64-linux-gnu/bits/fcntl.h \
  /usr/include/x86_64-linux-gnu/bits/fcntl-linux.h \
  /usr/include/x86_64-linux-gnu/bits/types/struct_iovec.h \
  /usr/include/linux/falloc.h /usr/include/x86_64-linux-gnu/bits/stat.h \
@@ -1070,7 +1072,7 @@ policy/libbitcoin_server_a-fees.o: policy/fees.cpp \
  /usr/include/ifaddrs.h /usr/include/netdb.h /usr/include/rpc/netdb.h \
  /usr/include/x86_64-linux-gnu/bits/types/sigevent_t.h \
  /usr/include/x86_64-linux-gnu/bits/types/__sigval_t.h \
- /usr/include/x86_64-linux-gnu/bits/netdb.h fs.h \
+ /usr/include/x86_64-linux-gnu/bits/netdb.h compat/assumptions.h fs.h \
  /usr/include/boost/filesystem.hpp \
  /usr/include/boost/filesystem/config.hpp \
  /usr/include/boost/system/api_config.hpp \
@@ -1106,10 +1108,8 @@ policy/libbitcoin_server_a-fees.o: policy/fees.cpp \
  /usr/include/boost/filesystem/fstream.hpp /usr/include/c++/7/fstream \
  /usr/include/x86_64-linux-gnu/c++/7/bits/basic_file.h \
  /usr/include/x86_64-linux-gnu/c++/7/bits/c++io.h \
- /usr/include/c++/7/bits/fstream.tcc \
- /usr/include/boost/filesystem/detail/utf8_codecvt_facet.hpp \
- /usr/include/boost/detail/utf8_codecvt_facet.hpp tinyformat.h \
- /usr/include/c++/7/iostream utiltime.h \
+ /usr/include/c++/7/bits/fstream.tcc logging.h tinyformat.h \
+ /usr/include/c++/7/iostream util/memory.h util/time.h \
  /usr/include/boost/thread/condition_variable.hpp \
  /usr/include/boost/thread/detail/platform.hpp \
  /usr/include/boost/config/requires_threads.hpp \
@@ -1645,6 +1645,8 @@ prevector.h:
 
 /usr/include/c++/7/stdlib.h:
 
+/usr/include/c++/7/cstddef:
+
 /usr/include/c++/7/iterator:
 
 /usr/include/c++/7/ostream:
@@ -1657,15 +1659,17 @@ prevector.h:
 
 /usr/include/c++/7/bits/stream_iterator.h:
 
+span.h:
+
 uint256.h:
 
 /usr/include/c++/7/cstring:
 
-crypto/common.h:
-
 random.h:
 
 crypto/chacha20.h:
+
+crypto/common.h:
 
 sync.h:
 
@@ -1724,8 +1728,6 @@ script/standard.h:
 /usr/include/boost/variant.hpp:
 
 /usr/include/boost/variant/variant.hpp:
-
-/usr/include/c++/7/cstddef:
 
 /usr/include/boost/type_index.hpp:
 
@@ -2655,13 +2657,7 @@ indirectmap.h:
 
 /usr/include/c++/7/bits/unordered_set.h:
 
-hash.h:
-
-crypto/ripemd160.h:
-
-crypto/sha256.h:
-
-version.h:
+crypto/siphash.h:
 
 /usr/include/boost/multi_index_container.hpp:
 
@@ -3597,7 +3593,9 @@ version.h:
 
 /usr/include/boost/signals2/detail/signal_template.hpp:
 
-util.h:
+util/system.h:
+
+attributes.h:
 
 compat.h:
 
@@ -3664,6 +3662,8 @@ compat.h:
 /usr/include/x86_64-linux-gnu/bits/types/__sigval_t.h:
 
 /usr/include/x86_64-linux-gnu/bits/netdb.h:
+
+compat/assumptions.h:
 
 fs.h:
 
@@ -3755,15 +3755,15 @@ fs.h:
 
 /usr/include/c++/7/bits/fstream.tcc:
 
-/usr/include/boost/filesystem/detail/utf8_codecvt_facet.hpp:
-
-/usr/include/boost/detail/utf8_codecvt_facet.hpp:
+logging.h:
 
 tinyformat.h:
 
 /usr/include/c++/7/iostream:
 
-utiltime.h:
+util/memory.h:
+
+util/time.h:
 
 /usr/include/boost/thread/condition_variable.hpp:
 

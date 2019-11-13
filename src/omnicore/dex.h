@@ -1,13 +1,13 @@
-#ifndef OMNICORE_DEX_H
-#define OMNICORE_DEX_H
+#ifndef BITCOIN_OMNICORE_DEX_H
+#define BITCOIN_OMNICORE_DEX_H
 
-#include "omnicore/log.h"
-#include "omnicore/omnicore.h"
-#include "omnicore/tx.h"
+#include <omnicore/log.h>
+#include <omnicore/omnicore.h>
+#include <omnicore/tx.h>
 
-#include "amount.h"
-#include "tinyformat.h"
-#include "uint256.h"
+#include <amount.h>
+#include <tinyformat.h>
+#include <uint256.h>
 
 #include <openssl/sha.h>
 
@@ -54,7 +54,6 @@ private:
     uint8_t blocktimelimit;
     uint256 txid;
     uint8_t subaction;
-    uint8_t option_; // buyer=1, seller=2.
 
 public:
     uint256 getHash() const { return txid; }
@@ -62,35 +61,29 @@ public:
     int64_t getMinFee() const { return min_fee ; }
     uint8_t getBlockTimeLimit() const { return blocktimelimit; }
     uint8_t getSubaction() const { return subaction; }
-    uint8_t getOption() const { return option_; } // improvement for DEX 1
 
     int64_t getOfferAmountOriginal() const { return offer_amount_original; }
     int64_t getBTCDesiredOriginal() const { return BTC_desired_original; }
 
-    void setAmount(int64_t amount) // NOTE: new for DEX1
-    {
-        offer_amount_original = amount;
-    }
-
     CMPOffer()
       : offerBlock(0), offer_amount_original(0), property(0), BTC_desired_original(0), min_fee(0),
-        blocktimelimit(0), subaction(0), option_(0)
+        blocktimelimit(0), subaction(0)
     {
     }
 
     CMPOffer(int block, int64_t amountOffered, uint32_t propertyId, int64_t amountDesired,
-             int64_t minAcceptFee, uint8_t paymentWindow, const uint256& tx, uint8_t option)
+             int64_t minAcceptFee, uint8_t paymentWindow, const uint256& tx)
       : offerBlock(block), offer_amount_original(amountOffered), property(propertyId),
         BTC_desired_original(amountDesired), min_fee(minAcceptFee), blocktimelimit(paymentWindow),
-        txid(tx), subaction(0), option_(option)
+        txid(tx), subaction(0)
     {
-        // if (msc_debug_dex) PrintToLog("%s(%d): %s\n", __func__, amountOffered, txid.GetHex());
+        if (msc_debug_dex) PrintToLog("%s(%d): %s\n", __func__, amountOffered, txid.GetHex());
     }
 
     CMPOffer(const CMPTransaction& tx)
       : offerBlock(tx.block), offer_amount_original(tx.nValue), property(tx.property),
         BTC_desired_original(tx.amount_desired), min_fee(tx.min_fee),
-        blocktimelimit(tx.blocktimelimit), subaction(tx.subaction), option_(tx.option)
+        blocktimelimit(tx.blocktimelimit), subaction(tx.subaction)
     {
     }
 
@@ -229,26 +222,29 @@ namespace mastercore
 typedef std::map<std::string, CMPOffer> OfferMap;
 typedef std::map<std::string, CMPAccept> AcceptMap;
 
+//! In-memory collection of DEx offers
 extern OfferMap my_offers;
+//! In-memory collection of DEx accepts
 extern AcceptMap my_accepts;
 
 /** Determines the amount of bitcoins desired, in case it needs to be recalculated. TODO: don't expose! */
 int64_t calculateDesiredBTC(const int64_t amountOffered, const int64_t amountDesired, const int64_t amountAvailable);
 
 bool DEx_offerExists(const std::string& addressSeller, uint32_t propertyId);
+bool DEx_hasOffer(const std::string& addressSeller);
+bool DEx_getTokenForSale(const std::string& addressSeller, uint32_t& retTokenId);
 CMPOffer* DEx_getOffer(const std::string& addressSeller, uint32_t propertyId);
 bool DEx_acceptExists(const std::string& addressSeller, uint32_t propertyId, const std::string& addressBuyer);
 CMPAccept* DEx_getAccept(const std::string& addressSeller, uint32_t propertyId, const std::string& addressBuyer);
-int DEx_offerCreate(const std::string& addressSeller, uint32_t propertyId, int64_t amountOffered, int block, int64_t amountDesired, int64_t minAcceptFee, uint8_t paymentWindow, const uint256& txid, uint64_t* nAmended = NULL);
-int DEx_BuyOfferCreate(const std::string& addressSeller, uint32_t propertyId, int64_t price, int block, int64_t amountDesired, int64_t minAcceptFee, uint8_t paymentWindow, const uint256& txid, uint64_t* nAmended = NULL);
+int DEx_offerCreate(const std::string& addressSeller, uint32_t propertyId, int64_t amountOffered, int block, int64_t amountDesired, int64_t minAcceptFee, uint8_t paymentWindow, const uint256& txid, uint64_t* nAmended = nullptr);
 int DEx_offerDestroy(const std::string& addressSeller, uint32_t propertyId);
-int DEx_offerUpdate(const std::string& addressSeller, uint32_t propertyId, int64_t amountOffered, int block, int64_t amountDesired, int64_t minAcceptFee, uint8_t paymentWindow, const uint256& txid, uint64_t* nAmended = NULL);
-int DEx_acceptCreate(const std::string& addressTaker, const std::string& addressMaker, uint32_t propertyId, int64_t amountAccepted, int block, int64_t feePaid, uint64_t* nAmended = NULL);
+int DEx_offerUpdate(const std::string& addressSeller, uint32_t propertyId, int64_t amountOffered, int block, int64_t amountDesired, int64_t minAcceptFee, uint8_t paymentWindow, const uint256& txid, uint64_t* nAmended = nullptr);
+int DEx_acceptCreate(const std::string& addressBuyer, const std::string& addressSeller, uint32_t propertyId, int64_t amountAccepted, int block, int64_t feePaid, uint64_t* nAmended = nullptr);
 int DEx_acceptDestroy(const std::string& addressBuyer, const std::string& addressSeller, uint32_t propertyid, bool fForceErase = false);
-int DEx_payment(const uint256& txid, unsigned int vout, const std::string& addressSeller, const std::string& addressBuyer, int64_t amountPaid, int block, uint64_t* nAmended = NULL);
+int DEx_payment(const uint256& txid, unsigned int vout, const std::string& addressSeller, const std::string& addressBuyer, int64_t amountPaid, int block, uint64_t* nAmended = nullptr);
 
 unsigned int eraseExpiredAccepts(int block);
 }
 
 
-#endif // OMNICORE_DEX_H
+#endif // BITCOIN_OMNICORE_DEX_H

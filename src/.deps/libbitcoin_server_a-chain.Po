@@ -16,8 +16,8 @@ libbitcoin_server_a-chain.o: chain.cpp /usr/include/stdc-predef.h chain.h \
  /usr/include/strings.h \
  /usr/include/x86_64-linux-gnu/bits/strings_fortified.h \
  /usr/include/x86_64-linux-gnu/bits/string_fortified.h \
- /usr/include/c++/7/stdexcept /usr/include/c++/7/exception \
- /usr/include/c++/7/bits/exception.h \
+ /usr/include/c++/7/limits /usr/include/c++/7/stdexcept \
+ /usr/include/c++/7/exception /usr/include/c++/7/bits/exception.h \
  /usr/include/c++/7/bits/exception_ptr.h \
  /usr/include/c++/7/bits/exception_defines.h \
  /usr/include/c++/7/bits/cxxabi_init_exception.h \
@@ -127,12 +127,23 @@ libbitcoin_server_a-chain.o: chain.cpp /usr/include/stdc-predef.h chain.h \
  /usr/include/c++/7/bits/stl_uninitialized.h \
  /usr/include/c++/7/bits/stl_vector.h \
  /usr/include/c++/7/bits/stl_bvector.h /usr/include/c++/7/bits/vector.tcc \
+ consensus/params.h uint256.h /usr/include/c++/7/map \
+ /usr/include/c++/7/bits/stl_tree.h \
+ /usr/include/c++/7/ext/aligned_buffer.h \
+ /usr/include/c++/7/bits/stl_map.h /usr/include/c++/7/tuple \
+ /usr/include/c++/7/utility /usr/include/c++/7/bits/stl_relops.h \
+ /usr/include/c++/7/array /usr/include/c++/7/bits/uses_allocator.h \
+ /usr/include/c++/7/bits/invoke.h /usr/include/c++/7/bits/stl_multimap.h \
  primitives/block.h primitives/transaction.h amount.h script/script.h \
  crypto/common.h config/bitcoin-config.h compat/endian.h \
  compat/byteswap.h /usr/include/byteswap.h prevector.h \
- /usr/include/c++/7/stdlib.h /usr/include/c++/7/iterator \
- /usr/include/c++/7/ostream /usr/include/c++/7/ios \
- /usr/include/c++/7/bits/ios_base.h \
+ /usr/include/c++/7/stdlib.h /usr/include/c++/7/algorithm \
+ /usr/include/c++/7/bits/stl_algo.h \
+ /usr/include/c++/7/bits/algorithmfwd.h \
+ /usr/include/c++/7/bits/stl_heap.h /usr/include/c++/7/bits/stl_tempbuf.h \
+ /usr/include/c++/7/bits/uniform_int_dist.h /usr/include/c++/7/cstddef \
+ /usr/include/c++/7/iterator /usr/include/c++/7/ostream \
+ /usr/include/c++/7/ios /usr/include/c++/7/bits/ios_base.h \
  /usr/include/c++/7/bits/locale_classes.h \
  /usr/include/c++/7/bits/locale_classes.tcc \
  /usr/include/c++/7/system_error \
@@ -149,16 +160,6 @@ libbitcoin_server_a-chain.o: chain.cpp /usr/include/stdc-predef.h chain.h \
  /usr/include/c++/7/bits/ostream.tcc /usr/include/c++/7/istream \
  /usr/include/c++/7/bits/istream.tcc \
  /usr/include/c++/7/bits/stream_iterator.h serialize.h \
- /usr/include/c++/7/algorithm /usr/include/c++/7/utility \
- /usr/include/c++/7/bits/stl_relops.h /usr/include/c++/7/bits/stl_algo.h \
- /usr/include/c++/7/bits/algorithmfwd.h \
- /usr/include/c++/7/bits/stl_heap.h /usr/include/c++/7/bits/stl_tempbuf.h \
- /usr/include/c++/7/bits/uniform_int_dist.h /usr/include/c++/7/limits \
- /usr/include/c++/7/map /usr/include/c++/7/bits/stl_tree.h \
- /usr/include/c++/7/ext/aligned_buffer.h \
- /usr/include/c++/7/bits/stl_map.h /usr/include/c++/7/tuple \
- /usr/include/c++/7/array /usr/include/c++/7/bits/uses_allocator.h \
- /usr/include/c++/7/bits/invoke.h /usr/include/c++/7/bits/stl_multimap.h \
  /usr/include/c++/7/memory /usr/include/c++/7/bits/stl_raw_storage_iter.h \
  /usr/include/c++/7/ext/concurrence.h \
  /usr/include/c++/7/bits/unique_ptr.h \
@@ -171,7 +172,7 @@ libbitcoin_server_a-chain.o: chain.cpp /usr/include/stdc-predef.h chain.h \
  /usr/include/c++/7/bits/atomic_lockfree_defines.h \
  /usr/include/c++/7/backward/auto_ptr.h /usr/include/c++/7/set \
  /usr/include/c++/7/bits/stl_set.h /usr/include/c++/7/bits/stl_multiset.h \
- /usr/include/c++/7/climits \
+ span.h /usr/include/c++/7/climits \
  /usr/lib/gcc/x86_64-linux-gnu/7/include-fixed/limits.h \
  /usr/lib/gcc/x86_64-linux-gnu/7/include-fixed/syslimits.h \
  /usr/include/limits.h /usr/include/x86_64-linux-gnu/bits/posix1_lim.h \
@@ -179,10 +180,9 @@ libbitcoin_server_a-chain.o: chain.cpp /usr/include/stdc-predef.h chain.h \
  /usr/include/linux/limits.h \
  /usr/include/x86_64-linux-gnu/bits/posix2_lim.h \
  /usr/include/x86_64-linux-gnu/bits/xopen_lim.h \
- /usr/include/x86_64-linux-gnu/bits/uio_lim.h uint256.h pow.h \
- consensus/params.h tinyformat.h /usr/include/c++/7/cassert \
- /usr/include/c++/7/iostream /usr/include/c++/7/sstream \
- /usr/include/c++/7/bits/sstream.tcc
+ /usr/include/x86_64-linux-gnu/bits/uio_lim.h tinyformat.h \
+ /usr/include/c++/7/cassert /usr/include/c++/7/iostream \
+ /usr/include/c++/7/sstream /usr/include/c++/7/bits/sstream.tcc
 
 /usr/include/stdc-predef.h:
 
@@ -227,6 +227,8 @@ arith_uint256.h:
 /usr/include/x86_64-linux-gnu/bits/strings_fortified.h:
 
 /usr/include/x86_64-linux-gnu/bits/string_fortified.h:
+
+/usr/include/c++/7/limits:
 
 /usr/include/c++/7/stdexcept:
 
@@ -506,6 +508,32 @@ arith_uint256.h:
 
 /usr/include/c++/7/bits/vector.tcc:
 
+consensus/params.h:
+
+uint256.h:
+
+/usr/include/c++/7/map:
+
+/usr/include/c++/7/bits/stl_tree.h:
+
+/usr/include/c++/7/ext/aligned_buffer.h:
+
+/usr/include/c++/7/bits/stl_map.h:
+
+/usr/include/c++/7/tuple:
+
+/usr/include/c++/7/utility:
+
+/usr/include/c++/7/bits/stl_relops.h:
+
+/usr/include/c++/7/array:
+
+/usr/include/c++/7/bits/uses_allocator.h:
+
+/usr/include/c++/7/bits/invoke.h:
+
+/usr/include/c++/7/bits/stl_multimap.h:
+
 primitives/block.h:
 
 primitives/transaction.h:
@@ -527,6 +555,20 @@ compat/byteswap.h:
 prevector.h:
 
 /usr/include/c++/7/stdlib.h:
+
+/usr/include/c++/7/algorithm:
+
+/usr/include/c++/7/bits/stl_algo.h:
+
+/usr/include/c++/7/bits/algorithmfwd.h:
+
+/usr/include/c++/7/bits/stl_heap.h:
+
+/usr/include/c++/7/bits/stl_tempbuf.h:
+
+/usr/include/c++/7/bits/uniform_int_dist.h:
+
+/usr/include/c++/7/cstddef:
 
 /usr/include/c++/7/iterator:
 
@@ -578,42 +620,6 @@ prevector.h:
 
 serialize.h:
 
-/usr/include/c++/7/algorithm:
-
-/usr/include/c++/7/utility:
-
-/usr/include/c++/7/bits/stl_relops.h:
-
-/usr/include/c++/7/bits/stl_algo.h:
-
-/usr/include/c++/7/bits/algorithmfwd.h:
-
-/usr/include/c++/7/bits/stl_heap.h:
-
-/usr/include/c++/7/bits/stl_tempbuf.h:
-
-/usr/include/c++/7/bits/uniform_int_dist.h:
-
-/usr/include/c++/7/limits:
-
-/usr/include/c++/7/map:
-
-/usr/include/c++/7/bits/stl_tree.h:
-
-/usr/include/c++/7/ext/aligned_buffer.h:
-
-/usr/include/c++/7/bits/stl_map.h:
-
-/usr/include/c++/7/tuple:
-
-/usr/include/c++/7/array:
-
-/usr/include/c++/7/bits/uses_allocator.h:
-
-/usr/include/c++/7/bits/invoke.h:
-
-/usr/include/c++/7/bits/stl_multimap.h:
-
 /usr/include/c++/7/memory:
 
 /usr/include/c++/7/bits/stl_raw_storage_iter.h:
@@ -644,6 +650,8 @@ serialize.h:
 
 /usr/include/c++/7/bits/stl_multiset.h:
 
+span.h:
+
 /usr/include/c++/7/climits:
 
 /usr/lib/gcc/x86_64-linux-gnu/7/include-fixed/limits.h:
@@ -663,12 +671,6 @@ serialize.h:
 /usr/include/x86_64-linux-gnu/bits/xopen_lim.h:
 
 /usr/include/x86_64-linux-gnu/bits/uio_lim.h:
-
-uint256.h:
-
-pow.h:
-
-consensus/params.h:
 
 tinyformat.h:
 

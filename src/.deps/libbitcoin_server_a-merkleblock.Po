@@ -163,13 +163,13 @@ libbitcoin_server_a-merkleblock.o: merkleblock.cpp \
  /usr/include/x86_64-linux-gnu/bits/string_fortified.h \
  /usr/include/c++/7/vector /usr/include/c++/7/bits/stl_vector.h \
  /usr/include/c++/7/bits/stl_bvector.h /usr/include/c++/7/bits/vector.tcc \
- prevector.h /usr/include/c++/7/stdlib.h /usr/include/c++/7/iterator \
- /usr/include/c++/7/ostream /usr/include/c++/7/bits/ostream.tcc \
- /usr/include/c++/7/istream /usr/include/c++/7/bits/istream.tcc \
- /usr/include/c++/7/bits/stream_iterator.h uint256.h \
- /usr/include/c++/7/cstring crypto/common.h primitives/block.h \
- primitives/transaction.h amount.h script/script.h \
- /usr/include/c++/7/climits \
+ prevector.h /usr/include/c++/7/stdlib.h /usr/include/c++/7/cstddef \
+ /usr/include/c++/7/iterator /usr/include/c++/7/ostream \
+ /usr/include/c++/7/bits/ostream.tcc /usr/include/c++/7/istream \
+ /usr/include/c++/7/bits/istream.tcc \
+ /usr/include/c++/7/bits/stream_iterator.h span.h uint256.h \
+ /usr/include/c++/7/cstring primitives/block.h primitives/transaction.h \
+ amount.h script/script.h crypto/common.h /usr/include/c++/7/climits \
  /usr/lib/gcc/x86_64-linux-gnu/7/include-fixed/limits.h \
  /usr/lib/gcc/x86_64-linux-gnu/7/include-fixed/syslimits.h \
  /usr/include/limits.h /usr/include/x86_64-linux-gnu/bits/posix1_lim.h \
@@ -179,7 +179,7 @@ libbitcoin_server_a-merkleblock.o: merkleblock.cpp \
  /usr/include/x86_64-linux-gnu/bits/xopen_lim.h \
  /usr/include/x86_64-linux-gnu/bits/uio_lim.h bloom.h hash.h \
  crypto/ripemd160.h crypto/sha256.h version.h consensus/consensus.h \
- utilstrencodings.h
+ util/strencodings.h attributes.h
 
 /usr/include/stdc-predef.h:
 
@@ -615,6 +615,8 @@ prevector.h:
 
 /usr/include/c++/7/stdlib.h:
 
+/usr/include/c++/7/cstddef:
+
 /usr/include/c++/7/iterator:
 
 /usr/include/c++/7/ostream:
@@ -627,11 +629,11 @@ prevector.h:
 
 /usr/include/c++/7/bits/stream_iterator.h:
 
+span.h:
+
 uint256.h:
 
 /usr/include/c++/7/cstring:
-
-crypto/common.h:
 
 primitives/block.h:
 
@@ -640,6 +642,8 @@ primitives/transaction.h:
 amount.h:
 
 script/script.h:
+
+crypto/common.h:
 
 /usr/include/c++/7/climits:
 
@@ -673,4 +677,6 @@ version.h:
 
 consensus/consensus.h:
 
-utilstrencodings.h:
+util/strencodings.h:
+
+attributes.h:

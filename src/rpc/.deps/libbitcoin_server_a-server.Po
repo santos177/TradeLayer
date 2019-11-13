@@ -567,19 +567,17 @@ rpc/libbitcoin_server_a-server.o: rpc/server.cpp \
  /usr/include/boost/filesystem/fstream.hpp /usr/include/c++/7/fstream \
  /usr/include/x86_64-linux-gnu/c++/7/bits/basic_file.h \
  /usr/include/x86_64-linux-gnu/c++/7/bits/c++io.h \
- /usr/include/c++/7/bits/fstream.tcc \
- /usr/include/boost/filesystem/detail/utf8_codecvt_facet.hpp \
- /usr/include/boost/detail/utf8_codecvt_facet.hpp /usr/include/c++/7/map \
+ /usr/include/c++/7/bits/fstream.tcc /usr/include/c++/7/map \
  /usr/include/c++/7/bits/stl_tree.h /usr/include/c++/7/bits/stl_map.h \
  /usr/include/c++/7/bits/stl_multimap.h univalue/include/univalue.h \
  /usr/include/c++/7/sstream /usr/include/c++/7/bits/sstream.tcc uint256.h \
+ key_io.h chainparams.h chainparamsbase.h consensus/params.h \
+ primitives/block.h primitives/transaction.h script/script.h \
  crypto/common.h config/bitcoin-config.h compat/endian.h \
- compat/byteswap.h /usr/include/byteswap.h base58.h chainparams.h \
- chainparamsbase.h consensus/params.h primitives/block.h \
- primitives/transaction.h script/script.h prevector.h \
+ compat/byteswap.h /usr/include/byteswap.h prevector.h \
  /usr/include/c++/7/stdlib.h serialize.h /usr/include/c++/7/set \
  /usr/include/c++/7/bits/stl_set.h /usr/include/c++/7/bits/stl_multiset.h \
- /usr/include/c++/7/climits \
+ span.h /usr/include/c++/7/climits \
  /usr/lib/gcc/x86_64-linux-gnu/7/include-fixed/limits.h \
  /usr/lib/gcc/x86_64-linux-gnu/7/include-fixed/syslimits.h \
  /usr/include/limits.h /usr/include/x86_64-linux-gnu/bits/posix1_lim.h \
@@ -616,8 +614,11 @@ rpc/libbitcoin_server_a-server.o: rpc/server.cpp \
  hash.h crypto/ripemd160.h crypto/sha256.h support/allocators/secure.h \
  support/lockedpool.h /usr/include/c++/7/mutex /usr/include/c++/7/chrono \
  /usr/include/c++/7/ratio /usr/include/c++/7/bits/parse_numbers.h \
- /usr/include/c++/7/bits/std_mutex.h support/cleanse.h script/standard.h \
- script/interpreter.h script/script_error.h \
+ /usr/include/c++/7/bits/std_mutex.h /usr/include/c++/7/unordered_map \
+ /usr/include/c++/7/bits/hashtable.h \
+ /usr/include/c++/7/bits/hashtable_policy.h \
+ /usr/include/c++/7/bits/unordered_map.h support/cleanse.h \
+ script/standard.h script/interpreter.h script/script_error.h \
  /usr/include/boost/variant.hpp /usr/include/boost/variant/variant.hpp \
  /usr/include/boost/type_index.hpp \
  /usr/include/boost/type_index/stl_type_index.hpp \
@@ -836,12 +837,10 @@ rpc/libbitcoin_server_a-server.o: rpc/server.cpp \
  /usr/include/boost/mpl/equal.hpp /usr/include/boost/variant/get.hpp \
  /usr/include/boost/variant/detail/element_index.hpp \
  /usr/include/boost/variant/visitor_ptr.hpp \
- /usr/include/boost/variant/bad_visit.hpp \
- support/allocators/zeroafterfree.h init.h random.h crypto/chacha20.h \
- sync.h threadsafety.h /usr/include/c++/7/condition_variable \
- /usr/include/c++/7/thread ui_interface.h \
- /usr/include/boost/signals2/last_value.hpp \
- /usr/include/boost/optional.hpp /usr/include/boost/optional/optional.hpp \
+ /usr/include/boost/variant/bad_visit.hpp random.h crypto/chacha20.h \
+ rpc/util.h node/transaction.h attributes.h outputtype.h keystore.h \
+ script/sign.h /usr/include/boost/optional.hpp \
+ /usr/include/boost/optional/optional.hpp \
  /usr/include/boost/core/explicit_operator_bool.hpp \
  /usr/include/boost/core/swap.hpp \
  /usr/include/boost/optional/bad_optional_access.hpp \
@@ -855,8 +854,9 @@ rpc/libbitcoin_server_a-server.o: rpc/server.cpp \
  /usr/include/boost/optional/detail/optional_aligned_storage.hpp \
  /usr/include/boost/optional/detail/optional_reference_spec.hpp \
  /usr/include/boost/optional/detail/optional_relops.hpp \
- /usr/include/boost/optional/detail/optional_swap.hpp \
- /usr/include/boost/signals2/expired_slot.hpp \
+ /usr/include/boost/optional/detail/optional_swap.hpp streams.h \
+ support/allocators/zeroafterfree.h sync.h threadsafety.h \
+ /usr/include/c++/7/condition_variable /usr/include/c++/7/thread \
  /usr/include/boost/signals2/signal.hpp /usr/include/boost/function.hpp \
  /usr/include/boost/function/detail/prologue.hpp \
  /usr/include/boost/config/no_tr1/functional.hpp \
@@ -902,6 +902,7 @@ rpc/libbitcoin_server_a-server.o: rpc/server.cpp \
  /usr/include/boost/scoped_ptr.hpp \
  /usr/include/boost/smart_ptr/scoped_ptr.hpp \
  /usr/include/boost/utility/swap.hpp \
+ /usr/include/boost/signals2/expired_slot.hpp \
  /usr/include/boost/signals2/trackable.hpp \
  /usr/include/boost/signals2/variadic_slot.hpp \
  /usr/include/boost/signals2/detail/variadic_arg_type.hpp \
@@ -917,8 +918,11 @@ rpc/libbitcoin_server_a-server.o: rpc/server.cpp \
  /usr/include/boost/preprocessor/control/expr_if.hpp \
  /usr/include/boost/signals2/detail/variadic_slot_invoker.hpp \
  /usr/include/boost/type_traits/function_traits.hpp \
- /usr/include/boost/signals2/detail/signal_template.hpp util.h \
- tinyformat.h /usr/include/c++/7/iostream utiltime.h \
+ /usr/include/boost/signals2/detail/signal_template.hpp shutdown.h \
+ ui_interface.h util/strencodings.h util/system.h compat/assumptions.h \
+ logging.h tinyformat.h /usr/include/c++/7/iostream util/memory.h \
+ util/time.h /usr/include/c++/7/unordered_set \
+ /usr/include/c++/7/bits/unordered_set.h \
  /usr/include/boost/thread/condition_variable.hpp \
  /usr/include/boost/thread/detail/platform.hpp \
  /usr/include/boost/config/requires_threads.hpp \
@@ -1026,19 +1030,14 @@ rpc/libbitcoin_server_a-server.o: rpc/server.cpp \
  /usr/include/boost/thread/cv_status.hpp \
  /usr/include/boost/enable_shared_from_this.hpp \
  /usr/include/boost/smart_ptr/enable_shared_from_this.hpp \
- utilstrencodings.h /usr/include/boost/algorithm/string/case_conv.hpp \
- /usr/include/boost/algorithm/string/config.hpp \
- /usr/include/boost/iterator/transform_iterator.hpp \
- /usr/include/boost/utility/result_of.hpp \
- /usr/include/boost/preprocessor/repetition/enum_binary_params.hpp \
- /usr/include/boost/preprocessor/facilities/intercept.hpp \
- /usr/include/boost/utility/detail/result_of_iterate.hpp \
+ /usr/include/boost/algorithm/string/classification.hpp \
+ /usr/include/boost/range/value_type.hpp \
+ /usr/include/boost/range/iterator.hpp \
  /usr/include/boost/range/as_literal.hpp \
  /usr/include/boost/range/iterator_range.hpp \
  /usr/include/boost/range/iterator_range_core.hpp \
  /usr/include/boost/range/functions.hpp \
- /usr/include/boost/range/begin.hpp /usr/include/boost/range/iterator.hpp \
- /usr/include/boost/range/end.hpp \
+ /usr/include/boost/range/begin.hpp /usr/include/boost/range/end.hpp \
  /usr/include/boost/range/detail/implementation_help.hpp \
  /usr/include/boost/range/detail/common.hpp \
  /usr/include/boost/range/detail/sfinae.hpp \
@@ -1063,7 +1062,6 @@ rpc/libbitcoin_server_a-server.o: rpc/server.cpp \
  /usr/include/boost/preprocessor/seq/enum.hpp \
  /usr/include/boost/concept/detail/concept_undef.hpp \
  /usr/include/boost/iterator/iterator_concepts.hpp \
- /usr/include/boost/range/value_type.hpp \
  /usr/include/boost/range/detail/misc_concept.hpp \
  /usr/include/boost/type_traits/make_unsigned.hpp \
  /usr/include/boost/type_traits/is_signed.hpp \
@@ -1071,6 +1069,7 @@ rpc/libbitcoin_server_a-server.o: rpc/server.cpp \
  /usr/include/boost/range/detail/has_member_size.hpp \
  /usr/include/boost/utility.hpp \
  /usr/include/boost/utility/base_from_member.hpp \
+ /usr/include/boost/preprocessor/repetition/enum_binary_params.hpp \
  /usr/include/boost/preprocessor/repetition/repeat_from_to.hpp \
  /usr/include/boost/utility/binary.hpp \
  /usr/include/boost/preprocessor/control/deduce_d.hpp \
@@ -1098,12 +1097,15 @@ rpc/libbitcoin_server_a-server.o: rpc/server.cpp \
  /usr/include/boost/range/detail/safe_bool.hpp \
  /usr/include/boost/range/iterator_range_io.hpp \
  /usr/include/boost/range/detail/str_types.hpp \
- /usr/include/boost/algorithm/string/detail/case_conv.hpp \
- /usr/include/boost/algorithm/string/classification.hpp \
  /usr/include/boost/algorithm/string/detail/classification.hpp \
+ /usr/include/boost/algorithm/string/config.hpp \
  /usr/include/boost/algorithm/string/predicate_facade.hpp \
  /usr/include/boost/algorithm/string/split.hpp \
  /usr/include/boost/algorithm/string/iter_find.hpp \
+ /usr/include/boost/iterator/transform_iterator.hpp \
+ /usr/include/boost/utility/result_of.hpp \
+ /usr/include/boost/preprocessor/facilities/intercept.hpp \
+ /usr/include/boost/utility/detail/result_of_iterate.hpp \
  /usr/include/boost/algorithm/string/concept.hpp \
  /usr/include/boost/algorithm/string/find_iterator.hpp \
  /usr/include/boost/algorithm/string/detail/find_iterator.hpp \
@@ -1111,10 +1113,7 @@ rpc/libbitcoin_server_a-server.o: rpc/server.cpp \
  /usr/include/boost/algorithm/string/finder.hpp \
  /usr/include/boost/algorithm/string/constants.hpp \
  /usr/include/boost/algorithm/string/detail/finder.hpp \
- /usr/include/boost/algorithm/string/compare.hpp \
- /usr/include/c++/7/unordered_map /usr/include/c++/7/bits/hashtable.h \
- /usr/include/c++/7/bits/hashtable_policy.h \
- /usr/include/c++/7/bits/unordered_map.h
+ /usr/include/boost/algorithm/string/compare.hpp
 
 /usr/include/stdc-predef.h:
 
@@ -2424,10 +2423,6 @@ fs.h:
 
 /usr/include/c++/7/bits/fstream.tcc:
 
-/usr/include/boost/filesystem/detail/utf8_codecvt_facet.hpp:
-
-/usr/include/boost/detail/utf8_codecvt_facet.hpp:
-
 /usr/include/c++/7/map:
 
 /usr/include/c++/7/bits/stl_tree.h:
@@ -2444,17 +2439,7 @@ univalue/include/univalue.h:
 
 uint256.h:
 
-crypto/common.h:
-
-config/bitcoin-config.h:
-
-compat/endian.h:
-
-compat/byteswap.h:
-
-/usr/include/byteswap.h:
-
-base58.h:
+key_io.h:
 
 chainparams.h:
 
@@ -2468,6 +2453,16 @@ primitives/transaction.h:
 
 script/script.h:
 
+crypto/common.h:
+
+config/bitcoin-config.h:
+
+compat/endian.h:
+
+compat/byteswap.h:
+
+/usr/include/byteswap.h:
+
 prevector.h:
 
 /usr/include/c++/7/stdlib.h:
@@ -2479,6 +2474,8 @@ serialize.h:
 /usr/include/c++/7/bits/stl_set.h:
 
 /usr/include/c++/7/bits/stl_multiset.h:
+
+span.h:
 
 /usr/include/c++/7/climits:
 
@@ -2595,6 +2592,14 @@ support/lockedpool.h:
 /usr/include/c++/7/bits/parse_numbers.h:
 
 /usr/include/c++/7/bits/std_mutex.h:
+
+/usr/include/c++/7/unordered_map:
+
+/usr/include/c++/7/bits/hashtable.h:
+
+/usr/include/c++/7/bits/hashtable_policy.h:
+
+/usr/include/c++/7/bits/unordered_map.h:
 
 support/cleanse.h:
 
@@ -3066,25 +3071,21 @@ script/script_error.h:
 
 /usr/include/boost/variant/bad_visit.hpp:
 
-support/allocators/zeroafterfree.h:
-
-init.h:
-
 random.h:
 
 crypto/chacha20.h:
 
-sync.h:
+rpc/util.h:
 
-threadsafety.h:
+node/transaction.h:
 
-/usr/include/c++/7/condition_variable:
+attributes.h:
 
-/usr/include/c++/7/thread:
+outputtype.h:
 
-ui_interface.h:
+keystore.h:
 
-/usr/include/boost/signals2/last_value.hpp:
+script/sign.h:
 
 /usr/include/boost/optional.hpp:
 
@@ -3120,7 +3121,17 @@ ui_interface.h:
 
 /usr/include/boost/optional/detail/optional_swap.hpp:
 
-/usr/include/boost/signals2/expired_slot.hpp:
+streams.h:
+
+support/allocators/zeroafterfree.h:
+
+sync.h:
+
+threadsafety.h:
+
+/usr/include/c++/7/condition_variable:
+
+/usr/include/c++/7/thread:
 
 /usr/include/boost/signals2/signal.hpp:
 
@@ -3230,6 +3241,8 @@ ui_interface.h:
 
 /usr/include/boost/utility/swap.hpp:
 
+/usr/include/boost/signals2/expired_slot.hpp:
+
 /usr/include/boost/signals2/trackable.hpp:
 
 /usr/include/boost/signals2/variadic_slot.hpp:
@@ -3262,13 +3275,29 @@ ui_interface.h:
 
 /usr/include/boost/signals2/detail/signal_template.hpp:
 
-util.h:
+shutdown.h:
+
+ui_interface.h:
+
+util/strencodings.h:
+
+util/system.h:
+
+compat/assumptions.h:
+
+logging.h:
 
 tinyformat.h:
 
 /usr/include/c++/7/iostream:
 
-utiltime.h:
+util/memory.h:
+
+util/time.h:
+
+/usr/include/c++/7/unordered_set:
+
+/usr/include/c++/7/bits/unordered_set.h:
 
 /usr/include/boost/thread/condition_variable.hpp:
 
@@ -3490,21 +3519,11 @@ utiltime.h:
 
 /usr/include/boost/smart_ptr/enable_shared_from_this.hpp:
 
-utilstrencodings.h:
+/usr/include/boost/algorithm/string/classification.hpp:
 
-/usr/include/boost/algorithm/string/case_conv.hpp:
+/usr/include/boost/range/value_type.hpp:
 
-/usr/include/boost/algorithm/string/config.hpp:
-
-/usr/include/boost/iterator/transform_iterator.hpp:
-
-/usr/include/boost/utility/result_of.hpp:
-
-/usr/include/boost/preprocessor/repetition/enum_binary_params.hpp:
-
-/usr/include/boost/preprocessor/facilities/intercept.hpp:
-
-/usr/include/boost/utility/detail/result_of_iterate.hpp:
+/usr/include/boost/range/iterator.hpp:
 
 /usr/include/boost/range/as_literal.hpp:
 
@@ -3515,8 +3534,6 @@ utilstrencodings.h:
 /usr/include/boost/range/functions.hpp:
 
 /usr/include/boost/range/begin.hpp:
-
-/usr/include/boost/range/iterator.hpp:
 
 /usr/include/boost/range/end.hpp:
 
@@ -3570,8 +3587,6 @@ utilstrencodings.h:
 
 /usr/include/boost/iterator/iterator_concepts.hpp:
 
-/usr/include/boost/range/value_type.hpp:
-
 /usr/include/boost/range/detail/misc_concept.hpp:
 
 /usr/include/boost/type_traits/make_unsigned.hpp:
@@ -3585,6 +3600,8 @@ utilstrencodings.h:
 /usr/include/boost/utility.hpp:
 
 /usr/include/boost/utility/base_from_member.hpp:
+
+/usr/include/boost/preprocessor/repetition/enum_binary_params.hpp:
 
 /usr/include/boost/preprocessor/repetition/repeat_from_to.hpp:
 
@@ -3642,17 +3659,23 @@ utilstrencodings.h:
 
 /usr/include/boost/range/detail/str_types.hpp:
 
-/usr/include/boost/algorithm/string/detail/case_conv.hpp:
-
-/usr/include/boost/algorithm/string/classification.hpp:
-
 /usr/include/boost/algorithm/string/detail/classification.hpp:
+
+/usr/include/boost/algorithm/string/config.hpp:
 
 /usr/include/boost/algorithm/string/predicate_facade.hpp:
 
 /usr/include/boost/algorithm/string/split.hpp:
 
 /usr/include/boost/algorithm/string/iter_find.hpp:
+
+/usr/include/boost/iterator/transform_iterator.hpp:
+
+/usr/include/boost/utility/result_of.hpp:
+
+/usr/include/boost/preprocessor/facilities/intercept.hpp:
+
+/usr/include/boost/utility/detail/result_of_iterate.hpp:
 
 /usr/include/boost/algorithm/string/concept.hpp:
 
@@ -3669,11 +3692,3 @@ utilstrencodings.h:
 /usr/include/boost/algorithm/string/detail/finder.hpp:
 
 /usr/include/boost/algorithm/string/compare.hpp:
-
-/usr/include/c++/7/unordered_map:
-
-/usr/include/c++/7/bits/hashtable.h:
-
-/usr/include/c++/7/bits/hashtable_policy.h:
-
-/usr/include/c++/7/bits/unordered_map.h:

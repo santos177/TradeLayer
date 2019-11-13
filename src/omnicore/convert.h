@@ -1,5 +1,5 @@
-#ifndef OMNICORE_CONVERT_H
-#define OMNICORE_CONVERT_H
+#ifndef BITCOIN_OMNICORE_CONVERT_H
+#define BITCOIN_OMNICORE_CONVERT_H
 
 #include <stdint.h>
 
@@ -13,16 +13,7 @@ namespace mastercore
  * up and down otherwise.
  */
 uint64_t rounduint64(long double);
-
-/**
- * Swaps byte order on little-endian systems and does nothing 
- * otherwise. swapByteOrder cycles on LE systems.
- */
-void swapByteOrder16(uint16_t&);
-void swapByteOrder32(uint32_t&);
-void swapByteOrder64(uint64_t&);
-
 }
 
 
-#endif // OMNICORE_CONVERT_H
+#endif // BITCOIN_OMNICORE_CONVERT_H

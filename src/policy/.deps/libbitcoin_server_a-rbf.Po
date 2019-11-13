@@ -147,8 +147,13 @@ policy/libbitcoin_server_a-rbf.o: policy/rbf.cpp \
  /usr/include/x86_64-linux-gnu/bits/string_fortified.h compat/endian.h \
  compat/byteswap.h /usr/include/byteswap.h prevector.h \
  /usr/include/assert.h /usr/include/c++/7/stdlib.h \
- /usr/include/c++/7/iterator /usr/include/c++/7/ostream \
- /usr/include/c++/7/ios /usr/include/c++/7/bits/ios_base.h \
+ /usr/include/c++/7/algorithm /usr/include/c++/7/bits/stl_algo.h \
+ /usr/include/c++/7/bits/algorithmfwd.h \
+ /usr/include/c++/7/bits/stl_heap.h \
+ /usr/include/c++/7/bits/uniform_int_dist.h /usr/include/c++/7/limits \
+ /usr/include/c++/7/cstddef /usr/include/c++/7/iterator \
+ /usr/include/c++/7/ostream /usr/include/c++/7/ios \
+ /usr/include/c++/7/bits/ios_base.h \
  /usr/include/c++/7/bits/locale_classes.h \
  /usr/include/c++/7/bits/locale_classes.tcc \
  /usr/include/c++/7/system_error \
@@ -164,11 +169,7 @@ policy/libbitcoin_server_a-rbf.o: policy/rbf.cpp \
  /usr/include/c++/7/bits/basic_ios.tcc \
  /usr/include/c++/7/bits/ostream.tcc /usr/include/c++/7/istream \
  /usr/include/c++/7/bits/istream.tcc \
- /usr/include/c++/7/bits/stream_iterator.h serialize.h \
- /usr/include/c++/7/algorithm /usr/include/c++/7/bits/stl_algo.h \
- /usr/include/c++/7/bits/algorithmfwd.h \
- /usr/include/c++/7/bits/stl_heap.h \
- /usr/include/c++/7/bits/uniform_int_dist.h /usr/include/c++/7/limits \
+ /usr/include/c++/7/bits/stream_iterator.h serialize.h span.h \
  /usr/include/c++/7/climits \
  /usr/lib/gcc/x86_64-linux-gnu/7/include-fixed/limits.h \
  /usr/lib/gcc/x86_64-linux-gnu/7/include-fixed/syslimits.h \
@@ -183,8 +184,8 @@ policy/libbitcoin_server_a-rbf.o: policy/rbf.cpp \
  /usr/include/c++/7/unordered_map /usr/include/c++/7/bits/hashtable.h \
  /usr/include/c++/7/bits/hashtable_policy.h \
  /usr/include/c++/7/bits/unordered_map.h /usr/include/c++/7/unordered_set \
- /usr/include/c++/7/bits/unordered_set.h hash.h crypto/ripemd160.h \
- crypto/sha256.h version.h policy/feerate.h sync.h threadsafety.h \
+ /usr/include/c++/7/bits/unordered_set.h crypto/siphash.h \
+ policy/feerate.h sync.h threadsafety.h \
  /usr/include/c++/7/condition_variable /usr/include/c++/7/chrono \
  /usr/include/c++/7/ratio /usr/include/c++/7/ctime \
  /usr/include/c++/7/bits/parse_numbers.h \
@@ -193,7 +194,7 @@ policy/libbitcoin_server_a-rbf.o: policy/rbf.cpp \
  /usr/include/boost/multi_index_container.hpp \
  /usr/include/boost/config.hpp /usr/include/boost/config/user.hpp \
  /usr/include/boost/config/detail/select_compiler_config.hpp \
- /usr/include/boost/config/compiler/gcc.hpp /usr/include/c++/7/cstddef \
+ /usr/include/boost/config/compiler/gcc.hpp \
  /usr/include/boost/config/detail/select_stdlib_config.hpp \
  /usr/include/boost/config/stdlib/libstdcpp3.hpp /usr/include/unistd.h \
  /usr/include/x86_64-linux-gnu/bits/posix_opt.h \
@@ -1434,6 +1435,20 @@ prevector.h:
 
 /usr/include/c++/7/stdlib.h:
 
+/usr/include/c++/7/algorithm:
+
+/usr/include/c++/7/bits/stl_algo.h:
+
+/usr/include/c++/7/bits/algorithmfwd.h:
+
+/usr/include/c++/7/bits/stl_heap.h:
+
+/usr/include/c++/7/bits/uniform_int_dist.h:
+
+/usr/include/c++/7/limits:
+
+/usr/include/c++/7/cstddef:
+
 /usr/include/c++/7/iterator:
 
 /usr/include/c++/7/ostream:
@@ -1484,17 +1499,7 @@ prevector.h:
 
 serialize.h:
 
-/usr/include/c++/7/algorithm:
-
-/usr/include/c++/7/bits/stl_algo.h:
-
-/usr/include/c++/7/bits/algorithmfwd.h:
-
-/usr/include/c++/7/bits/stl_heap.h:
-
-/usr/include/c++/7/bits/uniform_int_dist.h:
-
-/usr/include/c++/7/limits:
+span.h:
 
 /usr/include/c++/7/climits:
 
@@ -1542,13 +1547,7 @@ indirectmap.h:
 
 /usr/include/c++/7/bits/unordered_set.h:
 
-hash.h:
-
-crypto/ripemd160.h:
-
-crypto/sha256.h:
-
-version.h:
+crypto/siphash.h:
 
 policy/feerate.h:
 
@@ -1585,8 +1584,6 @@ crypto/chacha20.h:
 /usr/include/boost/config/detail/select_compiler_config.hpp:
 
 /usr/include/boost/config/compiler/gcc.hpp:
-
-/usr/include/c++/7/cstddef:
 
 /usr/include/boost/config/detail/select_stdlib_config.hpp:
 

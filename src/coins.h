@@ -1,5 +1,5 @@
 // Copyright (c) 2009-2010 Satoshi Nakamoto
-// Copyright (c) 2009-2017 The Bitcoin Core developers
+// Copyright (c) 2009-2018 The Bitcoin Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -9,7 +9,7 @@
 #include <primitives/transaction.h>
 #include <compressor.h>
 #include <core_memusage.h>
-#include <hash.h>
+#include <crypto/siphash.h>
 #include <memusage.h>
 #include <serialize.h>
 #include <uint256.h>
@@ -69,7 +69,7 @@ public:
         ::Unserialize(s, VARINT(code));
         nHeight = code >> 1;
         fCoinBase = code & 1;
-        ::Unserialize(s, REF(CTxOutCompressor(out)));
+        ::Unserialize(s, CTxOutCompressor(out));
     }
 
     bool IsSpent() const {
@@ -79,18 +79,13 @@ public:
     size_t DynamicMemoryUsage() const {
         return memusage::DynamicUsage(out.scriptPubKey);
     }
-
-    CTxOut &GetTxOut() { return out; }
-    const CTxOut &GetTxOut() const { return out; }
-    
-    uint32_t GetHeight() const { return nHeight >> 1; }
 };
 
 class SaltedOutpointHasher
 {
 private:
     /** Salt */
-    const uint64_t k0, k1;
+    uint64_t k0, k1;
 
 public:
     SaltedOutpointHasher();
@@ -219,11 +214,6 @@ protected:
 public:
     CCoinsViewCache(CCoinsView *baseIn);
 
-    /**
-     * By deleting the copy constructor, we prevent accidentally using it when one intends to create a cache on top of a base cache.
-     */
-    CCoinsViewCache(const CCoinsViewCache &) = delete;
-
     // Standard CCoinsView methods
     bool GetCoin(const COutPoint &outpoint, Coin &coin) const override;
     bool HaveCoin(const COutPoint &outpoint) const override;
@@ -290,57 +280,30 @@ public:
      * Note that lightweight clients may not know anything besides the hash of previous transactions,
      * so may not be able to calculate this.
      *
-     * @param[in] tx	transaction for which we are checking input total
-     * @return	Sum of value of all inputs (scriptSigs)
+     * @param[in] tx    transaction for which we are checking input total
+     * @return  Sum of value of all inputs (scriptSigs)
      */
     CAmount GetValueIn(const CTransaction& tx) const;
 
     //! Check whether all prevouts of the transaction are present in the UTXO set represented by this view
     bool HaveInputs(const CTransaction& tx) const;
 
-    /** For Omni-lite Port */
-    const CTxOut &GetOutputFor(const CTxIn& input) const;
-
-    friend class CCoinsModifier;
-
 private:
     CCoinsMap::iterator FetchCoin(const COutPoint &outpoint) const;
 };
 
-/** Adding this class to work with Omni-lite */
-
-/**
- * A reference to a mutable cache entry. Encapsulating it allows us to run
- *  cleanup code after the modification is finished, and keeping track of
- *  concurrent modifications.
- */
-class CCoinsModifier
-{
-private:
-    CCoinsViewCache& cache;
-    CCoinsMap::iterator it;
-    size_t cachedCoinUsage; // Cached memory usage of the CCoins object before modification
-    CCoinsModifier(CCoinsViewCache& cache_, CCoinsMap::iterator it_, size_t usage);
-
-public:
-    Coin* operator->() { return &it->second.coin; }
-    Coin& operator*() { return it->second.coin; }
-    ~CCoinsModifier();
-    friend class CCoinsViewCache;
-};
-
 //! Utility function to add all of a transaction's outputs to a cache.
-// When check is false, this assumes that overwrites are only possible for coinbase transactions.
-// When check is true, the underlying view may be queried to determine whether an addition is
-// an overwrite.
+//! When check is false, this assumes that overwrites are only possible for coinbase transactions.
+//! When check is true, the underlying view may be queried to determine whether an addition is
+//! an overwrite.
 // TODO: pass in a boolean to limit these possible overwrites to known
 // (pre-BIP34) cases.
 void AddCoins(CCoinsViewCache& cache, const CTransaction& tx, int nHeight, bool check = false);
 
 //! Utility function to find any unspent output with a given txid.
-// This function can be quite expensive because in the event of a transaction
-// which is not found in the cache, it can cause up to MAX_OUTPUTS_PER_BLOCK
-// lookups to database, so it should be used with care.
+//! This function can be quite expensive because in the event of a transaction
+//! which is not found in the cache, it can cause up to MAX_OUTPUTS_PER_BLOCK
+//! lookups to database, so it should be used with care.
 const Coin& AccessByTxid(const CCoinsViewCache& cache, const uint256& txid);
 
 #endif // BITCOIN_COINS_H

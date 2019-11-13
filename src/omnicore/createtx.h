@@ -1,5 +1,5 @@
-#ifndef OMNICORE_CREATETX_H
-#define OMNICORE_CREATETX_H
+#ifndef BITCOIN_OMNICORE_CREATETX_H
+#define BITCOIN_OMNICORE_CREATETX_H
 
 class CCoinsViewCache;
 class CMutableTransaction;
@@ -9,7 +9,7 @@ class CScript;
 class CTxOut;
 class uint256;
 
-#include "script/standard.h"
+#include <script/standard.h>
 
 #include <stdint.h>
 #include <string>
@@ -121,7 +121,6 @@ public:
      */
     CMutableTransaction build();
 
-
 protected:
     CMutableTransaction transaction;
 };
@@ -187,6 +186,17 @@ public:
     OmniTxBuilder& addOpReturn(const std::vector<unsigned char>& data);
 
     /**
+     * Embeds a payload with class B (bare-multisig) encoding.
+     *
+     * If the data encoding fails, then the transaction is not modified.
+     *
+     * @param data   The payload to embed
+     * @param seed   The address of the sender, used as seed for obfuscation
+     * @param pubKey A public key that may be used to redeem the multisig dust
+     */
+    OmniTxBuilder& addMultisig(const std::vector<unsigned char>& data, const std::string& seed, const CPubKey& pubKey);
+
+    /**
      * Adds an output for change.
      *
      * Optionally a position can be provided, where the change output should be
@@ -215,4 +225,4 @@ public:
 void InputsToView(const std::vector<PrevTxsEntry>& prevTxs, CCoinsViewCache& view);
 
 
-#endif // OMNICORE_CREATETX_H
+#endif // BITCOIN_OMNICORE_CREATETX_H

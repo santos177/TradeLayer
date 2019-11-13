@@ -205,14 +205,15 @@ libbitcoin_common_a-netaddress.o: netaddress.cpp \
  /usr/include/x86_64-linux-gnu/bits/string_fortified.h \
  /usr/include/c++/7/vector /usr/include/c++/7/bits/stl_vector.h \
  /usr/include/c++/7/bits/stl_bvector.h /usr/include/c++/7/bits/vector.tcc \
- prevector.h /usr/include/c++/7/stdlib.h /usr/include/c++/7/iterator \
- /usr/include/c++/7/ostream /usr/include/c++/7/bits/ostream.tcc \
- /usr/include/c++/7/istream /usr/include/c++/7/bits/istream.tcc \
- /usr/include/c++/7/bits/stream_iterator.h hash.h crypto/ripemd160.h \
- crypto/sha256.h uint256.h /usr/include/c++/7/cstring crypto/common.h \
- version.h utilstrencodings.h tinyformat.h /usr/include/c++/7/cassert \
- /usr/include/c++/7/iostream /usr/include/c++/7/sstream \
- /usr/include/c++/7/bits/sstream.tcc
+ prevector.h /usr/include/c++/7/stdlib.h /usr/include/c++/7/cstddef \
+ /usr/include/c++/7/iterator /usr/include/c++/7/ostream \
+ /usr/include/c++/7/bits/ostream.tcc /usr/include/c++/7/istream \
+ /usr/include/c++/7/bits/istream.tcc \
+ /usr/include/c++/7/bits/stream_iterator.h span.h hash.h crypto/common.h \
+ crypto/ripemd160.h crypto/sha256.h uint256.h /usr/include/c++/7/cstring \
+ version.h util/strencodings.h attributes.h tinyformat.h \
+ /usr/include/c++/7/cassert /usr/include/c++/7/iostream \
+ /usr/include/c++/7/sstream /usr/include/c++/7/bits/sstream.tcc
 
 /usr/include/stdc-predef.h:
 
@@ -746,6 +747,8 @@ prevector.h:
 
 /usr/include/c++/7/stdlib.h:
 
+/usr/include/c++/7/cstddef:
+
 /usr/include/c++/7/iterator:
 
 /usr/include/c++/7/ostream:
@@ -758,7 +761,11 @@ prevector.h:
 
 /usr/include/c++/7/bits/stream_iterator.h:
 
+span.h:
+
 hash.h:
+
+crypto/common.h:
 
 crypto/ripemd160.h:
 
@@ -768,11 +775,11 @@ uint256.h:
 
 /usr/include/c++/7/cstring:
 
-crypto/common.h:
-
 version.h:
 
-utilstrencodings.h:
+util/strencodings.h:
+
+attributes.h:
 
 tinyformat.h:
 

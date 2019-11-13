@@ -1,12 +1,12 @@
-#ifndef OMNICORE_PARSE_STRING_H
-#define OMNICORE_PARSE_STRING_H
+#ifndef BITCOIN_OMNICORE_PARSE_STRING_H
+#define BITCOIN_OMNICORE_PARSE_STRING_H
 
 #include <stdint.h>
 #include <string>
 
 namespace mastercore
 {
-// Converts strings to 64 bit wide interger.
+// Converts strings to 64 bit wide integer.
 // Divisible and indivisible amounts are accepted.
 // 1 indivisible unit equals 0.00000001 divisible units.
 // If input string is not a accepted number, 0 is returned.
@@ -18,4 +18,4 @@ int64_t StrToInt64(const std::string& str, bool divisible);
 }
 
 
-#endif // OMNICORE_PARSE_STRING_H
+#endif // BITCOIN_OMNICORE_PARSE_STRING_H

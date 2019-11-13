@@ -1,5 +1,5 @@
-#ifndef OMNICORE_RPCTXOBJECT_H
-#define OMNICORE_RPCTXOBJECT_H
+#ifndef BITCOIN_OMNICORE_RPCTXOBJECT_H
+#define BITCOIN_OMNICORE_RPCTXOBJECT_H
 
 #include <univalue.h>
 
@@ -9,52 +9,44 @@ class uint256;
 class CMPTransaction;
 class CTransaction;
 
-int populateRPCTransactionObject(const uint256& txid, UniValue& txobj, std::string filterAddress = "", bool extendedDetails = false, std::string extendedDetailsFilter = "");
-int populateRPCTransactionObject(const CTransaction& tx, const uint256& blockHash, UniValue& txobj, std::string filterAddress = "", bool extendedDetails = false, std::string extendedDetailsFilter = "", int blockHeight = 0);
+namespace interfaces {
+class Wallet;
+} // namespace interfaces
 
-void populateRPCTypeInfo(CMPTransaction& mp_obj, UniValue& txobj, uint32_t txType, bool extendedDetails, std::string extendedDetailsFilter);
+int populateRPCTransactionObject(const uint256& txid, UniValue& txobj, std::string filterAddress = "", bool extendedDetails = false, std::string extendedDetailsFilter = "", interfaces::Wallet* iWallet = nullptr);
+int populateRPCTransactionObject(const CTransaction& tx, const uint256& blockHash, UniValue& txobj, std::string filterAddress = "", bool extendedDetails = false, std::string extendedDetailsFilter = "", int blockHeight = 0, interfaces::Wallet* iWallet = nullptr);
+
+void populateRPCTypeInfo(CMPTransaction& mp_obj, UniValue& txobj, uint32_t txType, bool extendedDetails, std::string extendedDetailsFilter, int confirmations, interfaces::Wallet* iWallet = nullptr);
 
 void populateRPCTypeSimpleSend(CMPTransaction& omniObj, UniValue& txobj);
-void populateRPCTypeSendAll(CMPTransaction& omniObj, UniValue& txobj);
-void populateRPCTypeCreatePropertyFixed(CMPTransaction& omniObj, UniValue& txobj);
-void populateRPCTypeCreatePropertyVariable(CMPTransaction& omniObj, UniValue& txobj);
-void populateRPCTypeCreatePropertyManual(CMPTransaction& omniObj, UniValue& txobj);
+void populateRPCTypeSendToOwners(CMPTransaction& omniObj, UniValue& txobj, bool extendedDetails, std::string extendedDetailsFilter, interfaces::Wallet* iWallet = nullptr);
+void populateRPCTypeSendAll(CMPTransaction& omniObj, UniValue& txobj, int confirmations);
+void populateRPCTypeTradeOffer(CMPTransaction& omniObj, UniValue& txobj);
+void populateRPCTypeMetaDExTrade(CMPTransaction& omniObj, UniValue& txobj, bool extendedDetails);
+void populateRPCTypeMetaDExCancelPrice(CMPTransaction& omniObj, UniValue& txobj, bool extendedDetails);
+void populateRPCTypeMetaDExCancelPair(CMPTransaction& omniObj, UniValue& txobj, bool extendedDetails);
+void populateRPCTypeMetaDExCancelEcosystem(CMPTransaction& omniObj, UniValue& txobj, bool extendedDetails);
+void populateRPCTypeAcceptOffer(CMPTransaction& omniObj, UniValue& txobj);
+void populateRPCTypeCreatePropertyFixed(CMPTransaction& omniObj, UniValue& txobj, int confirmations);
+void populateRPCTypeCreatePropertyVariable(CMPTransaction& omniObj, UniValue& txobj, int confirmations);
+void populateRPCTypeCreatePropertyManual(CMPTransaction& omniObj, UniValue& txobj, int confirmations);
 void populateRPCTypeCloseCrowdsale(CMPTransaction& omniObj, UniValue& txobj);
 void populateRPCTypeGrant(CMPTransaction& omniObj, UniValue& txobj);
 void populateRPCTypeRevoke(CMPTransaction& omniOobj, UniValue& txobj);
 void populateRPCTypeChangeIssuer(CMPTransaction& omniObj, UniValue& txobj);
 void populateRPCTypeActivation(CMPTransaction& omniObj, UniValue& txobj);
-void populateRPCTypeCreateContract(CMPTransaction& omniObj, UniValue& txobj);
-void populateRPCTypeVestingTokens(CMPTransaction& omniObj, UniValue& txobj);
-void populateRPCTypeCreateOracle(CMPTransaction& omniObj, UniValue& txobj);
-void populateRPCTypeMetaDExTrade(CMPTransaction& omniObj, UniValue& txobj);
-void populateRPCTypeContractDexTrade(CMPTransaction& omniObj, UniValue& txobj);
-void populateRPCTypeContractDexCancelEcosystem(CMPTransaction& omniObj, UniValue& txobj);
-void populateRPCTypeCreatePeggedCurrency(CMPTransaction& omniObj, UniValue& txobj);
-void populateRPCTypeSendPeggedCurrency(CMPTransaction& omniObj, UniValue& txobj);
-void populateRPCTypeRedemptionPegged(CMPTransaction& omniObj, UniValue& txobj);
-void populateRPCTypeContractDexClosePosition(CMPTransaction& omniObj, UniValue& txobj);
-void populateRPCTypeContractDex_Cancel_Orders_By_Block(CMPTransaction& omniObj, UniValue& txobj);
-void populateRPCTypeTradeOffer(CMPTransaction& omniObj, UniValue& txobj);
-void populateRPCTypeDExBuy(CMPTransaction& omniObj, UniValue& txobj);
-void populateRPCTypeAcceptOfferBTC(CMPTransaction& omniObj, UniValue& txobj);
-void populateRPCTypeChange_OracleRef(CMPTransaction& omniObj, UniValue& txobj);
-void populateRPCTypeSet_Oracle(CMPTransaction& omniObj, UniValue& txobj);
-void populateRPCTypeOracleBackup(CMPTransaction& omniObj, UniValue& txobj);
-void populateRPCTypeCloseOracle(CMPTransaction& omniObj, UniValue& txobj);
-void populateRPCTypeCommitChannel(CMPTransaction& omniObj, UniValue& txobj);
-void populateRPCTypeWithdrawal_FromChannel(CMPTransaction& omniObj, UniValue& txobj);
-void populateRPCTypeInstant_Trade(CMPTransaction& omniObj, UniValue& txobj);
-void populateRPCTypeTransfer(CMPTransaction& omniObj, UniValue& txobj);
-void populateRPCTypeCreate_Channel(CMPTransaction& omniObj, UniValue& txobj);
-void populateRPCTypeContract_Instant(CMPTransaction& omniObj, UniValue& txobj);
-void populateRPCTypeNew_Id_Registration(CMPTransaction& omniObj, UniValue& txobj);
-void populateRPCTypeUpdate_Id_Registration(CMPTransaction& omniObj, UniValue& txobj);
-void populateRPCTypeDEx_Payment(CMPTransaction& omniObj, UniValue& txobj);
+void populateRPCTypeEnableFreezing(CMPTransaction& omniObj, UniValue& txobj);
+void populateRPCTypeDisableFreezing(CMPTransaction& omniObj, UniValue& txobj);
+void populateRPCTypeFreezeTokens(CMPTransaction& omniObj, UniValue& txobj);
+void populateRPCTypeUnfreezeTokens(CMPTransaction& omniObj, UniValue& txobj);
 
+void populateRPCExtendedTypeSendToOwners(const uint256 txid, std::string extendedDetailsFilter, UniValue& txobj, uint16_t version, interfaces::Wallet* iWallet = nullptr);
+void populateRPCExtendedTypeMetaDExTrade(const uint256& txid, uint32_t propertyIdForSale, int64_t amountForSale, UniValue& txobj);
+void populateRPCExtendedTypeMetaDExCancel(const uint256& txid, UniValue& txobj);
 
+int populateRPCDExPurchases(const CTransaction& wtx, UniValue& purchases, std::string filterAddress, interfaces::Wallet* iWallet = nullptr);
 int populateRPCSendAllSubSends(const uint256& txid, UniValue& subSends);
 
 bool showRefForTx(uint32_t txType);
 
-#endif // OMNICORE_RPCTXOBJECT_H
+#endif // BITCOIN_OMNICORE_RPCTXOBJECT_H

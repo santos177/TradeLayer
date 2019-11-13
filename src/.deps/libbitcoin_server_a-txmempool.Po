@@ -147,8 +147,13 @@ libbitcoin_server_a-txmempool.o: txmempool.cpp /usr/include/stdc-predef.h \
  /usr/include/x86_64-linux-gnu/bits/string_fortified.h compat/endian.h \
  compat/byteswap.h /usr/include/byteswap.h prevector.h \
  /usr/include/assert.h /usr/include/c++/7/stdlib.h \
- /usr/include/c++/7/iterator /usr/include/c++/7/ostream \
- /usr/include/c++/7/ios /usr/include/c++/7/bits/ios_base.h \
+ /usr/include/c++/7/algorithm /usr/include/c++/7/bits/stl_algo.h \
+ /usr/include/c++/7/bits/algorithmfwd.h \
+ /usr/include/c++/7/bits/stl_heap.h \
+ /usr/include/c++/7/bits/uniform_int_dist.h /usr/include/c++/7/limits \
+ /usr/include/c++/7/cstddef /usr/include/c++/7/iterator \
+ /usr/include/c++/7/ostream /usr/include/c++/7/ios \
+ /usr/include/c++/7/bits/ios_base.h \
  /usr/include/c++/7/bits/locale_classes.h \
  /usr/include/c++/7/bits/locale_classes.tcc \
  /usr/include/c++/7/system_error \
@@ -164,11 +169,7 @@ libbitcoin_server_a-txmempool.o: txmempool.cpp /usr/include/stdc-predef.h \
  /usr/include/c++/7/bits/basic_ios.tcc \
  /usr/include/c++/7/bits/ostream.tcc /usr/include/c++/7/istream \
  /usr/include/c++/7/bits/istream.tcc \
- /usr/include/c++/7/bits/stream_iterator.h serialize.h \
- /usr/include/c++/7/algorithm /usr/include/c++/7/bits/stl_algo.h \
- /usr/include/c++/7/bits/algorithmfwd.h \
- /usr/include/c++/7/bits/stl_heap.h \
- /usr/include/c++/7/bits/uniform_int_dist.h /usr/include/c++/7/limits \
+ /usr/include/c++/7/bits/stream_iterator.h serialize.h span.h \
  /usr/include/c++/7/climits \
  /usr/lib/gcc/x86_64-linux-gnu/7/include-fixed/limits.h \
  /usr/lib/gcc/x86_64-linux-gnu/7/include-fixed/syslimits.h \
@@ -183,8 +184,8 @@ libbitcoin_server_a-txmempool.o: txmempool.cpp /usr/include/stdc-predef.h \
  /usr/include/c++/7/unordered_map /usr/include/c++/7/bits/hashtable.h \
  /usr/include/c++/7/bits/hashtable_policy.h \
  /usr/include/c++/7/bits/unordered_map.h /usr/include/c++/7/unordered_set \
- /usr/include/c++/7/bits/unordered_set.h hash.h crypto/ripemd160.h \
- crypto/sha256.h version.h policy/feerate.h sync.h threadsafety.h \
+ /usr/include/c++/7/bits/unordered_set.h crypto/siphash.h \
+ policy/feerate.h sync.h threadsafety.h \
  /usr/include/c++/7/condition_variable /usr/include/c++/7/chrono \
  /usr/include/c++/7/ratio /usr/include/c++/7/ctime \
  /usr/include/c++/7/bits/parse_numbers.h \
@@ -193,7 +194,7 @@ libbitcoin_server_a-txmempool.o: txmempool.cpp /usr/include/stdc-predef.h \
  /usr/include/boost/multi_index_container.hpp \
  /usr/include/boost/config.hpp /usr/include/boost/config/user.hpp \
  /usr/include/boost/config/detail/select_compiler_config.hpp \
- /usr/include/boost/config/compiler/gcc.hpp /usr/include/c++/7/cstddef \
+ /usr/include/boost/config/compiler/gcc.hpp \
  /usr/include/boost/config/detail/select_stdlib_config.hpp \
  /usr/include/boost/config/stdlib/libstdcpp3.hpp /usr/include/unistd.h \
  /usr/include/x86_64-linux-gnu/bits/posix_opt.h \
@@ -1038,7 +1039,7 @@ libbitcoin_server_a-txmempool.o: txmempool.cpp /usr/include/stdc-predef.h \
  /usr/include/boost/signals2/detail/variadic_slot_invoker.hpp \
  /usr/include/boost/signals2/detail/signal_template.hpp \
  consensus/consensus.h consensus/tx_verify.h consensus/validation.h \
- validation.h fs.h /usr/include/boost/filesystem.hpp \
+ version.h validation.h fs.h /usr/include/boost/filesystem.hpp \
  /usr/include/boost/filesystem/config.hpp \
  /usr/include/boost/system/api_config.hpp \
  /usr/include/boost/config/auto_link.hpp \
@@ -1073,10 +1074,8 @@ libbitcoin_server_a-txmempool.o: txmempool.cpp /usr/include/stdc-predef.h \
  /usr/include/boost/filesystem/fstream.hpp /usr/include/c++/7/fstream \
  /usr/include/x86_64-linux-gnu/c++/7/bits/basic_file.h \
  /usr/include/x86_64-linux-gnu/c++/7/bits/c++io.h \
- /usr/include/c++/7/bits/fstream.tcc \
- /usr/include/boost/filesystem/detail/utf8_codecvt_facet.hpp \
- /usr/include/boost/detail/utf8_codecvt_facet.hpp protocol.h netaddress.h \
- compat.h /usr/include/fcntl.h /usr/include/x86_64-linux-gnu/bits/fcntl.h \
+ /usr/include/c++/7/bits/fstream.tcc protocol.h netaddress.h compat.h \
+ /usr/include/fcntl.h /usr/include/x86_64-linux-gnu/bits/fcntl.h \
  /usr/include/x86_64-linux-gnu/bits/fcntl-linux.h \
  /usr/include/x86_64-linux-gnu/bits/types/struct_iovec.h \
  /usr/include/linux/falloc.h /usr/include/x86_64-linux-gnu/bits/stat.h \
@@ -1101,9 +1100,9 @@ libbitcoin_server_a-txmempool.o: txmempool.cpp /usr/include/stdc-predef.h \
  /usr/include/x86_64-linux-gnu/bits/types/sigevent_t.h \
  /usr/include/x86_64-linux-gnu/bits/types/__sigval_t.h \
  /usr/include/x86_64-linux-gnu/bits/netdb.h script/script_error.h \
- versionbits.h chain.h arith_uint256.h pow.h consensus/params.h \
- tinyformat.h /usr/include/c++/7/iostream policy/policy.h \
- script/interpreter.h script/standard.h /usr/include/boost/variant.hpp \
+ versionbits.h chain.h arith_uint256.h consensus/params.h tinyformat.h \
+ /usr/include/c++/7/iostream policy/policy.h script/interpreter.h \
+ script/standard.h /usr/include/boost/variant.hpp \
  /usr/include/boost/variant/recursive_variant.hpp \
  /usr/include/boost/variant/detail/enable_recursive.hpp \
  /usr/include/boost/variant/detail/substitute.hpp \
@@ -1114,7 +1113,8 @@ libbitcoin_server_a-txmempool.o: txmempool.cpp /usr/include/stdc-predef.h \
  /usr/include/boost/variant/visitor_ptr.hpp \
  /usr/include/boost/variant/bad_visit.hpp policy/fees.h \
  reverse_iterator.h streams.h support/allocators/zeroafterfree.h \
- support/cleanse.h timedata.h util.h utiltime.h \
+ support/cleanse.h timedata.h util/system.h attributes.h \
+ compat/assumptions.h logging.h util/memory.h util/time.h \
  /usr/include/boost/thread/condition_variable.hpp \
  /usr/include/boost/thread/detail/platform.hpp \
  /usr/include/boost/config/requires_threads.hpp \
@@ -1210,7 +1210,7 @@ libbitcoin_server_a-txmempool.o: txmempool.cpp /usr/include/stdc-predef.h \
  /usr/include/boost/thread/pthread/condition_variable_fwd.hpp \
  /usr/include/boost/thread/cv_status.hpp \
  /usr/include/boost/enable_shared_from_this.hpp \
- /usr/include/boost/smart_ptr/enable_shared_from_this.hpp utilmoneystr.h
+ /usr/include/boost/smart_ptr/enable_shared_from_this.hpp util/moneystr.h
 
 /usr/include/stdc-predef.h:
 
@@ -1606,6 +1606,20 @@ prevector.h:
 
 /usr/include/c++/7/stdlib.h:
 
+/usr/include/c++/7/algorithm:
+
+/usr/include/c++/7/bits/stl_algo.h:
+
+/usr/include/c++/7/bits/algorithmfwd.h:
+
+/usr/include/c++/7/bits/stl_heap.h:
+
+/usr/include/c++/7/bits/uniform_int_dist.h:
+
+/usr/include/c++/7/limits:
+
+/usr/include/c++/7/cstddef:
+
 /usr/include/c++/7/iterator:
 
 /usr/include/c++/7/ostream:
@@ -1656,17 +1670,7 @@ prevector.h:
 
 serialize.h:
 
-/usr/include/c++/7/algorithm:
-
-/usr/include/c++/7/bits/stl_algo.h:
-
-/usr/include/c++/7/bits/algorithmfwd.h:
-
-/usr/include/c++/7/bits/stl_heap.h:
-
-/usr/include/c++/7/bits/uniform_int_dist.h:
-
-/usr/include/c++/7/limits:
+span.h:
 
 /usr/include/c++/7/climits:
 
@@ -1714,13 +1718,7 @@ indirectmap.h:
 
 /usr/include/c++/7/bits/unordered_set.h:
 
-hash.h:
-
-crypto/ripemd160.h:
-
-crypto/sha256.h:
-
-version.h:
+crypto/siphash.h:
 
 policy/feerate.h:
 
@@ -1757,8 +1755,6 @@ crypto/chacha20.h:
 /usr/include/boost/config/detail/select_compiler_config.hpp:
 
 /usr/include/boost/config/compiler/gcc.hpp:
-
-/usr/include/c++/7/cstddef:
 
 /usr/include/boost/config/detail/select_stdlib_config.hpp:
 
@@ -3566,6 +3562,8 @@ consensus/tx_verify.h:
 
 consensus/validation.h:
 
+version.h:
+
 validation.h:
 
 fs.h:
@@ -3658,10 +3656,6 @@ fs.h:
 
 /usr/include/c++/7/bits/fstream.tcc:
 
-/usr/include/boost/filesystem/detail/utf8_codecvt_facet.hpp:
-
-/usr/include/boost/detail/utf8_codecvt_facet.hpp:
-
 protocol.h:
 
 netaddress.h:
@@ -3740,8 +3734,6 @@ chain.h:
 
 arith_uint256.h:
 
-pow.h:
-
 consensus/params.h:
 
 tinyformat.h:
@@ -3788,9 +3780,17 @@ support/cleanse.h:
 
 timedata.h:
 
-util.h:
+util/system.h:
 
-utiltime.h:
+attributes.h:
+
+compat/assumptions.h:
+
+logging.h:
+
+util/memory.h:
+
+util/time.h:
 
 /usr/include/boost/thread/condition_variable.hpp:
 
@@ -3986,4 +3986,4 @@ utiltime.h:
 
 /usr/include/boost/smart_ptr/enable_shared_from_this.hpp:
 
-utilmoneystr.h:
+util/moneystr.h:

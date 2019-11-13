@@ -7,6 +7,9 @@
 /* Define if building universal (internal helper macro) */
 #undef AC_APPLE_UNIVERSAL_BUILD
 
+/* Define this symbol if type char equals int8_t */
+#undef CHAR_EQUALS_INT8
+
 /* Version Build */
 #undef CLIENT_VERSION_BUILD
 
@@ -34,6 +37,18 @@
 /* Copyright year */
 #undef COPYRIGHT_YEAR
 
+/* Define this symbol to build code that uses AVX2 intrinsics */
+#undef ENABLE_AVX2
+
+/* Define if BIP70 support should be compiled in */
+#undef ENABLE_BIP70
+
+/* Define this symbol to build code that uses SHA-NI intrinsics */
+#undef ENABLE_SHANI
+
+/* Define this symbol to build code that uses SSE4.1 intrinsics */
+#undef ENABLE_SSE41
+
 /* Define to 1 to enable wallet functions */
 #undef ENABLE_WALLET
 
@@ -51,9 +66,6 @@
 
 /* define if the Boost::Filesystem library is available */
 #undef HAVE_BOOST_FILESYSTEM
-
-/* define if the Boost::PROGRAM_OPTIONS library is available */
-#undef HAVE_BOOST_PROGRAM_OPTIONS
 
 /* define if the Boost::System library is available */
 #undef HAVE_BOOST_SYSTEM
@@ -104,6 +116,14 @@
 /* Define to 1 if you have the declaration of `EVP_MD_CTX_new', and to 0 if
    you don't. */
 #undef HAVE_DECL_EVP_MD_CTX_NEW
+
+/* Define to 1 if you have the declaration of `freeifaddrs', and to 0 if you
+   don't. */
+#undef HAVE_DECL_FREEIFADDRS
+
+/* Define to 1 if you have the declaration of `getifaddrs', and to 0 if you
+   don't. */
+#undef HAVE_DECL_GETIFADDRS
 
 /* Define to 1 if you have the declaration of `htobe16', and to 0 if you
    don't. */
@@ -276,17 +296,14 @@
 /* Define to 1 if you have the <miniupnpc/upnperrors.h> header file. */
 #undef HAVE_MINIUPNPC_UPNPERRORS_H
 
-/* Define this symbol if you have MSG_DONTWAIT */
-#undef HAVE_MSG_DONTWAIT
-
-/* Define this symbol if you have MSG_NOSIGNAL */
-#undef HAVE_MSG_NOSIGNAL
-
 /* Define if you have POSIX threads libraries and header files. */
 #undef HAVE_PTHREAD
 
 /* Have PTHREAD_PRIO_INHERIT. */
 #undef HAVE_PTHREAD_PRIO_INHERIT
+
+/* Define to 1 if you have the <rapidcheck.h> header file. */
+#undef HAVE_RAPIDCHECK_H
 
 /* Define to 1 if you have the <stdint.h> header file. */
 #undef HAVE_STDINT_H
@@ -345,6 +362,18 @@
 /* Define to the sub-directory where libtool stores uninstalled libraries. */
 #undef LT_OBJDIR
 
+/* Omni Core build number */
+#undef OMNICORE_VERSION_BUILD
+
+/* Omni Core major version */
+#undef OMNICORE_VERSION_MAJOR
+
+/* Omni Core minor version */
+#undef OMNICORE_VERSION_MINOR
+
+/* Omni Core patch version */
+#undef OMNICORE_VERSION_PATCH
+
 /* Define to the address where bug reports for this package should be sent. */
 #undef PACKAGE_BUGREPORT
 
@@ -399,9 +428,6 @@
 
 /* Define if QR support should be compiled in */
 #undef USE_QRCODE
-
-/* Define if SSE2 support should be compiled in */
-#undef USE_SSE2
 
 /* UPnP support not compiled if undefined, otherwise value (0 or 1) determines
    default state */

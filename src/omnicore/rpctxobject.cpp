@@ -4,22 +4,31 @@
  * Handler for populating RPC transaction objects.
  */
 
-#include "omnicore/rpctxobject.h"
+#include <omnicore/rpctxobject.h>
 
-#include "omnicore/errors.h"
-#include "omnicore/omnicore.h"
-#include "omnicore/pending.h"
-#include "omnicore/rpctxobject.h"
-#include "omnicore/sp.h"
-#include "omnicore/tx.h"
-#include "omnicore/utilsbitcoin.h"
-#include "omnicore/wallettxs.h"
+#include <omnicore/dbspinfo.h>
+#include <omnicore/dbstolist.h>
+#include <omnicore/dbtradelist.h>
+#include <omnicore/dbtransaction.h>
+#include <omnicore/dbtxlist.h>
+#include <omnicore/dex.h>
+#include <omnicore/errors.h>
+#include <omnicore/mdex.h>
+#include <omnicore/omnicore.h>
+#include <omnicore/parsing.h>
+#include <omnicore/pending.h>
+#include <omnicore/sp.h>
+#include <omnicore/sto.h>
+#include <omnicore/tx.h>
+#include <omnicore/utilsbitcoin.h>
+#include <omnicore/walletutils.h>
 
-#include "chainparams.h"
-#include "validation.h"
-#include "primitives/transaction.h"
-#include "sync.h"
-#include "uint256.h"
+#include <chainparams.h>
+#include <index/txindex.h>
+#include <validation.h>
+#include <primitives/transaction.h>
+#include <sync.h>
+#include <uint256.h>
 
 #include <univalue.h>
 
@@ -41,114 +50,170 @@ using namespace mastercore;
  *
  * DEx payments and the extended mode are only available for confirmed transactions.
  */
-int populateRPCTransactionObject(const uint256& txid, UniValue& txobj, std::string filterAddress, bool extendedDetails, std::string extendedDetailsFilter)
+int populateRPCTransactionObject(const uint256& txid, UniValue& txobj, std::string filterAddress, bool extendedDetails, std::string extendedDetailsFilter, interfaces::Wallet* iWallet)
 {
+    bool f_txindex_ready = false;
+    if (g_txindex) {
+        f_txindex_ready = g_txindex->BlockUntilSyncedToCurrentChain();
+    }
+
     // retrieve the transaction from the blockchain and obtain it's height/confs/time
     CTransactionRef tx;
     uint256 blockHash;
-    if (!GetTransaction(txid, tx, Params().GetConsensus(), blockHash, true)) {
-        return MP_TX_NOT_FOUND;
+    if (!GetTransaction(txid, tx, Params().GetConsensus(), blockHash)) {
+        if (!f_txindex_ready) {
+            return MP_TXINDEX_STILL_SYNCING;
+        } else {
+            return MP_TX_NOT_FOUND;
+        }
     }
-    const CTransaction txp = *(tx) ;
-    return populateRPCTransactionObject(txp, blockHash, txobj, filterAddress, extendedDetails, extendedDetailsFilter);
+
+    return populateRPCTransactionObject(*tx, blockHash, txobj, filterAddress, extendedDetails, extendedDetailsFilter, 0, iWallet);
 }
 
-int populateRPCTransactionObject(const CTransaction& tx, const uint256& blockHash, UniValue& txobj, std::string filterAddress, bool extendedDetails, std::string extendedDetailsFilter, int blockHeight)
+int populateRPCTransactionObject(const CTransaction& tx, const uint256& blockHash, UniValue& txobj, std::string filterAddress, bool extendedDetails, std::string extendedDetailsFilter, int blockHeight, interfaces::Wallet* iWallet)
 {
-  int confirmations = 0;
-  int64_t blockTime = 0;
-  int positionInBlock = 0;
+    int confirmations = 0;
+    int64_t blockTime = 0;
+    int positionInBlock = 0;
 
-  if (blockHeight == 0) {
-    blockHeight = GetHeight();
-  }
-
-  if (!blockHash.IsNull()) {
-    CBlockIndex* pBlockIndex = GetBlockIndex(blockHash);
-    if (NULL != pBlockIndex) {
-      confirmations = 1 + blockHeight - pBlockIndex->nHeight;
-      blockTime = pBlockIndex->nTime;
-      blockHeight = pBlockIndex->nHeight;
+    if (blockHeight == 0) {
+        blockHeight = GetHeight();
     }
-  }
 
-  // attempt to parse the transaction
-  CMPTransaction mp_obj;
-  int parseRC = ParseTransaction(tx, blockHeight, 0, mp_obj, blockTime);
-  if (parseRC < 0) return MP_TX_IS_NOT_MASTER_PROTOCOL;
+    if (!blockHash.IsNull()) {
+        CBlockIndex* pBlockIndex = GetBlockIndex(blockHash);
+        if (nullptr != pBlockIndex) {
+            confirmations = 1 + blockHeight - pBlockIndex->nHeight;
+            blockTime = pBlockIndex->nTime;
+            blockHeight = pBlockIndex->nHeight;
+        }
+    }
 
-  const uint256& txid = tx.GetHash();
+    // attempt to parse the transaction
+    CMPTransaction mp_obj;
+    int parseRC = ParseTransaction(tx, blockHeight, 0, mp_obj, blockTime);
+    if (parseRC < 0) return MP_TX_IS_NOT_OMNI_PROTOCOL;
 
-  // check if we're filtering from listtransactions_MP, and if so whether we have a non-match we want to skip
-  if (!filterAddress.empty() && mp_obj.getSender() != filterAddress && mp_obj.getReceiver() != filterAddress) return -1;
+    const uint256& txid = tx.GetHash();
 
-  // parse packet and populate mp_obj
-  if (!mp_obj.interpret_Transaction()) return MP_TX_IS_NOT_MASTER_PROTOCOL;
+    // DEx BTC payment needs special handling since it's not actually an Omni message - handle and return
+    if (parseRC > 0) {
+        if (confirmations <= 0) {
+            // only confirmed DEx payments are currently supported
+            return MP_TX_UNCONFIRMED;
+        }
+        std::string tmpBuyer, tmpSeller;
+        uint64_t tmpVout, tmpNValue, tmpPropertyId;
+        {
+            LOCK(cs_tally);
+            pDbTransactionList->getPurchaseDetails(txid, 1, &tmpBuyer, &tmpSeller, &tmpVout, &tmpPropertyId, &tmpNValue);
+        }
+        UniValue purchases(UniValue::VARR);
+        if (populateRPCDExPurchases(tx, purchases, filterAddress, iWallet) <= 0) return -1;
+        txobj.pushKV("txid", txid.GetHex());
+        txobj.pushKV("type", "DEx Purchase");
+        txobj.pushKV("sendingaddress", tmpBuyer);
+        txobj.pushKV("purchases", purchases);
+        txobj.pushKV("blockhash", blockHash.GetHex());
+        txobj.pushKV("blocktime", blockTime);
+        txobj.pushKV("block", blockHeight);
+        txobj.pushKV("confirmations", confirmations);
+        return 0;
+    }
 
-  // obtain validity - only confirmed transactions can be valid
-  bool valid = false;
-  if (confirmations > 0) {
-    LOCK(cs_tally);
-    valid = getValidMPTX(txid);
-    positionInBlock = p_OmniTXDB->FetchTransactionPosition(txid);
-  }
-  PrintToLog("Checking valid : %s\n", valid ? "true" : "false");
-  PrintToLog("Checking positionInBlock : %d\n", positionInBlock);
+    // check if we're filtering from listtransactions_MP, and if so whether we have a non-match we want to skip
+    if (!filterAddress.empty() && mp_obj.getSender() != filterAddress && mp_obj.getReceiver() != filterAddress) return -1;
 
-  // populate some initial info for the transaction
-  bool fMine = false;
-  if (IsMyAddress(mp_obj.getSender()) || IsMyAddress(mp_obj.getReceiver())) fMine = true;
-  txobj.push_back(Pair("txid", txid.GetHex()));
-  txobj.push_back(Pair("fee", FormatDivisibleMP(mp_obj.getFeePaid())));
-  txobj.push_back(Pair("sendingaddress", mp_obj.getSender()));
-  if (showRefForTx(mp_obj.getType())) txobj.push_back(Pair("referenceaddress", mp_obj.getReceiver()));
-  txobj.push_back(Pair("ismine", fMine));
-  txobj.push_back(Pair("version", (uint64_t)mp_obj.getVersion()));
-  txobj.push_back(Pair("type_int", (uint64_t)mp_obj.getType()));
-  if (mp_obj.getType() != MSC_TYPE_SIMPLE_SEND) { // Type 0 will add "Type" attribute during populateRPCTypeSimpleSend
-    txobj.push_back(Pair("type", mp_obj.getTypeString()));
-  }
+    // parse packet and populate mp_obj
+    if (!mp_obj.interpret_Transaction()) return MP_TX_IS_NOT_OMNI_PROTOCOL;
 
-  // populate type specific info and extended details if requested
-  // extended details are not available for unconfirmed transactions
-  if (confirmations <= 0) extendedDetails = false;
-  populateRPCTypeInfo(mp_obj, txobj, mp_obj.getType(), extendedDetails, extendedDetailsFilter);
+    // obtain validity - only confirmed transactions can be valid
+    bool valid = false;
+    if (confirmations > 0) {
+        LOCK(cs_tally);
+        valid = pDbTransactionList->getValidMPTX(txid);
+        positionInBlock = pDbTransaction->FetchTransactionPosition(txid);
+    }
 
-  // state and chain related information
-  if (confirmations != 0 && !blockHash.IsNull()) {
-    txobj.push_back(Pair("valid", valid));
-    txobj.push_back(Pair("blockhash", blockHash.GetHex()));
-    txobj.push_back(Pair("blocktime", blockTime));
-    txobj.push_back(Pair("positioninblock", positionInBlock));
-  }
-  if (confirmations != 0) {
-    txobj.push_back(Pair("block", blockHeight));
-  }
-  txobj.push_back(Pair("confirmations", confirmations));
+    // populate some initial info for the transaction
+    bool fMine = false;
+    if (IsMyAddress(mp_obj.getSender(), iWallet) || IsMyAddress(mp_obj.getReceiver(), iWallet)) fMine = true;
+    txobj.pushKV("txid", txid.GetHex());
+    txobj.pushKV("fee", FormatDivisibleMP(mp_obj.getFeePaid()));
+    txobj.pushKV("sendingaddress", mp_obj.getSender());
+    if (showRefForTx(mp_obj.getType())) txobj.pushKV("referenceaddress", mp_obj.getReceiver());
+    txobj.pushKV("ismine", fMine);
+    txobj.pushKV("version", (uint64_t)mp_obj.getVersion());
+    txobj.pushKV("type_int", (uint64_t)mp_obj.getType());
+    if (mp_obj.getType() != MSC_TYPE_SIMPLE_SEND) { // Type 0 will add "Type" attribute during populateRPCTypeSimpleSend
+        txobj.pushKV("type", mp_obj.getTypeString());
+    }
 
-  // finished
-  return 0;
+    // populate type specific info and extended details if requested
+    // extended details are not available for unconfirmed transactions
+    if (confirmations <= 0) extendedDetails = false;
+    populateRPCTypeInfo(mp_obj, txobj, mp_obj.getType(), extendedDetails, extendedDetailsFilter, confirmations, iWallet);
+
+    // state and chain related information
+    if (confirmations != 0 && !blockHash.IsNull()) {
+        txobj.pushKV("valid", valid);
+        if (!valid) {
+            txobj.pushKV("invalidreason", pDbTransaction->FetchInvalidReason(txid));
+        }
+        txobj.pushKV("blockhash", blockHash.GetHex());
+        txobj.pushKV("blocktime", blockTime);
+        txobj.pushKV("positioninblock", positionInBlock);
+    }
+    if (confirmations != 0) {
+        txobj.pushKV("block", blockHeight);
+    }
+    txobj.pushKV("confirmations", confirmations);
+
+    // finished
+    return 0;
 }
 
 /* Function to call respective populators based on message type
  */
-void populateRPCTypeInfo(CMPTransaction& mp_obj, UniValue& txobj, uint32_t txType, bool extendedDetails, std::string extendedDetailsFilter)
+void populateRPCTypeInfo(CMPTransaction& mp_obj, UniValue& txobj, uint32_t txType, bool extendedDetails, std::string extendedDetailsFilter, int confirmations, interfaces::Wallet *iWallet)
 {
     switch (txType) {
         case MSC_TYPE_SIMPLE_SEND:
             populateRPCTypeSimpleSend(mp_obj, txobj);
             break;
+        case MSC_TYPE_SEND_TO_OWNERS:
+            populateRPCTypeSendToOwners(mp_obj, txobj, extendedDetails, extendedDetailsFilter, iWallet);
+            break;
         case MSC_TYPE_SEND_ALL:
-            populateRPCTypeSendAll(mp_obj, txobj);
+            populateRPCTypeSendAll(mp_obj, txobj, confirmations);
+            break;
+        case MSC_TYPE_TRADE_OFFER:
+            populateRPCTypeTradeOffer(mp_obj, txobj);
+            break;
+        case MSC_TYPE_METADEX_TRADE:
+            populateRPCTypeMetaDExTrade(mp_obj, txobj, extendedDetails);
+            break;
+        case MSC_TYPE_METADEX_CANCEL_PRICE:
+            populateRPCTypeMetaDExCancelPrice(mp_obj, txobj, extendedDetails);
+            break;
+        case MSC_TYPE_METADEX_CANCEL_PAIR:
+            populateRPCTypeMetaDExCancelPair(mp_obj, txobj, extendedDetails);
+            break;
+        case MSC_TYPE_METADEX_CANCEL_ECOSYSTEM:
+            populateRPCTypeMetaDExCancelEcosystem(mp_obj, txobj, extendedDetails);
+            break;
+        case MSC_TYPE_ACCEPT_OFFER_BTC:
+            populateRPCTypeAcceptOffer(mp_obj, txobj);
             break;
         case MSC_TYPE_CREATE_PROPERTY_FIXED:
-            populateRPCTypeCreatePropertyFixed(mp_obj, txobj);
+            populateRPCTypeCreatePropertyFixed(mp_obj, txobj, confirmations);
             break;
         case MSC_TYPE_CREATE_PROPERTY_VARIABLE:
-            populateRPCTypeCreatePropertyVariable(mp_obj, txobj);
+            populateRPCTypeCreatePropertyVariable(mp_obj, txobj, confirmations);
             break;
         case MSC_TYPE_CREATE_PROPERTY_MANUAL:
-            populateRPCTypeCreatePropertyManual(mp_obj, txobj);
+            populateRPCTypeCreatePropertyManual(mp_obj, txobj, confirmations);
             break;
         case MSC_TYPE_CLOSE_CROWDSALE:
             populateRPCTypeCloseCrowdsale(mp_obj, txobj);
@@ -162,91 +227,21 @@ void populateRPCTypeInfo(CMPTransaction& mp_obj, UniValue& txobj, uint32_t txTyp
         case MSC_TYPE_CHANGE_ISSUER_ADDRESS:
             populateRPCTypeChangeIssuer(mp_obj, txobj);
             break;
+        case MSC_TYPE_ENABLE_FREEZING:
+            populateRPCTypeEnableFreezing(mp_obj, txobj);
+            break;
+        case MSC_TYPE_DISABLE_FREEZING:
+            populateRPCTypeDisableFreezing(mp_obj, txobj);
+            break;
+        case MSC_TYPE_FREEZE_PROPERTY_TOKENS:
+            populateRPCTypeFreezeTokens(mp_obj, txobj);
+            break;
+        case MSC_TYPE_UNFREEZE_PROPERTY_TOKENS:
+            populateRPCTypeUnfreezeTokens(mp_obj, txobj);
+            break;
         case OMNICORE_MESSAGE_TYPE_ACTIVATION:
             populateRPCTypeActivation(mp_obj, txobj);
             break;
-        case MSC_TYPE_CREATE_CONTRACT:
-            populateRPCTypeCreateContract(mp_obj, txobj);
-            break;
-        case MSC_TYPE_SEND_VESTING:
-            populateRPCTypeVestingTokens(mp_obj, txobj);
-            break;
-        case MSC_TYPE_CREATE_ORACLE_CONTRACT:
-            populateRPCTypeCreateOracle(mp_obj, txobj);
-            break;
-        case MSC_TYPE_METADEX_TRADE:
-            populateRPCTypeMetaDExTrade(mp_obj, txobj);
-            break;
-        case MSC_TYPE_CONTRACTDEX_TRADE:
-            populateRPCTypeContractDexTrade(mp_obj, txobj);
-            break;
-        case MSC_TYPE_CONTRACTDEX_CANCEL_ECOSYSTEM:
-            populateRPCTypeContractDexCancelEcosystem(mp_obj, txobj);
-            break;
-        case MSC_TYPE_PEGGED_CURRENCY:
-            populateRPCTypeCreatePeggedCurrency(mp_obj, txobj);
-            break;
-        case MSC_TYPE_SEND_PEGGED_CURRENCY:
-            populateRPCTypeSendPeggedCurrency(mp_obj, txobj);
-            break;
-        case MSC_TYPE_REDEMPTION_PEGGED:
-            populateRPCTypeRedemptionPegged(mp_obj, txobj);
-            break;
-        case MSC_TYPE_CONTRACTDEX_CLOSE_POSITION:
-            populateRPCTypeContractDexClosePosition(mp_obj, txobj);
-            break;
-        case MSC_TYPE_CONTRACTDEX_CANCEL_ORDERS_BY_BLOCK:
-            populateRPCTypeContractDex_Cancel_Orders_By_Block(mp_obj, txobj);
-            break;
-        case MSC_TYPE_TRADE_OFFER:
-            populateRPCTypeTradeOffer(mp_obj, txobj);
-            break;
-        case MSC_TYPE_DEX_BUY_OFFER:
-            populateRPCTypeDExBuy(mp_obj, txobj);
-            break;
-        case MSC_TYPE_ACCEPT_OFFER_BTC:
-            populateRPCTypeAcceptOfferBTC(mp_obj, txobj);
-            break;
-        case MSC_TYPE_CHANGE_ORACLE_REF:
-            populateRPCTypeChange_OracleRef(mp_obj, txobj);
-            break;
-        case MSC_TYPE_SET_ORACLE:
-            populateRPCTypeSet_Oracle(mp_obj, txobj);
-            break;
-        case MSC_TYPE_ORACLE_BACKUP:
-            populateRPCTypeOracleBackup(mp_obj, txobj);
-            break;
-        case MSC_TYPE_CLOSE_ORACLE:
-            populateRPCTypeCloseOracle(mp_obj, txobj);
-            break;
-        case MSC_TYPE_COMMIT_CHANNEL:
-            populateRPCTypeCommitChannel(mp_obj, txobj);
-            break;
-        case MSC_TYPE_WITHDRAWAL_FROM_CHANNEL:
-            populateRPCTypeWithdrawal_FromChannel(mp_obj, txobj);
-            break;
-        case MSC_TYPE_INSTANT_TRADE:
-            populateRPCTypeInstant_Trade(mp_obj, txobj);
-            break;
-        case MSC_TYPE_TRANSFER:
-            populateRPCTypeTransfer(mp_obj, txobj);
-            break;
-        case MSC_TYPE_CREATE_CHANNEL:
-            populateRPCTypeCreate_Channel(mp_obj, txobj);
-            break;
-        case MSC_TYPE_CONTRACT_INSTANT:
-            populateRPCTypeContract_Instant(mp_obj, txobj);
-            break;
-        case MSC_TYPE_NEW_ID_REGISTRATION:
-            populateRPCTypeNew_Id_Registration(mp_obj, txobj);
-            break;
-        case MSC_TYPE_UPDATE_ID_REGISTRATION:
-            populateRPCTypeUpdate_Id_Registration(mp_obj, txobj);
-            break;
-        case MSC_TYPE_DEX_PAYMENT:
-            populateRPCTypeDEx_Payment(mp_obj, txobj);
-            break;
-
     }
 }
 
@@ -256,6 +251,13 @@ bool showRefForTx(uint32_t txType)
 {
     switch (txType) {
         case MSC_TYPE_SIMPLE_SEND: return true;
+        case MSC_TYPE_SEND_TO_OWNERS: return false;
+        case MSC_TYPE_TRADE_OFFER: return false;
+        case MSC_TYPE_METADEX_TRADE: return false;
+        case MSC_TYPE_METADEX_CANCEL_PRICE: return false;
+        case MSC_TYPE_METADEX_CANCEL_PAIR: return false;
+        case MSC_TYPE_METADEX_CANCEL_ECOSYSTEM: return false;
+        case MSC_TYPE_ACCEPT_OFFER_BTC: return true;
         case MSC_TYPE_CREATE_PROPERTY_FIXED: return false;
         case MSC_TYPE_CREATE_PROPERTY_VARIABLE: return false;
         case MSC_TYPE_CREATE_PROPERTY_MANUAL: return false;
@@ -264,6 +266,10 @@ bool showRefForTx(uint32_t txType)
         case MSC_TYPE_REVOKE_PROPERTY_TOKENS: return false;
         case MSC_TYPE_CHANGE_ISSUER_ADDRESS: return true;
         case MSC_TYPE_SEND_ALL: return true;
+        case MSC_TYPE_ENABLE_FREEZING: return false;
+        case MSC_TYPE_DISABLE_FREEZING: return false;
+        case MSC_TYPE_FREEZE_PROPERTY_TOKENS: return true;
+        case MSC_TYPE_UNFREEZE_PROPERTY_TOKENS: return true;
         case OMNICORE_MESSAGE_TYPE_ACTIVATION: return false;
     }
     return true; // default to true, shouldn't be needed but just in case
@@ -277,124 +283,352 @@ void populateRPCTypeSimpleSend(CMPTransaction& omniObj, UniValue& txobj)
     bool crowdPurchase = isCrowdsalePurchase(omniObj.getHash(), omniObj.getReceiver(), &crowdPropertyId, &crowdTokens, &issuerTokens);
     if (crowdPurchase) {
         CMPSPInfo::Entry sp;
-        if (false == _my_sps->getSP(crowdPropertyId, sp)) {
+        if (false == pDbSpInfo->getSP(crowdPropertyId, sp)) {
             PrintToLog("SP Error: Crowdsale purchase for non-existent property %d in transaction %s", crowdPropertyId, omniObj.getHash().GetHex());
             return;
         }
-        txobj.push_back(Pair("type", "Crowdsale Purchase"));
-        txobj.push_back(Pair("propertyid", (uint64_t)propertyId));
-        txobj.push_back(Pair("divisible", isPropertyDivisible(propertyId)));
-        txobj.push_back(Pair("amount", FormatMP(propertyId, omniObj.getAmount())));
-        txobj.push_back(Pair("purchasedpropertyid", crowdPropertyId));
-        txobj.push_back(Pair("purchasedpropertyname", sp.name));
-        txobj.push_back(Pair("purchasedpropertydivisible", sp.isDivisible()));
-        txobj.push_back(Pair("purchasedtokens", FormatMP(crowdPropertyId, crowdTokens)));
-        txobj.push_back(Pair("issuertokens", FormatMP(crowdPropertyId, issuerTokens)));
+        txobj.pushKV("type", "Crowdsale Purchase");
+        txobj.pushKV("propertyid", (uint64_t)propertyId);
+        txobj.pushKV("divisible", isPropertyDivisible(propertyId));
+        txobj.pushKV("amount", FormatMP(propertyId, omniObj.getAmount()));
+        txobj.pushKV("purchasedpropertyid", crowdPropertyId);
+        txobj.pushKV("purchasedpropertyname", sp.name);
+        txobj.pushKV("purchasedpropertydivisible", sp.isDivisible());
+        txobj.pushKV("purchasedtokens", FormatMP(crowdPropertyId, crowdTokens));
+        txobj.pushKV("issuertokens", FormatMP(crowdPropertyId, issuerTokens));
     } else {
-        txobj.push_back(Pair("type", "Simple Send"));
-        txobj.push_back(Pair("propertyid", (uint64_t)propertyId));
-        txobj.push_back(Pair("divisible", isPropertyDivisible(propertyId)));
-        txobj.push_back(Pair("amount", FormatMP(propertyId, omniObj.getAmount())));
+        txobj.pushKV("type", "Simple Send");
+        txobj.pushKV("propertyid", (uint64_t)propertyId);
+        txobj.pushKV("divisible", isPropertyDivisible(propertyId));
+        txobj.pushKV("amount", FormatMP(propertyId, omniObj.getAmount()));
     }
 }
 
-void populateRPCTypeSendAll(CMPTransaction& omniObj, UniValue& txobj)
+void populateRPCTypeSendToOwners(CMPTransaction& omniObj, UniValue& txobj, bool extendedDetails, std::string extendedDetailsFilter, interfaces::Wallet *iWallet)
+{
+    uint32_t propertyId = omniObj.getProperty();
+    txobj.pushKV("propertyid", (uint64_t)propertyId);
+    txobj.pushKV("divisible", isPropertyDivisible(propertyId));
+    txobj.pushKV("amount", FormatMP(propertyId, omniObj.getAmount()));
+    if (extendedDetails) populateRPCExtendedTypeSendToOwners(omniObj.getHash(), extendedDetailsFilter, txobj, omniObj.getVersion(), iWallet);
+}
+
+void populateRPCTypeSendAll(CMPTransaction& omniObj, UniValue& txobj, int confirmations)
 {
     UniValue subSends(UniValue::VARR);
-    if (omniObj.getEcosystem() == 1) txobj.push_back(Pair("ecosystem", "main"));
-    if (omniObj.getEcosystem() == 2) txobj.push_back(Pair("ecosystem", "test"));
-    if (populateRPCSendAllSubSends(omniObj.getHash(), subSends) > 0) txobj.push_back(Pair("subsends", subSends));
+    if (omniObj.getEcosystem() == 1)
+        txobj.pushKV("ecosystem", "main");
+    else if (omniObj.getEcosystem() == 2)
+        txobj.pushKV("ecosystem", "test");
+    else
+        txobj.pushKV("ecosystem", "all");
+
+    if (confirmations > 0) {
+        if (populateRPCSendAllSubSends(omniObj.getHash(), subSends) > 0) txobj.pushKV("subsends", subSends);
+    }
 }
 
-void populateRPCTypeCreatePropertyFixed(CMPTransaction& omniObj, UniValue& txobj)
+void populateRPCTypeTradeOffer(CMPTransaction& omniObj, UniValue& txobj)
+{
+    CMPOffer temp_offer(omniObj);
+    uint32_t propertyId = omniObj.getProperty();
+    int64_t amountOffered = omniObj.getAmount();
+    int64_t amountDesired = temp_offer.getBTCDesiredOriginal();
+    uint8_t sellSubAction = temp_offer.getSubaction();
+
+    {
+        // NOTE: some manipulation of sell_subaction is needed here
+        // TODO: interpretPacket should provide reliable data, cleanup at RPC layer is not cool
+        if (sellSubAction > 3) sellSubAction = 0; // case where subaction byte >3, to have been allowed must be a v0 sell, flip byte to 0
+        if (sellSubAction == 0 && amountOffered > 0) sellSubAction = 1; // case where subaction byte=0, must be a v0 sell, amount > 0 means a new sell
+        if (sellSubAction == 0 && amountOffered == 0) sellSubAction = 3; // case where subaction byte=0. must be a v0 sell, amount of 0 means a cancel
+    }
+    {
+        // Check levelDB to see if the amount for sale has been amended due to a partial purchase
+        // TODO: DEx phase 1 really needs an overhaul to work like MetaDEx with original amounts for sale and amounts remaining etc
+        int tmpblock = 0;
+        unsigned int tmptype = 0;
+        uint64_t amountNew = 0;
+        LOCK(cs_tally);
+        bool tmpValid = pDbTransactionList->getValidMPTX(omniObj.getHash(), &tmpblock, &tmptype, &amountNew);
+        if (tmpValid && amountNew > 0) {
+            amountDesired = calculateDesiredBTC(amountOffered, amountDesired, amountNew);
+            amountOffered = amountNew;
+        }
+    }
+
+    // Populate
+    txobj.pushKV("propertyid", (uint64_t)propertyId);
+    txobj.pushKV("divisible", isPropertyDivisible(propertyId));
+    txobj.pushKV("amount", FormatMP(propertyId, amountOffered));
+    txobj.pushKV("bitcoindesired", FormatDivisibleMP(amountDesired));
+    txobj.pushKV("timelimit",  temp_offer.getBlockTimeLimit());
+    txobj.pushKV("feerequired", FormatDivisibleMP(temp_offer.getMinFee()));
+    if (sellSubAction == 1) txobj.pushKV("action", "new");
+    if (sellSubAction == 2) txobj.pushKV("action", "update");
+    if (sellSubAction == 3) txobj.pushKV("action", "cancel");
+}
+
+void populateRPCTypeMetaDExTrade(CMPTransaction& omniObj, UniValue& txobj, bool extendedDetails)
+{
+    CMPMetaDEx metaObj(omniObj);
+
+    bool propertyIdForSaleIsDivisible = isPropertyDivisible(omniObj.getProperty());
+    bool propertyIdDesiredIsDivisible = isPropertyDivisible(metaObj.getDesProperty());
+    std::string unitPriceStr = metaObj.displayFullUnitPrice();
+
+    // populate
+    txobj.pushKV("propertyidforsale", (uint64_t)omniObj.getProperty());
+    txobj.pushKV("propertyidforsaleisdivisible", propertyIdForSaleIsDivisible);
+    txobj.pushKV("amountforsale", FormatMP(omniObj.getProperty(), omniObj.getAmount()));
+    txobj.pushKV("propertyiddesired", (uint64_t)metaObj.getDesProperty());
+    txobj.pushKV("propertyiddesiredisdivisible", propertyIdDesiredIsDivisible);
+    txobj.pushKV("amountdesired", FormatMP(metaObj.getDesProperty(), metaObj.getAmountDesired()));
+    txobj.pushKV("unitprice", unitPriceStr);
+    if (extendedDetails) populateRPCExtendedTypeMetaDExTrade(omniObj.getHash(), omniObj.getProperty(), omniObj.getAmount(), txobj);
+}
+
+void populateRPCTypeMetaDExCancelPrice(CMPTransaction& omniObj, UniValue& txobj, bool extendedDetails)
+{
+    CMPMetaDEx metaObj(omniObj);
+
+    bool propertyIdForSaleIsDivisible = isPropertyDivisible(omniObj.getProperty());
+    bool propertyIdDesiredIsDivisible = isPropertyDivisible(metaObj.getDesProperty());
+    std::string unitPriceStr = metaObj.displayFullUnitPrice();
+
+    // populate
+    txobj.pushKV("propertyidforsale", (uint64_t)omniObj.getProperty());
+    txobj.pushKV("propertyidforsaleisdivisible", propertyIdForSaleIsDivisible);
+    txobj.pushKV("amountforsale", FormatMP(omniObj.getProperty(), omniObj.getAmount()));
+    txobj.pushKV("propertyiddesired", (uint64_t)metaObj.getDesProperty());
+    txobj.pushKV("propertyiddesiredisdivisible", propertyIdDesiredIsDivisible);
+    txobj.pushKV("amountdesired", FormatMP(metaObj.getDesProperty(), metaObj.getAmountDesired()));
+    txobj.pushKV("unitprice", unitPriceStr);
+    if (extendedDetails) populateRPCExtendedTypeMetaDExCancel(omniObj.getHash(), txobj);
+}
+
+void populateRPCTypeMetaDExCancelPair(CMPTransaction& omniObj, UniValue& txobj, bool extendedDetails)
+{
+    CMPMetaDEx metaObj(omniObj);
+
+    // populate
+    txobj.pushKV("propertyidforsale", (uint64_t)omniObj.getProperty());
+    txobj.pushKV("propertyiddesired", (uint64_t)metaObj.getDesProperty());
+    if (extendedDetails) populateRPCExtendedTypeMetaDExCancel(omniObj.getHash(), txobj);
+}
+
+void populateRPCTypeMetaDExCancelEcosystem(CMPTransaction& omniObj, UniValue& txobj, bool extendedDetails)
+{
+    txobj.pushKV("ecosystem", strEcosystem(omniObj.getEcosystem()));
+    if (extendedDetails) populateRPCExtendedTypeMetaDExCancel(omniObj.getHash(), txobj);
+}
+
+void populateRPCTypeAcceptOffer(CMPTransaction& omniObj, UniValue& txobj)
+{
+    uint32_t propertyId = omniObj.getProperty();
+    int64_t amount = omniObj.getAmount();
+
+    // Check levelDB to see if the amount accepted has been amended due to over accepting amount available
+    // TODO: DEx phase 1 really needs an overhaul to work like MetaDEx with original amounts for sale and amounts remaining etc
+    int tmpblock = 0;
+    uint32_t tmptype = 0;
+    uint64_t amountNew = 0;
+
+    LOCK(cs_tally);
+    bool tmpValid = pDbTransactionList->getValidMPTX(omniObj.getHash(), &tmpblock, &tmptype, &amountNew);
+    if (tmpValid && amountNew > 0) amount = amountNew;
+
+    txobj.pushKV("propertyid", (uint64_t)propertyId);
+    txobj.pushKV("divisible", isPropertyDivisible(propertyId));
+    txobj.pushKV("amount", FormatMP(propertyId, amount));
+}
+
+void populateRPCTypeCreatePropertyFixed(CMPTransaction& omniObj, UniValue& txobj, int confirmations)
 {
     LOCK(cs_tally);
-    uint32_t propertyId = _my_sps->findSPByTX(omniObj.getHash());
-    if (propertyId > 0) txobj.push_back(Pair("propertyid", (uint64_t) propertyId));
-    if (propertyId > 0) txobj.push_back(Pair("divisible", isPropertyDivisible(propertyId)));
-
-    txobj.push_back(Pair("ecosystem", strEcosystem(omniObj.getEcosystem())));
-    txobj.push_back(Pair("propertytype", strPropertyType(omniObj.getPropertyType())));
-    txobj.push_back(Pair("propertyname", omniObj.getSPName()));
-    txobj.push_back(Pair("data", omniObj.getSPData()));
-    txobj.push_back(Pair("url", omniObj.getSPUrl()));
+    if (confirmations > 0) {
+        uint32_t propertyId = pDbSpInfo->findSPByTX(omniObj.getHash());
+        if (propertyId > 0) {
+            txobj.pushKV("propertyid", (uint64_t) propertyId);
+            txobj.pushKV("divisible", isPropertyDivisible(propertyId));
+        }
+    }
+    txobj.pushKV("ecosystem", strEcosystem(omniObj.getEcosystem()));
+    txobj.pushKV("propertytype", strPropertyType(omniObj.getPropertyType()));
+    txobj.pushKV("category", omniObj.getSPCategory());
+    txobj.pushKV("subcategory", omniObj.getSPSubCategory());
+    txobj.pushKV("propertyname", omniObj.getSPName());
+    txobj.pushKV("data", omniObj.getSPData());
+    txobj.pushKV("url", omniObj.getSPUrl());
     std::string strAmount = FormatByType(omniObj.getAmount(), omniObj.getPropertyType());
-    txobj.push_back(Pair("amount", strAmount));
+    txobj.pushKV("amount", strAmount);
 }
 
-void populateRPCTypeCreatePropertyVariable(CMPTransaction& omniObj, UniValue& txobj)
+void populateRPCTypeCreatePropertyVariable(CMPTransaction& omniObj, UniValue& txobj, int confirmations)
 {
     LOCK(cs_tally);
-    uint32_t propertyId = _my_sps->findSPByTX(omniObj.getHash());
-    if (propertyId > 0) txobj.push_back(Pair("propertyid", (uint64_t) propertyId));
-    if (propertyId > 0) txobj.push_back(Pair("divisible", isPropertyDivisible(propertyId)));
-
-    txobj.push_back(Pair("ecosystem", strEcosystem(omniObj.getEcosystem())));
-    txobj.push_back(Pair("propertytype", strPropertyType(omniObj.getPropertyType())));
-    txobj.push_back(Pair("propertyname", omniObj.getSPName()));
-    txobj.push_back(Pair("data", omniObj.getSPData()));
-    txobj.push_back(Pair("url", omniObj.getSPUrl()));
-    txobj.push_back(Pair("propertyiddesired", (uint64_t) omniObj.getProperty()));
+    if (confirmations > 0) {
+        uint32_t propertyId = pDbSpInfo->findSPByTX(omniObj.getHash());
+        if (propertyId > 0) {
+            txobj.pushKV("propertyid", (uint64_t) propertyId);
+            txobj.pushKV("divisible", isPropertyDivisible(propertyId));
+        }
+    }
+    txobj.pushKV("propertytype", strPropertyType(omniObj.getPropertyType()));
+    txobj.pushKV("ecosystem", strEcosystem(omniObj.getEcosystem()));
+    txobj.pushKV("category", omniObj.getSPCategory());
+    txobj.pushKV("subcategory", omniObj.getSPSubCategory());
+    txobj.pushKV("propertyname", omniObj.getSPName());
+    txobj.pushKV("data", omniObj.getSPData());
+    txobj.pushKV("url", omniObj.getSPUrl());
+    txobj.pushKV("propertyiddesired", (uint64_t) omniObj.getProperty());
     std::string strPerUnit = FormatMP(omniObj.getProperty(), omniObj.getAmount());
-    txobj.push_back(Pair("tokensperunit", strPerUnit));
-    txobj.push_back(Pair("deadline", omniObj.getDeadline()));
-    txobj.push_back(Pair("earlybonus", omniObj.getEarlyBirdBonus()));
-    txobj.push_back(Pair("percenttoissuer", omniObj.getIssuerBonus()));
+    txobj.pushKV("tokensperunit", strPerUnit);
+    txobj.pushKV("deadline", omniObj.getDeadline());
+    txobj.pushKV("earlybonus", omniObj.getEarlyBirdBonus());
+    txobj.pushKV("percenttoissuer", omniObj.getIssuerBonus());
     std::string strAmount = FormatByType(0, omniObj.getPropertyType());
-    txobj.push_back(Pair("amount", strAmount)); // crowdsale token creations don't issue tokens with the create tx
+    txobj.pushKV("amount", strAmount); // crowdsale token creations don't issue tokens with the create tx
 }
 
-void populateRPCTypeCreatePropertyManual(CMPTransaction& omniObj, UniValue& txobj)
+void populateRPCTypeCreatePropertyManual(CMPTransaction& omniObj, UniValue& txobj, int confirmations)
 {
     LOCK(cs_tally);
-    uint32_t propertyId = _my_sps->findSPByTX(omniObj.getHash());
-    if (propertyId > 0) txobj.push_back(Pair("propertyid", (uint64_t) propertyId));
-    if (propertyId > 0) txobj.push_back(Pair("divisible", isPropertyDivisible(propertyId)));
-
-    txobj.push_back(Pair("ecosystem", strEcosystem(omniObj.getEcosystem())));
-    txobj.push_back(Pair("propertytype", strPropertyType(omniObj.getPropertyType())));
-    txobj.push_back(Pair("propertyname", omniObj.getSPName()));
-    txobj.push_back(Pair("data", omniObj.getSPData()));
-    txobj.push_back(Pair("url", omniObj.getSPUrl()));
+    if (confirmations > 0) {
+        uint32_t propertyId = pDbSpInfo->findSPByTX(omniObj.getHash());
+        if (propertyId > 0) {
+            txobj.pushKV("propertyid", (uint64_t) propertyId);
+            txobj.pushKV("divisible", isPropertyDivisible(propertyId));
+        }
+    }
+    txobj.pushKV("propertytype", strPropertyType(omniObj.getPropertyType()));
+    txobj.pushKV("ecosystem", strEcosystem(omniObj.getEcosystem()));
+    txobj.pushKV("category", omniObj.getSPCategory());
+    txobj.pushKV("subcategory", omniObj.getSPSubCategory());
+    txobj.pushKV("propertyname", omniObj.getSPName());
+    txobj.pushKV("data", omniObj.getSPData());
+    txobj.pushKV("url", omniObj.getSPUrl());
     std::string strAmount = FormatByType(0, omniObj.getPropertyType());
-    txobj.push_back(Pair("amount", strAmount)); // managed token creations don't issue tokens with the create tx
+    txobj.pushKV("amount", strAmount); // managed token creations don't issue tokens with the create tx
 }
 
 void populateRPCTypeCloseCrowdsale(CMPTransaction& omniObj, UniValue& txobj)
 {
     uint32_t propertyId = omniObj.getProperty();
-    txobj.push_back(Pair("propertyid", (uint64_t)propertyId));
-    txobj.push_back(Pair("divisible", isPropertyDivisible(propertyId)));
+    txobj.pushKV("propertyid", (uint64_t)propertyId);
+    txobj.pushKV("divisible", isPropertyDivisible(propertyId));
 }
 
 void populateRPCTypeGrant(CMPTransaction& omniObj, UniValue& txobj)
 {
     uint32_t propertyId = omniObj.getProperty();
-    txobj.push_back(Pair("propertyid", (uint64_t)propertyId));
-    txobj.push_back(Pair("divisible", isPropertyDivisible(propertyId)));
-    txobj.push_back(Pair("amount", FormatMP(propertyId, omniObj.getAmount())));
+    txobj.pushKV("propertyid", (uint64_t)propertyId);
+    txobj.pushKV("divisible", isPropertyDivisible(propertyId));
+    txobj.pushKV("amount", FormatMP(propertyId, omniObj.getAmount()));
 }
 
 void populateRPCTypeRevoke(CMPTransaction& omniObj, UniValue& txobj)
 {
     uint32_t propertyId = omniObj.getProperty();
-    txobj.push_back(Pair("propertyid", (uint64_t)propertyId));
-    txobj.push_back(Pair("divisible", isPropertyDivisible(propertyId)));
-    txobj.push_back(Pair("amount", FormatMP(propertyId, omniObj.getAmount())));
+    txobj.pushKV("propertyid", (uint64_t)propertyId);
+    txobj.pushKV("divisible", isPropertyDivisible(propertyId));
+    txobj.pushKV("amount", FormatMP(propertyId, omniObj.getAmount()));
 }
 
 void populateRPCTypeChangeIssuer(CMPTransaction& omniObj, UniValue& txobj)
 {
     uint32_t propertyId = omniObj.getProperty();
-    txobj.push_back(Pair("propertyid", (uint64_t)propertyId));
-    txobj.push_back(Pair("divisible", isPropertyDivisible(propertyId)));
+    txobj.pushKV("propertyid", (uint64_t)propertyId);
+    txobj.pushKV("divisible", isPropertyDivisible(propertyId));
 }
 
 void populateRPCTypeActivation(CMPTransaction& omniObj, UniValue& txobj)
 {
-    txobj.push_back(Pair("featureid", (uint64_t) omniObj.getFeatureId()));
-    txobj.push_back(Pair("activationblock", (uint64_t) omniObj.getActivationBlock()));
-    txobj.push_back(Pair("minimumversion", (uint64_t) omniObj.getMinClientVersion()));
+    txobj.pushKV("featureid", (uint64_t) omniObj.getFeatureId());
+    txobj.pushKV("activationblock", (uint64_t) omniObj.getActivationBlock());
+    txobj.pushKV("minimumversion", (uint64_t) omniObj.getMinClientVersion());
+}
+
+void populateRPCTypeEnableFreezing(CMPTransaction& omniObj, UniValue& txobj)
+{
+    txobj.pushKV("propertyid", (uint64_t) omniObj.getProperty());
+}
+
+void populateRPCTypeDisableFreezing(CMPTransaction& omniObj, UniValue& txobj)
+{
+    txobj.pushKV("propertyid", (uint64_t) omniObj.getProperty());
+}
+void populateRPCTypeFreezeTokens(CMPTransaction& omniObj, UniValue& txobj)
+{
+    txobj.pushKV("propertyid", (uint64_t) omniObj.getProperty());
+}
+
+void populateRPCTypeUnfreezeTokens(CMPTransaction& omniObj, UniValue& txobj)
+{
+    txobj.pushKV("propertyid", (uint64_t) omniObj.getProperty());
+}
+
+void populateRPCExtendedTypeSendToOwners(const uint256 txid, std::string extendedDetailsFilter, UniValue& txobj, uint16_t version, interfaces::Wallet *iWallet)
+{
+    UniValue receiveArray(UniValue::VARR);
+    uint64_t tmpAmount = 0, stoFee = 0, numRecipients = 0;
+    LOCK(cs_tally);
+    pDbStoList->getRecipients(txid, extendedDetailsFilter, &receiveArray, &tmpAmount, &numRecipients, iWallet);
+    if (version == MP_TX_PKT_V0) {
+        stoFee = numRecipients * TRANSFER_FEE_PER_OWNER;
+    } else {
+        stoFee = numRecipients * TRANSFER_FEE_PER_OWNER_V1;
+    }
+    txobj.pushKV("totalstofee", FormatDivisibleMP(stoFee)); // fee always OMNI so always divisible
+    txobj.pushKV("recipients", receiveArray);
+}
+
+void populateRPCExtendedTypeMetaDExTrade(const uint256& txid, uint32_t propertyIdForSale, int64_t amountForSale, UniValue& txobj)
+{
+    UniValue tradeArray(UniValue::VARR);
+    int64_t totalReceived = 0, totalSold = 0;
+    LOCK(cs_tally);
+    pDbTradeList->getMatchingTrades(txid, propertyIdForSale, tradeArray, totalSold, totalReceived);
+    int tradeStatus = MetaDEx_getStatus(txid, propertyIdForSale, amountForSale, totalSold);
+    if (tradeStatus == TRADE_OPEN || tradeStatus == TRADE_OPEN_PART_FILLED) {
+        const CMPMetaDEx* tradeObj = MetaDEx_RetrieveTrade(txid);
+        if (tradeObj != nullptr) {
+            txobj.pushKV("amountremaining", FormatMP(tradeObj->getProperty(), tradeObj->getAmountRemaining()));
+            txobj.pushKV("amounttofill", FormatMP(tradeObj->getDesProperty(), tradeObj->getAmountToFill()));
+        }
+    }
+    txobj.pushKV("status", MetaDEx_getStatusText(tradeStatus));
+    if (tradeStatus == TRADE_CANCELLED || tradeStatus == TRADE_CANCELLED_PART_FILLED) {
+        txobj.pushKV("canceltxid", pDbTransactionList->findMetaDExCancel(txid).GetHex());
+    }
+    txobj.pushKV("matches", tradeArray);
+}
+
+void populateRPCExtendedTypeMetaDExCancel(const uint256& txid, UniValue& txobj)
+{
+    UniValue cancelArray(UniValue::VARR);
+    LOCK(cs_tally);
+    int numberOfCancels = pDbTransactionList->getNumberOfMetaDExCancels(txid);
+    if (0<numberOfCancels) {
+        for(int refNumber = 1; refNumber <= numberOfCancels; refNumber++) {
+            UniValue cancelTx(UniValue::VOBJ);
+            std::string strValue = pDbTransactionList->getKeyValue(txid.ToString() + "-C" + strprintf("%d",refNumber));
+            if (strValue.empty()) continue;
+            std::vector<std::string> vstr;
+            boost::split(vstr, strValue, boost::is_any_of(":"), boost::token_compress_on);
+            if (vstr.size() != 3) {
+                PrintToLog("TXListDB Error - trade cancel number of tokens is not as expected (%s)\n", strValue);
+                continue;
+            }
+            uint32_t propId = boost::lexical_cast<uint32_t>(vstr[1]);
+            int64_t amountUnreserved = boost::lexical_cast<int64_t>(vstr[2]);
+            cancelTx.pushKV("txid", vstr[0]);
+            cancelTx.pushKV("propertyid", (uint64_t) propId);
+            cancelTx.pushKV("amountunreserved", FormatMP(propId, amountUnreserved));
+            cancelArray.push_back(cancelTx);
+        }
+    }
+    txobj.pushKV("cancelledtransactions", cancelArray);
 }
 
 /* Function to enumerate sub sends for a given txid and add to supplied JSON array
@@ -405,7 +639,7 @@ int populateRPCSendAllSubSends(const uint256& txid, UniValue& subSends)
     int numberOfSubSends = 0;
     {
         LOCK(cs_tally);
-        numberOfSubSends = p_txlistdb->getNumberOfSubRecords(txid);
+        numberOfSubSends = pDbTransactionList->getNumberOfSubRecords(txid);
     }
     if (numberOfSubSends <= 0) {
         PrintToLog("TXLISTDB Error: Transaction %s parsed as a send all but could not locate sub sends in txlistdb.\n", txid.GetHex());
@@ -417,229 +651,51 @@ int populateRPCSendAllSubSends(const uint256& txid, UniValue& subSends)
         int64_t amount;
         {
             LOCK(cs_tally);
-            p_txlistdb->getSendAllDetails(txid, subSend, propertyId, amount);
+            pDbTransactionList->getSendAllDetails(txid, subSend, propertyId, amount);
         }
-        subSendObj.push_back(Pair("propertyid", (uint64_t)propertyId));
-        subSendObj.push_back(Pair("divisible", isPropertyDivisible(propertyId)));
-        subSendObj.push_back(Pair("amount", FormatMP(propertyId, amount)));
+        subSendObj.pushKV("propertyid", (uint64_t)propertyId);
+        subSendObj.pushKV("divisible", isPropertyDivisible(propertyId));
+        subSendObj.pushKV("amount", FormatMP(propertyId, amount));
         subSends.push_back(subSendObj);
     }
     return subSends.size();
 }
 
-void populateRPCTypeCreateContract(CMPTransaction& omniObj, UniValue& txobj)
+/* Function to enumerate DEx purchases for a given txid and add to supplied JSON array
+ * Note: this function exists as it is feasible for a single transaction to carry multiple outputs
+ *       and thus make multiple purchases from a single transaction
+ */
+int populateRPCDExPurchases(const CTransaction& wtx, UniValue& purchases, std::string filterAddress, interfaces::Wallet *iWallet)
 {
-
-  txobj.push_back(Pair("contract name", omniObj.getSPName()));
-  txobj.push_back(Pair("notional size", FormatDivisibleMP(omniObj.getNotionalSize())));
-  txobj.push_back(Pair("collateral currency", (uint64_t) omniObj.getCollateral()));
-  txobj.push_back(Pair("margin requirement", FormatDivisibleMP(omniObj.getMarginRequirement())));
-  txobj.push_back(Pair("blocks until expiration", (uint64_t) omniObj.getBlockUntilExpiration()));
-
-}
-
-void populateRPCTypeVestingTokens(CMPTransaction& omniObj, UniValue& txobj)
-{
-
-  txobj.push_back(Pair("propertyname", omniObj.getSPName()));
-  txobj.push_back(Pair("propertyId", (uint64_t) omniObj.getProperty()));
-  txobj.push_back(Pair("collateral currency", FormatDivisibleMP(omniObj.getAmount())));
-
-}
-
-void populateRPCTypeCreateOracle(CMPTransaction& omniObj, UniValue& txobj)
-{
-
-  txobj.push_back(Pair("contract name", omniObj.getSPName()));
-  txobj.push_back(Pair("notional size", FormatDivisibleMP(omniObj.getNotionalSize())));
-  txobj.push_back(Pair("collateral currency", (uint64_t) omniObj.getCollateral()));
-  txobj.push_back(Pair("margin requirement", FormatDivisibleMP(omniObj.getMarginRequirement())));
-  txobj.push_back(Pair("blocks until expiration", (uint64_t) omniObj.getBlockUntilExpiration()));
-  txobj.push_back(Pair("backup address", omniObj.getReceiver()));
-  txobj.push_back(Pair("hight price", FormatDivisibleMP(omniObj.getHighPrice())));
-  txobj.push_back(Pair("low price", FormatDivisibleMP(omniObj.getLowPrice())));
-
-}
-
-void populateRPCTypeMetaDExTrade(CMPTransaction& omniObj, UniValue& txobj)
-{
-
-  txobj.push_back(Pair("propertyname", omniObj.getSPName()));
-  txobj.push_back(Pair("propertyId", (uint64_t) omniObj.getPropertyId()));
-  txobj.push_back(Pair("amount", FormatDivisibleMP(omniObj.getAmountForSale())));
-  txobj.push_back(Pair("desire property", FormatDivisibleMP(omniObj.getDesiredProperty())));
-  txobj.push_back(Pair("desired value", FormatDivisibleMP(omniObj.getDesiredValue())));
-
-}
-
-void populateRPCTypeContractDexTrade(CMPTransaction& omniObj, UniValue& txobj)
-{
-
-  txobj.push_back(Pair("contractId", (uint64_t) omniObj.getPropertyId()));
-  txobj.push_back(Pair("amount", FormatDivisibleMP(omniObj.getContractAmount())));
-  txobj.push_back(Pair("effective price", FormatDivisibleMP(omniObj.getEffectivePrice())));
-
-  std::string action;
-  (omniObj.getTradingAction() == BUY) ? action = "buy" : action = "sell";
-  txobj.push_back(Pair("trading action", action));
-  txobj.push_back(Pair("leverage",FormatDivisibleMP(omniObj.getLeverage())));
-
-}
-
-
-void populateRPCTypeContractDexCancelEcosystem(CMPTransaction& omniObj, UniValue& txobj)
-{
-  txobj.push_back(Pair("Ecosystem", (uint64_t)omniObj.getEcosystem()));
-}
-
-void populateRPCTypeCreatePeggedCurrency(CMPTransaction& omniObj, UniValue& txobj)
-{
-  txobj.push_back(Pair("propertyId", (uint64_t) omniObj.getPropertyId()));
-  txobj.push_back(Pair("amount", FormatDivisibleMP(omniObj.getXAmount())));
-  txobj.push_back(Pair("contract related", (uint64_t) omniObj.getContractId()));
-}
-
-void populateRPCTypeSendPeggedCurrency(CMPTransaction& omniObj, UniValue& txobj)
-{
-  txobj.push_back(Pair("propertyId", (uint64_t) omniObj.getPropertyId()));
-  txobj.push_back(Pair("amount", FormatDivisibleMP(omniObj.getXAmount())));
-}
-
-void populateRPCTypeRedemptionPegged(CMPTransaction& omniObj, UniValue& txobj)
-{
-  uint32_t propertyId = _my_sps->findSPByTX(omniObj.getHash());
-
-  txobj.push_back(Pair("propertyId", (uint64_t) propertyId));
-  txobj.push_back(Pair("amount", FormatDivisibleMP(omniObj.getXAmount())));
-  txobj.push_back(Pair("contract related", (uint64_t) omniObj.getContractId()));
-
-}
-
-void populateRPCTypeContractDexClosePosition(CMPTransaction& omniObj, UniValue& txobj)
-{
-  txobj.push_back(Pair("ecosystem", FormatDivisibleMP(omniObj.getXAmount())));
-  txobj.push_back(Pair("contractId", (uint64_t) omniObj.getContractId()));
-}
-
-void populateRPCTypeContractDex_Cancel_Orders_By_Block(CMPTransaction& omniObj, UniValue& txobj)
-{
-  txobj.push_back(Pair("block", (uint64_t) omniObj.getBlock()));
-  txobj.push_back(Pair("block index", (uint64_t) omniObj.getIndexInBlock()));
-}
-
-void populateRPCTypeTradeOffer(CMPTransaction& omniObj, UniValue& txobj)
-{
-  uint32_t propertyId = _my_sps->findSPByTX(omniObj.getHash());
-
-  txobj.push_back(Pair("propertyId", (uint64_t) propertyId));
-  txobj.push_back(Pair("amount offered", (uint64_t) omniObj.getAmount()));
-  txobj.push_back(Pair("amount desired", (uint64_t) omniObj.getBlock()));
-  txobj.push_back(Pair("time limit", (uint64_t) omniObj.getTimeLimit()));
-  txobj.push_back(Pair("min fee", (uint64_t) omniObj.getMinFee()));
-  txobj.push_back(Pair("subAction", (uint64_t) omniObj.getSubAction()));
-}
-
-void populateRPCTypeDExBuy(CMPTransaction& omniObj, UniValue& txobj)
-{
-  uint32_t propertyId = _my_sps->findSPByTX(omniObj.getHash());
-
-  txobj.push_back(Pair("propertyId", (uint64_t) propertyId));
-  txobj.push_back(Pair("amount offered", (uint64_t) omniObj.getAmount()));
-  txobj.push_back(Pair("effective price", (uint64_t) omniObj.getEffectivePrice()));
-  txobj.push_back(Pair("time limit", (uint64_t) omniObj.getTimeLimit()));
-  txobj.push_back(Pair("min fee", (uint64_t) omniObj.getMinFee()));
-  txobj.push_back(Pair("subAction", (uint64_t) omniObj.getSubAction()));
-}
-
-void populateRPCTypeAcceptOfferBTC(CMPTransaction& omniObj, UniValue& txobj)
-{
-  uint32_t propertyId = _my_sps->findSPByTX(omniObj.getHash());
-
-  txobj.push_back(Pair("propertyId", (uint64_t) propertyId));
-  txobj.push_back(Pair("amount", FormatDivisibleMP(omniObj.getXAmount())));
-
-}
-
-void populateRPCTypeChange_OracleRef(CMPTransaction& omniObj, UniValue& txobj)
-{
-  txobj.push_back(Pair("contractId", (uint64_t) omniObj.getContractId()));
-}
-
-void populateRPCTypeSet_Oracle(CMPTransaction& omniObj, UniValue& txobj)
-{
-  txobj.push_back(Pair("contractId", (uint64_t) omniObj.getContractId()));
-  txobj.push_back(Pair("high price", (uint64_t) omniObj.getHighPrice()));
-  txobj.push_back(Pair("low price", (uint64_t) omniObj.getLowPrice()));
-
-}
-
-void populateRPCTypeOracleBackup(CMPTransaction& omniObj, UniValue& txobj)
-{
-  txobj.push_back(Pair("contractId", (uint64_t) omniObj.getContractId()));
-}
-
-void populateRPCTypeCloseOracle(CMPTransaction& omniObj, UniValue& txobj)
-{
-  txobj.push_back(Pair("contractId", (uint64_t) omniObj.getContractId()));
-}
-
-void populateRPCTypeCommitChannel(CMPTransaction& omniObj, UniValue& txobj)
-{
-
-  txobj.push_back(Pair("propertyId", (uint64_t) omniObj.getPropertyId()));
-  txobj.push_back(Pair("amount_commited", (uint64_t) omniObj.getAmountCommited()));
-}
-
-void populateRPCTypeWithdrawal_FromChannel(CMPTransaction& omniObj, UniValue& txobj)
-{
-  txobj.push_back(Pair("propertyId", (uint64_t) omniObj.getPropertyId()));
-  txobj.push_back(Pair("amount to withdraw", (uint64_t) omniObj.getAmountToWith()));
-}
-
-void populateRPCTypeInstant_Trade(CMPTransaction& omniObj, UniValue& txobj)
-{
-  txobj.push_back(Pair("propertyId", (uint64_t) omniObj.getPropertyId()));
-  txobj.push_back(Pair("amount for sale", (uint64_t) omniObj.getAmountForSale()));
-  txobj.push_back(Pair("block for expiry", (uint64_t) omniObj.getBlockForExpiry()));
-  txobj.push_back(Pair("desired property", (uint64_t) omniObj.getDesiredProperty()));
-  txobj.push_back(Pair("desired value", (uint64_t) omniObj.getDesiredValue()));
-}
-
-
-void populateRPCTypeTransfer(CMPTransaction& omniObj, UniValue& txobj)
-{
-  txobj.push_back(Pair("propertyId", (uint64_t) omniObj.getProperty()));
-  txobj.push_back(Pair("amount", (uint64_t) omniObj.getXAmount()));
-}
-
-void populateRPCTypeCreate_Channel(CMPTransaction& omniObj, UniValue& txobj)
-{
-  txobj.push_back(Pair("first address",  omniObj.getSender()));
-  txobj.push_back(Pair("second address", omniObj.getReceiver()));
-  txobj.push_back(Pair("blocks", (uint64_t) omniObj.getBlockForExpiry()));
-}
-
-void populateRPCTypeContract_Instant(CMPTransaction& omniObj, UniValue& txobj)
-{
-  txobj.push_back(Pair("propertyId", (uint64_t) omniObj.getProperty()));
-  txobj.push_back(Pair("amount", (uint64_t) omniObj.getAmountForSale()));
-  txobj.push_back(Pair("block for expiry", (uint64_t) omniObj.getBlockForExpiry()));
-  txobj.push_back(Pair("price", (uint64_t) omniObj.getPrice()));
-  txobj.push_back(Pair("trading action", (uint64_t) omniObj.getItradingAction()));
-  txobj.push_back(Pair("leverage", (uint64_t) omniObj.getIleverage()));
-}
-
-void populateRPCTypeNew_Id_Registration(CMPTransaction& omniObj, UniValue& txobj)
-{
- /** Do we need this? (public information?)*/
-}
-
-void populateRPCTypeUpdate_Id_Registration(CMPTransaction& omniObj, UniValue& txobj)
-{
-/** Do we need this? (public information?)*/
-}
-
-void populateRPCTypeDEx_Payment(CMPTransaction& omniObj, UniValue& txobj)
-{
-/** If it needs more info*/
+    int numberOfPurchases = 0;
+    {
+        LOCK(cs_tally);
+        numberOfPurchases = pDbTransactionList->getNumberOfSubRecords(wtx.GetHash());
+    }
+    if (numberOfPurchases <= 0) {
+        PrintToLog("TXLISTDB Error: Transaction %s parsed as a DEx payment but could not locate purchases in txlistdb.\n", wtx.GetHash().GetHex());
+        return -1;
+    }
+    for (int purchaseNumber = 1; purchaseNumber <= numberOfPurchases; purchaseNumber++) {
+        UniValue purchaseObj(UniValue::VOBJ);
+        std::string buyer, seller;
+        uint64_t vout, nValue, propertyId;
+        {
+            LOCK(cs_tally);
+            pDbTransactionList->getPurchaseDetails(wtx.GetHash(), purchaseNumber, &buyer, &seller, &vout, &propertyId, &nValue);
+        }
+        if (!filterAddress.empty() && buyer != filterAddress && seller != filterAddress) continue; // filter requested & doesn't match
+        bool bIsMine = false;
+        if (IsMyAddress(buyer, iWallet) || IsMyAddress(seller, iWallet)) bIsMine = true;
+        int64_t amountPaid = wtx.vout[vout].nValue;
+        purchaseObj.pushKV("vout", vout);
+        purchaseObj.pushKV("amountpaid", FormatDivisibleMP(amountPaid));
+        purchaseObj.pushKV("ismine", bIsMine);
+        purchaseObj.pushKV("referenceaddress", seller);
+        purchaseObj.pushKV("propertyid", propertyId);
+        purchaseObj.pushKV("amountbought", FormatDivisibleMP(nValue));
+        purchaseObj.pushKV("valid", true); //only valid purchases are stored, anything else is regular BTC tx
+        purchases.push_back(purchaseObj);
+    }
+    return purchases.size();
 }

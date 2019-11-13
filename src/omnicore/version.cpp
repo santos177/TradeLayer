@@ -1,30 +1,12 @@
-#include "omnicore/version.h"
+#include <omnicore/version.h>
 
-#include "clientversion.h"
-#include "tinyformat.h"
+#include <clientversion.h>
+#include <tinyformat.h>
 
 #include <string>
 
-// #ifdef HAVE_BUILD_INFO FIXME: build.h doesnt exist
-// #    include "build.h"
-// #endif
-
-#ifndef COMMIT_ID
-#   ifdef GIT_ARCHIVE
-#       define COMMIT_ID "$Format:%h$"
-#   elif defined(BUILD_SUFFIX)
-#       define COMMIT_ID STRINGIZE(BUILD_SUFFIX)
-#   else
-#       define COMMIT_ID ""
-#   endif
-#endif
-
-#ifndef BUILD_DATE
-#    ifdef GIT_COMMIT_DATE
-#        define BUILD_DATE GIT_COMMIT_DATE
-#    else
-#        define BUILD_DATE __DATE__ ", " __TIME__
-#    endif
+#ifdef HAVE_BUILD_INFO
+#include <obj/build.h>
 #endif
 
 #ifdef OMNICORE_VERSION_STATUS
@@ -32,6 +14,9 @@
 #else
 #    define OMNICORE_VERSION_SUFFIX ""
 #endif
+
+//! Name of client reported in the user aagent message.
+const std::string OMNI_CLIENT_NAME("Omni");
 
 //! Returns formatted Omni Core version, e.g. "1.2.0" or "1.3.4.1"
 const std::string OmniCoreVersion()
@@ -65,16 +50,4 @@ const std::string BitcoinCoreVersion()
                 CLIENT_VERSION_MINOR,
                 CLIENT_VERSION_REVISION);
     }
-}
-
-//! Returns build date
-const std::string BuildDate()
-{
-    return std::string(BUILD_DATE);
-}
-
-//! Returns commit identifier, if available
-const std::string BuildCommit()
-{
-    return std::string(COMMIT_ID);
 }

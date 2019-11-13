@@ -890,7 +890,7 @@ libbitcoin_server_a-torcontrol.o: torcontrol.cpp \
  /usr/include/c++/7/condition_variable /usr/include/c++/7/chrono \
  /usr/include/c++/7/ratio /usr/include/c++/7/bits/parse_numbers.h \
  /usr/include/c++/7/bits/std_mutex.h /usr/include/c++/7/thread \
- /usr/include/c++/7/mutex utilstrencodings.h netbase.h \
+ /usr/include/c++/7/mutex util/strencodings.h attributes.h netbase.h \
  config/bitcoin-config.h compat.h /usr/include/fcntl.h \
  /usr/include/x86_64-linux-gnu/bits/fcntl.h \
  /usr/include/x86_64-linux-gnu/bits/fcntl-linux.h \
@@ -918,7 +918,7 @@ libbitcoin_server_a-torcontrol.o: torcontrol.cpp \
  /usr/include/x86_64-linux-gnu/bits/types/__sigval_t.h \
  /usr/include/x86_64-linux-gnu/bits/netdb.h netaddress.h serialize.h \
  compat/endian.h compat/byteswap.h /usr/include/byteswap.h prevector.h \
- net.h addrdb.h fs.h /usr/include/boost/filesystem.hpp \
+ span.h net.h addrdb.h fs.h /usr/include/boost/filesystem.hpp \
  /usr/include/boost/filesystem/config.hpp \
  /usr/include/boost/filesystem/path.hpp \
  /usr/include/boost/filesystem/path_traits.hpp \
@@ -939,11 +939,16 @@ libbitcoin_server_a-torcontrol.o: torcontrol.cpp \
  /usr/include/boost/filesystem/fstream.hpp /usr/include/c++/7/fstream \
  /usr/include/x86_64-linux-gnu/c++/7/bits/basic_file.h \
  /usr/include/x86_64-linux-gnu/c++/7/bits/c++io.h \
- /usr/include/c++/7/bits/fstream.tcc \
- /usr/include/boost/filesystem/detail/utf8_codecvt_facet.hpp \
- /usr/include/boost/detail/utf8_codecvt_facet.hpp addrman.h protocol.h \
- uint256.h crypto/common.h version.h random.h crypto/chacha20.h \
- timedata.h util.h tinyformat.h /usr/include/c++/7/iostream utiltime.h \
+ /usr/include/c++/7/bits/fstream.tcc addrman.h protocol.h uint256.h \
+ version.h random.h crypto/chacha20.h crypto/common.h timedata.h \
+ util/system.h compat/assumptions.h logging.h tinyformat.h \
+ /usr/include/c++/7/iostream util/memory.h util/time.h \
+ /usr/include/c++/7/unordered_set /usr/include/c++/7/bits/hashtable.h \
+ /usr/include/c++/7/bits/hashtable_policy.h \
+ /usr/include/c++/7/bits/unordered_set.h amount.h bloom.h \
+ crypto/siphash.h hash.h crypto/ripemd160.h crypto/sha256.h limitedmap.h \
+ policy/feerate.h streams.h support/allocators/zeroafterfree.h \
+ support/cleanse.h threadinterrupt.h crypto/hmac_sha256.h \
  /usr/include/boost/signals2/signal.hpp \
  /usr/include/boost/signals2/connection.hpp \
  /usr/include/boost/signals2/detail/auto_buffer.hpp \
@@ -1135,10 +1140,7 @@ libbitcoin_server_a-torcontrol.o: torcontrol.cpp \
  /usr/include/boost/signals2/variadic_signal.hpp \
  /usr/include/boost/preprocessor/control/expr_if.hpp \
  /usr/include/boost/signals2/detail/variadic_slot_invoker.hpp \
- /usr/include/boost/signals2/detail/signal_template.hpp amount.h bloom.h \
- hash.h crypto/ripemd160.h crypto/sha256.h limitedmap.h policy/feerate.h \
- streams.h support/allocators/zeroafterfree.h support/cleanse.h \
- threadinterrupt.h crypto/hmac_sha256.h \
+ /usr/include/boost/signals2/detail/signal_template.hpp \
  /usr/include/boost/algorithm/string/split.hpp \
  /usr/include/boost/algorithm/string/config.hpp \
  /usr/include/boost/algorithm/string/iter_find.hpp \
@@ -3243,7 +3245,9 @@ threadsafety.h:
 
 /usr/include/c++/7/mutex:
 
-utilstrencodings.h:
+util/strencodings.h:
+
+attributes.h:
 
 netbase.h:
 
@@ -3327,6 +3331,8 @@ compat/byteswap.h:
 
 prevector.h:
 
+span.h:
+
 net.h:
 
 addrdb.h:
@@ -3381,17 +3387,11 @@ fs.h:
 
 /usr/include/c++/7/bits/fstream.tcc:
 
-/usr/include/boost/filesystem/detail/utf8_codecvt_facet.hpp:
-
-/usr/include/boost/detail/utf8_codecvt_facet.hpp:
-
 addrman.h:
 
 protocol.h:
 
 uint256.h:
-
-crypto/common.h:
 
 version.h:
 
@@ -3399,15 +3399,57 @@ random.h:
 
 crypto/chacha20.h:
 
+crypto/common.h:
+
 timedata.h:
 
-util.h:
+util/system.h:
+
+compat/assumptions.h:
+
+logging.h:
 
 tinyformat.h:
 
 /usr/include/c++/7/iostream:
 
-utiltime.h:
+util/memory.h:
+
+util/time.h:
+
+/usr/include/c++/7/unordered_set:
+
+/usr/include/c++/7/bits/hashtable.h:
+
+/usr/include/c++/7/bits/hashtable_policy.h:
+
+/usr/include/c++/7/bits/unordered_set.h:
+
+amount.h:
+
+bloom.h:
+
+crypto/siphash.h:
+
+hash.h:
+
+crypto/ripemd160.h:
+
+crypto/sha256.h:
+
+limitedmap.h:
+
+policy/feerate.h:
+
+streams.h:
+
+support/allocators/zeroafterfree.h:
+
+support/cleanse.h:
+
+threadinterrupt.h:
+
+crypto/hmac_sha256.h:
 
 /usr/include/boost/signals2/signal.hpp:
 
@@ -3812,30 +3854,6 @@ utiltime.h:
 /usr/include/boost/signals2/detail/variadic_slot_invoker.hpp:
 
 /usr/include/boost/signals2/detail/signal_template.hpp:
-
-amount.h:
-
-bloom.h:
-
-hash.h:
-
-crypto/ripemd160.h:
-
-crypto/sha256.h:
-
-limitedmap.h:
-
-policy/feerate.h:
-
-streams.h:
-
-support/allocators/zeroafterfree.h:
-
-support/cleanse.h:
-
-threadinterrupt.h:
-
-crypto/hmac_sha256.h:
 
 /usr/include/boost/algorithm/string/split.hpp:
 

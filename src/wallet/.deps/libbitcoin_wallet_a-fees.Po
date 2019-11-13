@@ -167,10 +167,10 @@ wallet/libbitcoin_wallet_a-fees.o: wallet/fees.cpp \
  /usr/include/x86_64-linux-gnu/bits/string_fortified.h \
  /usr/include/c++/7/vector /usr/include/c++/7/bits/stl_vector.h \
  /usr/include/c++/7/bits/stl_bvector.h /usr/include/c++/7/bits/vector.tcc \
- prevector.h /usr/include/c++/7/iterator /usr/include/c++/7/ostream \
- /usr/include/c++/7/bits/ostream.tcc /usr/include/c++/7/istream \
- /usr/include/c++/7/bits/istream.tcc \
- /usr/include/c++/7/bits/stream_iterator.h script/interpreter.h \
+ prevector.h /usr/include/c++/7/cstddef /usr/include/c++/7/iterator \
+ /usr/include/c++/7/ostream /usr/include/c++/7/bits/ostream.tcc \
+ /usr/include/c++/7/istream /usr/include/c++/7/bits/istream.tcc \
+ /usr/include/c++/7/bits/stream_iterator.h span.h script/interpreter.h \
  script/script_error.h primitives/transaction.h script/script.h \
  crypto/common.h /usr/include/c++/7/climits \
  /usr/lib/gcc/x86_64-linux-gnu/7/include-fixed/limits.h \
@@ -183,8 +183,8 @@ wallet/libbitcoin_wallet_a-fees.o: wallet/fees.cpp \
  /usr/include/x86_64-linux-gnu/bits/uio_lim.h uint256.h \
  /usr/include/c++/7/cstring script/standard.h \
  /usr/include/boost/variant.hpp /usr/include/boost/variant/variant.hpp \
- /usr/include/c++/7/cstddef /usr/include/boost/type_index.hpp \
- /usr/include/boost/config.hpp /usr/include/boost/config/user.hpp \
+ /usr/include/boost/type_index.hpp /usr/include/boost/config.hpp \
+ /usr/include/boost/config/user.hpp \
  /usr/include/boost/config/detail/select_compiler_config.hpp \
  /usr/include/boost/config/compiler/gcc.hpp \
  /usr/include/boost/config/detail/select_stdlib_config.hpp \
@@ -610,11 +610,10 @@ wallet/libbitcoin_wallet_a-fees.o: wallet/fees.cpp \
  /usr/include/c++/7/unordered_map /usr/include/c++/7/bits/hashtable.h \
  /usr/include/c++/7/bits/hashtable_policy.h \
  /usr/include/c++/7/bits/unordered_map.h /usr/include/c++/7/unordered_set \
- /usr/include/c++/7/bits/unordered_set.h hash.h crypto/ripemd160.h \
- crypto/sha256.h version.h sync.h threadsafety.h \
- /usr/include/c++/7/condition_variable /usr/include/c++/7/chrono \
- /usr/include/c++/7/ratio /usr/include/c++/7/ctime \
- /usr/include/c++/7/bits/parse_numbers.h \
+ /usr/include/c++/7/bits/unordered_set.h crypto/siphash.h sync.h \
+ threadsafety.h /usr/include/c++/7/condition_variable \
+ /usr/include/c++/7/chrono /usr/include/c++/7/ratio \
+ /usr/include/c++/7/ctime /usr/include/c++/7/bits/parse_numbers.h \
  /usr/include/c++/7/bits/std_mutex.h /usr/include/c++/7/thread \
  /usr/include/c++/7/mutex random.h crypto/chacha20.h \
  /usr/include/boost/multi_index_container.hpp \
@@ -1049,8 +1048,9 @@ wallet/libbitcoin_wallet_a-fees.o: wallet/fees.cpp \
  /usr/include/boost/signals2/detail/lwm_pthreads.hpp \
  /usr/include/boost/signals2/variadic_signal.hpp \
  /usr/include/boost/signals2/detail/variadic_slot_invoker.hpp \
- /usr/include/boost/signals2/detail/signal_template.hpp util.h compat.h \
- /usr/include/fcntl.h /usr/include/x86_64-linux-gnu/bits/fcntl.h \
+ /usr/include/boost/signals2/detail/signal_template.hpp util/system.h \
+ attributes.h compat.h /usr/include/fcntl.h \
+ /usr/include/x86_64-linux-gnu/bits/fcntl.h \
  /usr/include/x86_64-linux-gnu/bits/fcntl-linux.h \
  /usr/include/x86_64-linux-gnu/bits/types/struct_iovec.h \
  /usr/include/linux/falloc.h /usr/include/x86_64-linux-gnu/bits/stat.h \
@@ -1074,7 +1074,7 @@ wallet/libbitcoin_wallet_a-fees.o: wallet/fees.cpp \
  /usr/include/ifaddrs.h /usr/include/netdb.h /usr/include/rpc/netdb.h \
  /usr/include/x86_64-linux-gnu/bits/types/sigevent_t.h \
  /usr/include/x86_64-linux-gnu/bits/types/__sigval_t.h \
- /usr/include/x86_64-linux-gnu/bits/netdb.h fs.h \
+ /usr/include/x86_64-linux-gnu/bits/netdb.h compat/assumptions.h fs.h \
  /usr/include/boost/filesystem.hpp \
  /usr/include/boost/filesystem/config.hpp \
  /usr/include/boost/system/api_config.hpp \
@@ -1110,10 +1110,8 @@ wallet/libbitcoin_wallet_a-fees.o: wallet/fees.cpp \
  /usr/include/boost/filesystem/fstream.hpp /usr/include/c++/7/fstream \
  /usr/include/x86_64-linux-gnu/c++/7/bits/basic_file.h \
  /usr/include/x86_64-linux-gnu/c++/7/bits/c++io.h \
- /usr/include/c++/7/bits/fstream.tcc \
- /usr/include/boost/filesystem/detail/utf8_codecvt_facet.hpp \
- /usr/include/boost/detail/utf8_codecvt_facet.hpp tinyformat.h \
- /usr/include/c++/7/iostream utiltime.h \
+ /usr/include/c++/7/bits/fstream.tcc logging.h tinyformat.h \
+ /usr/include/c++/7/iostream util/memory.h util/time.h \
  /usr/include/boost/thread/condition_variable.hpp \
  /usr/include/boost/thread/detail/platform.hpp \
  /usr/include/boost/config/requires_threads.hpp \
@@ -1210,15 +1208,16 @@ wallet/libbitcoin_wallet_a-fees.o: wallet/fees.cpp \
  /usr/include/boost/thread/cv_status.hpp \
  /usr/include/boost/enable_shared_from_this.hpp \
  /usr/include/boost/smart_ptr/enable_shared_from_this.hpp validation.h \
- protocol.h netaddress.h versionbits.h chain.h arith_uint256.h pow.h \
+ protocol.h netaddress.h version.h versionbits.h chain.h arith_uint256.h \
  consensus/params.h wallet/coincontrol.h policy/fees.h wallet/wallet.h \
- streams.h support/allocators/zeroafterfree.h support/cleanse.h \
- ui_interface.h /usr/include/boost/signals2/last_value.hpp \
- utilstrencodings.h validationinterface.h script/ismine.h script/sign.h \
- wallet/crypter.h keystore.h key.h pubkey.h support/allocators/secure.h \
- support/lockedpool.h wallet/walletdb.h wallet/db.h clientversion.h \
+ interfaces/chain.h optional.h outputtype.h keystore.h key.h pubkey.h \
+ hash.h crypto/ripemd160.h crypto/sha256.h support/allocators/secure.h \
+ support/lockedpool.h support/cleanse.h script/sign.h streams.h \
+ support/allocators/zeroafterfree.h ui_interface.h util/strencodings.h \
+ validationinterface.h script/ismine.h wallet/crypter.h \
+ wallet/coinselection.h wallet/walletdb.h wallet/db.h clientversion.h \
  /usr/include/db_cxx.h /usr/include/db.h /usr/include/inttypes.h \
- wallet/rpcwallet.h
+ wallet/walletutil.h
 
 /usr/include/stdc-predef.h:
 
@@ -1662,6 +1661,8 @@ compat/byteswap.h:
 
 prevector.h:
 
+/usr/include/c++/7/cstddef:
+
 /usr/include/c++/7/iterator:
 
 /usr/include/c++/7/ostream:
@@ -1673,6 +1674,8 @@ prevector.h:
 /usr/include/c++/7/bits/istream.tcc:
 
 /usr/include/c++/7/bits/stream_iterator.h:
+
+span.h:
 
 script/interpreter.h:
 
@@ -1713,8 +1716,6 @@ script/standard.h:
 /usr/include/boost/variant.hpp:
 
 /usr/include/boost/variant/variant.hpp:
-
-/usr/include/c++/7/cstddef:
 
 /usr/include/boost/type_index.hpp:
 
@@ -2636,13 +2637,7 @@ indirectmap.h:
 
 /usr/include/c++/7/bits/unordered_set.h:
 
-hash.h:
-
-crypto/ripemd160.h:
-
-crypto/sha256.h:
-
-version.h:
+crypto/siphash.h:
 
 sync.h:
 
@@ -3602,7 +3597,9 @@ crypto/chacha20.h:
 
 /usr/include/boost/signals2/detail/signal_template.hpp:
 
-util.h:
+util/system.h:
+
+attributes.h:
 
 compat.h:
 
@@ -3669,6 +3666,8 @@ compat.h:
 /usr/include/x86_64-linux-gnu/bits/types/__sigval_t.h:
 
 /usr/include/x86_64-linux-gnu/bits/netdb.h:
+
+compat/assumptions.h:
 
 fs.h:
 
@@ -3760,15 +3759,15 @@ fs.h:
 
 /usr/include/c++/7/bits/fstream.tcc:
 
-/usr/include/boost/filesystem/detail/utf8_codecvt_facet.hpp:
-
-/usr/include/boost/detail/utf8_codecvt_facet.hpp:
+logging.h:
 
 tinyformat.h:
 
 /usr/include/c++/7/iostream:
 
-utiltime.h:
+util/memory.h:
+
+util/time.h:
 
 /usr/include/boost/thread/condition_variable.hpp:
 
@@ -3970,13 +3969,13 @@ protocol.h:
 
 netaddress.h:
 
+version.h:
+
 versionbits.h:
 
 chain.h:
 
 arith_uint256.h:
-
-pow.h:
 
 consensus/params.h:
 
@@ -3986,25 +3985,11 @@ policy/fees.h:
 
 wallet/wallet.h:
 
-streams.h:
+interfaces/chain.h:
 
-support/allocators/zeroafterfree.h:
+optional.h:
 
-support/cleanse.h:
-
-ui_interface.h:
-
-/usr/include/boost/signals2/last_value.hpp:
-
-utilstrencodings.h:
-
-validationinterface.h:
-
-script/ismine.h:
-
-script/sign.h:
-
-wallet/crypter.h:
+outputtype.h:
 
 keystore.h:
 
@@ -4012,9 +3997,35 @@ key.h:
 
 pubkey.h:
 
+hash.h:
+
+crypto/ripemd160.h:
+
+crypto/sha256.h:
+
 support/allocators/secure.h:
 
 support/lockedpool.h:
+
+support/cleanse.h:
+
+script/sign.h:
+
+streams.h:
+
+support/allocators/zeroafterfree.h:
+
+ui_interface.h:
+
+util/strencodings.h:
+
+validationinterface.h:
+
+script/ismine.h:
+
+wallet/crypter.h:
+
+wallet/coinselection.h:
 
 wallet/walletdb.h:
 
@@ -4028,4 +4039,4 @@ clientversion.h:
 
 /usr/include/inttypes.h:
 
-wallet/rpcwallet.h:
+wallet/walletutil.h:
