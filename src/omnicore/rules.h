@@ -146,6 +146,10 @@ public:
     //! Block to activate the waiting period to activate trading of any token on the distributed exchange
     int FREEDEX_FEATURE_BLOCK;
 
+    //! Block to enable tradelayer tx by default
+    int MSC_CONTRACTDEX_BLOCK;
+
+
     /** Returns a mapping of transaction types, and the blocks at which they are enabled. */
     virtual std::vector<TransactionRestriction> GetRestrictions() const;
 

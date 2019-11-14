@@ -1818,15 +1818,6 @@ bool mastercore_handler_tx(const CTransaction& tx, int nBlock, unsigned int idx,
         // if (isNonMainNet() || nBlock <= params.LAST_EXODUS_BLOCK) {
         //     fFoundTx |= HandleExodusPurchase(tx, nBlock, mp_obj.getSender(), nBlockTime);
         // }
-
-        // if interpretPacket returns 1, that means we have an instant trade between LTCs and tokens.
-        if (interp_ret == 1){
-            // HandleLtcInstantTrade(tx, nBlock, mp_obj.getSender(), mp_obj.getReceiver(), mp_obj.getProperty(), mp_obj.getAmountForSale(), mp_obj.getDesiredProperty(), mp_obj.getDesiredValue(), mp_obj.getIndexInBlock());
-
-        //NOTE: we need to return this number 2 from mp_obj.interpretPacket() (tx.cpp)
-        } else if (interp_ret == 2) {
-            HandleDExPayments(tx, nBlock, mp_obj.getSender());
-        }
     }
 
     if (0 == pop_ret) {
@@ -1840,6 +1831,17 @@ bool mastercore_handler_tx(const CTransaction& tx, int nBlock, unsigned int idx,
             pDbTransactionList->recordTX(tx.GetHash(), bValid, nBlock, mp_obj.getType(), mp_obj.getNewAmount());
             pDbTransaction->RecordTransaction(tx.GetHash(), idx, interp_ret);
         }
+
+        // if interpretPacket returns 1, that means we have an instant trade between LTCs and tokens.
+        if (interp_ret == 1){
+            // HandleLtcInstantTrade(tx, nBlock, mp_obj.getSender(), mp_obj.getReceiver(), mp_obj.getProperty(), mp_obj.getAmountForSale(), mp_obj.getDesiredProperty(), mp_obj.getDesiredValue(), mp_obj.getIndexInBlock());
+
+        //NOTE: we need to return this number 2 from mp_obj.interpretPacket() (tx.cpp)
+        } else if (interp_ret == 2) {
+            PrintToLog("%s(): interp_ret == 2 \n",__func__);
+            HandleDExPayments(tx, nBlock, mp_obj.getSender());
+        }
+
         fFoundTx |= (interp_ret == 0);
     }
 
