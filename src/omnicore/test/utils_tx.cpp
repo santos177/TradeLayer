@@ -26,7 +26,7 @@ BOOST_AUTO_TEST_SUITE_END()
 
 CTxOut PayToPubKeyHash_Exodus()
 {
-    CTxDestination address = ExodusAddress();
+    CTxDestination address;
     CScript scriptPubKey = GetScriptForDestination(address);
     int64_t amount = OmniGetDustThreshold(scriptPubKey);
 
@@ -35,7 +35,7 @@ CTxOut PayToPubKeyHash_Exodus()
 
 CTxOut PayToPubKeyHash_ExodusCrowdsale(int nHeight)
 {
-    CTxDestination dest = ExodusCrowdsaleAddress(nHeight);
+    CTxDestination dest;
     CScript scriptPubKey = GetScriptForDestination(dest);
     int64_t amount = OmniGetDustThreshold(scriptPubKey);
 
@@ -223,4 +223,3 @@ CTxOut NonStandardOutput()
 
     return CTxOut(amount, scriptPubKey);
 }
-

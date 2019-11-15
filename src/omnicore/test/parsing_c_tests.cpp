@@ -75,7 +75,7 @@ BOOST_AUTO_TEST_CASE(reference_identification)
 
         std::vector<CTxOut> txOutputs;
         txOutputs.push_back(OpReturn_SimpleSend());
-        txOutputs.push_back(createTxOut(2700000, EncodeDestination(ExodusAddress())));
+        // txOutputs.push_back(createTxOut(2700000, EncodeDestination(ddress())));
 
         CTransaction dummyTx = TxClassC(txInputs, txOutputs);
 
@@ -158,7 +158,7 @@ BOOST_AUTO_TEST_CASE(reference_identification)
         txOutputs.push_back(NonStandardOutput());
         txOutputs.push_back(createTxOut(6000, "35iqJySouevicrYzMhjKSsqokSGwGovGov"));
         txOutputs.push_back(createTxOut(6000, "35iqJySouevicrYzMhjKSsqokSGwGovGov"));
-        txOutputs.push_back(PayToPubKeyHash_Exodus());
+        // txOutputs.push_back(PayToPubKeyHash_Exodus());
         txOutputs.push_back(OpReturn_SimpleSend());
 
         CTransaction dummyTx = TxClassC(txInputs, txOutputs);

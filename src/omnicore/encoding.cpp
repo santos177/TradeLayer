@@ -69,8 +69,8 @@ bool OmniCore_Encode_ClassB(const std::string& senderAddress, const CPubKey& red
     }
 
     // Add the Exodus marker output
-    CScript scriptExodusOutput = GetScriptForDestination(ExodusAddress());
-    vecOutputs.push_back(std::make_pair(scriptExodusOutput, OmniGetDustThreshold(scriptExodusOutput)));
+    // CScript scriptExodusOutput = GetScriptForDestination(ExodusAddress());
+    // vecOutputs.push_back(std::make_pair(scriptExodusOutput, OmniGetDustThreshold(scriptExodusOutput)));
     return true;
 }
 

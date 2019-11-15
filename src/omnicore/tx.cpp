@@ -74,6 +74,7 @@ std::string mastercore::strTransactionType(uint16_t txType)
         case OMNICORE_MESSAGE_TYPE_ALERT: return "ALERT";
         case OMNICORE_MESSAGE_TYPE_DEACTIVATION: return "Feature Deactivation";
         case OMNICORE_MESSAGE_TYPE_ACTIVATION: return "Feature Activation";
+        case MSC_TYPE_DEX_PAYMENT: return "DEx payment";
 
         default: return "* unknown type *";
     }
@@ -180,6 +181,9 @@ bool CMPTransaction::interpret_Transaction()
 
         case OMNICORE_MESSAGE_TYPE_ALERT:
             return interpret_Alert();
+
+        case MSC_TYPE_DEX_PAYMENT:
+            return interpret_DEx_Payment();
     }
 
     return false;
@@ -847,6 +851,25 @@ bool CMPTransaction::interpret_Alert()
     return true;
 }
 
+/** Tx  117*/
+bool CMPTransaction::interpret_DEx_Payment()
+{
+
+  // memcpy(&property, &pkt[4], 4);
+  // SwapByteOrder32(property);
+  // memcpy(&nValue, &pkt[8], 8);
+  // SwapByteOrder64(nValue);
+
+  if ((!rpcOnly && msc_debug_packets) || msc_debug_packets_readonly)
+  {
+      PrintToLog("%s(): inside the function\n",__func__);
+      PrintToLog("\t sender: %s\n", sender);
+      PrintToLog("\t receiver: %s\n", receiver);
+  }
+
+  return true;
+}
+
 // ---------------------- CORE LOGIC -------------------------
 
 /**
@@ -942,6 +965,9 @@ int CMPTransaction::interpretPacket()
 
         case OMNICORE_MESSAGE_TYPE_ALERT:
             return logicMath_Alert();
+
+        case MSC_TYPE_DEX_PAYMENT:
+            return logicMath_DEx_Payment();
     }
 
     return (PKT_ERROR -100);
@@ -2467,4 +2493,23 @@ int CMPTransaction::logicMath_Alert()
     DoWarning(alert_text);
 
     return 0;
+}
+
+/** Tx 117 */
+int CMPTransaction::logicMath_DEx_Payment()
+{
+  int rc = 2;
+
+  if (!IsTransactionTypeAllowed(block, property, type, version)) {
+      PrintToLog("%s(): rejected: type %d or version %d not permitted for property %d at block %d\n",
+              __func__,
+              type,
+              version,
+              property,
+              block);
+      return (PKT_ERROR_METADEX -22);
+  }
+  PrintToLog("%s(): inside the function\n",__func__);
+
+  return rc;
 }

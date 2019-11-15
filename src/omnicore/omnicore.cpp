@@ -77,16 +77,6 @@ using namespace mastercore;
 //! Global lock for state objects
 CCriticalSection cs_tally;
 
-//! Exodus address (changes based on network)
-static std::string exodus_address = "1EXoDusjGwvnjZUyKkxZ4UHEf77z6A5S4P";
-
-//! Mainnet Exodus address
-static const std::string exodus_mainnet = "1EXoDusjGwvnjZUyKkxZ4UHEf77z6A5S4P";
-//! Testnet Exodus address
-static const std::string exodus_testnet = "mpexoDuSkGGqvqrkrjiFng38QPkJQVFyqv";
-//! Testnet Exodus crowdsale address
-static const std::string getmoney_testnet = "moneyqMan7uh8FqdCA2BV5yZ8qVrc9ikLP";
-
 static int nWaterlineBlock = 0;
 
 /**
@@ -498,9 +488,6 @@ bool mastercore::update_tally_map(const std::string& who, uint32_t propertyId, i
         assert(before == after);
         PrintToLog("%s(%s, %u=0x%X, %+d, ttype=%d) ERROR: insufficient balance (=%d)\n", __func__, who, propertyId, propertyId, amount, ttype, before);
     }
-    if (msc_debug_tally && (exodus_address != who || msc_debug_exo)) {
-        PrintToLog("%s(%s, %u=0x%X, %+d, ttype=%d): before=%d, after=%d\n", __func__, who, propertyId, propertyId, amount, ttype, before, after);
-    }
 
     return bRet;
 }
@@ -559,7 +546,7 @@ static int64_t calculate_and_update_devmsc(unsigned int nTime, int block)
     }
 
     if (exodus_delta > 0) {
-        update_tally_map(exodus_address, OMNI_PROPERTY_MSC, exodus_delta, BALANCE);
+        // update_tally_map(exodus_address, OMNI_PROPERTY_MSC, exodus_delta, BALANCE);
         exodus_prev = devmsc;
     }
 
@@ -748,7 +735,6 @@ bool IsInMarkerCache(const uint256& txHash)
  */
 int mastercore::GetEncodingClass(const CTransaction& tx, int nBlock)
 {
-    bool hasExodus = false;
     bool hasMultisig = false;
     bool hasOpReturn = false;
     bool hasMoney = false;
@@ -796,17 +782,6 @@ int mastercore::GetEncodingClass(const CTransaction& tx, int nBlock)
             continue;
         }
 
-        if (outType == TX_PUBKEYHASH) {
-            CTxDestination dest;
-            if (ExtractDestination(output.scriptPubKey, dest)) {
-                if (dest == ExodusAddress()) {
-                    hasExodus = true;
-                }
-                if (dest == ExodusCrowdsaleAddress(nBlock)) {
-                    hasMoney = true;
-                }
-            }
-        }
         if (outType == TX_MULTISIG) {
             hasMultisig = true;
         }
@@ -833,10 +808,10 @@ int mastercore::GetEncodingClass(const CTransaction& tx, int nBlock)
     if (hasOpReturn) {
         return OMNI_CLASS_C;
     }
-    if (hasExodus && hasMultisig) {
+    if (hasMultisig) {
         return OMNI_CLASS_B;
     }
-    if (hasExodus || hasMoney) {
+    if (hasMoney) {
         return OMNI_CLASS_A;
     }
 
@@ -1046,13 +1021,11 @@ static int parseTransaction(bool bRPConly, const CTransaction& wtx, int nBlock, 
         }
         CTxDestination dest;
         if (ExtractDestination(wtx.vout[n].scriptPubKey, dest)) {
-            if (!(dest == ExodusAddress())) {
                 // saving for Class A processing or reference
                 GetScriptPushes(wtx.vout[n].scriptPubKey, script_data);
                 address_data.push_back(EncodeDestination(dest));
                 value_data.push_back(wtx.vout[n].nValue);
                 if (msc_debug_parser_data) PrintToLog("saving address_data #%d: %s:%s\n", n, EncodeDestination(dest), ScriptToAsmStr(wtx.vout[n].scriptPubKey));
-            }
         }
     }
     if (msc_debug_parser_data) PrintToLog(" address_data.size=%lu\n script_data.size=%lu\n value_data.size=%lu\n", address_data.size(), script_data.size(), value_data.size());
@@ -1086,7 +1059,7 @@ static int parseTransaction(bool bRPConly, const CTransaction& wtx, int nBlock, 
             unsigned char expectedRefAddressSeq = dataAddressSeq + 1;
             for (unsigned k = 0; k < script_data.size(); ++k) { // loop through outputs
                 seq = (ParseHex(script_data[k].substr(0,2)))[0]; // retrieve sequence number
-                if ((address_data[k] != strDataAddress) && (address_data[k] != exodus_address) && (expectedRefAddressSeq == seq)) { // found reference address with matching sequence number
+                if ((address_data[k] != strDataAddress) && (expectedRefAddressSeq == seq)) { // found reference address with matching sequence number
                     if (strRefAddress.empty()) { // confirm we have not already located a reference address
                         strRefAddress = address_data[k]; // set ref address
                         if (msc_debug_parser_data) PrintToLog("Reference Address located via seqnum - data[%d]:%s: %s (%s)\n", k, script_data[k], address_data[k], FormatDivisibleMP(value_data[k]));
@@ -1097,40 +1070,14 @@ static int parseTransaction(bool bRPConly, const CTransaction& wtx, int nBlock, 
                     }
                 }
             }
-            std::vector<int64_t> ExodusValues;
-            for (unsigned int n = 0; n < wtx.vout.size(); ++n) {
-                CTxDestination dest;
-                if (ExtractDestination(wtx.vout[n].scriptPubKey, dest)) {
-                    if (dest == ExodusAddress()) {
-                        ExodusValues.push_back(wtx.vout[n].nValue);
-                    }
-                }
-            }
-            if (strRefAddress.empty()) { // Step 3, if we still don't have a reference address, see if we can locate an address with matching output amounts
-                for (unsigned k = 0; k < script_data.size(); ++k) { // loop through outputs
-                    if ((address_data[k] != strDataAddress) && (address_data[k] != exodus_address) && (dataAddressValue == value_data[k])) { // this output matches data output, check if matches exodus output
-                        for (unsigned int exodus_idx = 0; exodus_idx < ExodusValues.size(); exodus_idx++) {
-                            if (value_data[k] == ExodusValues[exodus_idx]) { //this output matches data address value and exodus address value, choose as ref
-                                if (strRefAddress.empty()) {
-                                    strRefAddress = address_data[k];
-                                    if (msc_debug_parser_data) PrintToLog("Reference Address located via matching amounts - data[%d]:%s: %s (%s)\n", k, script_data[k], address_data[k], FormatDivisibleMP(value_data[k]));
-                                } else {
-                                    strRefAddress.clear();
-                                    if (msc_debug_parser_data) PrintToLog("Reference Address collision, multiple potential candidates. Class A invalidated, defaulting to BTC payment\n");
-                                    break;
-                                }
-                            }
-                        }
-                    }
-                }
-            }
+
         } // end if (!strDataAddress.empty())
         if (!strRefAddress.empty()) {
             strReference = strRefAddress; // populate expected var strReference with chosen address (if not empty)
-        }
-        if (strRefAddress.empty()) {
+        } else {
             strDataAddress.clear(); // last validation step, if strRefAddress is empty, blank strDataAddress so we default to BTC payment
         }
+
         if (!strDataAddress.empty()) { // valid Class A packet almost ready
             if (msc_debug_parser_data) PrintToLog("valid Class A:from=%s:to=%s:data=%s\n", strSender, strReference, strScriptData);
             packet_size = PACKET_SIZE_CLASS_A;
@@ -1151,7 +1098,6 @@ static int parseTransaction(bool bRPConly, const CTransaction& wtx, int nBlock, 
         for (unsigned k = 0; k < address_data.size(); ++k) { // how many potential reference outputs do we have, if just one select it right here
             const std::string& addr = address_data[k];
             if (msc_debug_parser_data) PrintToLog("ref? data[%d]:%s: %s (%s)\n", k, script_data[k], addr, FormatIndivisibleMP(value_data[k]));
-            if (addr != exodus_address) {
                 ++potentialReferenceOutputs;
                 if (1 == potentialReferenceOutputs) {
                     strReference = addr;
@@ -1162,23 +1108,24 @@ static int parseTransaction(bool bRPConly, const CTransaction& wtx, int nBlock, 
                     referenceFound = false;
                     if (msc_debug_parser_data) PrintToLog("More than one potential reference candidate, blanking strReference, need to go fishing\n");
                 }
-            }
         }
+
         if (!referenceFound) { // do we have a reference now? or do we need to dig deeper
             if (msc_debug_parser_data) PrintToLog("Reference has not been found yet, going fishing\n");
-            for (unsigned k = 0; k < address_data.size(); ++k) {
+            for (unsigned k = 0; k < address_data.size(); ++k)
+            {
                 const std::string& addr = address_data[k];
-                if (addr != exodus_address) { // removed strSender restriction, not to spec
-                    if (addr == strSender && !changeRemoved) {
-                        changeRemoved = true; // per spec ignore first output to sender as change if multiple possible ref addresses
-                        if (msc_debug_parser_data) PrintToLog("Removed change\n");
-                    } else {
+                if (addr == strSender && !changeRemoved)
+                {
+                    changeRemoved = true; // per spec ignore first output to sender as change if multiple possible ref addresses
+                    if (msc_debug_parser_data) PrintToLog("Removed change\n");
+                } else {
                         strReference = addr; // this may be set several times, but last time will be highest vout
                         if (msc_debug_parser_data) PrintToLog("Resetting strReference as follows: %s \n ", strReference);
                     }
-                }
             }
         }
+
         if (msc_debug_parser_data) PrintToLog("Ending reference identification\nFinal decision on reference identification is: %s\n", strReference);
 
         // ### CLASS B SPECIFIC PARSING ###
@@ -1335,12 +1282,6 @@ static int parseTransaction(bool bRPConly, const CTransaction& wtx, int nBlock, 
     if (msc_debug_verbose) PrintToLog("single_pkt: %s\n", HexStr(single_pkt, packet_size + single_pkt));
     mp_tx.Set(strSender, strReference, 0, wtx.GetHash(), nBlock, idx, (unsigned char *)&single_pkt, packet_size, omniClass, (inAll-outAll));
 
-    // TODO: the following is a bit awful
-    // Provide a hint for DEx payments
-    if (omniClass == OMNI_CLASS_A && packet_size == 0) {
-        return 1;
-    }
-
     return 0;
 }
 
@@ -1367,11 +1308,12 @@ static bool HandleDExPayments(const CTransaction& tx, int nBlock, const std::str
     for (unsigned int n = 0; n < tx.vout.size(); ++n) {
         CTxDestination dest;
         if (ExtractDestination(tx.vout[n].scriptPubKey, dest)) {
-            if (dest == ExodusAddress()) {
-                continue;
-            }
             std::string strAddress = EncodeDestination(dest);
+            if (strAddress == strSender)
+                continue;
+
             if (msc_debug_parser_dex) PrintToLog("payment #%d %s %s\n", count, strAddress, FormatIndivisibleMP(tx.vout[n].nValue));
+
 
             // check everything and pay BTC for the property we are buying here...
             if (0 == DEx_payment(tx.GetHash(), n, strAddress, strSender, tx.vout[n].nValue, nBlock)) ++count;
@@ -1381,34 +1323,6 @@ static bool HandleDExPayments(const CTransaction& tx, int nBlock, const std::str
     return (count > 0);
 }
 
-/**
- * Handles potential Exodus crowdsale purchases.
- *
- * Note: must *not* be called outside of the transaction handler, and it does not
- * check, if a transaction marker exists.
- *
- * @return True, if it was a valid purchase
- */
-static bool HandleExodusPurchase(const CTransaction& tx, int nBlock, const std::string& strSender, unsigned int nTime)
-{
-    int64_t amountInvested = 0;
-
-    for (unsigned int n = 0; n < tx.vout.size(); ++n) {
-        CTxDestination dest;
-        if (ExtractDestination(tx.vout[n].scriptPubKey, dest)) {
-            if (dest == ExodusCrowdsaleAddress(nBlock)) {
-                amountInvested = tx.vout[n].nValue;
-                break; // TODO: maybe sum all values
-            }
-        }
-    }
-
-    if (0 < amountInvested) {
-        return TXExodusFundraiser(tx, strSender, amountInvested, nBlock, nTime);
-    }
-
-    return false;
-}
 
 /**
  * Reports the progress of the initial transaction scanning.
@@ -1664,9 +1578,6 @@ int mastercore_init()
         InitDebugLogLevels();
         ShrinkDebugLog();
 
-        if (isNonMainNet()) {
-            exodus_address = exodus_testnet;
-        }
 
         // check for --autocommit option and set transaction commit flag accordingly
         if (!gArgs.GetBoolArg("-autocommit", true)) {
@@ -1779,10 +1690,11 @@ int mastercore_init()
 
         // collect the real Exodus balances available at the snapshot time
         // redundant? do we need to show it both pre-parse and post-parse?  if so let's label the printfs accordingly
-        if (msc_debug_exo) {
-            int64_t exodus_balance = GetTokenBalance(exodus_address, OMNI_PROPERTY_MSC, BALANCE);
-            PrintToLog("Exodus balance at start: %s\n", FormatDivisibleMP(exodus_balance));
-        }
+
+        // if (msc_debug_exo) {
+        //     int64_t exodus_balance = GetTokenBalance(exodus_address, OMNI_PROPERTY_MSC, BALANCE);
+        //     PrintToLog("Exodus balance at start: %s\n", FormatDivisibleMP(exodus_balance));
+        // }
 
         // load feature activation messages from txlistdb and process them accordingly
         pDbTransactionList->LoadActivations(nWaterlineBlock);
@@ -1808,10 +1720,6 @@ int mastercore_init()
         // initial scan
         msc_initial_scan(nWaterlineBlock);
 
-        // display Exodus balance
-        int64_t exodus_balance = GetTokenBalance(exodus_address, OMNI_PROPERTY_MSC, BALANCE);
-
-        PrintToLog("Exodus balance after initialization: %s\n", FormatDivisibleMP(exodus_balance));
     }
 
     PrintToConsole("Omni Core initialization completed\n");
@@ -1903,18 +1811,13 @@ bool mastercore_handler_tx(const CTransaction& tx, int nBlock, unsigned int idx,
         assert(mp_obj.getEncodingClass() != NO_MARKER);
         assert(mp_obj.getSender().empty() == false);
 
+        int interp_ret = mp_obj.interpretPacket();
+
         // extra iteration of the outputs for every transaction, not needed on mainnet after Exodus closed
         const CConsensusParams& params = ConsensusParams();
-        if (isNonMainNet() || nBlock <= params.LAST_EXODUS_BLOCK) {
-            fFoundTx |= HandleExodusPurchase(tx, nBlock, mp_obj.getSender(), nBlockTime);
-        }
-    }
-
-    if (pop_ret > 0) {
-        assert(mp_obj.getEncodingClass() == OMNI_CLASS_A);
-        assert(mp_obj.getPayload().empty() == true);
-
-        fFoundTx |= HandleDExPayments(tx, nBlock, mp_obj.getSender());
+        // if (isNonMainNet() || nBlock <= params.LAST_EXODUS_BLOCK) {
+        //     fFoundTx |= HandleExodusPurchase(tx, nBlock, mp_obj.getSender(), nBlockTime);
+        // }
     }
 
     if (0 == pop_ret) {
@@ -1928,6 +1831,17 @@ bool mastercore_handler_tx(const CTransaction& tx, int nBlock, unsigned int idx,
             pDbTransactionList->recordTX(tx.GetHash(), bValid, nBlock, mp_obj.getType(), mp_obj.getNewAmount());
             pDbTransaction->RecordTransaction(tx.GetHash(), idx, interp_ret);
         }
+
+        // if interpretPacket returns 1, that means we have an instant trade between LTCs and tokens.
+        if (interp_ret == 1){
+            // HandleLtcInstantTrade(tx, nBlock, mp_obj.getSender(), mp_obj.getReceiver(), mp_obj.getProperty(), mp_obj.getAmountForSale(), mp_obj.getDesiredProperty(), mp_obj.getDesiredValue(), mp_obj.getIndexInBlock());
+
+        //NOTE: we need to return this number 2 from mp_obj.interpretPacket() (tx.cpp)
+        } else if (interp_ret == 2) {
+            PrintToLog("%s(): interp_ret == 2 \n",__func__);
+            HandleDExPayments(tx, nBlock, mp_obj.getSender());
+        }
+
         fFoundTx |= (interp_ret == 0);
     }
 
@@ -2001,10 +1915,10 @@ int mastercore_handler_block_end(int nBlockNow, CBlockIndex const * pBlockIndex,
     // calculate devmsc as of this block and update the Exodus' balance
     devmsc = calculate_and_update_devmsc(pBlockIndex->GetBlockTime(), nBlockNow);
 
-    if (msc_debug_exo) {
-        int64_t balance = GetTokenBalance(exodus_address, OMNI_PROPERTY_MSC, BALANCE);
-        PrintToLog("devmsc for block %d: %d, Exodus balance: %d\n", nBlockNow, devmsc, FormatDivisibleMP(balance));
-    }
+    // if (msc_debug_exo) {
+    //     int64_t balance = GetTokenBalance(exodus_address, OMNI_PROPERTY_MSC, BALANCE);
+    //     PrintToLog("devmsc for block %d: %d, Exodus balance: %d\n", nBlockNow, devmsc, FormatDivisibleMP(balance));
+    // }
 
     // check the alert status, do we need to do anything else here?
     CheckExpiredAlerts(nBlockNow, pBlockIndex->GetBlockTime());
@@ -2053,53 +1967,6 @@ void mastercore_handler_disc_begin(const int nHeight)
     reorgRecoveryMaxHeight = (nHeight > reorgRecoveryMaxHeight) ? nHeight: reorgRecoveryMaxHeight;
 }
 
-/**
- * Returns the Exodus address.
- *
- * Main network:
- *   1EXoDusjGwvnjZUyKkxZ4UHEf77z6A5S4P
- *
- * Test network:
- *   mpexoDuSkGGqvqrkrjiFng38QPkJQVFyqv
- *
- * @return The Exodus address
- */
-const CTxDestination ExodusAddress()
-{
-    if (isNonMainNet()) {
-        static CTxDestination testAddress = DecodeDestination(exodus_testnet);
-        return testAddress;
-    } else {
-        static CTxDestination mainAddress = DecodeDestination(exodus_mainnet);
-        return mainAddress;
-    }
-}
-
-/**
- * Returns the Exodus crowdsale address.
- *
- * Main network:
- *   1EXoDusjGwvnjZUyKkxZ4UHEf77z6A5S4P
- *
- * Test network:
- *   mpexoDuSkGGqvqrkrjiFng38QPkJQVFyqv (for blocks <  270775)
- *   moneyqMan7uh8FqdCA2BV5yZ8qVrc9ikLP (for blocks >= 270775)
- *
- * @return The Exodus fundraiser address
- */
-const CTxDestination ExodusCrowdsaleAddress(int nBlock)
-{
-    if (MONEYMAN_TESTNET_BLOCK <= nBlock && isNonMainNet()) {
-        static CTxDestination moneyAddress = DecodeDestination(getmoney_testnet);
-        return moneyAddress;
-    }
-    else if (MONEYMAN_REGTEST_BLOCK <= nBlock && RegTest()) {
-        static CTxDestination moneyAddress = DecodeDestination(getmoney_testnet);
-        return moneyAddress;
-    }
-
-    return ExodusAddress();
-}
 
 /**
  * @return The marker for class C transactions.
