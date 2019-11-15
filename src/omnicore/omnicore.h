@@ -25,6 +25,13 @@ class Coin;
 #include <set>
 #include <unordered_map>
 
+#include <boost/lexical_cast.hpp>
+#include <boost/multiprecision/cpp_int.hpp>
+#include <boost/rational.hpp>
+#include <boost/filesystem/path.hpp>
+
+typedef boost::rational<boost::multiprecision::checked_int128_t> rational_t;
+
 int const MAX_STATE_HISTORY = 50;
 int const STORE_EVERY_N_BLOCK = 10000;
 
@@ -47,38 +54,61 @@ int const STORE_EVERY_N_BLOCK = 10000;
 
 // Transaction types, from the spec
 enum TransactionType {
-  MSC_TYPE_SIMPLE_SEND                =  0,
-  MSC_TYPE_RESTRICTED_SEND            =  2,
-  MSC_TYPE_SEND_TO_OWNERS             =  3,
-  MSC_TYPE_SEND_ALL                   =  4,
-  MSC_TYPE_SAVINGS_MARK               = 10,
-  MSC_TYPE_SAVINGS_COMPROMISED        = 11,
-  MSC_TYPE_RATELIMITED_MARK           = 12,
-  MSC_TYPE_AUTOMATIC_DISPENSARY       = 15,
-  MSC_TYPE_TRADE_OFFER                = 20,
-  MSC_TYPE_ACCEPT_OFFER_BTC           = 22,
-  MSC_TYPE_METADEX_TRADE              = 25,
-  MSC_TYPE_METADEX_CANCEL_PRICE       = 26,
-  MSC_TYPE_METADEX_CANCEL_PAIR        = 27,
-  MSC_TYPE_METADEX_CANCEL_ECOSYSTEM   = 28,
-  MSC_TYPE_NOTIFICATION               = 31,
-  MSC_TYPE_OFFER_ACCEPT_A_BET         = 40,
-  MSC_TYPE_CREATE_PROPERTY_FIXED      = 50,
-  MSC_TYPE_CREATE_PROPERTY_VARIABLE   = 51,
-  MSC_TYPE_PROMOTE_PROPERTY           = 52,
-  MSC_TYPE_CLOSE_CROWDSALE            = 53,
-  MSC_TYPE_CREATE_PROPERTY_MANUAL     = 54,
-  MSC_TYPE_GRANT_PROPERTY_TOKENS      = 55,
-  MSC_TYPE_REVOKE_PROPERTY_TOKENS     = 56,
-  MSC_TYPE_CHANGE_ISSUER_ADDRESS      = 70,
-  MSC_TYPE_ENABLE_FREEZING            = 71,
-  MSC_TYPE_DISABLE_FREEZING           = 72,
-  MSC_TYPE_DEX_PAYMENT                = 117,
-  MSC_TYPE_FREEZE_PROPERTY_TOKENS     = 185,
-  MSC_TYPE_UNFREEZE_PROPERTY_TOKENS   = 186,
-  OMNICORE_MESSAGE_TYPE_DEACTIVATION  = 65533,
-  OMNICORE_MESSAGE_TYPE_ACTIVATION    = 65534,
-  OMNICORE_MESSAGE_TYPE_ALERT         = 65535
+  MSC_TYPE_SIMPLE_SEND                         =  0,
+  MSC_TYPE_RESTRICTED_SEND                     =  2,
+  MSC_TYPE_SEND_TO_OWNERS                      =  3,
+  MSC_TYPE_SEND_ALL                            =  4,
+  MSC_TYPE_SAVINGS_MARK                        = 10,
+  MSC_TYPE_SAVINGS_COMPROMISED                 = 11,
+  MSC_TYPE_RATELIMITED_MARK                    = 12,
+  MSC_TYPE_AUTOMATIC_DISPENSARY                = 15,
+  MSC_TYPE_TRADE_OFFER                         = 20,
+  MSC_TYPE_ACCEPT_OFFER_BTC                    = 22,
+  MSC_TYPE_METADEX_TRADE                       = 25,
+  MSC_TYPE_METADEX_CANCEL_PRICE                = 26,
+  MSC_TYPE_METADEX_CANCEL_PAIR                 = 27,
+  MSC_TYPE_METADEX_CANCEL_ECOSYSTEM            = 28,
+  MSC_TYPE_NOTIFICATION                        = 31,
+  MSC_TYPE_CONTRACTDEX_TRADE                   = 29,
+  MSC_TYPE_CONTRACTDEX_CANCEL_PRICE            = 30,
+  MSC_TYPE_CONTRACTDEX_CANCEL_ECOSYSTEM        = 32,
+  MSC_TYPE_CONTRACTDEX_CLOSE_POSITION          = 33,
+  MSC_TYPE_CONTRACTDEX_CANCEL_ORDERS_BY_BLOCK  = 34,
+  MSC_TYPE_OFFER_ACCEPT_A_BET                  = 40,
+  MSC_TYPE_CREATE_CONTRACT                     = 41,
+  MSC_TYPE_CREATE_PROPERTY_FIXED               = 50,
+  MSC_TYPE_CREATE_PROPERTY_VARIABLE            = 51,
+  MSC_TYPE_PROMOTE_PROPERTY                    = 52,
+  MSC_TYPE_CLOSE_CROWDSALE                     = 53,
+  MSC_TYPE_CREATE_PROPERTY_MANUAL              = 54,
+  MSC_TYPE_GRANT_PROPERTY_TOKENS               = 55,
+  MSC_TYPE_REVOKE_PROPERTY_TOKENS              = 56,
+  MSC_TYPE_CHANGE_ISSUER_ADDRESS               = 70,
+  MSC_TYPE_ENABLE_FREEZING                     = 71,
+  MSC_TYPE_DISABLE_FREEZING                    = 72,
+  MSC_TYPE_PEGGED_CURRENCY                     = 100,
+  MSC_TYPE_REDEMPTION_PEGGED                   = 101,
+  MSC_TYPE_SEND_PEGGED_CURRENCY                = 102,
+  MSC_TYPE_CREATE_ORACLE_CONTRACT              = 103,
+  MSC_TYPE_CHANGE_ORACLE_REF                   = 104,
+  MSC_TYPE_SET_ORACLE                          = 105,
+  MSC_TYPE_ORACLE_BACKUP                       = 106,
+  MSC_TYPE_CLOSE_ORACLE                        = 107,
+  MSC_TYPE_COMMIT_CHANNEL                      = 108,
+  MSC_TYPE_WITHDRAWAL_FROM_CHANNEL             = 109,
+  MSC_TYPE_INSTANT_TRADE                       = 110,
+  MSC_TYPE_PNL_UPDATE                          = 111,
+  MSC_TYPE_TRANSFER                            = 112,
+  MSC_TYPE_CREATE_CHANNEL                      = 113,
+  MSC_TYPE_CONTRACT_INSTANT                    = 114,
+  MSC_TYPE_NEW_ID_REGISTRATION                 = 115,
+  MSC_TYPE_UPDATE_ID_REGISTRATION              = 116,
+  MSC_TYPE_DEX_PAYMENT                         = 117,
+  MSC_TYPE_FREEZE_PROPERTY_TOKENS              = 185,
+  MSC_TYPE_UNFREEZE_PROPERTY_TOKENS            = 186,
+  OMNICORE_MESSAGE_TYPE_DEACTIVATION           = 65533,
+  OMNICORE_MESSAGE_TYPE_ACTIVATION             = 65534,
+  OMNICORE_MESSAGE_TYPE_ALERT                  = 65535
 };
 
 #define MSC_PROPERTY_TYPE_INDIVISIBLE             1
@@ -109,6 +139,32 @@ enum TransactionType {
 #define OMNI_PROPERTY_BTC   0
 #define OMNI_PROPERTY_MSC   1
 #define OMNI_PROPERTY_TMSC  2
+
+
+#define BUY            1
+#define SELL           2
+#define ACTIONINVALID  3
+
+/*24 horus to blocks*/
+const int dayblocks = 576;
+
+// limits for margin dynamic
+const rational_t factor = rational_t(80,100);  // critical limit
+const rational_t factor2 = rational_t(20,100); // normal limits
+
+
+// forward declarations
+// std::string FormatDivisibleMP(int64_t amount, bool fSign = false);
+// std::string FormatDivisibleShortMP(int64_t amount);
+// std::string FormatMP(uint32_t propertyId, int64_t amount, bool fSign = false);
+// std::string FormatShortMP(uint32_t propertyId, int64_t amount);
+// std::string FormatByType(int64_t amount, uint16_t propertyType);
+// std::string FormatByDivisibility(int64_t amount, bool divisible);
+double FormatContractShortMP(int64_t n);
+// long int FormatShortIntegerMP(int64_t n);
+// uint64_t int64ToUint64(int64_t value);
+// std::string FormatDivisibleZeroClean(int64_t n);
+
 
 /** Number formatting related functions. */
 std::string FormatDivisibleMP(int64_t amount, bool fSign = false);
@@ -170,6 +226,17 @@ void CheckWalletUpdate(bool forceUpdate = false);
 
 /** Used to notify that the number of tokens for a property has changed. */
 void NotifyTotalTokensChanged(uint32_t propertyId, int block);
+
+struct channel
+{
+  std::string multisig;
+  std::string first;
+  std::string second;
+  int expiry_height;
+  int last_exchange_block;
+
+  channel() : multisig(""), first(""), second(""), expiry_height(0), last_exchange_block(0) {}
+};
 
 namespace mastercore
 {

@@ -74,6 +74,8 @@
 
 using namespace mastercore;
 
+typedef boost::rational<boost::multiprecision::checked_int128_t> rational_t;
+
 //! Global lock for state objects
 CCriticalSection cs_tally;
 
@@ -227,6 +229,24 @@ std::string FormatByType(int64_t amount, uint16_t propertyType)
     } else {
         return FormatDivisibleMP(amount);
     }
+}
+
+double FormatContractShortMP(int64_t n)
+{
+  int64_t n_abs = (n > 0 ? n : -n);
+  int64_t quotient = n_abs / COIN;
+  int64_t remainder = n_abs % COIN;
+  std::string str = strprintf("%d.%08d", quotient, remainder);
+  // clean up trailing zeros - good for RPC not so much for UI
+    str.erase(str.find_last_not_of('0') + 1, std::string::npos);
+    if (str.length() > 0) {
+        std::string::iterator it = str.end() - 1;
+        if (*it == '.') {
+            str.erase(it);
+        }
+    } //get rid of trailing dot if non decimal
+    double q = atof(str.c_str());
+    return q;
 }
 
 CMPTally* mastercore::getTally(const std::string& address)

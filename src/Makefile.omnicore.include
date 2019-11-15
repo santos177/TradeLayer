@@ -41,6 +41,8 @@ OMNICORE_H = \
   omnicore/walletcache.h \
   omnicore/walletfetchtxs.h \
   omnicore/wallettxbuilder.h \
+  omnicore/tradelayer_matrices.h\
+  omnicore/externfns.h\
   omnicore/walletutils.h
 
 OMNICORE_CPP = \
@@ -87,6 +89,8 @@ OMNICORE_CPP = \
   omnicore/walletcache.cpp \
   omnicore/walletfetchtxs.cpp \
   omnicore/wallettxbuilder.cpp \
+  omnicore/globals.cpp\
+  omnicore/externfns.cpp\
   omnicore/walletutils.cpp
 
 libbitcoin_server_a_SOURCES += \

@@ -4,6 +4,7 @@
 class CMPMetaDEx;
 class CMPOffer;
 class CTransaction;
+class CMPContractDex;
 
 #include <omnicore/omnicore.h>
 #include <omnicore/parsing.h>
@@ -26,6 +27,7 @@ class CMPTransaction
 {
     friend class CMPMetaDEx;
     friend class CMPOffer;
+    friend class CMPContractDex;
 
 private:
     uint256 txid;
@@ -92,6 +94,25 @@ private:
     uint16_t feature_id;
     uint32_t activation_block;
     uint32_t min_client_version;
+
+
+    // Contracts
+    uint64_t effective_price;
+    uint8_t trading_action;
+    uint32_t propertyId;
+    uint32_t contractId;
+    uint64_t amount;
+    uint64_t oracle_high;
+    uint64_t oracle_low;
+    uint32_t blocks_until_expiration;
+    uint32_t notional_size;
+    uint32_t collateral_currency;
+    uint32_t margin_requirement;
+    uint32_t ecosystemSP;
+    uint32_t attribute_type;
+    uint64_t leverage;
+    uint32_t denomination;
+
 
     // Indicates whether the transaction can be used to execute logic
     bool rpcOnly;
@@ -213,6 +234,9 @@ public:
     unsigned int getIndexInBlock() const { return tx_idx; }
     uint32_t getDistributionProperty() const { return distribution_property; }
 
+    /**Contracts */
+
+
     /** Creates a new CMPTransaction object. */
     CMPTransaction()
     {
@@ -263,6 +287,17 @@ public:
         activation_block = 0;
         min_client_version = 0;
         distribution_property = 0;
+
+        /** Contracts */
+        effective_price = 0;
+        trading_action = 0;
+        propertyId = 0;
+        contractId = 0;
+        amount = 0;
+        // amountDesired = 0;
+        // timeLimit = 0;
+        // denomination = 0;
+
     }
 
     /** Sets the given values. */
@@ -307,6 +342,85 @@ public:
         return tx_idx > other.tx_idx;
     }
 };
+
+struct FutureContractObject
+{
+    uint32_t fco_denomination;
+    uint32_t fco_blocks_until_expiration;
+    uint32_t fco_notional_size;
+    uint32_t fco_collateral_currency;
+    uint32_t fco_margin_requirement;
+    uint32_t fco_propertyId;
+    uint16_t fco_prop_type;
+
+    int fco_init_block;
+    std::string fco_name;
+    std::string fco_subcategory;
+    std::string fco_issuer;
+    std::string fco_backup_address;
+};
+
+struct TokenDataByName
+{
+    uint32_t data_denomination;
+    uint32_t data_blocks_until_expiration;
+    uint32_t data_notional_size;
+    uint32_t data_collateral_currency;
+    uint32_t data_margin_requirement;
+    uint32_t data_propertyId;
+
+    int data_init_block;
+    std::string data_name;
+    std::string data_subcategory;
+    std::string data_issuer;
+};
+
+/**********************************************************************/
+/**Class for Node Reward**/
+
+class BlockClass
+{
+private:
+
+  int m_BlockInit;
+  int m_BlockNow;
+
+public:
+
+  BlockClass(int BlockInit, int BlockNow) : m_BlockInit(BlockInit), m_BlockNow(BlockNow) {}
+  BlockClass(const BlockClass &p) : m_BlockInit(p.m_BlockInit), m_BlockNow(p.m_BlockNow) {}
+  ~BlockClass() {}
+  BlockClass &operator=(const BlockClass &p) {
+   if (this != &p)
+       m_BlockInit = p.m_BlockInit; m_BlockNow = p.m_BlockNow;
+   return *this;
+  }
+  void SendNodeReward(std::string sender);
+};
+
+int64_t LosingSatoshiLongTail(int BlockNow, int64_t Reward);
+/**********************************************************************/
+
+struct oracledata
+{
+    int block;
+    int64_t high;
+    int64_t low;
+    uint32_t contractId;
+};
+
+struct withdrawalAccepted
+{
+    std::string address;
+    int deadline_block;
+    uint32_t propertyId;
+    uint64_t amount;
+
+    withdrawalAccepted() : address(""), deadline_block(0), propertyId(0), amount(0) {}
+};
+
+struct FutureContractObject *getFutureContractObject(uint32_t property_type, std::string identifier);
+struct TokenDataByName *getTokenDataByName(std::string identifier);
 
 
 #endif // BITCOIN_OMNICORE_TX_H

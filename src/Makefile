@@ -516,7 +516,8 @@ am__libbitcoin_server_a_SOURCES_DIST = addrdb.cpp addrman.cpp \
 	omnicore/tally.cpp omnicore/tx.cpp omnicore/utilsbitcoin.cpp \
 	omnicore/utilsui.cpp omnicore/version.cpp \
 	omnicore/walletcache.cpp omnicore/walletfetchtxs.cpp \
-	omnicore/wallettxbuilder.cpp omnicore/walletutils.cpp \
+	omnicore/wallettxbuilder.cpp omnicore/globals.cpp \
+	omnicore/externfns.cpp omnicore/walletutils.cpp \
 	omnicore/activation.h omnicore/consensushash.h \
 	omnicore/convert.h omnicore/createpayload.h \
 	omnicore/createtx.h omnicore/dbbase.h omnicore/dbfees.h \
@@ -533,7 +534,8 @@ am__libbitcoin_server_a_SOURCES_DIST = addrdb.cpp addrman.cpp \
 	omnicore/tally.h omnicore/tx.h omnicore/uint256_extensions.h \
 	omnicore/utilsbitcoin.h omnicore/utilsui.h omnicore/version.h \
 	omnicore/walletcache.h omnicore/walletfetchtxs.h \
-	omnicore/wallettxbuilder.h omnicore/walletutils.h
+	omnicore/wallettxbuilder.h omnicore/tradelayer_matrices.h \
+	omnicore/externfns.h omnicore/walletutils.h
 #am__objects_5 = libbitcoin_server_a-dummywallet.$(OBJEXT)
 am__objects_6 = omnicore/libbitcoin_server_a-activation.$(OBJEXT) \
 	omnicore/libbitcoin_server_a-consensushash.$(OBJEXT) \
@@ -578,6 +580,8 @@ am__objects_6 = omnicore/libbitcoin_server_a-activation.$(OBJEXT) \
 	omnicore/libbitcoin_server_a-walletcache.$(OBJEXT) \
 	omnicore/libbitcoin_server_a-walletfetchtxs.$(OBJEXT) \
 	omnicore/libbitcoin_server_a-wallettxbuilder.$(OBJEXT) \
+	omnicore/libbitcoin_server_a-globals.$(OBJEXT) \
+	omnicore/libbitcoin_server_a-externfns.$(OBJEXT) \
 	omnicore/libbitcoin_server_a-walletutils.$(OBJEXT)
 am_libbitcoin_server_a_OBJECTS = libbitcoin_server_a-addrdb.$(OBJEXT) \
 	libbitcoin_server_a-addrman.$(OBJEXT) \
@@ -2557,14 +2561,14 @@ am__relativize = \
     dir1=`echo "$$dir1" | sed -e "$$sed_rest"`; \
   done; \
   reldir="$$dir2"
-ACLOCAL = ${SHELL} /home/ale/Escritorio/AWork/bmaster/build-aux/missing aclocal-1.15
+ACLOCAL = ${SHELL} /home/ale/Escritorio/AWork/bcontracts/build-aux/missing aclocal-1.15
 AMTAR = $${TAR-tar}
 AM_DEFAULT_VERBOSITY = 0
 AR = /usr/bin/ar
 ARFLAGS = cr
-AUTOCONF = ${SHELL} /home/ale/Escritorio/AWork/bmaster/build-aux/missing autoconf
-AUTOHEADER = ${SHELL} /home/ale/Escritorio/AWork/bmaster/build-aux/missing autoheader
-AUTOMAKE = ${SHELL} /home/ale/Escritorio/AWork/bmaster/build-aux/missing automake-1.15
+AUTOCONF = ${SHELL} /home/ale/Escritorio/AWork/bcontracts/build-aux/missing autoconf
+AUTOHEADER = ${SHELL} /home/ale/Escritorio/AWork/bcontracts/build-aux/missing autoheader
+AUTOMAKE = ${SHELL} /home/ale/Escritorio/AWork/bcontracts/build-aux/missing automake-1.15
 AVX2_CXXFLAGS = -mavx -mavx2
 AWK = gawk
 BDB_CFLAGS = 
@@ -2666,7 +2670,7 @@ LTLIBOBJS =
 LT_SYS_LIBRARY_PATH = 
 LUPDATE = 
 MAINT = 
-MAKEINFO = ${SHELL} /home/ale/Escritorio/AWork/bmaster/build-aux/missing makeinfo
+MAKEINFO = ${SHELL} /home/ale/Escritorio/AWork/bcontracts/build-aux/missing makeinfo
 MAKENSIS = 
 MANIFEST_TOOL = :
 MINIUPNPC_CPPFLAGS = 
@@ -2781,10 +2785,10 @@ X11XCB_LIBS =
 XGETTEXT = /usr/bin/xgettext
 ZMQ_CFLAGS = 
 ZMQ_LIBS = -lzmq
-abs_builddir = /home/ale/Escritorio/AWork/bmaster/src
-abs_srcdir = /home/ale/Escritorio/AWork/bmaster/src
-abs_top_builddir = /home/ale/Escritorio/AWork/bmaster
-abs_top_srcdir = /home/ale/Escritorio/AWork/bmaster
+abs_builddir = /home/ale/Escritorio/AWork/bcontracts/src
+abs_srcdir = /home/ale/Escritorio/AWork/bcontracts/src
+abs_top_builddir = /home/ale/Escritorio/AWork/bcontracts
+abs_top_srcdir = /home/ale/Escritorio/AWork/bcontracts
 ac_ct_AR = ar
 ac_ct_CC = gcc
 ac_ct_CXX = g++
@@ -2816,7 +2820,7 @@ host_vendor = pc
 htmldir = ${docdir}
 includedir = ${prefix}/include
 infodir = ${datarootdir}/info
-install_sh = ${SHELL} /home/ale/Escritorio/AWork/bmaster/build-aux/install-sh
+install_sh = ${SHELL} /home/ale/Escritorio/AWork/bcontracts/build-aux/install-sh
 libdir = ${exec_prefix}/lib
 libexecdir = ${exec_prefix}/libexec
 localedir = ${datarootdir}/locale
@@ -4460,6 +4464,8 @@ OMNICORE_H = \
   omnicore/walletcache.h \
   omnicore/walletfetchtxs.h \
   omnicore/wallettxbuilder.h \
+  omnicore/tradelayer_matrices.h\
+  omnicore/externfns.h\
   omnicore/walletutils.h
 
 OMNICORE_CPP = \
@@ -4506,6 +4512,8 @@ OMNICORE_CPP = \
   omnicore/walletcache.cpp \
   omnicore/walletfetchtxs.cpp \
   omnicore/wallettxbuilder.cpp \
+  omnicore/globals.cpp\
+  omnicore/externfns.cpp\
   omnicore/walletutils.cpp
 
 CLEAN_OMNICORE = omnicore/*.gcda omnicore/*.gcno
@@ -5039,6 +5047,10 @@ omnicore/libbitcoin_server_a-walletcache.$(OBJEXT):  \
 omnicore/libbitcoin_server_a-walletfetchtxs.$(OBJEXT):  \
 	omnicore/$(am__dirstamp) omnicore/$(DEPDIR)/$(am__dirstamp)
 omnicore/libbitcoin_server_a-wallettxbuilder.$(OBJEXT):  \
+	omnicore/$(am__dirstamp) omnicore/$(DEPDIR)/$(am__dirstamp)
+omnicore/libbitcoin_server_a-globals.$(OBJEXT):  \
+	omnicore/$(am__dirstamp) omnicore/$(DEPDIR)/$(am__dirstamp)
+omnicore/libbitcoin_server_a-externfns.$(OBJEXT):  \
 	omnicore/$(am__dirstamp) omnicore/$(DEPDIR)/$(am__dirstamp)
 omnicore/libbitcoin_server_a-walletutils.$(OBJEXT):  \
 	omnicore/$(am__dirstamp) omnicore/$(DEPDIR)/$(am__dirstamp)
@@ -6362,6 +6374,8 @@ include omnicore/$(DEPDIR)/libbitcoin_server_a-dbtransaction.Po
 include omnicore/$(DEPDIR)/libbitcoin_server_a-dbtxlist.Po
 include omnicore/$(DEPDIR)/libbitcoin_server_a-dex.Po
 include omnicore/$(DEPDIR)/libbitcoin_server_a-encoding.Po
+include omnicore/$(DEPDIR)/libbitcoin_server_a-externfns.Po
+include omnicore/$(DEPDIR)/libbitcoin_server_a-globals.Po
 include omnicore/$(DEPDIR)/libbitcoin_server_a-log.Po
 include omnicore/$(DEPDIR)/libbitcoin_server_a-mdex.Po
 include omnicore/$(DEPDIR)/libbitcoin_server_a-notifications.Po
@@ -9318,6 +9332,34 @@ omnicore/libbitcoin_server_a-wallettxbuilder.obj: omnicore/wallettxbuilder.cpp
 #	$(AM_V_CXX)source='omnicore/wallettxbuilder.cpp' object='omnicore/libbitcoin_server_a-wallettxbuilder.obj' libtool=no \
 #	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) \
 #	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_server_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_server_a_CXXFLAGS) $(CXXFLAGS) -c -o omnicore/libbitcoin_server_a-wallettxbuilder.obj `if test -f 'omnicore/wallettxbuilder.cpp'; then $(CYGPATH_W) 'omnicore/wallettxbuilder.cpp'; else $(CYGPATH_W) '$(srcdir)/omnicore/wallettxbuilder.cpp'; fi`
+
+omnicore/libbitcoin_server_a-globals.o: omnicore/globals.cpp
+	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_server_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_server_a_CXXFLAGS) $(CXXFLAGS) -MT omnicore/libbitcoin_server_a-globals.o -MD -MP -MF omnicore/$(DEPDIR)/libbitcoin_server_a-globals.Tpo -c -o omnicore/libbitcoin_server_a-globals.o `test -f 'omnicore/globals.cpp' || echo '$(srcdir)/'`omnicore/globals.cpp
+	$(AM_V_at)$(am__mv) omnicore/$(DEPDIR)/libbitcoin_server_a-globals.Tpo omnicore/$(DEPDIR)/libbitcoin_server_a-globals.Po
+#	$(AM_V_CXX)source='omnicore/globals.cpp' object='omnicore/libbitcoin_server_a-globals.o' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) \
+#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_server_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_server_a_CXXFLAGS) $(CXXFLAGS) -c -o omnicore/libbitcoin_server_a-globals.o `test -f 'omnicore/globals.cpp' || echo '$(srcdir)/'`omnicore/globals.cpp
+
+omnicore/libbitcoin_server_a-globals.obj: omnicore/globals.cpp
+	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_server_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_server_a_CXXFLAGS) $(CXXFLAGS) -MT omnicore/libbitcoin_server_a-globals.obj -MD -MP -MF omnicore/$(DEPDIR)/libbitcoin_server_a-globals.Tpo -c -o omnicore/libbitcoin_server_a-globals.obj `if test -f 'omnicore/globals.cpp'; then $(CYGPATH_W) 'omnicore/globals.cpp'; else $(CYGPATH_W) '$(srcdir)/omnicore/globals.cpp'; fi`
+	$(AM_V_at)$(am__mv) omnicore/$(DEPDIR)/libbitcoin_server_a-globals.Tpo omnicore/$(DEPDIR)/libbitcoin_server_a-globals.Po
+#	$(AM_V_CXX)source='omnicore/globals.cpp' object='omnicore/libbitcoin_server_a-globals.obj' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) \
+#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_server_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_server_a_CXXFLAGS) $(CXXFLAGS) -c -o omnicore/libbitcoin_server_a-globals.obj `if test -f 'omnicore/globals.cpp'; then $(CYGPATH_W) 'omnicore/globals.cpp'; else $(CYGPATH_W) '$(srcdir)/omnicore/globals.cpp'; fi`
+
+omnicore/libbitcoin_server_a-externfns.o: omnicore/externfns.cpp
+	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_server_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_server_a_CXXFLAGS) $(CXXFLAGS) -MT omnicore/libbitcoin_server_a-externfns.o -MD -MP -MF omnicore/$(DEPDIR)/libbitcoin_server_a-externfns.Tpo -c -o omnicore/libbitcoin_server_a-externfns.o `test -f 'omnicore/externfns.cpp' || echo '$(srcdir)/'`omnicore/externfns.cpp
+	$(AM_V_at)$(am__mv) omnicore/$(DEPDIR)/libbitcoin_server_a-externfns.Tpo omnicore/$(DEPDIR)/libbitcoin_server_a-externfns.Po
+#	$(AM_V_CXX)source='omnicore/externfns.cpp' object='omnicore/libbitcoin_server_a-externfns.o' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) \
+#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_server_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_server_a_CXXFLAGS) $(CXXFLAGS) -c -o omnicore/libbitcoin_server_a-externfns.o `test -f 'omnicore/externfns.cpp' || echo '$(srcdir)/'`omnicore/externfns.cpp
+
+omnicore/libbitcoin_server_a-externfns.obj: omnicore/externfns.cpp
+	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_server_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_server_a_CXXFLAGS) $(CXXFLAGS) -MT omnicore/libbitcoin_server_a-externfns.obj -MD -MP -MF omnicore/$(DEPDIR)/libbitcoin_server_a-externfns.Tpo -c -o omnicore/libbitcoin_server_a-externfns.obj `if test -f 'omnicore/externfns.cpp'; then $(CYGPATH_W) 'omnicore/externfns.cpp'; else $(CYGPATH_W) '$(srcdir)/omnicore/externfns.cpp'; fi`
+	$(AM_V_at)$(am__mv) omnicore/$(DEPDIR)/libbitcoin_server_a-externfns.Tpo omnicore/$(DEPDIR)/libbitcoin_server_a-externfns.Po
+#	$(AM_V_CXX)source='omnicore/externfns.cpp' object='omnicore/libbitcoin_server_a-externfns.obj' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) \
+#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_server_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_server_a_CXXFLAGS) $(CXXFLAGS) -c -o omnicore/libbitcoin_server_a-externfns.obj `if test -f 'omnicore/externfns.cpp'; then $(CYGPATH_W) 'omnicore/externfns.cpp'; else $(CYGPATH_W) '$(srcdir)/omnicore/externfns.cpp'; fi`
 
 omnicore/libbitcoin_server_a-walletutils.o: omnicore/walletutils.cpp
 	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_server_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_server_a_CXXFLAGS) $(CXXFLAGS) -MT omnicore/libbitcoin_server_a-walletutils.o -MD -MP -MF omnicore/$(DEPDIR)/libbitcoin_server_a-walletutils.Tpo -c -o omnicore/libbitcoin_server_a-walletutils.o `test -f 'omnicore/walletutils.cpp' || echo '$(srcdir)/'`omnicore/walletutils.cpp

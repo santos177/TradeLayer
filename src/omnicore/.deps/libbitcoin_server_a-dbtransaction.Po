@@ -955,26 +955,15 @@ omnicore/libbitcoin_server_a-dbtransaction.o: omnicore/dbtransaction.cpp \
  /usr/include/boost/variant/visitor_ptr.hpp \
  /usr/include/boost/variant/bad_visit.hpp univalue/include/univalue.h \
  /usr/include/c++/7/unordered_map /usr/include/c++/7/bits/unordered_map.h \
- /usr/include/boost/algorithm/string.hpp \
- /usr/include/boost/algorithm/string/std_containers_traits.hpp \
- /usr/include/boost/algorithm/string/std/string_traits.hpp \
- /usr/include/boost/algorithm/string/yes_no_type.hpp \
- /usr/include/boost/algorithm/string/sequence_traits.hpp \
- /usr/include/boost/algorithm/string/std/list_traits.hpp \
- /usr/include/boost/algorithm/string/std/slist_traits.hpp \
- /usr/include/boost/algorithm/string/config.hpp \
- /usr/include/c++/7/ext/slist \
- /usr/include/boost/algorithm/string/trim.hpp \
+ /usr/include/boost/lexical_cast.hpp \
+ /usr/include/boost/range/iterator_range_core.hpp \
+ /usr/include/boost/range/functions.hpp \
  /usr/include/boost/range/begin.hpp /usr/include/boost/range/iterator.hpp \
  /usr/include/boost/range/end.hpp \
  /usr/include/boost/range/detail/implementation_help.hpp \
  /usr/include/boost/range/detail/common.hpp \
  /usr/include/boost/range/detail/sfinae.hpp \
- /usr/include/boost/range/as_literal.hpp \
- /usr/include/boost/range/iterator_range.hpp \
- /usr/include/boost/range/iterator_range_core.hpp \
- /usr/include/boost/range/functions.hpp /usr/include/boost/range/size.hpp \
- /usr/include/boost/range/size_type.hpp \
+ /usr/include/boost/range/size.hpp /usr/include/boost/range/size_type.hpp \
  /usr/include/boost/range/difference_type.hpp \
  /usr/include/boost/range/has_range_iterator.hpp \
  /usr/include/boost/range/concepts.hpp \
@@ -1032,59 +1021,6 @@ omnicore/libbitcoin_server_a-dbtransaction.o: omnicore/dbtransaction.cpp \
  /usr/include/boost/range/rend.hpp \
  /usr/include/boost/range/algorithm/equal.hpp \
  /usr/include/boost/range/detail/safe_bool.hpp \
- /usr/include/boost/range/iterator_range_io.hpp \
- /usr/include/boost/range/detail/str_types.hpp \
- /usr/include/boost/algorithm/string/detail/trim.hpp \
- /usr/include/boost/algorithm/string/classification.hpp \
- /usr/include/boost/algorithm/string/detail/classification.hpp \
- /usr/include/boost/algorithm/string/predicate_facade.hpp \
- /usr/include/boost/algorithm/string/case_conv.hpp \
- /usr/include/boost/iterator/transform_iterator.hpp \
- /usr/include/boost/utility/result_of.hpp \
- /usr/include/boost/preprocessor/facilities/intercept.hpp \
- /usr/include/boost/utility/detail/result_of_iterate.hpp \
- /usr/include/boost/algorithm/string/detail/case_conv.hpp \
- /usr/include/boost/algorithm/string/predicate.hpp \
- /usr/include/boost/algorithm/string/compare.hpp \
- /usr/include/boost/algorithm/string/find.hpp \
- /usr/include/boost/algorithm/string/finder.hpp \
- /usr/include/boost/algorithm/string/constants.hpp \
- /usr/include/boost/algorithm/string/detail/finder.hpp \
- /usr/include/boost/algorithm/string/detail/predicate.hpp \
- /usr/include/boost/algorithm/string/split.hpp \
- /usr/include/boost/algorithm/string/iter_find.hpp \
- /usr/include/boost/algorithm/string/concept.hpp \
- /usr/include/boost/algorithm/string/find_iterator.hpp \
- /usr/include/boost/algorithm/string/detail/find_iterator.hpp \
- /usr/include/boost/function.hpp \
- /usr/include/boost/function/detail/prologue.hpp \
- /usr/include/boost/config/no_tr1/functional.hpp \
- /usr/include/boost/function/function_base.hpp \
- /usr/include/boost/integer.hpp \
- /usr/include/boost/type_traits/composite_traits.hpp \
- /usr/include/boost/type_traits/is_union.hpp /usr/include/boost/ref.hpp \
- /usr/include/boost/core/ref.hpp /usr/include/boost/function_equal.hpp \
- /usr/include/boost/function/function_fwd.hpp \
- /usr/include/boost/mem_fn.hpp /usr/include/boost/bind/mem_fn.hpp \
- /usr/include/boost/get_pointer.hpp \
- /usr/include/boost/bind/mem_fn_template.hpp \
- /usr/include/boost/bind/mem_fn_cc.hpp \
- /usr/include/boost/function/detail/function_iterate.hpp \
- /usr/include/boost/function/detail/maybe_include.hpp \
- /usr/include/boost/function/function_template.hpp \
- /usr/include/boost/algorithm/string/detail/util.hpp \
- /usr/include/boost/algorithm/string/join.hpp \
- /usr/include/boost/algorithm/string/detail/sequence.hpp \
- /usr/include/boost/algorithm/string/replace.hpp \
- /usr/include/boost/algorithm/string/find_format.hpp \
- /usr/include/boost/algorithm/string/detail/find_format.hpp \
- /usr/include/boost/algorithm/string/detail/find_format_store.hpp \
- /usr/include/boost/algorithm/string/detail/replace_storage.hpp \
- /usr/include/boost/algorithm/string/detail/find_format_all.hpp \
- /usr/include/boost/algorithm/string/formatter.hpp \
- /usr/include/boost/algorithm/string/detail/formatter.hpp \
- /usr/include/boost/algorithm/string/erase.hpp \
- /usr/include/boost/lexical_cast.hpp \
  /usr/include/boost/lexical_cast/bad_lexical_cast.hpp \
  /usr/include/boost/lexical_cast/try_lexical_convert.hpp \
  /usr/include/boost/lexical_cast/detail/is_character.hpp \
@@ -1190,7 +1126,117 @@ omnicore/libbitcoin_server_a-dbtransaction.o: omnicore/dbtransaction.cpp \
  /usr/include/boost/predef/detail/endian_compat.h \
  /usr/include/boost/math/special_functions/fpclassify.hpp \
  /usr/include/boost/math/tools/real_cast.hpp \
- /usr/include/boost/detail/basic_pointerbuf.hpp
+ /usr/include/boost/integer.hpp \
+ /usr/include/boost/detail/basic_pointerbuf.hpp \
+ /usr/include/boost/multiprecision/cpp_int.hpp /usr/include/c++/7/iomanip \
+ /usr/include/boost/multiprecision/number.hpp \
+ /usr/include/boost/mpl/max.hpp \
+ /usr/include/boost/multiprecision/detail/generic_interconvert.hpp \
+ /usr/include/boost/multiprecision/detail/default_ops.hpp \
+ /usr/include/boost/math/policies/error_handling.hpp \
+ /usr/include/boost/math/tools/precision.hpp \
+ /usr/include/boost/multiprecision/detail/number_base.hpp \
+ /usr/include/boost/math/special_functions/next.hpp \
+ /usr/include/boost/math/special_functions/trunc.hpp \
+ /usr/lib/gcc/x86_64-linux-gnu/7/include/xmmintrin.h \
+ /usr/lib/gcc/x86_64-linux-gnu/7/include/mmintrin.h \
+ /usr/lib/gcc/x86_64-linux-gnu/7/include/mm_malloc.h \
+ /usr/lib/gcc/x86_64-linux-gnu/7/include/emmintrin.h \
+ /usr/include/boost/multiprecision/detail/functions/constants.hpp \
+ /usr/include/boost/multiprecision/detail/functions/pow.hpp \
+ /usr/include/boost/multiprecision/detail/functions/trig.hpp \
+ /usr/include/boost/multiprecision/detail/no_et_ops.hpp \
+ /usr/include/boost/multiprecision/detail/et_ops.hpp \
+ /usr/include/boost/multiprecision/detail/min_max.hpp \
+ /usr/include/boost/multiprecision/traits/is_backend.hpp \
+ /usr/include/boost/multiprecision/detail/number_compare.hpp \
+ /usr/include/boost/multiprecision/traits/is_restricted_conversion.hpp \
+ /usr/include/boost/multiprecision/traits/explicit_conversion.hpp \
+ /usr/include/boost/multiprecision/detail/ublas_interop.hpp \
+ /usr/include/boost/multiprecision/detail/integer_ops.hpp \
+ /usr/include/boost/multiprecision/cpp_int/cpp_int_config.hpp \
+ /usr/include/boost/multiprecision/rational_adaptor.hpp \
+ /usr/include/boost/rational.hpp \
+ /usr/include/boost/integer/common_factor_rt.hpp \
+ /usr/include/boost/multiprecision/traits/is_byte_container.hpp \
+ /usr/include/boost/integer/static_min_max.hpp \
+ /usr/include/boost/type_traits/make_signed.hpp \
+ /usr/include/boost/multiprecision/cpp_int/checked.hpp \
+ /usr/include/boost/multiprecision/cpp_int/value_pack.hpp \
+ /usr/include/boost/multiprecision/cpp_int/comparison.hpp \
+ /usr/include/boost/multiprecision/cpp_int/add.hpp \
+ /usr/include/boost/multiprecision/cpp_int/multiply.hpp \
+ /usr/include/boost/multiprecision/cpp_int/divide.hpp \
+ /usr/include/boost/multiprecision/cpp_int/bitwise.hpp \
+ /usr/include/boost/multiprecision/cpp_int/misc.hpp \
+ /usr/include/boost/multiprecision/detail/bitscan.hpp \
+ /usr/include/boost/multiprecision/cpp_int/limits.hpp \
+ /usr/include/boost/multiprecision/cpp_int/literals.hpp \
+ /usr/include/boost/multiprecision/cpp_int/serialize.hpp \
+ /usr/include/boost/multiprecision/cpp_int/import_export.hpp \
+ /usr/include/boost/algorithm/string.hpp \
+ /usr/include/boost/algorithm/string/std_containers_traits.hpp \
+ /usr/include/boost/algorithm/string/std/string_traits.hpp \
+ /usr/include/boost/algorithm/string/yes_no_type.hpp \
+ /usr/include/boost/algorithm/string/sequence_traits.hpp \
+ /usr/include/boost/algorithm/string/std/list_traits.hpp \
+ /usr/include/boost/algorithm/string/std/slist_traits.hpp \
+ /usr/include/boost/algorithm/string/config.hpp \
+ /usr/include/c++/7/ext/slist \
+ /usr/include/boost/algorithm/string/trim.hpp \
+ /usr/include/boost/range/as_literal.hpp \
+ /usr/include/boost/range/iterator_range.hpp \
+ /usr/include/boost/range/iterator_range_io.hpp \
+ /usr/include/boost/range/detail/str_types.hpp \
+ /usr/include/boost/algorithm/string/detail/trim.hpp \
+ /usr/include/boost/algorithm/string/classification.hpp \
+ /usr/include/boost/algorithm/string/detail/classification.hpp \
+ /usr/include/boost/algorithm/string/predicate_facade.hpp \
+ /usr/include/boost/algorithm/string/case_conv.hpp \
+ /usr/include/boost/iterator/transform_iterator.hpp \
+ /usr/include/boost/utility/result_of.hpp \
+ /usr/include/boost/preprocessor/facilities/intercept.hpp \
+ /usr/include/boost/utility/detail/result_of_iterate.hpp \
+ /usr/include/boost/algorithm/string/detail/case_conv.hpp \
+ /usr/include/boost/algorithm/string/predicate.hpp \
+ /usr/include/boost/algorithm/string/compare.hpp \
+ /usr/include/boost/algorithm/string/find.hpp \
+ /usr/include/boost/algorithm/string/finder.hpp \
+ /usr/include/boost/algorithm/string/constants.hpp \
+ /usr/include/boost/algorithm/string/detail/finder.hpp \
+ /usr/include/boost/algorithm/string/detail/predicate.hpp \
+ /usr/include/boost/algorithm/string/split.hpp \
+ /usr/include/boost/algorithm/string/iter_find.hpp \
+ /usr/include/boost/algorithm/string/concept.hpp \
+ /usr/include/boost/algorithm/string/find_iterator.hpp \
+ /usr/include/boost/algorithm/string/detail/find_iterator.hpp \
+ /usr/include/boost/function.hpp \
+ /usr/include/boost/function/detail/prologue.hpp \
+ /usr/include/boost/config/no_tr1/functional.hpp \
+ /usr/include/boost/function/function_base.hpp \
+ /usr/include/boost/type_traits/composite_traits.hpp \
+ /usr/include/boost/type_traits/is_union.hpp /usr/include/boost/ref.hpp \
+ /usr/include/boost/core/ref.hpp /usr/include/boost/function_equal.hpp \
+ /usr/include/boost/function/function_fwd.hpp \
+ /usr/include/boost/mem_fn.hpp /usr/include/boost/bind/mem_fn.hpp \
+ /usr/include/boost/get_pointer.hpp \
+ /usr/include/boost/bind/mem_fn_template.hpp \
+ /usr/include/boost/bind/mem_fn_cc.hpp \
+ /usr/include/boost/function/detail/function_iterate.hpp \
+ /usr/include/boost/function/detail/maybe_include.hpp \
+ /usr/include/boost/function/function_template.hpp \
+ /usr/include/boost/algorithm/string/detail/util.hpp \
+ /usr/include/boost/algorithm/string/join.hpp \
+ /usr/include/boost/algorithm/string/detail/sequence.hpp \
+ /usr/include/boost/algorithm/string/replace.hpp \
+ /usr/include/boost/algorithm/string/find_format.hpp \
+ /usr/include/boost/algorithm/string/detail/find_format.hpp \
+ /usr/include/boost/algorithm/string/detail/find_format_store.hpp \
+ /usr/include/boost/algorithm/string/detail/replace_storage.hpp \
+ /usr/include/boost/algorithm/string/detail/find_format_all.hpp \
+ /usr/include/boost/algorithm/string/formatter.hpp \
+ /usr/include/boost/algorithm/string/detail/formatter.hpp \
+ /usr/include/boost/algorithm/string/erase.hpp
 
 /usr/include/stdc-predef.h:
 
@@ -3388,25 +3434,11 @@ univalue/include/univalue.h:
 
 /usr/include/c++/7/bits/unordered_map.h:
 
-/usr/include/boost/algorithm/string.hpp:
+/usr/include/boost/lexical_cast.hpp:
 
-/usr/include/boost/algorithm/string/std_containers_traits.hpp:
+/usr/include/boost/range/iterator_range_core.hpp:
 
-/usr/include/boost/algorithm/string/std/string_traits.hpp:
-
-/usr/include/boost/algorithm/string/yes_no_type.hpp:
-
-/usr/include/boost/algorithm/string/sequence_traits.hpp:
-
-/usr/include/boost/algorithm/string/std/list_traits.hpp:
-
-/usr/include/boost/algorithm/string/std/slist_traits.hpp:
-
-/usr/include/boost/algorithm/string/config.hpp:
-
-/usr/include/c++/7/ext/slist:
-
-/usr/include/boost/algorithm/string/trim.hpp:
+/usr/include/boost/range/functions.hpp:
 
 /usr/include/boost/range/begin.hpp:
 
@@ -3419,14 +3451,6 @@ univalue/include/univalue.h:
 /usr/include/boost/range/detail/common.hpp:
 
 /usr/include/boost/range/detail/sfinae.hpp:
-
-/usr/include/boost/range/as_literal.hpp:
-
-/usr/include/boost/range/iterator_range.hpp:
-
-/usr/include/boost/range/iterator_range_core.hpp:
-
-/usr/include/boost/range/functions.hpp:
 
 /usr/include/boost/range/size.hpp:
 
@@ -3547,118 +3571,6 @@ univalue/include/univalue.h:
 /usr/include/boost/range/algorithm/equal.hpp:
 
 /usr/include/boost/range/detail/safe_bool.hpp:
-
-/usr/include/boost/range/iterator_range_io.hpp:
-
-/usr/include/boost/range/detail/str_types.hpp:
-
-/usr/include/boost/algorithm/string/detail/trim.hpp:
-
-/usr/include/boost/algorithm/string/classification.hpp:
-
-/usr/include/boost/algorithm/string/detail/classification.hpp:
-
-/usr/include/boost/algorithm/string/predicate_facade.hpp:
-
-/usr/include/boost/algorithm/string/case_conv.hpp:
-
-/usr/include/boost/iterator/transform_iterator.hpp:
-
-/usr/include/boost/utility/result_of.hpp:
-
-/usr/include/boost/preprocessor/facilities/intercept.hpp:
-
-/usr/include/boost/utility/detail/result_of_iterate.hpp:
-
-/usr/include/boost/algorithm/string/detail/case_conv.hpp:
-
-/usr/include/boost/algorithm/string/predicate.hpp:
-
-/usr/include/boost/algorithm/string/compare.hpp:
-
-/usr/include/boost/algorithm/string/find.hpp:
-
-/usr/include/boost/algorithm/string/finder.hpp:
-
-/usr/include/boost/algorithm/string/constants.hpp:
-
-/usr/include/boost/algorithm/string/detail/finder.hpp:
-
-/usr/include/boost/algorithm/string/detail/predicate.hpp:
-
-/usr/include/boost/algorithm/string/split.hpp:
-
-/usr/include/boost/algorithm/string/iter_find.hpp:
-
-/usr/include/boost/algorithm/string/concept.hpp:
-
-/usr/include/boost/algorithm/string/find_iterator.hpp:
-
-/usr/include/boost/algorithm/string/detail/find_iterator.hpp:
-
-/usr/include/boost/function.hpp:
-
-/usr/include/boost/function/detail/prologue.hpp:
-
-/usr/include/boost/config/no_tr1/functional.hpp:
-
-/usr/include/boost/function/function_base.hpp:
-
-/usr/include/boost/integer.hpp:
-
-/usr/include/boost/type_traits/composite_traits.hpp:
-
-/usr/include/boost/type_traits/is_union.hpp:
-
-/usr/include/boost/ref.hpp:
-
-/usr/include/boost/core/ref.hpp:
-
-/usr/include/boost/function_equal.hpp:
-
-/usr/include/boost/function/function_fwd.hpp:
-
-/usr/include/boost/mem_fn.hpp:
-
-/usr/include/boost/bind/mem_fn.hpp:
-
-/usr/include/boost/get_pointer.hpp:
-
-/usr/include/boost/bind/mem_fn_template.hpp:
-
-/usr/include/boost/bind/mem_fn_cc.hpp:
-
-/usr/include/boost/function/detail/function_iterate.hpp:
-
-/usr/include/boost/function/detail/maybe_include.hpp:
-
-/usr/include/boost/function/function_template.hpp:
-
-/usr/include/boost/algorithm/string/detail/util.hpp:
-
-/usr/include/boost/algorithm/string/join.hpp:
-
-/usr/include/boost/algorithm/string/detail/sequence.hpp:
-
-/usr/include/boost/algorithm/string/replace.hpp:
-
-/usr/include/boost/algorithm/string/find_format.hpp:
-
-/usr/include/boost/algorithm/string/detail/find_format.hpp:
-
-/usr/include/boost/algorithm/string/detail/find_format_store.hpp:
-
-/usr/include/boost/algorithm/string/detail/replace_storage.hpp:
-
-/usr/include/boost/algorithm/string/detail/find_format_all.hpp:
-
-/usr/include/boost/algorithm/string/formatter.hpp:
-
-/usr/include/boost/algorithm/string/detail/formatter.hpp:
-
-/usr/include/boost/algorithm/string/erase.hpp:
-
-/usr/include/boost/lexical_cast.hpp:
 
 /usr/include/boost/lexical_cast/bad_lexical_cast.hpp:
 
@@ -3882,4 +3794,232 @@ univalue/include/univalue.h:
 
 /usr/include/boost/math/tools/real_cast.hpp:
 
+/usr/include/boost/integer.hpp:
+
 /usr/include/boost/detail/basic_pointerbuf.hpp:
+
+/usr/include/boost/multiprecision/cpp_int.hpp:
+
+/usr/include/c++/7/iomanip:
+
+/usr/include/boost/multiprecision/number.hpp:
+
+/usr/include/boost/mpl/max.hpp:
+
+/usr/include/boost/multiprecision/detail/generic_interconvert.hpp:
+
+/usr/include/boost/multiprecision/detail/default_ops.hpp:
+
+/usr/include/boost/math/policies/error_handling.hpp:
+
+/usr/include/boost/math/tools/precision.hpp:
+
+/usr/include/boost/multiprecision/detail/number_base.hpp:
+
+/usr/include/boost/math/special_functions/next.hpp:
+
+/usr/include/boost/math/special_functions/trunc.hpp:
+
+/usr/lib/gcc/x86_64-linux-gnu/7/include/xmmintrin.h:
+
+/usr/lib/gcc/x86_64-linux-gnu/7/include/mmintrin.h:
+
+/usr/lib/gcc/x86_64-linux-gnu/7/include/mm_malloc.h:
+
+/usr/lib/gcc/x86_64-linux-gnu/7/include/emmintrin.h:
+
+/usr/include/boost/multiprecision/detail/functions/constants.hpp:
+
+/usr/include/boost/multiprecision/detail/functions/pow.hpp:
+
+/usr/include/boost/multiprecision/detail/functions/trig.hpp:
+
+/usr/include/boost/multiprecision/detail/no_et_ops.hpp:
+
+/usr/include/boost/multiprecision/detail/et_ops.hpp:
+
+/usr/include/boost/multiprecision/detail/min_max.hpp:
+
+/usr/include/boost/multiprecision/traits/is_backend.hpp:
+
+/usr/include/boost/multiprecision/detail/number_compare.hpp:
+
+/usr/include/boost/multiprecision/traits/is_restricted_conversion.hpp:
+
+/usr/include/boost/multiprecision/traits/explicit_conversion.hpp:
+
+/usr/include/boost/multiprecision/detail/ublas_interop.hpp:
+
+/usr/include/boost/multiprecision/detail/integer_ops.hpp:
+
+/usr/include/boost/multiprecision/cpp_int/cpp_int_config.hpp:
+
+/usr/include/boost/multiprecision/rational_adaptor.hpp:
+
+/usr/include/boost/rational.hpp:
+
+/usr/include/boost/integer/common_factor_rt.hpp:
+
+/usr/include/boost/multiprecision/traits/is_byte_container.hpp:
+
+/usr/include/boost/integer/static_min_max.hpp:
+
+/usr/include/boost/type_traits/make_signed.hpp:
+
+/usr/include/boost/multiprecision/cpp_int/checked.hpp:
+
+/usr/include/boost/multiprecision/cpp_int/value_pack.hpp:
+
+/usr/include/boost/multiprecision/cpp_int/comparison.hpp:
+
+/usr/include/boost/multiprecision/cpp_int/add.hpp:
+
+/usr/include/boost/multiprecision/cpp_int/multiply.hpp:
+
+/usr/include/boost/multiprecision/cpp_int/divide.hpp:
+
+/usr/include/boost/multiprecision/cpp_int/bitwise.hpp:
+
+/usr/include/boost/multiprecision/cpp_int/misc.hpp:
+
+/usr/include/boost/multiprecision/detail/bitscan.hpp:
+
+/usr/include/boost/multiprecision/cpp_int/limits.hpp:
+
+/usr/include/boost/multiprecision/cpp_int/literals.hpp:
+
+/usr/include/boost/multiprecision/cpp_int/serialize.hpp:
+
+/usr/include/boost/multiprecision/cpp_int/import_export.hpp:
+
+/usr/include/boost/algorithm/string.hpp:
+
+/usr/include/boost/algorithm/string/std_containers_traits.hpp:
+
+/usr/include/boost/algorithm/string/std/string_traits.hpp:
+
+/usr/include/boost/algorithm/string/yes_no_type.hpp:
+
+/usr/include/boost/algorithm/string/sequence_traits.hpp:
+
+/usr/include/boost/algorithm/string/std/list_traits.hpp:
+
+/usr/include/boost/algorithm/string/std/slist_traits.hpp:
+
+/usr/include/boost/algorithm/string/config.hpp:
+
+/usr/include/c++/7/ext/slist:
+
+/usr/include/boost/algorithm/string/trim.hpp:
+
+/usr/include/boost/range/as_literal.hpp:
+
+/usr/include/boost/range/iterator_range.hpp:
+
+/usr/include/boost/range/iterator_range_io.hpp:
+
+/usr/include/boost/range/detail/str_types.hpp:
+
+/usr/include/boost/algorithm/string/detail/trim.hpp:
+
+/usr/include/boost/algorithm/string/classification.hpp:
+
+/usr/include/boost/algorithm/string/detail/classification.hpp:
+
+/usr/include/boost/algorithm/string/predicate_facade.hpp:
+
+/usr/include/boost/algorithm/string/case_conv.hpp:
+
+/usr/include/boost/iterator/transform_iterator.hpp:
+
+/usr/include/boost/utility/result_of.hpp:
+
+/usr/include/boost/preprocessor/facilities/intercept.hpp:
+
+/usr/include/boost/utility/detail/result_of_iterate.hpp:
+
+/usr/include/boost/algorithm/string/detail/case_conv.hpp:
+
+/usr/include/boost/algorithm/string/predicate.hpp:
+
+/usr/include/boost/algorithm/string/compare.hpp:
+
+/usr/include/boost/algorithm/string/find.hpp:
+
+/usr/include/boost/algorithm/string/finder.hpp:
+
+/usr/include/boost/algorithm/string/constants.hpp:
+
+/usr/include/boost/algorithm/string/detail/finder.hpp:
+
+/usr/include/boost/algorithm/string/detail/predicate.hpp:
+
+/usr/include/boost/algorithm/string/split.hpp:
+
+/usr/include/boost/algorithm/string/iter_find.hpp:
+
+/usr/include/boost/algorithm/string/concept.hpp:
+
+/usr/include/boost/algorithm/string/find_iterator.hpp:
+
+/usr/include/boost/algorithm/string/detail/find_iterator.hpp:
+
+/usr/include/boost/function.hpp:
+
+/usr/include/boost/function/detail/prologue.hpp:
+
+/usr/include/boost/config/no_tr1/functional.hpp:
+
+/usr/include/boost/function/function_base.hpp:
+
+/usr/include/boost/type_traits/composite_traits.hpp:
+
+/usr/include/boost/type_traits/is_union.hpp:
+
+/usr/include/boost/ref.hpp:
+
+/usr/include/boost/core/ref.hpp:
+
+/usr/include/boost/function_equal.hpp:
+
+/usr/include/boost/function/function_fwd.hpp:
+
+/usr/include/boost/mem_fn.hpp:
+
+/usr/include/boost/bind/mem_fn.hpp:
+
+/usr/include/boost/get_pointer.hpp:
+
+/usr/include/boost/bind/mem_fn_template.hpp:
+
+/usr/include/boost/bind/mem_fn_cc.hpp:
+
+/usr/include/boost/function/detail/function_iterate.hpp:
+
+/usr/include/boost/function/detail/maybe_include.hpp:
+
+/usr/include/boost/function/function_template.hpp:
+
+/usr/include/boost/algorithm/string/detail/util.hpp:
+
+/usr/include/boost/algorithm/string/join.hpp:
+
+/usr/include/boost/algorithm/string/detail/sequence.hpp:
+
+/usr/include/boost/algorithm/string/replace.hpp:
+
+/usr/include/boost/algorithm/string/find_format.hpp:
+
+/usr/include/boost/algorithm/string/detail/find_format.hpp:
+
+/usr/include/boost/algorithm/string/detail/find_format_store.hpp:
+
+/usr/include/boost/algorithm/string/detail/replace_storage.hpp:
+
+/usr/include/boost/algorithm/string/detail/find_format_all.hpp:
+
+/usr/include/boost/algorithm/string/formatter.hpp:
+
+/usr/include/boost/algorithm/string/detail/formatter.hpp:
+
+/usr/include/boost/algorithm/string/erase.hpp:

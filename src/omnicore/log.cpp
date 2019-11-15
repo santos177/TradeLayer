@@ -65,6 +65,8 @@ bool msc_debug_consensus_hash_every_transaction = 0;
 //! Debug fees
 bool msc_debug_fees               = 1;
 
+bool msc_debug_x_trade_bidirectional            = 0;
+
 /**
  * LogPrintf() has been broken a couple of times now
  * by well-meaning people adding mutexes in the most straightforward way.
@@ -334,4 +336,3 @@ void ShrinkDebugLog()
         file = nullptr;
     }
 }
-
