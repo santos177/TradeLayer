@@ -4,10 +4,10 @@
  * This file provides helper to handle uint256 calculations.
  */
 
-#ifndef BITCOIN_OMNICORE_UINT256_EXTENSIONS_H
-#define BITCOIN_OMNICORE_UINT256_EXTENSIONS_H
+#ifndef OMNICORE_UINT256_EXTENSIONS_H
+#define OMNICORE_UINT256_EXTENSIONS_H
 
-#include <arith_uint256.h>
+#include "arith_uint256.h"
 
 #include <assert.h>
 #include <stdint.h>
@@ -61,4 +61,4 @@ inline arith_uint256 DivideAndRoundUp(const arith_uint256& numerator, const arit
 
 } // namespace mastercore
 
-#endif // BITCOIN_OMNICORE_UINT256_EXTENSIONS_H
+#endif // OMNICORE_UINT256_EXTENSIONS_H

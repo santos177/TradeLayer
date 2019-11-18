@@ -62,6 +62,11 @@
 
 #include <boost/algorithm/string.hpp>
 #include <boost/lexical_cast.hpp>
+#include <boost/algorithm/string.hpp>
+#include <boost/exception/to_string.hpp>
+#include <boost/filesystem.hpp>
+#include <boost/foreach.hpp>
+#include <boost/multiprecision/cpp_int.hpp>
 
 #include <assert.h>
 #include <stdint.h>
@@ -71,6 +76,27 @@
 #include <string>
 #include <unordered_map>
 #include <vector>
+#include <cmath>
+#include <iostream>
+#include <numeric>
+
+#include "externfns.h"
+
+extern int idx_expiration;
+extern int expirationAchieve;
+extern double globalPNLALL_DUSD;
+extern int64_t globalVolumeALL_DUSD;
+extern int lastBlockg;
+extern int twapBlockg;
+extern int vestingActivationBlock;
+extern volatile int64_t globalVolumeALL_LTC;
+extern std::vector<std::string> vestingAddresses;
+
+/** TWAP containers **/
+extern std::map<uint32_t, std::vector<uint64_t>> cdextwap_ele;
+extern std::map<uint32_t, std::vector<uint64_t>> cdextwap_vec;
+extern std::map<uint32_t, std::map<uint32_t, std::vector<uint64_t>>> mdextwap_ele;
+extern std::map<uint32_t, std::map<uint32_t, std::vector<uint64_t>>> mdextwap_vec;
 
 using namespace mastercore;
 
@@ -140,6 +166,8 @@ std::map<uint32_t, int64_t> global_balance_money;
 std::map<uint32_t, int64_t> global_balance_reserved;
 //! Vector containing a list of properties relative to the wallet
 std::set<uint32_t> global_wallet_property_list;
+
+using boost::algorithm::token_compress_on;
 
 std::string mastercore::strMPProperty(uint32_t propertyId)
 {
@@ -246,6 +274,24 @@ double FormatContractShortMP(int64_t n)
         }
     } //get rid of trailing dot if non decimal
     double q = atof(str.c_str());
+    return q;
+}
+
+long int FormatShortIntegerMP(int64_t n)
+{
+    int64_t n_abs = (n > 0 ? n : -n);
+    int64_t quotient = n_abs / COIN;
+    int64_t remainder = n_abs % COIN;
+    std::string str = strprintf("%d.%08d", quotient, remainder);
+    // clean up trailing zeros - good for RPC not so much for UI
+    str.erase(str.find_last_not_of('0') + 1, std::string::npos);
+    if (str.length() > 0) {
+      std::string::iterator it = str.end() - 1;
+      if (*it == '.') {
+	str.erase(it);
+      }
+    } //get rid of trailing dot if non decimal
+    long int q = atol(str.c_str());
     return q;
 }
 
@@ -1987,6 +2033,76 @@ void mastercore_handler_disc_begin(const int nHeight)
     reorgRecoveryMaxHeight = (nHeight > reorgRecoveryMaxHeight) ? nHeight: reorgRecoveryMaxHeight;
 }
 
+void Filling_Twap_Vec(std::map<uint32_t, std::vector<uint64_t>> &twap_ele, std::map<uint32_t, std::vector<uint64_t>> &twap_vec,
+		      uint32_t property_traded, uint32_t property_desired, uint64_t effective_price)
+{
+  int nBlockNow = GetHeight();
+  std::vector<uint64_t> twap_minmax;
+  if (msc_debug_tradedb) PrintToLog("\nCheck here CDEx:\t nBlockNow = %d\t twapBlockg = %d\n", nBlockNow, twapBlockg);
+
+  if (nBlockNow == twapBlockg)
+    twap_ele[property_traded].push_back(effective_price);
+  else
+    {
+      if (twap_ele[property_traded].size() != 0)
+	{
+	  twap_minmax = min_max(twap_ele[property_traded]);
+	  uint64_t numerator = twap_ele[property_traded].front()+twap_minmax[0]+twap_minmax[1]+twap_ele[property_traded].back();
+	  rational_t twapRat(numerator/COIN, 4);
+	  int64_t twap_elej = mastercore::RationalToInt64(twapRat);
+	  if (msc_debug_tradedb) PrintToLog("\ntwap_elej CDEx = %s\n", FormatDivisibleMP(twap_elej));
+	  cdextwap_vec[property_traded].push_back(twap_elej);
+	}
+      twap_ele[property_traded].clear();
+      twap_ele[property_traded].push_back(effective_price);
+    }
+  twapBlockg = nBlockNow;
+}
+
+void Filling_Twap_Vec(std::map<uint32_t, std::map<uint32_t, std::vector<uint64_t>>> &twap_ele,
+		      std::map<uint32_t, std::map<uint32_t, std::vector<uint64_t>>> &twap_vec,
+		      uint32_t property_traded, uint32_t property_desired, uint64_t effective_price)
+{
+  int nBlockNow = GetHeight();
+  std::vector<uint64_t> twap_minmax;
+  if (msc_debug_tradedb) PrintToLog("\nCheck here MDEx:\t nBlockNow = %d\t twapBlockg = %d\n", nBlockNow, twapBlockg);
+
+  if (nBlockNow == twapBlockg)
+    twap_ele[property_traded][property_desired].push_back(effective_price);
+  else
+    {
+      if (twap_ele[property_traded][property_desired].size() != 0)
+	{
+	  twap_minmax = min_max(twap_ele[property_traded][property_desired]);
+	  uint64_t numerator = twap_ele[property_traded][property_desired].front()+twap_minmax[0]+
+	    twap_minmax[1]+twap_ele[property_traded][property_desired].back();
+	  rational_t twapRat(numerator/COIN, 4);
+	  int64_t twap_elej = mastercore::RationalToInt64(twapRat);
+	  if (msc_debug_tradedb) PrintToLog("\ntwap_elej MDEx = %s\n", FormatDivisibleMP(twap_elej));
+	  mdextwap_vec[property_traded][property_desired].push_back(twap_elej);
+	}
+      twap_ele[property_traded][property_desired].clear();
+      twap_ele[property_traded][property_desired].push_back(effective_price);
+    }
+  twapBlockg = nBlockNow;
+}
+
+bool callingPerpetualSettlement(double globalPNLALL_DUSD, int64_t globalVolumeALL_DUSD, int64_t volumeToCompare)
+{
+  bool perpetualBool = false;
+
+  if ( globalPNLALL_DUSD == 0 )
+    {
+      // PrintToLog("\nLiquidate Forward Positions\n");
+      perpetualBool = true;
+    }
+  else if ( globalVolumeALL_DUSD > volumeToCompare )
+    {
+      // PrintToLog("\nTake decisions for globalVolumeALL_DUSD > volumeToCompare\n");
+    }
+
+  return perpetualBool;
+}
 
 /**
  * @return The marker for class C transactions.

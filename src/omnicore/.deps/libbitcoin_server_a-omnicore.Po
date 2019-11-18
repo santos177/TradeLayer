@@ -1358,7 +1358,12 @@ omnicore/libbitcoin_server_a-omnicore.o: omnicore/omnicore.cpp \
  /usr/include/boost/algorithm/string/detail/find_format_all.hpp \
  /usr/include/boost/algorithm/string/formatter.hpp \
  /usr/include/boost/algorithm/string/detail/formatter.hpp \
- /usr/include/boost/algorithm/string/erase.hpp
+ /usr/include/boost/algorithm/string/erase.hpp \
+ /usr/include/boost/exception/to_string.hpp \
+ /usr/include/boost/exception/detail/is_output_streamable.hpp \
+ /usr/include/boost/foreach.hpp /usr/include/boost/foreach_fwd.hpp \
+ /usr/include/c++/7/numeric /usr/include/c++/7/bits/stl_numeric.h \
+ omnicore/externfns.h omnicore/tradelayer_matrices.h
 
 /usr/include/stdc-predef.h:
 
@@ -4521,3 +4526,19 @@ wallet/walletutil.h:
 /usr/include/boost/algorithm/string/detail/formatter.hpp:
 
 /usr/include/boost/algorithm/string/erase.hpp:
+
+/usr/include/boost/exception/to_string.hpp:
+
+/usr/include/boost/exception/detail/is_output_streamable.hpp:
+
+/usr/include/boost/foreach.hpp:
+
+/usr/include/boost/foreach_fwd.hpp:
+
+/usr/include/c++/7/numeric:
+
+/usr/include/c++/7/bits/stl_numeric.h:
+
+omnicore/externfns.h:
+
+omnicore/tradelayer_matrices.h:

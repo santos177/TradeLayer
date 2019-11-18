@@ -1918,3 +1918,28 @@ const CMPMetaDEx* mastercore::MetaDEx_RetrieveTrade(const uint256& txid)
          xToString(getEffectivePrice()), getAddr(), getBlock(), getIdx(), getHash().ToString().substr(0, 10),
          getProperty(), FormatMP(getProperty(), getAmountForSale()));
  }
+
+ void saveDataGraphs(std::fstream &file, std::string lineOutSixth1, std::string lineOutSixth2, std::string lineOutSixth3, bool savedata_bool)
+ {
+   std::string lineSixth1 = lineOutSixth1;
+   std::string lineSixth2 = lineOutSixth2;
+   std::string lineSixth3 = lineOutSixth3;
+
+   if ( savedata_bool )
+     {
+       file << lineSixth1 << "\n";
+       file << lineSixth2 << std::endl;
+     }
+   else
+     {
+       file << lineSixth1 << "\n";
+       file << lineSixth2 << "\n";
+       file << lineSixth3 << std::endl;
+     }
+ }
+
+ void saveDataGraphs(std::fstream &file, std::string lineOut)
+ {
+   std::string line = lineOut;
+   file << line << std::endl;
+ }

@@ -111,6 +111,16 @@ enum TransactionType {
   OMNICORE_MESSAGE_TYPE_ALERT                  = 65535
 };
 
+#define ALL_PROPERTY_TYPE_INDIVISIBLE                 1
+#define ALL_PROPERTY_TYPE_DIVISIBLE                   2
+#define ALL_PROPERTY_TYPE_CONTRACT                    3
+#define ALL_PROPERTY_TYPE_VESTING                     4
+#define ALL_PROPERTY_TYPE_PEGGEDS                     5
+#define ALL_PROPERTY_TYPE_ORACLE_CONTRACT             6
+#define ALL_PROPERTY_TYPE_PERPETUAL_ORACLE            7
+#define ALL_PROPERTY_TYPE_PERPETUAL_CONTRACTS         8
+
+
 #define MSC_PROPERTY_TYPE_INDIVISIBLE             1
 #define MSC_PROPERTY_TYPE_DIVISIBLE               2
 #define MSC_PROPERTY_TYPE_INDIVISIBLE_REPLACING   65
@@ -161,10 +171,17 @@ const rational_t factor2 = rational_t(20,100); // normal limits
 // std::string FormatByType(int64_t amount, uint16_t propertyType);
 // std::string FormatByDivisibility(int64_t amount, bool divisible);
 double FormatContractShortMP(int64_t n);
-// long int FormatShortIntegerMP(int64_t n);
+long int FormatShortIntegerMP(int64_t n);
 // uint64_t int64ToUint64(int64_t value);
 // std::string FormatDivisibleZeroClean(int64_t n);
 
+void Filling_Twap_Vec(std::map<uint32_t, std::vector<uint64_t>> &twap_ele, std::map<uint32_t, std::vector<uint64_t>> &twap_vec,
+		      uint32_t property_traded, uint32_t property_desired, uint64_t effective_price);
+void Filling_Twap_Vec(std::map<uint32_t, std::map<uint32_t, std::vector<uint64_t>>> &twap_ele,
+		      std::map<uint32_t, std::map<uint32_t, std::vector<uint64_t>>> &twap_vec,
+		      uint32_t property_traded, uint32_t property_desired, uint64_t effective_price);
+
+bool callingPerpetualSettlement(double globalPNLALL_DUSD, int64_t globalVolumeALL_DUSD, int64_t volumeToCompare);
 
 /** Number formatting related functions. */
 std::string FormatDivisibleMP(int64_t amount, bool fSign = false);

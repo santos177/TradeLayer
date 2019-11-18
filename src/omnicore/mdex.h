@@ -39,6 +39,10 @@ typedef boost::rational<boost::multiprecision::checked_int128_t> rational_t;
 /** Converts price to string. */
 std::string xToString(const rational_t& value);
 
+/** ContractDEx. */
+void saveDataGraphs(std::fstream &file, std::string lineOutSixth1, std::string lineOutSixth2, std::string lineOutSixth3, bool savedata_bool);
+void saveDataGraphs(std::fstream &file, std::string lineOut);
+
 enum MatchReturnType
 {
     NOTHING = 0,
