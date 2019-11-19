@@ -220,6 +220,8 @@ extern cd_PropertiesMap contractdex;
 cd_PricesMap *get_PricesCd(uint32_t prop);
 cd_Set *get_IndexesCd(cd_PricesMap *p, uint64_t price);
 
+
+
 void LoopBiDirectional(cd_PricesMap* const ppriceMap, uint8_t trdAction, MatchReturnType &NewReturn, CMPContractDex* const pnew, const uint32_t propertyForSale);
 void x_TradeBidirectional(typename cd_PricesMap::iterator &it_fwdPrices, typename cd_PricesMap::reverse_iterator &it_bwdPrices, uint8_t trdAction, CMPContractDex* const pnew, const uint64_t sellerPrice, const uint32_t propertyForSale, MatchReturnType &NewReturn);
 int ContractDex_ADD(const std::string& sender_addr, uint32_t prop, int64_t amount, int block, const uint256& txid, unsigned int idx, uint64_t effective_price, uint8_t trading_action, int64_t amount_to_reserve);
@@ -243,8 +245,13 @@ int ContractDex_ADD_ORDERBOOK_EDGE(const std::string& sender_addr, uint32_t cont
 int ContractDex_ADD_MARKET_PRICE(const std::string& sender_addr, uint32_t contractId, int64_t amount, int block, const uint256& txid, unsigned int idx, uint8_t trading_action, int64_t amount_to_reserve);
 int ContractDex_CANCEL_FOR_BLOCK(const uint256& txid, int block,unsigned int idx, const std::string& sender_addr, unsigned char ecosystem);
 bool ContractDex_Fees(std::string addressTaker,std::string addressMaker, int64_t nCouldBuy,uint32_t contractId);
-///////////////////////////////////
+int64_t getPairMarketPrice(std::string num, std::string den);
+int64_t getVWAPPriceByPair(std::string num, std::string den);
+int64_t getVWAPPriceContracts(std::string namec);
 
+bool MetaDEx_Fees(const CMPMetaDEx *pnew, const CMPMetaDEx *pold, int64_t nCouldBuy);
+
+uint64_t edgeOrderbook(uint32_t contractId, uint8_t tradingAction);
 
 }
 

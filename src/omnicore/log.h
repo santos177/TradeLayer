@@ -53,7 +53,11 @@ extern bool msc_debug_alerts;
 extern bool msc_debug_consensus_hash_every_transaction;
 extern bool msc_debug_fees;
 extern bool msc_debug_x_trade_bidirectional;
-
+extern bool msc_debug_contractdex_add;
+extern bool msc_debug_contract_add_market;
+extern bool msc_debug_add_orderbook_edge;
+extern bool msc_debug_contract_cancel_inorder;
+extern bool msc_debug_close_position;
 /* When we switch to C++11, this can be switched to variadic templates instead
  * of this macro-based construction (see tinyformat.h).
  */

@@ -1943,3 +1943,326 @@ const CMPMetaDEx* mastercore::MetaDEx_RetrieveTrade(const uint256& txid)
    std::string line = lineOut;
    file << line << std::endl;
  }
+
+ bool mastercore::ContractDex_INSERT(const CMPContractDex &objContractDex)
+ {
+   // Create an empty price map (to use in case price map for this property does not already exist)
+   cd_PricesMap temp_prices;
+
+   // Attempt to obtain the price map for the property
+   cd_PricesMap *cd_prices = get_PricesCd(objContractDex.getProperty());
+
+   // Create an empty set of contractdex objects (to use in case no set currently exists at this price)
+   cd_Set temp_indexes;
+   cd_Set *p_indexes = NULL;
+
+   // Prepare for return code
+   std::pair <cd_Set::iterator, bool> ret;
+
+   // Attempt to obtain a set of contractdex objects for this price from the price map
+   if (cd_prices) p_indexes = get_IndexesCd(cd_prices, objContractDex.getEffectivePrice());
+
+   // See if the set was populated, if not no set exists at this price level, use the empty set that we created earlier
+   if (!p_indexes) p_indexes = &temp_indexes;
+
+     // Attempt to insert the contractdex object into the set
+   ret = p_indexes->insert(objContractDex);
+
+   if (false == ret.second) return false;
+
+   // If a prices map did not exist for this property, set p_prices to the temp empty price map
+   if (!cd_prices) cd_prices = &temp_prices;
+
+   // Update the prices map with the new Set at this price
+   (*cd_prices)[objContractDex.getEffectivePrice()] = *p_indexes;
+
+   // Set the contractdex map for the property to the updated (or new if it didn't exist) price map
+   contractdex[objContractDex.getProperty()] = *cd_prices;
+
+   return true;
+ }
+
+ cd_Set *mastercore::get_IndexesCd(cd_PricesMap *p, uint64_t price)
+ {
+     cd_PricesMap::iterator it = p->find(price);
+
+     if (it != p->end()) return &(it->second);
+
+     return (cd_Set*) NULL;
+ }
+
+ int mastercore::ContractDex_ADD(const std::string& sender_addr, uint32_t prop, int64_t amount, int block, const uint256& txid, unsigned int idx, uint64_t effective_price, uint8_t trading_action, int64_t amount_to_reserve)
+ {
+     int rc = METADEX_ERROR -1;
+
+     /*Remember: Here CMPTransaction::ADD is the subaction coming from CMPMetaDEx*/
+     CMPContractDex new_cdex(sender_addr, block, prop, amount, 0, 0, txid, idx, CMPTransaction::ADD, effective_price, trading_action);
+
+     if (msc_debug_contractdex_add) PrintToLog("%s(); buyer obj: %s\n", __FUNCTION__, new_cdex.ToString());
+     //  Ensure this is not a badly priced trade (for example due to zero amounts)
+     if (0 >= new_cdex.getEffectivePrice()) return METADEX_ERROR -66;
+
+     x_Trade(&new_cdex);
+
+     // Insert the remaining order into the ContractDex maps
+     if (0 < new_cdex.getAmountForSale())
+     {
+         //switch to getAmounForSale() when ready
+         if (!ContractDex_INSERT(new_cdex))
+         {
+             if (msc_debug_contractdex_add) PrintToLog("%s() ERROR: ALREADY EXISTS, line %d, file: %s\n", __FUNCTION__, __LINE__, __FILE__);
+             return METADEX_ERROR -70;  // TODO: create new numbers for our errors.
+         } else {
+             if (msc_debug_contractdex_add)
+             {
+                 PrintToLog("\nInserted in the orderbook!!\n");
+                 PrintToLog("==== INSERTED: %s= %s\n", xToString(new_cdex.getEffectivePrice()), new_cdex.ToString());
+             }
+         }
+      }
+
+      rc = 0;
+      return rc;
+ }
+
+ int mastercore::ContractDex_ADD_MARKET_PRICE(const std::string& sender_addr, uint32_t contractId, int64_t amount, int block, const uint256& txid, unsigned int idx, uint8_t trading_action, int64_t amount_to_reserve)
+ {
+     int rc = METADEX_ERROR -1;
+
+     if (trading_action == BUY)
+     {
+         uint64_t ask = edgeOrderbook(contractId,BUY);
+
+         CMPContractDex new_cdex(sender_addr, block, contractId, amount, 0, 0, txid, idx, CMPTransaction::ADD, ask, trading_action);
+
+         // Ensure this is not a badly priced trade (for example due to zero amounts)
+         if(msc_debug_contract_add_market) PrintToLog("effective price of new_cdex /buy/: %d\n",new_cdex.getEffectivePrice());
+         if (0 >= new_cdex.getEffectivePrice()) return METADEX_ERROR -66;
+
+         uint64_t newvalue;
+
+         while(true)
+        {
+            // oldvalue = new_cdex.getAmountForSale();
+            x_Trade(&new_cdex);
+            newvalue = new_cdex.getAmountForSale();
+            if (newvalue == 0)
+ 	             break;
+            uint64_t price = edgeOrderbook(contractId,BUY);
+            new_cdex.setPrice(price);
+        }
+
+     }
+     else if (trading_action == SELL)
+     {
+         uint64_t bid = edgeOrderbook(contractId,SELL);
+         if(msc_debug_contract_add_market) PrintToLog("bid: %d\n",bid);
+         CMPContractDex new_cdex(sender_addr, block, contractId, amount, 0, 0, txid, idx, CMPTransaction::ADD, bid, trading_action);
+         //  Ensure this is not a badly priced trade (for example due to zero amounts
+
+         if(msc_debug_contract_add_market) PrintToLog("effective price of new_cdex/sell/: %d\n",new_cdex.getEffectivePrice());
+         if (0 >= new_cdex.getEffectivePrice()) return METADEX_ERROR -66;
+
+         uint64_t newvalue;
+
+         while(true)
+         {
+             // oldvalue = new_cdex.getAmountForSale();
+             x_Trade(&new_cdex);
+             newvalue = new_cdex.getAmountForSale();
+             if (newvalue == 0)
+ 	              break;
+
+             uint64_t price = edgeOrderbook(contractId,BUY);
+             new_cdex.setPrice(price);
+
+         }
+
+     }
+
+     return rc;
+ }
+
+ uint64_t mastercore::edgeOrderbook(uint32_t contractId, uint8_t tradingAction)
+ {
+     uint64_t price = 0;
+     uint64_t result = 0;
+     std::vector<uint64_t> vecContractDexPrices;
+
+     cd_PricesMap* const ppriceMap = get_PricesCd(contractId); // checking the ask price of contract A
+     for (cd_PricesMap::iterator it = ppriceMap->begin(); it != ppriceMap->end(); ++it) {
+         const cd_Set& indexes = it->second;
+         for (cd_Set::const_iterator it = indexes.begin(); it != indexes.end(); ++it) {
+             const CMPContractDex& obj = *it;
+             if (obj.getTradingAction() == tradingAction || obj.getAmountForSale() <= 0) continue;
+             price = obj.getEffectivePrice();
+             if(msc_debug_sp) PrintToLog("%s(): choosen price: %d\n",__func__, price);
+             vecContractDexPrices.push_back(price);
+         }
+     }
+
+     if (tradingAction == BUY && !vecContractDexPrices.empty()){
+        result = vecContractDexPrices.front();
+     } else if (tradingAction == SELL && !vecContractDexPrices.empty()){
+        result = vecContractDexPrices.back();
+     }
+
+     return static_cast<uint64_t>(result);
+ }
+
+ int mastercore::ContractDex_CANCEL_IN_ORDER(const std::string& sender_addr, uint32_t contractId)
+ {
+     int rc = METADEX_ERROR -40;
+     bool bValid = false;
+
+     CMPSPInfo::Entry sp;
+     if(!pDbSpInfo->getSP(contractId, sp))
+         return rc;
+
+     uint32_t collateralCurrency = sp.collateral_currency;
+     int64_t marginRe = static_cast<int64_t>(sp.margin_requirement);
+
+     for (cd_PropertiesMap::iterator my_it = contractdex.begin(); my_it != contractdex.end(); ++my_it) {
+         unsigned int prop = my_it->first;
+
+         if(msc_debug_contract_cancel_inorder) PrintToLog(" ## property: %u\n", prop);
+         cd_PricesMap &prices = my_it->second;
+
+         for (cd_PricesMap::iterator it = prices.begin(); it != prices.end(); ++it) {
+             uint64_t price = it->first;
+             cd_Set &indexes = it->second;
+
+             for (cd_Set::iterator it = indexes.begin(); it != indexes.end();) {
+
+                 if(msc_debug_contract_cancel_inorder)
+                 {
+                     PrintToLog("%s= %s\n", xToString(price), it->ToString());
+                     PrintToLog("address: %d\n",it->getAddr());
+                     PrintToLog("propertyid: %d\n",it->getProperty());
+                     PrintToLog("amount for sale: %d\n",it->getAmountForSale());
+                 }
+
+                 if (it->getAddr() != sender_addr || it->getProperty() != contractId || it->getAmountForSale() == 0) {
+                     ++it;
+                     continue;
+                 }
+
+                 string addr = it->getAddr();
+                 int64_t amountForSale = it->getAmountForSale();
+
+                 // rational_t conv = notionalChange(contractId);
+                 rational_t conv = rational_t(1,1);
+                 int64_t num = conv.numerator().convert_to<int64_t>();
+                 int64_t den = conv.denominator().convert_to<int64_t>();
+                 int64_t balance = GetTokenBalance(addr,collateralCurrency,BALANCE);
+
+                 if(msc_debug_contract_cancel_inorder)
+                 {
+                     PrintToLog("collateral currency id of contract : %d\n",collateralCurrency);
+                     PrintToLog("margin requirement of contract : %d\n",marginRe);
+                     PrintToLog("amountForSale: %d\n",amountForSale);
+                     PrintToLog("Address: %d\n",addr);
+                 }
+                 // arith_uint256 amountMargin = ConvertTo256(amountForSale) * ConvertTo256(marginRe) * ConvertTo256(num) / ConvertTo256(den);
+                 arith_uint256 amountMargin = ConvertTo256(amountForSale) * ConvertTo256(num) / ConvertTo256(den);
+                 int64_t redeemed = ConvertTo64(amountMargin);
+                 if(msc_debug_contract_cancel_inorder) PrintToLog("redeemed: %d\n",redeemed);
+
+                 // move from reserve to balance the collateral
+                 if (balance > redeemed && balance > 0 && redeemed > 0) {
+                     assert(update_tally_map(addr, collateralCurrency, redeemed, BALANCE));
+                     assert(update_tally_map(addr, collateralCurrency, -redeemed, CONTRACTDEX_MARGIN));
+                 // // record the cancellation
+                 }
+
+                 bValid = true;
+                 if(msc_debug_contract_cancel_inorder) PrintToLog("CANCEL IN ORDER: order found!\n");
+                 // p_txlistdb->recordContractDexCancelTX(txid, it->getHash(), bValid, block, it->getProperty(), it->getAmountForSale
+                 indexes.erase(it++);
+                 rc = 0;
+                 return rc;
+             }
+
+         }
+     }
+
+     if (!bValid && msc_debug_contract_cancel_inorder)
+     {
+        PrintToLog("CANCEL IN ORDER: You don't have active orders\n");
+        rc = 1;
+     }
+
+     return rc;
+ }
+
+ int mastercore::ContractDex_ADD_ORDERBOOK_EDGE(const std::string& sender_addr, uint32_t contractId, int64_t amount, int block, const uint256& txid, unsigned int idx, uint8_t trading_action, int64_t amount_to_reserve)
+ {
+     int rc = METADEX_ERROR -1;
+     uint64_t price;
+
+     (trading_action == BUY) ? price = edgeOrderbook(contractId, SELL) : price = edgeOrderbook(contractId, BUY);
+     if (msc_debug_add_orderbook_edge) PrintToLog("price of edge: %d\n",price);
+     if (price > 0)
+     {
+         CMPContractDex new_cdex(sender_addr, block, contractId, amount, 0, 0, txid, idx, CMPTransaction::ADD, price, trading_action);
+         if (!ContractDex_INSERT(new_cdex))
+         {
+             if (msc_debug_add_orderbook_edge) PrintToLog("%s() ERROR: ALREADY EXISTS, line %d, file: %s\n", __FUNCTION__, __LINE__, __FILE__);
+             return METADEX_ERROR -70;  // TODO: create new numbers for our errors.
+         } else {
+             if(msc_debug_add_orderbook_edge) PrintToLog("\nInserted in the orderbook!!\n");
+         }
+
+     } else{
+         if(msc_debug_add_orderbook_edge) PrintToLog("\nNo orders in ask or bid\n");
+         return METADEX_ERROR -60;
+     }
+
+     rc = 0;
+     return rc;
+ }
+
+ /*NEW FUNCTION*/
+ int mastercore::ContractDex_CLOSE_POSITION(const uint256& txid, unsigned int block, const std::string& sender_addr, unsigned char ecosystem, uint32_t contractId, uint32_t collateralCurrency)
+ {
+     int64_t shortPosition = GetTokenBalance(sender_addr,contractId, NEGATIVE_BALANCE);
+     int64_t longPosition = GetTokenBalance(sender_addr,contractId, POSSITIVE_BALANCE);
+
+     if (msc_debug_close_position)
+     {
+         PrintToLog("shortPosition before: %d\n",shortPosition);
+         PrintToLog("longPosition before: %d\n",longPosition);
+     }
+
+     LOCK(cs_tally);
+
+     // Clearing the position
+     unsigned int idx=0;
+     if (shortPosition > 0 && longPosition == 0)
+     {
+         if(msc_debug_close_position) PrintToLog("Short Position closing...\n");
+         ContractDex_ADD_MARKET_PRICE(sender_addr,contractId, shortPosition, block, txid, idx,BUY, 0);
+     } else if (longPosition > 0 && shortPosition == 0){
+         if(msc_debug_close_position) PrintToLog("Long Position closing...\n");
+         ContractDex_ADD_MARKET_PRICE(sender_addr,contractId, longPosition, block, txid, idx, SELL, 0);
+     }
+
+     // cleaning liquidation price
+     int64_t liqPrice = GetTokenBalance(sender_addr,contractId, LIQUIDATION_PRICE);
+     if (liqPrice > 0){
+         update_tally_map(sender_addr, contractId, -liqPrice, LIQUIDATION_PRICE);
+     }
+
+     int64_t shortPositionAf = GetTokenBalance(sender_addr,contractId, NEGATIVE_BALANCE);
+     int64_t longPositionAf= GetTokenBalance(sender_addr,contractId, POSSITIVE_BALANCE);
+
+     if(msc_debug_close_position) PrintToLog("%s: shortPosition Now: %d, longPosition Now: %d\n",__func__, shortPositionAf, longPositionAf);
+
+     if (shortPositionAf == 0 && longPositionAf == 0){
+         if(msc_debug_close_position) PrintToLog("POSITION CLOSED!!!\n");
+     } else {
+         if(msc_debug_close_position) PrintToLog("ERROR: Position partialy Closed\n");
+     }
+
+     return 0;
+ }
