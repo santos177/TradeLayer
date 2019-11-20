@@ -33,4 +33,6 @@ std::vector<unsigned char> CreatePayload_OmniCoreAlert(uint16_t alertType, uint3
 std::vector<unsigned char> CreatePayload_DeactivateFeature(uint16_t featureId);
 std::vector<unsigned char> CreatePayload_ActivateFeature(uint16_t featureId, uint32_t activationBlock, uint32_t minClientVersion);
 std::vector<unsigned char> CreatePayload_DEx_Payment();
+std::vector<unsigned char> CreatePayload_SendVestingTokens(uint32_t propertyId, uint64_t amount);
+std::vector<unsigned char> CreatePayload_CreateContract(uint8_t ecosystem, uint32_t denomType, std::string name, uint32_t blocks_until_expiration, uint32_t notional_size, uint32_t collateral_currency, uint32_t margin_requirement);
 #endif // BITCOIN_OMNICORE_CREATEPAYLOAD_H

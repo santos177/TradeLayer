@@ -567,5 +567,55 @@ std::vector<unsigned char> CreatePayload_DEx_Payment()
     return payload;
 }
 
+std::vector<unsigned char> CreatePayload_SendVestingTokens(uint32_t propertyId, uint64_t amount)
+{
+  std::vector<unsigned char> payload;
+
+  uint16_t messageType = 5;
+  uint16_t messageVer = 0;
+
+  SwapByteOrder16(messageType);
+  SwapByteOrder16(messageVer);
+  SwapByteOrder32(propertyId);
+  SwapByteOrder64(amount);
+
+  PUSH_BACK_BYTES(payload, messageVer);
+  PUSH_BACK_BYTES(payload, messageType);
+  PUSH_BACK_BYTES(payload, propertyId);
+  PUSH_BACK_BYTES(payload, amount);
+
+  return payload;
+}
+
+std::vector<unsigned char> CreatePayload_CreateContract(uint8_t ecosystem, uint32_t denomType, std::string name, uint32_t blocks_until_expiration, uint32_t notional_size, uint32_t collateral_currency, uint32_t margin_requirement)
+{
+  std::vector<unsigned char> payload;
+
+  uint16_t messageType = 40;
+  uint16_t messageVer = 0;
+
+  SwapByteOrder16(messageVer);
+  SwapByteOrder16(messageType);
+  SwapByteOrder32(blocks_until_expiration);
+  SwapByteOrder32(notional_size);
+  SwapByteOrder32(margin_requirement);
+
+  if (name.size() > 255) name = name.substr(0,255);
+
+  PUSH_BACK_BYTES(payload, messageVer);
+  PUSH_BACK_BYTES(payload, messageType);
+
+  payload.insert(payload.end(), name.begin(), name.end());
+  payload.push_back('\0');
+
+  PUSH_BACK_BYTES(payload, ecosystem);
+  PUSH_BACK_BYTES(payload, blocks_until_expiration);
+  PUSH_BACK_BYTES(payload, notional_size);
+  PUSH_BACK_BYTES(payload, margin_requirement);
+
+
+  return payload;
+}
+
 #undef PUSH_BACK_BYTES
 #undef PUSH_BACK_BYTES_PTR

@@ -58,11 +58,13 @@ enum TransactionType {
   MSC_TYPE_RESTRICTED_SEND                     =  2,
   MSC_TYPE_SEND_TO_OWNERS                      =  3,
   MSC_TYPE_SEND_ALL                            =  4,
+  MSC_TYPE_SEND_VESTING                        =  5,
   MSC_TYPE_SAVINGS_MARK                        = 10,
   MSC_TYPE_SAVINGS_COMPROMISED                 = 11,
   MSC_TYPE_RATELIMITED_MARK                    = 12,
   MSC_TYPE_AUTOMATIC_DISPENSARY                = 15,
   MSC_TYPE_TRADE_OFFER                         = 20,
+    MSC_TYPE_DEX_BUY_OFFER                     = 21,
   MSC_TYPE_ACCEPT_OFFER_BTC                    = 22,
   MSC_TYPE_METADEX_TRADE                       = 25,
   MSC_TYPE_METADEX_CANCEL_PRICE                = 26,
@@ -146,9 +148,17 @@ enum TransactionType {
 #define PKT_ERROR_TOKENS      (-82000)
 #define PKT_ERROR_SEND_ALL    (-83000)
 
-#define OMNI_PROPERTY_BTC   0
 #define OMNI_PROPERTY_MSC   1
 #define OMNI_PROPERTY_TMSC  2
+
+#define OMNI_PROPERTY_BTC             0
+#define OMNI_PROPERTY_ALL             1
+#define OMNI_PROPERTY_TALL            2
+#define OMNI_PROPERTY_VESTING         3
+#define OMNI_PROPERTY_ALL_ISSUANCE    6
+#define TOTAL_AMOUNT_VESTING_TOKENS   1500000*COIN
+
+
 
 
 #define BUY            1

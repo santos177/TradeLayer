@@ -248,6 +248,13 @@ static const CRPCConvertParam vRPCConvertParams[] =
     { "omni_sendalert", 2, "expiryvalue" },
     { "omni_funded_send", 2, "propertyid" },
     { "omni_funded_sendall", 2, "ecosystem" },
+    { "tl_sendvesting", 2, "arg2" },
+    { "tl_createcontract", 1, "arg1"},
+    { "tl_createcontract", 2, "arg2"},
+    { "tl_createcontract", 4, "arg4"},
+    { "tl_createcontract", 5, "arg5"},
+    { "tl_createcontract", 6, "arg6"},
+    { "tl_createcontract", 7, "arg7"},
 
     /* Omni Core - raw transaction calls */
     { "omni_decodetransaction", 1, "prevtxs" },

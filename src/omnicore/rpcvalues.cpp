@@ -213,7 +213,7 @@ std::vector<PrevTxsEntry> ParsePrevTxs(const UniValue& value)
 
     std::vector<PrevTxsEntry> prevTxsParsed;
     prevTxsParsed.reserve(prevTxs.size());
-    
+
     for (size_t i = 0; i < prevTxs.size(); ++i) {
         const UniValue& p = prevTxs[i];
         if (p.type() != UniValue::VOBJ) {
@@ -235,4 +235,25 @@ std::vector<PrevTxsEntry> ParsePrevTxs(const UniValue& value)
     }
 
     return prevTxsParsed;
+}
+
+
+uint32_t ParseContractType(const UniValue& value)
+{
+  int64_t Nvalue = value.get_int64();
+
+  if (Nvalue < 1 || 4294967295LL < Nvalue) {
+    throw JSONRPCError(RPC_INVALID_PARAMETER, "Value is out of range");
+  }
+  return static_cast<uint32_t>(Nvalue);
+
+}
+
+uint32_t ParseAmount32t(const UniValue& value)
+{
+  int64_t amount = StrToInt64(value.getValStr(), true);
+  if (amount < 0) {
+    throw JSONRPCError(RPC_TYPE_ERROR, "Price should be positive");
+  }
+  return static_cast<uint32_t>(amount);
 }

@@ -40,6 +40,27 @@ using boost::algorithm::token_compress_on;
 
 using namespace mastercore;
 
+typedef boost::rational<boost::multiprecision::checked_int128_t> rational_t;
+typedef boost::multiprecision::cpp_dec_float_100 dec_float;
+typedef boost::multiprecision::checked_int128_t int128_t;
+extern std::map<std::string,uint32_t> peggedIssuers;
+extern std::map<uint32_t,oracledata> oraclePrices;
+extern std::map<std::string,vector<withdrawalAccepted>> withdrawal_Map;
+extern std::map<std::string,channel> channels_Map;
+extern int64_t factorE;
+extern int64_t priceIndex;
+extern int64_t allPrice;
+extern double denMargin;
+extern uint64_t marketP[NPTYPES];
+extern volatile int id_contract;
+extern volatile int64_t factorALLtoLTC;
+extern volatile int64_t globalVolumeALL_LTC;
+extern volatile int64_t LTCPriceOffer;
+extern std::vector<std::string> vestingAddresses;
+extern mutex mReward;
+
+// using mastercore::StrToInt64;
+
 /** Returns a label for the given transaction type. */
 std::string mastercore::strTransactionType(uint16_t txType)
 {
@@ -75,6 +96,7 @@ std::string mastercore::strTransactionType(uint16_t txType)
         case OMNICORE_MESSAGE_TYPE_DEACTIVATION: return "Feature Deactivation";
         case OMNICORE_MESSAGE_TYPE_ACTIVATION: return "Feature Activation";
         case MSC_TYPE_DEX_PAYMENT: return "DEx payment";
+        case MSC_TYPE_CREATE_CONTRACT: return "Create Contract";
 
         default: return "* unknown type *";
     }
@@ -184,6 +206,76 @@ bool CMPTransaction::interpret_Transaction()
 
         case MSC_TYPE_DEX_PAYMENT:
             return interpret_DEx_Payment();
+
+        case MSC_TYPE_SEND_VESTING:
+            return interpret_SendVestingTokens();
+
+        case MSC_TYPE_CREATE_CONTRACT:
+            return interpret_CreateContractDex();
+
+        // case MSC_TYPE_CREATE_ORACLE_CONTRACT:
+        //     return interpret_CreateOracleContract();
+        //
+        // case MSC_TYPE_CONTRACTDEX_TRADE:
+        //     return interpret_ContractDexTrade();
+        //
+        // case MSC_TYPE_CONTRACTDEX_CANCEL_ECOSYSTEM:
+        //     return interpret_ContractDexCancelEcosystem();
+        //
+        // case MSC_TYPE_PEGGED_CURRENCY:
+        //     return interpret_CreatePeggedCurrency();
+        //
+        // case MSC_TYPE_SEND_PEGGED_CURRENCY:
+        //     return interpret_SendPeggedCurrency();
+        //
+        // case MSC_TYPE_REDEMPTION_PEGGED:
+        //     return interpret_RedemptionPegged();
+        //
+        // case MSC_TYPE_CONTRACTDEX_CLOSE_POSITION:
+        //     return interpret_ContractDexClosePosition();
+        //
+        // case MSC_TYPE_CONTRACTDEX_CANCEL_ORDERS_BY_BLOCK:
+        //     return interpret_ContractDex_Cancel_Orders_By_Block();
+        //
+        // case MSC_TYPE_DEX_BUY_OFFER:
+        //     return interpret_DExBuy();
+        //
+        // case MSC_TYPE_CHANGE_ORACLE_REF:
+        //     return interpret_Change_OracleRef();
+        //
+        // case MSC_TYPE_SET_ORACLE:
+        //     return interpret_Set_Oracle();
+        //
+        // case MSC_TYPE_ORACLE_BACKUP:
+        //     return interpret_OracleBackup();
+        //
+        // case MSC_TYPE_CLOSE_ORACLE:
+        //     return interpret_CloseOracle();
+        //
+        // case MSC_TYPE_COMMIT_CHANNEL:
+        //     return interpret_CommitChannel();
+        //
+        // case MSC_TYPE_WITHDRAWAL_FROM_CHANNEL:
+        //     return interpret_Withdrawal_FromChannel();
+        //
+        // case MSC_TYPE_INSTANT_TRADE:
+        //     return interpret_Instant_Trade();
+        //
+        // case MSC_TYPE_TRANSFER:
+        //     return interpret_Transfer();
+        //
+        // case MSC_TYPE_CREATE_CHANNEL:
+        //     return interpret_Create_Channel();
+        //
+        // case MSC_TYPE_CONTRACT_INSTANT:
+        //     return interpret_Contract_Instant();
+        //
+        // case MSC_TYPE_NEW_ID_REGISTRATION:
+        //     return interpret_New_Id_Registration();
+        //
+        // case MSC_TYPE_UPDATE_ID_REGISTRATION:
+        //     return interpret_Update_Id_Registration();
+
     }
 
     return false;
@@ -286,6 +378,28 @@ bool CMPTransaction::interpret_SendAll()
     }
 
     return true;
+}
+
+/** Tx 5 */
+bool CMPTransaction::interpret_SendVestingTokens()
+{
+
+  if (pkt_size < 5) { /** TODO: check minimum size here */
+      return false;
+  }
+
+  memcpy(&property, &pkt[4], 4);
+  SwapByteOrder32(property);
+  memcpy(&nValue, &pkt[8], 8);
+  SwapByteOrder64(nValue);
+  nNewValue = nValue;
+
+  // if ((!rpcOnly && msc_debug_packets) || msc_debug_packets_readonly) {
+    PrintToLog("\t        property: %d (%s)\n", property, strMPProperty(property));
+    PrintToLog("\t           value: %s\n", FormatMP(property, nValue));
+  // }
+
+  return true;
 }
 
 /** Tx 20 */
@@ -870,6 +984,67 @@ bool CMPTransaction::interpret_DEx_Payment()
   return true;
 }
 
+/** Tx  40*/
+bool CMPTransaction::interpret_CreateContractDex()
+{
+
+  // if (pkt_size < 39) {
+  //     return false;
+  // }
+
+  const char* p = 11 + (char*) &pkt;
+  std::vector<std::string> spstr;
+  memcpy(&ecosystem, &pkt[4], 1);
+  memcpy(&prop_type, &pkt[5], 2);
+
+  for (int i = 0; i < 1; i++) {
+      spstr.push_back(std::string(p));
+      p += spstr.back().size() + 1;
+  }
+
+  int i = 0;
+  memcpy(name, spstr[i].c_str(), std::min(spstr[i].length(), sizeof(name)-1)); i++;
+
+  // SwapByteOrder16(prop_type);
+  // memcpy(&prev_prop_id, &pkt[7], 4);
+  // SwapByteOrder32(prev_prop_id);
+  //
+  // memcpy(&property, p, 4);
+  // SwapByteOrder32(property);
+  // p += 4;
+  // memcpy(&nValue, p, 8);
+  // SwapByteOrder64(nValue);
+  // p += 8;
+  // nNewValue = nValue;
+  // memcpy(&deadline, p, 8);
+  // SwapByteOrder64(deadline);
+  // p += 8;
+  // memcpy(&early_bird, p++, 1);
+  // memcpy(&percentage, p++, 1);
+
+  prop_type = ALL_PROPERTY_TYPE_CONTRACT;
+
+  PrintToLog("\t version: %d\n", version);
+  PrintToLog("\t messageType: %d\n",type);
+  PrintToLog("\t name: %s\n", name);
+
+  // if ((!rpcOnly && msc_debug_packets) || msc_debug_packets_readonly)
+  // {
+  //     PrintToLog("\t version: %d\n", version);
+  //     PrintToLog("\t messageType: %d\n",type);
+  //     PrintToLog("\t denomination: %d\n", denomination);
+  //     PrintToLog("\t blocks until expiration : %d\n", blocks_until_expiration);
+  //     PrintToLog("\t notional size : %d\n", notional_size);
+  //     PrintToLog("\t collateral currency: %d\n", collateral_currency);
+  //     PrintToLog("\t margin requirement: %d\n", margin_requirement);
+  //     PrintToLog("\t ecosystem: %d\n", ecosystem);
+  //     PrintToLog("\t name: %s\n", name);
+  //     PrintToLog("\t prop_type: %d\n", prop_type);
+  // }
+
+  return true;
+}
+
 // ---------------------- CORE LOGIC -------------------------
 
 /**
@@ -968,6 +1143,9 @@ int CMPTransaction::interpretPacket()
 
         case MSC_TYPE_DEX_PAYMENT:
             return logicMath_DEx_Payment();
+
+        case MSC_TYPE_SEND_VESTING:
+            return logicMath_SendVestingTokens();
     }
 
     return (PKT_ERROR -100);
@@ -1281,6 +1459,18 @@ int CMPTransaction::logicMath_SendAll()
     nNewValue = numberOfPropertiesSent;
 
     return 0;
+}
+
+/** Tx 5 */
+int CMPTransaction::logicMath_SendVestingTokens()
+{
+  assert(update_tally_map(sender, property, -nValue, BALANCE));
+  assert(update_tally_map(receiver, property, nValue, BALANCE));
+  assert(update_tally_map(receiver, OMNI_PROPERTY_ALL, nValue, UNVESTED));
+
+  vestingAddresses.push_back(receiver);
+
+  return 0;
 }
 
 /** Tx 20 */

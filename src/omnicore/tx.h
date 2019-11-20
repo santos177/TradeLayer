@@ -147,6 +147,32 @@ private:
     bool interpret_Activation();
     bool interpret_Deactivation();
     bool interpret_Alert();
+    /** New things for Contract */
+    bool interpret_ContractDexTrade();
+    bool interpret_CreateContractDex();
+    bool interpret_ContractDexCancelPrice();
+    bool interpret_ContractDexCancelEcosystem();
+    bool interpret_CreatePeggedCurrency();
+    bool interpret_RedemptionPegged();
+    bool interpret_SendPeggedCurrency();
+    bool interpret_ContractDexClosePosition();
+    bool interpret_ContractDex_Cancel_Orders_By_Block();
+    bool interpret_DExBuy();
+    bool interpret_SendVestingTokens();
+    bool interpret_CreateOracleContract();
+    bool interpret_Change_OracleRef();
+    bool interpret_Set_Oracle();
+    bool interpret_OracleBackup();
+    bool interpret_CloseOracle();
+    bool interpret_CommitChannel();
+    bool interpret_Withdrawal_FromChannel();
+    bool interpret_Instant_Trade();
+    bool interpret_Update_PNL();
+    bool interpret_Transfer();
+    bool interpret_Create_Channel();
+    bool interpret_Contract_Instant();
+    bool interpret_New_Id_Registration();
+    bool interpret_Update_Id_Registration();
     bool interpret_DEx_Payment();
 
     /**
@@ -175,6 +201,32 @@ private:
     int logicMath_Activation();
     int logicMath_Deactivation();
     int logicMath_Alert();
+    int logicMath_ContractDexTrade();
+    int logicMath_CreateContractDex();
+    int logicMath_ContractDexCancelPrice();
+    int logicMath_ContractDexCancelEcosystem();
+    int logicMath_CreatePeggedCurrency();
+    int logicMath_RedemptionPegged();
+    int logicMath_SendPeggedCurrency();
+    int logicMath_ContractDexClosePosition();
+    int logicMath_ContractDex_Cancel_Orders_By_Block();
+    int logicMath_AcceptOfferBTC();
+    int logicMath_DExBuy();
+    int logicMath_SendVestingTokens();
+    int logicMath_CreateOracleContract();
+    int logicMath_Change_OracleRef();
+    int logicMath_Set_Oracle();
+    int logicMath_OracleBackup();
+    int logicMath_CloseOracle();
+    int logicMath_CommitChannel();
+    int logicMath_Withdrawal_FromChannel();
+    int logicMath_Instant_Trade();
+    int logicMath_Update_PNL();
+    int logicMath_Transfer();
+    int logicMath_Create_Channel();
+    int logicMath_Contract_Instant();
+    int logicMath_New_Id_Registration();
+    int logicMath_Update_Id_Registration();
     int logicMath_DEx_Payment();
 
     /**

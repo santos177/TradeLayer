@@ -1778,6 +1778,134 @@ static UniValue tl_send_dex_payment(const JSONRPCRequest& request)
     }
 }
 
+UniValue tl_sendvesting(const JSONRPCRequest& request)
+{
+#ifdef ENABLE_WALLET
+    std::shared_ptr<CWallet> const wallet = GetWalletForJSONRPCRequest(request);
+    std::unique_ptr<interfaces::Wallet> pwallet = interfaces::MakeWallet(wallet);
+#else
+    std::unique_ptr<interfaces::Wallet> pwallet = interfaces::MakeWallet(nullptr);
+#endif
+  if (request.fHelp || request.params.size() < 4 || request.params.size() > 6)
+    throw runtime_error(
+			"tl_send \"fromaddress\" \"toaddress\" propertyid \"amount\" ( \"referenceamount\" )\n"
+
+			"\nCreate and broadcast a simple send transaction.\n"
+
+			"\nArguments:\n"
+			"1. fromaddress          (string, required) the address to send from\n"
+			"2. toaddress            (string, required) the address of the receiver\n"
+			"3. propertyid           (number, required) the identifier of the tokens to send\n"
+			"4. amount               (string, required) the amount of vesting tokens to send\n"
+
+			"\nResult:\n"
+			"\"hash\"                  (string) the hex-encoded transaction hash\n"
+
+			"\nExamples:\n"
+			+ HelpExampleCli("tl_send", "\"3M9qvHKtgARhqcMtM5cRT9VaiDJ5PSfQGY\" \"37FaKponF7zqoMLUjEiko25pDiuVH5YLEa\" 1 \"100.0\"")
+			+ HelpExampleRpc("tl_send", "\"3M9qvHKtgARhqcMtM5cRT9VaiDJ5PSfQGY\", \"37FaKponF7zqoMLUjEiko25pDiuVH5YLEa\", 1, \"100.0\"")
+			);
+
+  // obtain parameters & info
+  std::string fromAddress = ParseAddress(request.params[0]);
+  std::string toAddress = ParseAddress(request.params[1]);
+  uint32_t propertyId = ParsePropertyId(request.params[2]); /** id=3 Vesting Tokens**/
+  int64_t amount = ParseAmount(request.params[3], true);
+
+  PrintToLog("propertyid = %d\n", propertyId);
+  PrintToLog("amount = %d\n", amount);
+  PrintToLog("fromAddress = %s", fromAddress);
+  PrintToLog("toAddress = %s", toAddress);
+
+  // create a payload for the transaction
+  std::vector<unsigned char> payload = CreatePayload_SendVestingTokens(propertyId, amount);
+
+  // request the wallet build the transaction (and if needed commit it)
+  uint256 txid;
+  std::string rawHex;
+  int result = WalletTxBuilder(fromAddress, toAddress,"",0, payload, txid, rawHex, autoCommit, pwallet.get());
+  // check error and return the txid (or raw hex depending on autocommit)
+  if (result != 0) {
+    throw JSONRPCError(result, error_str(result));
+  } else {
+    if (!autoCommit) {
+      return rawHex;
+    } else {
+      PendingAdd(txid, fromAddress, MSC_TYPE_SEND_VESTING, propertyId, amount);
+      return txid.GetHex();
+    }
+  }
+}
+
+UniValue tl_createcontract(const JSONRPCRequest& request)
+{
+#ifdef ENABLE_WALLET
+    std::shared_ptr<CWallet> const wallet = GetWalletForJSONRPCRequest(request);
+    std::unique_ptr<interfaces::Wallet> pwallet = interfaces::MakeWallet(wallet);
+#else
+    std::unique_ptr<interfaces::Wallet> pwallet = interfaces::MakeWallet(nullptr);
+#endif
+  if (request.fHelp || request.params.size() != 8)
+    throw runtime_error(
+			"tl_createcontract \"fromaddress\" ecosystem type previousid \"category\" \"subcategory\" \"name\" \"url\" \"data\" propertyiddesired tokensperunit deadline ( earlybonus issuerpercentage )\n"
+
+			"Create new Future Contract."
+
+			"\nArguments:\n"
+			"1. fromaddress               (string, required) the address to send from\n"
+			"2. ecosystem                 (string, required) the ecosystem to create the tokens in (1 for main ecosystem, 2 for test ecosystem)\n"
+			"3. numerator                 (number, required) 4: ALL, 5: sLTC, 6: LTC.\n"
+			"4. name                      (string, required) the name of the new tokens to create\n"
+			"5. blocks until expiration   (number, required) life of contract, in blocks\n"
+			"6. notional size             (number, required) notional size\n"
+			"7. collateral currency       (number, required) collateral currency\n"
+			"8. margin requirement        (number, required) margin requirement\n"
+
+			"\nResult:\n"
+			"\"hash\"                  (string) the hex-encoded transaction hash\n"
+
+			"\nExamples:\n"
+			+ HelpExampleCli("tl_createcontract", "2 1 0 \"Companies\" \"Bitcoin Mining\" \"Quantum Miner\" \"\" \"\" 2 \"100\" 1483228800 30 2 4461 100 1 25")
+			+ HelpExampleRpc("tl_createcontract", "2, 1, 0, \"Companies\", \"Bitcoin Mining\", \"Quantum Miner\", \"\", \"\", 2, \"100\", 1483228800, 30, 2, 4461, 100, 1, 25")
+			);
+
+  std::string fromAddress = ParseAddress(request.params[0]);
+  uint8_t ecosystem = ParseEcosystem(request.params[1]);
+  uint32_t type = ParseContractType(request.params[2]);
+  std::string name = ParseText(request.params[3]);
+  uint32_t blocks_until_expiration = request.params[4].get_int();
+  uint32_t notional_size = ParseAmount32t(request.params[5]);
+  uint32_t collateral_currency = request.params[6].get_int();
+  uint32_t margin_requirement = ParseAmount32t(request.params[7]);
+
+  PrintToLog("\nRPC tl_createcontract: notional_size = %s\t margin_requirement = %s\t blocks_until_expiration = %d\t collateral_currency=%d\t ecosystem = %d\t type = %d\n", FormatDivisibleMP(notional_size), FormatDivisibleMP(margin_requirement), blocks_until_expiration, collateral_currency, ecosystem, type);
+
+  RequirePropertyName(name);
+  RequireSaneName(name);
+
+  std::vector<unsigned char> payload = CreatePayload_CreateContract(ecosystem, type, name, blocks_until_expiration, notional_size, collateral_currency, margin_requirement);
+
+  uint256 txid;
+  std::string rawHex;
+  int result = WalletTxBuilder(fromAddress, "","",0, payload, txid, rawHex, autoCommit, pwallet.get());
+
+  if ( result != 0 )
+    {
+      throw JSONRPCError(result, error_str(result));
+    }
+  else
+    {
+      if (!autoCommit)
+	{
+	  return rawHex;
+	}
+      else
+	{
+	  return txid.GetHex();
+	}
+    }
+}
+
 static const CRPCCommand commands[] =
 { //  category                             name                            actor (function)               okSafeMode
   //  ------------------------------------ ------------------------------- ------------------------------ ----------
@@ -1809,6 +1937,8 @@ static const CRPCCommand commands[] =
     { "omni layer (transaction creation)", "omni_funded_send",             &omni_funded_send,             {"fromaddress", "toaddress", "propertyid", "amount", "feeaddress"} },
     { "omni layer (transaction creation)", "omni_funded_sendall",          &omni_funded_sendall,          {"fromaddress", "toaddress", "ecosystem", "feeaddress"} },
     { "trade layer (transaction cration)",  "tl_send_dex_payment",         &tl_send_dex_payment,                {} },
+    { "trade layer (transaction cration)",  "tl_sendvesting",              &tl_sendvesting,                     {} },
+    { "trade layer (transaction cration)",  "tl_createcontract",           &tl_createcontract,                  {} },
 
     /* depreciated: */
     { "hidden",                            "sendrawtx_MP",                 &omni_sendrawtx,               {"fromaddress", "rawtransaction", "referenceaddress", "redeemaddress", "referenceamount"} },
