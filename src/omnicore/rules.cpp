@@ -74,6 +74,7 @@ std::vector<TransactionRestriction> CConsensusParams::GetRestrictions() const
 
         { MSC_TYPE_OFFER_ACCEPT_A_BET,        MP_TX_PKT_V0,  false,   MSC_BET_BLOCK           },
         { MSC_TYPE_DEX_PAYMENT,               MP_TX_PKT_V0,  true,   MSC_CONTRACTDEX_BLOCK   },
+        { MSC_TYPE_CREATE_CONTRACT,               MP_TX_PKT_V0,  true,   MSC_CONTRACTDEX_BLOCK   },
     };
 
     const size_t nSize = sizeof(vTxRestrictions) / sizeof(vTxRestrictions[0]);

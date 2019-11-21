@@ -383,10 +383,11 @@ bool CMPTransaction::interpret_SendAll()
 /** Tx 5 */
 bool CMPTransaction::interpret_SendVestingTokens()
 {
+  PrintToLog("%s(): inside interpret!\n",__func__);
 
-  if (pkt_size < 5) { /** TODO: check minimum size here */
-      return false;
-  }
+  // if (pkt_size < 5) { /** TODO: check minimum size here */
+  //     return false;
+  // }
 
   memcpy(&property, &pkt[4], 4);
   SwapByteOrder32(property);
@@ -988,14 +989,22 @@ bool CMPTransaction::interpret_DEx_Payment()
 bool CMPTransaction::interpret_CreateContractDex()
 {
 
-  // if (pkt_size < 39) {
-  //     return false;
-  // }
+  if (pkt_size < 17) {
+      return false;
+  }
 
-  const char* p = 11 + (char*) &pkt;
-  std::vector<std::string> spstr;
   memcpy(&ecosystem, &pkt[4], 1);
-  memcpy(&prop_type, &pkt[5], 2);
+  memcpy(&blocks_until_expiration, &pkt[5], 4);
+  SwapByteOrder32(blocks_until_expiration);
+  memcpy(&notional_size, &pkt[9], 4);
+  SwapByteOrder32(notional_size);
+  memcpy(&collateral_currency, &pkt[13], 4);
+  SwapByteOrder32(collateral_currency);
+  memcpy(&margin_requirement, &pkt[17], 4);
+  SwapByteOrder32(margin_requirement);
+
+  const char* p = 4 + (char*) &pkt[17];
+  std::vector<std::string> spstr;
 
   for (int i = 0; i < 1; i++) {
       spstr.push_back(std::string(p));
@@ -1005,42 +1014,21 @@ bool CMPTransaction::interpret_CreateContractDex()
   int i = 0;
   memcpy(name, spstr[i].c_str(), std::min(spstr[i].length(), sizeof(name)-1)); i++;
 
-  // SwapByteOrder16(prop_type);
-  // memcpy(&prev_prop_id, &pkt[7], 4);
-  // SwapByteOrder32(prev_prop_id);
-  //
-  // memcpy(&property, p, 4);
-  // SwapByteOrder32(property);
-  // p += 4;
-  // memcpy(&nValue, p, 8);
-  // SwapByteOrder64(nValue);
-  // p += 8;
-  // nNewValue = nValue;
-  // memcpy(&deadline, p, 8);
-  // SwapByteOrder64(deadline);
-  // p += 8;
-  // memcpy(&early_bird, p++, 1);
-  // memcpy(&percentage, p++, 1);
-
   prop_type = ALL_PROPERTY_TYPE_CONTRACT;
 
-  PrintToLog("\t version: %d\n", version);
-  PrintToLog("\t messageType: %d\n",type);
-  PrintToLog("\t name: %s\n", name);
-
-  // if ((!rpcOnly && msc_debug_packets) || msc_debug_packets_readonly)
-  // {
-  //     PrintToLog("\t version: %d\n", version);
-  //     PrintToLog("\t messageType: %d\n",type);
-  //     PrintToLog("\t denomination: %d\n", denomination);
-  //     PrintToLog("\t blocks until expiration : %d\n", blocks_until_expiration);
-  //     PrintToLog("\t notional size : %d\n", notional_size);
-  //     PrintToLog("\t collateral currency: %d\n", collateral_currency);
-  //     PrintToLog("\t margin requirement: %d\n", margin_requirement);
-  //     PrintToLog("\t ecosystem: %d\n", ecosystem);
-  //     PrintToLog("\t name: %s\n", name);
-  //     PrintToLog("\t prop_type: %d\n", prop_type);
-  // }
+  if ((!rpcOnly && msc_debug_packets) || msc_debug_packets_readonly)
+  {
+      PrintToLog("\t version: %d\n", version);
+      PrintToLog("\t messageType: %d\n",type);
+      // PrintToLog("\t denomination: %d\n", denomination);
+      PrintToLog("\t blocks until expiration : %d\n", blocks_until_expiration);
+      PrintToLog("\t notional size : %d\n", notional_size);
+      PrintToLog("\t collateral currency: %d\n", collateral_currency);
+      PrintToLog("\t margin requirement: %d\n", margin_requirement);
+      PrintToLog("\t ecosystem: %d\n", ecosystem);
+      PrintToLog("\t name: %s\n", name);
+      PrintToLog("\t prop_type: %d\n", prop_type);
+  }
 
   return true;
 }
@@ -1146,6 +1134,9 @@ int CMPTransaction::interpretPacket()
 
         case MSC_TYPE_SEND_VESTING:
             return logicMath_SendVestingTokens();
+
+        case MSC_TYPE_CREATE_CONTRACT:
+                return logicMath_CreateContractDex();
     }
 
     return (PKT_ERROR -100);
@@ -2702,4 +2693,65 @@ int CMPTransaction::logicMath_DEx_Payment()
   PrintToLog("%s(): inside the function\n",__func__);
 
   return rc;
+}
+
+/** Tx 41 */
+int CMPTransaction::logicMath_CreateContractDex()
+{
+  uint256 blockHash;
+  {
+    LOCK(cs_main);
+
+    CBlockIndex* pindex = chainActive[block];
+
+      if (pindex == NULL) {
+	PrintToLog("%s(): ERROR: block %d not in the active chain\n", __func__, block);
+	return (PKT_ERROR_SP -20);
+      }
+      blockHash = pindex->GetBlockHash();
+  }
+
+  if (!IsTransactionTypeAllowed(block, ecosystem, type, version)) {
+      PrintToLog("%s(): rejected: type %d or version %d not permitted for property %d at block %d\n",
+          __func__,
+          type,
+          version,
+          propertyId,
+          block);
+      return (PKT_ERROR_SP -22);
+  }
+
+  if ('\0' == name[0]) {
+    PrintToLog("%s(): rejected: property name must not be empty\n", __func__);
+    return (PKT_ERROR_SP -37);
+  }
+
+  // PrintToLog("type of denomination: %d\n",denomination);
+
+
+  // -----------------------------------------------
+
+  CMPSPInfo::Entry newSP;
+  newSP.txid = txid;
+  newSP.issuer = sender;
+  newSP.prop_type = prop_type;
+  newSP.subcategory.assign(subcategory);
+  newSP.name.assign(name);
+  newSP.fixed = false;
+  newSP.manual = true;
+  newSP.creation_block = blockHash;
+  newSP.update_block = blockHash;
+  newSP.blocks_until_expiration = blocks_until_expiration;
+  newSP.notional_size = notional_size;
+  newSP.collateral_currency = collateral_currency;
+  newSP.margin_requirement = margin_requirement;
+  newSP.init_block = block;
+  newSP.denomination = denomination;
+  newSP.ecosystemSP = ecosystem;
+  newSP.attribute_type = attribute_type;
+
+  const uint32_t propertyId = pDbSpInfo->putSP(ecosystem, newSP);
+  assert(propertyId > 0);
+
+  return 0;
 }

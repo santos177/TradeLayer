@@ -591,13 +591,14 @@ std::vector<unsigned char> CreatePayload_CreateContract(uint8_t ecosystem, uint3
 {
   std::vector<unsigned char> payload;
 
-  uint16_t messageType = 40;
+  uint16_t messageType = 41;
   uint16_t messageVer = 0;
 
   SwapByteOrder16(messageVer);
   SwapByteOrder16(messageType);
   SwapByteOrder32(blocks_until_expiration);
   SwapByteOrder32(notional_size);
+  SwapByteOrder32(collateral_currency);
   SwapByteOrder32(margin_requirement);
 
   if (name.size() > 255) name = name.substr(0,255);
@@ -605,13 +606,13 @@ std::vector<unsigned char> CreatePayload_CreateContract(uint8_t ecosystem, uint3
   PUSH_BACK_BYTES(payload, messageVer);
   PUSH_BACK_BYTES(payload, messageType);
 
-  payload.insert(payload.end(), name.begin(), name.end());
-  payload.push_back('\0');
-
   PUSH_BACK_BYTES(payload, ecosystem);
   PUSH_BACK_BYTES(payload, blocks_until_expiration);
   PUSH_BACK_BYTES(payload, notional_size);
+  PUSH_BACK_BYTES(payload, collateral_currency);
   PUSH_BACK_BYTES(payload, margin_requirement);
+  payload.insert(payload.end(), name.begin(), name.end());
+  payload.push_back('\0');
 
 
   return payload;
