@@ -71,6 +71,7 @@ bool msc_debug_contract_add_market              = 0;
 bool msc_debug_add_orderbook_edge               = 0;
 bool msc_debug_contract_cancel_inorder          = 0;
 bool msc_debug_close_position                   = 0;
+bool msc_debug_contractdex_tx                   = 0;
 
 /**
  * LogPrintf() has been broken a couple of times now

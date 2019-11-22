@@ -148,6 +148,13 @@ enum TransactionType {
 #define PKT_ERROR_TOKENS      (-82000)
 #define PKT_ERROR_SEND_ALL    (-83000)
 
+#define PKT_ERROR_TRADEOFFER  (-70000)
+
+#define PKT_ERROR_KYC            (-90000)
+#define PKT_ERROR_CONTRACTDEX    (-100000)
+#define PKT_ERROR_ORACLE         (-110000)
+#define PKT_ERROR_CHANNELS       (-120000)
+
 #define OMNI_PROPERTY_MSC   1
 #define OMNI_PROPERTY_TMSC  2
 

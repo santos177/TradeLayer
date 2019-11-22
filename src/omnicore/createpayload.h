@@ -35,4 +35,7 @@ std::vector<unsigned char> CreatePayload_ActivateFeature(uint16_t featureId, uin
 std::vector<unsigned char> CreatePayload_DEx_Payment();
 std::vector<unsigned char> CreatePayload_SendVestingTokens(uint32_t propertyId, uint64_t amount);
 std::vector<unsigned char> CreatePayload_CreateContract(uint8_t ecosystem, uint32_t denomType, std::string name, uint32_t blocks_until_expiration, uint32_t notional_size, uint32_t collateral_currency, uint32_t margin_requirement);
+std::vector<unsigned char> CreatePayload_CreateOracleContract(uint8_t ecosystem, uint32_t denomType, std::string name, uint32_t blocks_until_expiration, uint32_t notional_size, uint32_t collateral_currency, uint32_t margin_requirement);
+std::vector<unsigned char> CreatePayload_ContractDexTrade(std::string name_traded, uint64_t amountForSale, uint64_t effective_price, uint8_t trading_action, uint64_t leverage);
+
 #endif // BITCOIN_OMNICORE_CREATEPAYLOAD_H

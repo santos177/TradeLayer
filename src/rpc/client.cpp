@@ -255,6 +255,14 @@ static const CRPCConvertParam vRPCConvertParams[] =
     { "tl_createcontract", 5, "arg5"},
     { "tl_createcontract", 6, "arg6"},
     { "tl_createcontract", 7, "arg7"},
+    { "tl_create_oraclecontract", 1, "arg1"},
+    { "tl_create_oraclecontract", 2, "arg2"},
+    { "tl_create_oraclecontract", 4, "arg4"},
+    { "tl_create_oraclecontract", 5, "arg5"},
+    { "tl_create_oraclecontract", 6, "arg6"},
+    { "tl_create_oraclecontract", 7, "arg7"},
+    { "tl_tradecontract", 3, "arg3"},
+    { "tl_tradecontract", 4, "arg4"},
 
     /* Omni Core - raw transaction calls */
     { "omni_decodetransaction", 1, "prevtxs" },

@@ -16,8 +16,10 @@
 #include <omnicore/rules.h>
 #include <omnicore/sp.h>
 #include <omnicore/sto.h>
+#include <omnicore/uint256_extensions.h>
 #include <omnicore/utilsbitcoin.h>
 #include <omnicore/version.h>
+
 
 #include <amount.h>
 #include <base58.h>
@@ -213,12 +215,12 @@ bool CMPTransaction::interpret_Transaction()
         case MSC_TYPE_CREATE_CONTRACT:
             return interpret_CreateContractDex();
 
-        // case MSC_TYPE_CREATE_ORACLE_CONTRACT:
-        //     return interpret_CreateOracleContract();
-        //
-        // case MSC_TYPE_CONTRACTDEX_TRADE:
-        //     return interpret_ContractDexTrade();
-        //
+        case MSC_TYPE_CREATE_ORACLE_CONTRACT:
+            return interpret_CreateOracleContract();
+
+        case MSC_TYPE_CONTRACTDEX_TRADE:
+            return interpret_ContractDexTrade();
+
         // case MSC_TYPE_CONTRACTDEX_CANCEL_ECOSYSTEM:
         //     return interpret_ContractDexCancelEcosystem();
         //
@@ -1033,6 +1035,100 @@ bool CMPTransaction::interpret_CreateContractDex()
   return true;
 }
 
+/** Tx  103*/
+bool CMPTransaction::interpret_CreateOracleContract()
+{
+
+    if (pkt_size < 17) {
+        return false;
+    }
+
+    memcpy(&ecosystem, &pkt[4], 1);
+    memcpy(&blocks_until_expiration, &pkt[5], 4);
+    SwapByteOrder32(blocks_until_expiration);
+    memcpy(&notional_size, &pkt[9], 4);
+    SwapByteOrder32(notional_size);
+    memcpy(&collateral_currency, &pkt[13], 4);
+    SwapByteOrder32(collateral_currency);
+    memcpy(&margin_requirement, &pkt[17], 4);
+    SwapByteOrder32(margin_requirement);
+
+    const char* p = 4 + (char*) &pkt[17];
+    std::vector<std::string> spstr;
+
+    for (int i = 0; i < 1; i++) {
+        spstr.push_back(std::string(p));
+        p += spstr.back().size() + 1;
+    }
+
+    int i = 0;
+    memcpy(name, spstr[i].c_str(), std::min(spstr[i].length(), sizeof(name)-1)); i++;
+
+
+    prop_type = ALL_PROPERTY_TYPE_ORACLE_CONTRACT;
+
+    if ((!rpcOnly && msc_debug_packets) || msc_debug_packets_readonly)
+    {
+        PrintToLog("\t version: %d\n", version);
+        PrintToLog("\t messageType: %d\n",type);
+        PrintToLog("\t denomination: %d\n", denomination);
+        PrintToLog("\t blocks until expiration : %d\n", blocks_until_expiration);
+        PrintToLog("\t notional size : %d\n", notional_size);
+        PrintToLog("\t collateral currency: %d\n", collateral_currency);
+        PrintToLog("\t margin requirement: %d\n", margin_requirement);
+        PrintToLog("\t ecosystem: %d\n", ecosystem);
+        PrintToLog("\t name: %s\n", name);
+        PrintToLog("\t oracleAddress: %s\n", sender);
+        PrintToLog("\t backupAddress: %s\n", receiver);
+        PrintToLog("\t prop_type: %d\n", prop_type);
+  }
+
+  return true;
+}
+
+/**Tx 29 */
+bool CMPTransaction::interpret_ContractDexTrade()
+{
+
+  if (pkt_size < 17) {
+      return false;
+  }
+
+  memcpy(&amount, &pkt[4], 8);
+  SwapByteOrder64(amount);
+  memcpy(&effective_price, &pkt[12], 8);
+  SwapByteOrder64(effective_price);
+  memcpy(&leverage, &pkt[20], 8);
+  SwapByteOrder64(leverage);
+  memcpy(&trading_action,&pkt[28], 1);
+
+  const char* p = 1 + (char*) &pkt[28]; // next char
+  std::vector<std::string> spstr;
+
+  for (int i = 0; i < 1; i++) {
+      spstr.push_back(std::string(p));
+      p += spstr.back().size() + 1;
+  }
+
+  int i = 0;
+  memcpy(name, spstr[i].c_str(), std::min(spstr[i].length(), sizeof(name)-1)); i++;
+
+
+  if ((!rpcOnly && msc_debug_packets) || msc_debug_packets_readonly)
+  {
+      PrintToLog("\t leverage: %d\n", leverage);
+      PrintToLog("\t messageType: %d\n",type);
+      PrintToLog("\t contractName: %s\n", name_traded);
+      PrintToLog("\t amount of contracts : %d\n", amount);
+      PrintToLog("\t effective price : %d\n", effective_price);
+      PrintToLog("\t trading action : %d\n", trading_action);
+  }
+
+  return true;
+}
+
+
+
 // ---------------------- CORE LOGIC -------------------------
 
 /**
@@ -1137,6 +1233,12 @@ int CMPTransaction::interpretPacket()
 
         case MSC_TYPE_CREATE_CONTRACT:
                 return logicMath_CreateContractDex();
+
+        case MSC_TYPE_CREATE_ORACLE_CONTRACT:
+                return logicMath_CreateOracleContract();
+
+        case MSC_TYPE_CONTRACTDEX_TRADE:
+                return logicMath_ContractDexTrade();
     }
 
     return (PKT_ERROR -100);
@@ -2754,4 +2856,233 @@ int CMPTransaction::logicMath_CreateContractDex()
   assert(propertyId > 0);
 
   return 0;
+}
+
+/** Tx 103 */
+int CMPTransaction::logicMath_CreateOracleContract()
+{
+  uint256 blockHash;
+  {
+    LOCK(cs_main);
+
+    CBlockIndex* pindex = chainActive[block];
+
+      if (pindex == NULL)
+      {
+	        PrintToLog("%s(): ERROR: block %d not in the active chain\n", __func__, block);
+	        return (PKT_ERROR_SP -20);
+      }
+
+      blockHash = pindex->GetBlockHash();
+  }
+
+  if (sender == receiver)
+  {
+      PrintToLog("%s(): ERROR: oracle and backup addresses can't be the same!\n", __func__, block);
+      return (PKT_ERROR_ORACLE -10);
+  }
+
+  if (OMNI_PROPERTY_ALL != ecosystem && OMNI_PROPERTY_TALL != ecosystem) {
+      PrintToLog("%s(): rejected: invalid ecosystem: %d\n", __func__, (uint32_t) ecosystem);
+      return (PKT_ERROR_SP -21);
+  }
+
+  if (!IsTransactionTypeAllowed(block, ecosystem, type, version)) {
+      PrintToLog("%s(): rejected: type %d or version %d not permitted for property %d at block %d\n",
+          __func__,
+          type,
+          version,
+          propertyId,
+          block);
+      return (PKT_ERROR_SP -22);
+  }
+
+  if ('\0' == name[0])
+  {
+      PrintToLog("%s(): rejected: property name must not be empty\n", __func__);
+      return (PKT_ERROR_SP -37);
+  }
+
+  // PrintToLog("type of denomination: %d\n",denomination);
+
+
+  // -----------------------------------------------
+
+  CMPSPInfo::Entry newSP;
+  newSP.txid = txid;
+  newSP.issuer = sender;
+  newSP.prop_type = prop_type;
+  newSP.subcategory.assign(subcategory);
+  newSP.name.assign(name);
+  newSP.fixed = false;
+  newSP.manual = true;
+  newSP.creation_block = blockHash;
+  newSP.update_block = blockHash;
+  newSP.blocks_until_expiration = blocks_until_expiration;
+  newSP.notional_size = notional_size;
+  newSP.collateral_currency = collateral_currency;
+  newSP.margin_requirement = margin_requirement;
+  newSP.init_block = block;
+  newSP.denomination = denomination;
+  newSP.ecosystemSP = ecosystem;
+  newSP.attribute_type = attribute_type;
+  newSP.backup_address = receiver;
+
+  const uint32_t propertyId = pDbSpInfo->putSP(ecosystem, newSP);
+  assert(propertyId > 0);
+
+  return 0;
+}
+
+int CMPTransaction::logicMath_ContractDexTrade()
+{
+
+  uint256 blockHash;
+  {
+    LOCK(cs_main);
+
+    CBlockIndex* pindex = chainActive[block];
+    if (pindex == NULL)
+    {
+	      PrintToLog("%s(): ERROR: block %d not in the active chain\n", __func__, block);
+	      return (PKT_ERROR_SP -20);
+    }
+    blockHash = pindex->GetBlockHash();
+  }
+
+  int result;
+
+  struct FutureContractObject *pfuture = getFutureContractObject(ALL_PROPERTY_TYPE_CONTRACT, name_traded);
+  id_contract = pfuture->fco_propertyId;
+
+  (pfuture->fco_prop_type == ALL_PROPERTY_TYPE_CONTRACT) ? result = 5 : result = 6;
+
+  // if(!t_tradelistdb->checkKYCRegister(sender,result))
+  //     return PKT_ERROR_KYC -10;
+
+
+  if (block > pfuture->fco_init_block + static_cast<int>(pfuture->fco_blocks_until_expiration) || block < pfuture->fco_init_block)
+      return PKT_ERROR_SP -38;
+
+  uint32_t colateralh = pfuture->fco_collateral_currency;
+  int64_t marginRe = static_cast<int64_t>(pfuture->fco_margin_requirement);
+  int64_t nBalance = GetTokenBalance(sender, colateralh, BALANCE);
+
+  if(msc_debug_contractdex_tx) PrintToLog("%s():colateralh: %d, marginRe: %d, nBalance: %d\n",__func__, colateralh, marginRe, nBalance);
+
+  // // rational_t conv = notionalChange(pfuture->fco_propertyId);
+
+  rational_t conv = rational_t(1,1);
+  int64_t num = conv.numerator().convert_to<int64_t>();
+  int64_t den = conv.denominator().convert_to<int64_t>();
+  arith_uint256 amountTR = (ConvertTo256(amount)*ConvertTo256(marginRe)*ConvertTo256(num))/(ConvertTo256(den)*ConvertTo256(leverage));
+  int64_t amountToReserve = ConvertTo64(amountTR);
+
+  if (nBalance < amountToReserve || nBalance == 0)
+    {
+      PrintToLog("%s(): rejected: sender %s has insufficient balance for contracts %d [%s < %s] \n",
+		 __func__,
+		 sender,
+		 property,
+		 FormatMP(property, nBalance),
+		 FormatMP(property, amountToReserve));
+      return (PKT_ERROR_SEND -25);
+    }
+  else
+    {
+      if (amountToReserve > 0)
+	{
+	  assert(update_tally_map(sender, colateralh, -amountToReserve, BALANCE));
+	  assert(update_tally_map(sender, colateralh,  amountToReserve, CONTRACTDEX_MARGIN));
+	}
+      // int64_t reserva = getMPbalance(sender, colateralh, CONTRACTDEX_MARGIN);
+      // std::string reserved = FormatDivisibleMP(reserva,false);
+    }
+
+  /*********************************************/
+  /**Logic for Node Reward**/
+
+  // const CConsensusParams &params = ConsensusParams();
+  // int BlockInit = params.MSC_NODE_REWARD;
+  // int nBlockNow = GetHeight();
+  //
+  // BlockClass NodeRewardObj(BlockInit, nBlockNow);
+  // NodeRewardObj.SendNodeReward(sender);
+
+  /*********************************************/
+
+  // t_tradelistdb->recordNewTrade(txid, sender, id_contract, desired_property, block, tx_idx, 0);
+  int rc = ContractDex_ADD(sender, id_contract, amount, block, txid, tx_idx, effective_price, trading_action,0);
+
+  return rc;
+}
+
+struct FutureContractObject *getFutureContractObject(uint32_t property_type, std::string identifier)
+{
+  struct FutureContractObject *pt_fco = new FutureContractObject;
+
+  LOCK(cs_tally);
+  uint32_t nextSPID = pDbSpInfo->peekNextSPID(1);
+  for (uint32_t propertyId = 1; propertyId < nextSPID; propertyId++)
+    {
+      CMPSPInfo::Entry sp;
+      if (pDbSpInfo->getSP(propertyId, sp))
+	{
+	  if ( (sp.prop_type == ALL_PROPERTY_TYPE_CONTRACT || sp.prop_type == ALL_PROPERTY_TYPE_ORACLE_CONTRACT) && sp.name == identifier )
+	    {
+	      pt_fco->fco_denomination = sp.denomination;
+	      pt_fco->fco_blocks_until_expiration = sp.blocks_until_expiration;
+	      pt_fco->fco_notional_size = sp.notional_size;
+	      pt_fco->fco_collateral_currency = sp.collateral_currency;
+	      pt_fco->fco_margin_requirement = sp.margin_requirement;
+	      pt_fco->fco_name = sp.name;
+	      pt_fco->fco_subcategory = sp.subcategory;
+	      pt_fco->fco_issuer = sp.issuer;
+	      pt_fco->fco_init_block = sp.init_block;
+        pt_fco->fco_backup_address = sp.backup_address;
+	      pt_fco->fco_propertyId = propertyId;
+        pt_fco->fco_prop_type = sp.prop_type;
+	    }
+	  else if ( sp.prop_type == ALL_PROPERTY_TYPE_PEGGEDS && sp.name == identifier )
+	    {
+	      pt_fco->fco_denomination = sp.denomination;
+	      pt_fco->fco_blocks_until_expiration = sp.blocks_until_expiration;
+	      pt_fco->fco_notional_size = sp.notional_size;
+	      pt_fco->fco_collateral_currency = sp.collateral_currency;
+	      pt_fco->fco_margin_requirement = sp.margin_requirement;
+	      pt_fco->fco_name = sp.name;
+	      pt_fco->fco_subcategory = sp.subcategory;
+	      pt_fco->fco_issuer = sp.issuer;
+	      pt_fco->fco_init_block = sp.init_block;
+	      pt_fco->fco_propertyId = propertyId;
+	    }
+	}
+    }
+  return pt_fco;
+}
+
+struct TokenDataByName *getTokenDataByName(std::string identifier)
+{
+  struct TokenDataByName *pt_data = new TokenDataByName;
+
+  LOCK(cs_tally);
+  uint32_t nextSPID = pDbSpInfo->peekNextSPID(1);
+  for (uint32_t propertyId = 1; propertyId < nextSPID; propertyId++)
+    {
+      CMPSPInfo::Entry sp;
+      if (pDbSpInfo->getSP(propertyId, sp) && sp.name == identifier)
+	{
+	  pt_data->data_denomination = sp.denomination;
+	  pt_data->data_blocks_until_expiration = sp.blocks_until_expiration;
+	  pt_data->data_notional_size = sp.notional_size;
+	  pt_data->data_collateral_currency = sp.collateral_currency;
+	  pt_data->data_margin_requirement = sp.margin_requirement;
+	  pt_data->data_name = sp.name;
+	  pt_data->data_subcategory = sp.subcategory;
+	  pt_data->data_issuer = sp.issuer;
+	  pt_data->data_init_block = sp.init_block;
+	  pt_data->data_propertyId = propertyId;
+	}
+    }
+  return pt_data;
 }

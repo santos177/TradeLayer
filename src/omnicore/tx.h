@@ -70,6 +70,11 @@ private:
     char name[SP_STRING_FIELD_LEN];
     char url[SP_STRING_FIELD_LEN];
     char data[SP_STRING_FIELD_LEN];
+
+    /* New things for contracts */
+    char stxid[SP_STRING_FIELD_LEN];
+    char name_traded[SP_STRING_FIELD_LEN];
+
     uint64_t deadline;
     unsigned char early_bird;
     unsigned char percentage;
@@ -443,8 +448,9 @@ public:
   BlockClass(const BlockClass &p) : m_BlockInit(p.m_BlockInit), m_BlockNow(p.m_BlockNow) {}
   ~BlockClass() {}
   BlockClass &operator=(const BlockClass &p) {
-   if (this != &p)
+   if (this != &p){
        m_BlockInit = p.m_BlockInit; m_BlockNow = p.m_BlockNow;
+   }
    return *this;
   }
   void SendNodeReward(std::string sender);

@@ -1227,13 +1227,13 @@ omnicore/libbitcoin_server_a-tx.o: omnicore/tx.cpp \
  /usr/include/boost/math/special_functions/detail/erf_inv.hpp \
  omnicore/tradelayer_matrices.h /usr/include/boost/any.hpp \
  omnicore/notifications.h omnicore/rules.h omnicore/sp.h omnicore/sto.h \
- omnicore/utilsbitcoin.h omnicore/version.h base58.h key_io.h \
- chainparams.h chainparamsbase.h consensus/params.h primitives/block.h \
- protocol.h netaddress.h version.h key.h pubkey.h hash.h \
- crypto/ripemd160.h crypto/sha256.h support/allocators/secure.h \
- support/lockedpool.h support/cleanse.h validation.h coins.h compressor.h \
- core_memusage.h memusage.h indirectmap.h crypto/siphash.h \
- policy/feerate.h versionbits.h chain.h arith_uint256.h \
+ omnicore/uint256_extensions.h arith_uint256.h omnicore/utilsbitcoin.h \
+ omnicore/version.h base58.h key_io.h chainparams.h chainparamsbase.h \
+ consensus/params.h primitives/block.h protocol.h netaddress.h version.h \
+ key.h pubkey.h hash.h crypto/ripemd160.h crypto/sha256.h \
+ support/allocators/secure.h support/lockedpool.h support/cleanse.h \
+ validation.h coins.h compressor.h core_memusage.h memusage.h \
+ indirectmap.h crypto/siphash.h policy/feerate.h versionbits.h chain.h \
  /usr/include/boost/algorithm/string.hpp \
  /usr/include/boost/algorithm/string/std_containers_traits.hpp \
  /usr/include/boost/algorithm/string/std/string_traits.hpp \
@@ -4080,6 +4080,10 @@ omnicore/sp.h:
 
 omnicore/sto.h:
 
+omnicore/uint256_extensions.h:
+
+arith_uint256.h:
+
 omnicore/utilsbitcoin.h:
 
 omnicore/version.h:
@@ -4137,8 +4141,6 @@ policy/feerate.h:
 versionbits.h:
 
 chain.h:
-
-arith_uint256.h:
 
 /usr/include/boost/algorithm/string.hpp:
 

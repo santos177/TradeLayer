@@ -1906,6 +1906,77 @@ UniValue tl_createcontract(const JSONRPCRequest& request)
     }
 }
 
+UniValue tl_create_oraclecontract(const JSONRPCRequest& request)
+{
+#ifdef ENABLE_WALLET
+    std::shared_ptr<CWallet> const wallet = GetWalletForJSONRPCRequest(request);
+    std::unique_ptr<interfaces::Wallet> pwallet = interfaces::MakeWallet(wallet);
+#else
+    std::unique_ptr<interfaces::Wallet> pwallet = interfaces::MakeWallet(nullptr);
+#endif
+  if (request.params.size() != 9)
+    throw runtime_error(
+			"tl_create_oraclecontract \"address\" ecosystem type previousid \"category\" \"subcategory\" \"name\" \"url\" \"data\" propertyiddesired tokensperunit deadline ( earlybonus issuerpercentage )\n"
+
+			"Create new Oracle Future Contract."
+
+			"\nArguments:\n"
+			"1. oracle address            (string, required) the address to send from (admin)\n"
+			"2. ecosystem                 (string, required) the ecosystem to create the tokens in (1 for main ecosystem, 2 for test ecosystem)\n"
+			"3. numerator                 (number, required) 4: ALL, 5: sLTC, 6: LTC.\n"
+			"4. name                      (string, required) the name of the new tokens to create\n"
+			"5. blocks until expiration   (number, required) life of contract, in blocks\n"
+			"6. notional size             (number, required) notional size\n"
+			"7. collateral currency       (number, required) collateral currency\n"
+			"8. margin requirement        (number, required) margin requirement\n"
+      "9. backup address            (string, required) backup admin address contract\n"
+
+			"\nResult:\n"
+			"\"hash\"                  (string) the hex-encoded transaction hash\n"
+
+			"\nExamples:\n"
+			+ HelpExampleCli("tl_create_oraclecontract", "2 1 0 \"Companies\" \"Bitcoin Mining\" \"Quantum Miner\" \"\" \"\" 2 \"100\" 1483228800 30 2 4461 100 1 25")
+			+ HelpExampleRpc("tl_create_oraclecontract", "2, 1, 0, \"Companies\", \"Bitcoin Mining\", \"Quantum Miner\", \"\", \"\", 2, \"100\", 1483228800, 30, 2, 4461, 100, 1, 25")
+			);
+
+  std::string fromAddress = ParseAddress(request.params[0]);
+  uint8_t ecosystem = ParseEcosystem(request.params[1]);
+  uint32_t type = ParseContractType(request.params[2]);
+  std::string name = ParseText(request.params[3]);
+  uint32_t blocks_until_expiration = request.params[4].get_int();
+  uint32_t notional_size = ParseAmount32t(request.params[5]);
+  uint32_t collateral_currency = request.params[6].get_int();
+  uint32_t margin_requirement = ParseAmount32t(request.params[7]);
+  std::string oracleAddress = ParseAddress(request.params[8]);
+
+  PrintToLog("\nRPC tl_create_oraclecontract: notional_size = %s\t margin_requirement = %s\t blocks_until_expiration = %d\t collateral_currency=%d\t ecosystem = %d\t type = %d\n", FormatDivisibleMP(notional_size), FormatDivisibleMP(margin_requirement), blocks_until_expiration, collateral_currency, ecosystem, type);
+
+  RequirePropertyName(name);
+  RequireSaneName(name);
+
+  std::vector<unsigned char> payload = CreatePayload_CreateOracleContract(ecosystem, type, name, blocks_until_expiration, notional_size, collateral_currency, margin_requirement);
+
+  uint256 txid;
+  std::string rawHex;
+  int result = WalletTxBuilder(fromAddress, oracleAddress,"",0, payload, txid, rawHex, autoCommit, pwallet.get());
+
+  if ( result != 0 )
+    {
+      throw JSONRPCError(result, error_str(result));
+    }
+  else
+    {
+      if (!autoCommit)
+	{
+	  return rawHex;
+	}
+      else
+	{
+	  return txid.GetHex();
+	}
+    }
+}
+
 static const CRPCCommand commands[] =
 { //  category                             name                            actor (function)               okSafeMode
   //  ------------------------------------ ------------------------------- ------------------------------ ----------
@@ -1939,6 +2010,7 @@ static const CRPCCommand commands[] =
     { "trade layer (transaction cration)",  "tl_send_dex_payment",         &tl_send_dex_payment,                {} },
     { "trade layer (transaction cration)",  "tl_sendvesting",              &tl_sendvesting,                     {} },
     { "trade layer (transaction cration)",  "tl_createcontract",           &tl_createcontract,                  {} },
+    { "trade layer (transaction cration)",  "tl_create_oraclecontract",    &tl_create_oraclecontract,           {} },
 
     /* depreciated: */
     { "hidden",                            "sendrawtx_MP",                 &omni_sendrawtx,               {"fromaddress", "rawtransaction", "referenceaddress", "redeemaddress", "referenceamount"} },

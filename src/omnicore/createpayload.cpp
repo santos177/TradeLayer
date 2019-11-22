@@ -618,5 +618,64 @@ std::vector<unsigned char> CreatePayload_CreateContract(uint8_t ecosystem, uint3
   return payload;
 }
 
+std::vector<unsigned char> CreatePayload_CreateOracleContract(uint8_t ecosystem, uint32_t denomType, std::string name, uint32_t blocks_until_expiration, uint32_t notional_size, uint32_t collateral_currency, uint32_t margin_requirement)
+{
+  std::vector<unsigned char> payload;
+
+  uint16_t messageType = 103;
+  uint16_t messageVer = 0;
+
+  SwapByteOrder16(messageVer);
+  SwapByteOrder16(messageType);
+  SwapByteOrder32(blocks_until_expiration);
+  SwapByteOrder32(notional_size);
+  SwapByteOrder32(collateral_currency);
+  SwapByteOrder32(margin_requirement);
+
+  if (name.size() > 255) name = name.substr(0,255);
+
+  PUSH_BACK_BYTES(payload, messageVer);
+  PUSH_BACK_BYTES(payload, messageType);
+
+  PUSH_BACK_BYTES(payload, ecosystem);
+  PUSH_BACK_BYTES(payload, blocks_until_expiration);
+  PUSH_BACK_BYTES(payload, notional_size);
+  PUSH_BACK_BYTES(payload, collateral_currency);
+  PUSH_BACK_BYTES(payload, margin_requirement);
+  payload.insert(payload.end(), name.begin(), name.end());
+  payload.push_back('\0');
+
+  return payload;
+}
+
+std::vector<unsigned char> CreatePayload_ContractDexTrade(std::string name_traded, uint64_t amountForSale, uint64_t effective_price, uint8_t trading_action, uint64_t leverage)
+{
+  std::vector<unsigned char> payload;
+
+  uint16_t messageVer = 0;
+  uint16_t messageType = 29;
+
+  SwapByteOrder16(messageVer);
+  SwapByteOrder16(messageType);
+  SwapByteOrder64(amountForSale);
+  SwapByteOrder64(effective_price);
+  SwapByteOrder64(leverage);
+
+  if (name_traded.size() > 255) name_traded = name_traded.substr(0,255);
+
+  PUSH_BACK_BYTES(payload, messageVer);
+  PUSH_BACK_BYTES(payload, messageType);
+
+  PUSH_BACK_BYTES(payload, amountForSale);
+  PUSH_BACK_BYTES(payload, effective_price);
+  PUSH_BACK_BYTES(payload, leverage);
+  PUSH_BACK_BYTES(payload, trading_action);
+
+  payload.insert(payload.end(), name_traded.begin(), name_traded.end());
+  payload.push_back('\0');
+
+  return payload;
+}
+
 #undef PUSH_BACK_BYTES
 #undef PUSH_BACK_BYTES_PTR

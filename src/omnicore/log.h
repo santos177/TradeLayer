@@ -58,6 +58,7 @@ extern bool msc_debug_contract_add_market;
 extern bool msc_debug_add_orderbook_edge;
 extern bool msc_debug_contract_cancel_inorder;
 extern bool msc_debug_close_position;
+extern bool msc_debug_contractdex_tx;
 /* When we switch to C++11, this can be switched to variadic templates instead
  * of this macro-based construction (see tinyformat.h).
  */
