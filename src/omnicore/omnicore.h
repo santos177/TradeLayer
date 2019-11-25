@@ -322,6 +322,8 @@ void ClearFreezeState();
 /** Prints the freeze state **/
 void PrintFreezeState();
 
+rational_t notionalChange(uint32_t contractId);
+
 }
 
 #endif // BITCOIN_OMNICORE_OMNICORE_H

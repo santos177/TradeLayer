@@ -221,9 +221,9 @@ bool CMPTransaction::interpret_Transaction()
         case MSC_TYPE_CONTRACTDEX_TRADE:
             return interpret_ContractDexTrade();
 
-        // case MSC_TYPE_CONTRACTDEX_CANCEL_ECOSYSTEM:
-        //     return interpret_ContractDexCancelEcosystem();
-        //
+        case MSC_TYPE_CONTRACTDEX_CANCEL_ECOSYSTEM:
+            return interpret_ContractDexCancelEcosystem();
+
         // case MSC_TYPE_PEGGED_CURRENCY:
         //     return interpret_CreatePeggedCurrency();
         //
@@ -233,12 +233,12 @@ bool CMPTransaction::interpret_Transaction()
         // case MSC_TYPE_REDEMPTION_PEGGED:
         //     return interpret_RedemptionPegged();
         //
-        // case MSC_TYPE_CONTRACTDEX_CLOSE_POSITION:
-        //     return interpret_ContractDexClosePosition();
-        //
-        // case MSC_TYPE_CONTRACTDEX_CANCEL_ORDERS_BY_BLOCK:
-        //     return interpret_ContractDex_Cancel_Orders_By_Block();
-        //
+        case MSC_TYPE_CONTRACTDEX_CLOSE_POSITION:
+            return interpret_ContractDexClosePosition();
+
+        case MSC_TYPE_CONTRACTDEX_CANCEL_ORDERS_BY_BLOCK:
+            return interpret_ContractDex_Cancel_Orders_By_Block();
+
         // case MSC_TYPE_DEX_BUY_OFFER:
         //     return interpret_DExBuy();
         //
@@ -1127,6 +1127,71 @@ bool CMPTransaction::interpret_ContractDexTrade()
   return true;
 }
 
+/** Tx 32 */
+bool CMPTransaction::interpret_ContractDexCancelEcosystem()
+{
+
+  // if (pkt_size < 17) {
+  //     return false;
+  // }
+
+  memcpy(&ecosystem, &pkt[4], 1);
+
+  if ((!rpcOnly && msc_debug_packets) || msc_debug_packets_readonly)
+  {
+     PrintToLog("\t version: %d\n", version);
+     PrintToLog("\t messageType: %d\n",type);
+     PrintToLog("\t ecosystem: %d\n", ecosystem);
+  }
+
+  return true;
+}
+
+
+/** Tx 33 */
+bool CMPTransaction::interpret_ContractDexClosePosition()
+{
+
+  // if (pkt_size < 17) {
+  //     return false;
+  // }
+
+  memcpy(&ecosystem, &pkt[4], 1);
+  memcpy(&contractId, &pkt[5], 4);
+  SwapByteOrder32(contractId);
+
+  if ((!rpcOnly && msc_debug_packets) || msc_debug_packets_readonly)
+  {
+      PrintToLog("\t version: %d\n", version);
+      PrintToLog("\t messageType: %d\n",type);
+      PrintToLog("\t ecosystem: %d\n", ecosystem);
+      PrintToLog("\t contractId: %d\n", contractId);
+  }
+
+  return true;
+}
+
+/** Tx 34 */
+bool CMPTransaction::interpret_ContractDex_Cancel_Orders_By_Block()
+{
+    // if (pkt_size < 17) {
+    //     return false;
+    // }
+
+    memcpy(&block, &pkt[4], 1);
+    memcpy(&tx_idx, &pkt[5], 1);
+
+    if ((!rpcOnly && msc_debug_packets) || msc_debug_packets_readonly)
+    {
+      PrintToLog("\t version: %d\n", version);
+      PrintToLog("\t messageType: %d\n",type);
+      PrintToLog("\t block: %d\n", block);
+      PrintToLog("\t tx_idx: %d\n", tx_idx);
+    }
+
+    return true;
+}
+
 
 
 // ---------------------- CORE LOGIC -------------------------
@@ -1239,6 +1304,16 @@ int CMPTransaction::interpretPacket()
 
         case MSC_TYPE_CONTRACTDEX_TRADE:
                 return logicMath_ContractDexTrade();
+
+        case MSC_TYPE_CONTRACTDEX_CANCEL_ECOSYSTEM:
+                return logicMath_ContractDexCancelEcosystem();
+
+        case MSC_TYPE_CONTRACTDEX_CLOSE_POSITION:
+                return logicMath_ContractDexClosePosition();
+
+        case MSC_TYPE_CONTRACTDEX_CANCEL_ORDERS_BY_BLOCK:
+                return logicMath_ContractDex_Cancel_Orders_By_Block();
+
     }
 
     return (PKT_ERROR -100);
@@ -3015,6 +3090,90 @@ int CMPTransaction::logicMath_ContractDexTrade()
   int rc = ContractDex_ADD(sender, id_contract, amount, block, txid, tx_idx, effective_price, trading_action,0);
 
   return rc;
+}
+
+/** Tx 32 */
+int CMPTransaction::logicMath_ContractDexCancelEcosystem()
+{
+  if (!IsTransactionTypeAllowed(block, ecosystem, type, version)) {
+    PrintToLog("%s(): rejected: type %d or version %d not permitted for property %d at block %d\n",
+	       __func__,
+	       type,
+	       version,
+	       property,
+	       block);
+    return (PKT_ERROR_CONTRACTDEX -20);
+  }
+
+  if (OMNI_PROPERTY_ALL != ecosystem && OMNI_PROPERTY_TALL != ecosystem) {
+    PrintToLog("%s(): rejected: invalid ecosystem: %d\n", __func__, ecosystem);
+    return (PKT_ERROR_SP -21);
+  }
+
+  struct FutureContractObject *pfuture = getFutureContractObject(ALL_PROPERTY_TYPE_CONTRACT, name_traded);
+  uint32_t contractId = pfuture->fco_propertyId;
+
+  int rc = ContractDex_CANCEL_EVERYTHING(txid, block, sender, ecosystem, contractId);
+
+  return rc;
+}
+
+/** Tx 33 */
+int CMPTransaction::logicMath_ContractDexClosePosition()
+{
+    if (!IsTransactionTypeAllowed(block, ecosystem, type, version)) {
+        PrintToLog("%s(): rejected: type %d or version %d not permitted for property %d at block %d\n",
+            __func__,
+            type,
+            version,
+            property,
+            block);
+        return (PKT_ERROR_CONTRACTDEX -20);
+    }
+
+    if (OMNI_PROPERTY_ALL != ecosystem && OMNI_PROPERTY_TALL != ecosystem) {
+        PrintToLog("%s(): rejected: invalid ecosystem: %d\n", __func__, ecosystem);
+        return (PKT_ERROR_SP -21);
+    }
+
+    CMPSPInfo::Entry sp;
+    {
+        LOCK(cs_tally);
+        if (!pDbSpInfo->getSP(contractId, sp)) {
+            PrintToLog(" %s() : Property identifier %d does not exist\n",
+                __func__,
+                sender,
+                contractId);
+            return (PKT_ERROR_SEND -24);
+        }
+    }
+
+    uint32_t collateralCurrency = sp.collateral_currency;
+    int rc = ContractDex_CLOSE_POSITION(txid, block, sender, ecosystem, contractId, collateralCurrency);
+
+    return rc;
+}
+
+int CMPTransaction::logicMath_ContractDex_Cancel_Orders_By_Block()
+{
+  if (!IsTransactionTypeAllowed(block, ecosystem, type, version)) {
+      PrintToLog("%s(): rejected: type %d or version %d not permitted for property %d at block %d\n",
+              __func__,
+              type,
+              version,
+              propertyId,
+              block);
+     return (PKT_ERROR_METADEX -22);
+  }
+
+  if (OMNI_PROPERTY_ALL != ecosystem && OMNI_PROPERTY_TALL != ecosystem) {
+      PrintToLog("%s(): rejected: invalid ecosystem: %d\n", __func__, ecosystem);
+      return (PKT_ERROR_SP -21);
+  }
+
+    ContractDex_CANCEL_FOR_BLOCK(txid, block, tx_idx, sender, ecosystem);
+
+    return 0;
 }
 
 struct FutureContractObject *getFutureContractObject(uint32_t property_type, std::string identifier)

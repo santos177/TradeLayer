@@ -59,6 +59,8 @@ extern bool msc_debug_add_orderbook_edge;
 extern bool msc_debug_contract_cancel_inorder;
 extern bool msc_debug_close_position;
 extern bool msc_debug_contractdex_tx;
+extern bool msc_debug_contract_cancel_every;
+extern bool msc_debug_contract_cancel_forblock;
 /* When we switch to C++11, this can be switched to variadic templates instead
  * of this macro-based construction (see tinyformat.h).
  */

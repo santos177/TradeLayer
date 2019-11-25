@@ -91,6 +91,8 @@ extern int twapBlockg;
 extern int vestingActivationBlock;
 extern volatile int64_t globalVolumeALL_LTC;
 extern std::vector<std::string> vestingAddresses;
+extern int64_t globalNumPrice;
+extern int64_t globalDenPrice;
 
 /** TWAP containers **/
 extern std::map<uint32_t, std::vector<uint64_t>> cdextwap_ele;
@@ -2102,6 +2104,18 @@ bool callingPerpetualSettlement(double globalPNLALL_DUSD, int64_t globalVolumeAL
     }
 
   return perpetualBool;
+}
+
+rational_t mastercore::notionalChange(uint32_t contractId)
+{
+    rational_t inversePrice;
+    if (globalDenPrice != 0) {
+        inversePrice = rational_t(globalNumPrice,globalDenPrice);
+    } else {
+        inversePrice = rational_t(1,1);
+    }
+
+    return inversePrice;
 }
 
 /**

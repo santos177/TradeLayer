@@ -677,5 +677,23 @@ std::vector<unsigned char> CreatePayload_ContractDexTrade(std::string name_trade
   return payload;
 }
 
+std::vector<unsigned char> CreatePayload_ContractDexCancelEcosystem(uint8_t ecosystem, uint32_t contractId)
+{
+  std::vector<unsigned char> payload;
+
+    uint16_t messageType = 32;
+    uint16_t messageVer = 0;
+
+    SwapByteOrder16(messageVer);
+    SwapByteOrder16(messageType);
+
+    PUSH_BACK_BYTES(payload, messageVer);
+    PUSH_BACK_BYTES(payload, messageType);
+
+    PUSH_BACK_BYTES(payload, ecosystem);
+
+    return payload;
+}
+
 #undef PUSH_BACK_BYTES
 #undef PUSH_BACK_BYTES_PTR
