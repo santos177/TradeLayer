@@ -259,6 +259,7 @@ CMainConsensusParams::CMainConsensusParams()
     FEES_FEATURE_BLOCK = 999999;
     FREEZENOTICE_FEATURE_BLOCK = 999999;
     FREEDEX_FEATURE_BLOCK = 999999;
+    MSC_VESTING_BLOCK = 0;
 }
 
 /**
@@ -302,6 +303,7 @@ CTestNetConsensusParams::CTestNetConsensusParams()
     FEES_FEATURE_BLOCK = 0;
     FREEZENOTICE_FEATURE_BLOCK = 0;
     FREEDEX_FEATURE_BLOCK = 0;
+    MSC_VESTING_BLOCK = 0;
 }
 
 /**
@@ -345,6 +347,7 @@ CRegTestConsensusParams::CRegTestConsensusParams()
     FEES_FEATURE_BLOCK = 999999;
     FREEZENOTICE_FEATURE_BLOCK = 999999;
     FREEDEX_FEATURE_BLOCK = 999999;
+    MSC_VESTING_BLOCK = 0;
 }
 
 //! Consensus parameters for mainnet

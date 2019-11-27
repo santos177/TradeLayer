@@ -818,6 +818,29 @@ bool IsInMarkerCache(const uint256& txHash)
     return (setMarkerCache.find(txHash) != setMarkerCache.end());
 }
 
+void creatingVestingTokens()
+{
+  extern int64_t amountVesting;
+  extern int64_t totalVesting;
+  extern std::string admin_addrs;
+
+  CMPSPInfo::Entry newSP;
+
+  newSP.name = "Vesting Tokens";
+  newSP.data = "Divisible Tokens";
+  newSP.url  = "www.tradelayer.org";
+  newSP.category = "N/A";
+  newSP.subcategory = "N/A";
+  newSP.prop_type = ALL_PROPERTY_TYPE_DIVISIBLE;
+  newSP.num_tokens = amountVesting;
+  newSP.attribute_type = ALL_PROPERTY_TYPE_VESTING;
+
+  const uint32_t propertyIdVesting = pDbSpInfo->putSP(OMNI_PROPERTY_ALL, newSP);
+  assert(propertyIdVesting > 0);
+
+  assert(update_tally_map(admin_addrs, propertyIdVesting, totalVesting, BALANCE));
+}
+
 /**
  * Returns the encoding class, used to embed a payload.
  *
@@ -2167,6 +2190,34 @@ bool mastercore_handler_tx(const CTransaction& tx, int nBlock, unsigned int idx,
 
     CMPTransaction mp_obj;
     mp_obj.unlockLogic();
+
+    int expirationBlock = 0, tradeBlock = 0, checkExpiration = 0;
+    CMPSPInfo::Entry sp;
+    if ( id_contract != 0 )
+      {
+        if (pDbSpInfo->getSP(id_contract, sp) && sp.prop_type == ALL_PROPERTY_TYPE_CONTRACT)
+    {
+      expirationBlock = static_cast<int>(sp.blocks_until_expiration);
+      tradeBlock = static_cast<int>(pBlockIndex->nHeight);
+    }
+      }
+
+    lastBlockg = static_cast<int>(pBlockIndex->nHeight);
+    const CConsensusParams &params = ConsensusParams();
+    vestingActivationBlock = params.MSC_VESTING_BLOCK;
+
+    if (static_cast<int>(pBlockIndex->nHeight) == params.MSC_VESTING_BLOCK) creatingVestingTokens();
+
+    int deadline = sp.init_block + expirationBlock;
+    if ( tradeBlock != 0 && deadline != 0 ) checkExpiration = tradeBlock == deadline ? 1 : 0;
+
+    if (checkExpiration) {
+      idx_expiration += 1;
+      if ( idx_expiration == 2 ) {
+        expirationAchieve = 1;
+      } else expirationAchieve = 0;
+    } else expirationAchieve = 0;
+
 
     bool fFoundTx = false;
     int pop_ret = parseTransaction(false, tx, nBlock, idx, mp_obj, nBlockTime, removedCoins);
