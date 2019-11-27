@@ -1170,8 +1170,9 @@ omnicore/libbitcoin_server_a-dex.o: omnicore/dex.cpp \
  /usr/include/boost/multiprecision/cpp_int/literals.hpp \
  /usr/include/boost/multiprecision/cpp_int/serialize.hpp \
  /usr/include/boost/multiprecision/cpp_int/import_export.hpp \
- omnicore/tx.h omnicore/parsing.h util/strencodings.h \
- /usr/include/openssl/sha.h /usr/include/openssl/e_os2.h \
+ omnicore/tradelayer_matrices.h /usr/include/boost/any.hpp omnicore/tx.h \
+ omnicore/parsing.h util/strencodings.h /usr/include/openssl/sha.h \
+ /usr/include/openssl/e_os2.h \
  /usr/include/x86_64-linux-gnu/openssl/opensslconf.h omnicore/convert.h \
  omnicore/dbtxlist.h omnicore/dbbase.h leveldb/include/leveldb/db.h \
  leveldb/include/leveldb/iterator.h leveldb/include/leveldb/slice.h \
@@ -3883,6 +3884,10 @@ univalue/include/univalue.h:
 /usr/include/boost/multiprecision/cpp_int/serialize.hpp:
 
 /usr/include/boost/multiprecision/cpp_int/import_export.hpp:
+
+omnicore/tradelayer_matrices.h:
+
+/usr/include/boost/any.hpp:
 
 omnicore/tx.h:
 

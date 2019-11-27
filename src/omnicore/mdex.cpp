@@ -2420,3 +2420,54 @@ const CMPMetaDEx* mastercore::MetaDEx_RetrieveTrade(const uint256& txid)
 
    return rc;
  }
+
+ int64_t mastercore::getVWAPPriceContracts(std::string namec)
+ {
+   LOCK(cs_tally);
+   uint32_t nextSPID = pDbSpInfo->peekNextSPID(1);
+
+   uint32_t nameId = 0;
+   for (uint32_t propertyId = 1; propertyId < nextSPID; propertyId++)
+     {
+       CMPSPInfo::Entry sp;
+       if (pDbSpInfo->getSP(propertyId, sp))
+ 	{
+ 	  if ( sp.name == namec )
+ 	    {
+ 	      PrintToLog("\npropertyId num: %d\n", propertyId);
+ 	      nameId = propertyId;
+ 	    }
+ 	}
+     }
+   PrintToLog("\nVWAPMapContracts[nameId] = %d\n", FormatDivisibleMP(VWAPMapContracts[nameId]));
+   return VWAPMapContracts[nameId];
+ }
+
+ int64_t mastercore::getVWAPPriceByPair(std::string num, std::string den)
+ {
+   LOCK(cs_tally);
+   uint32_t nextSPID = pDbSpInfo->peekNextSPID(1);
+
+   uint32_t numId = 0;
+   uint32_t denId = 0;
+
+   for (uint32_t propertyId = 1; propertyId < nextSPID; propertyId++)
+     {
+       CMPSPInfo::Entry sp;
+       if (pDbSpInfo->getSP(propertyId, sp))
+ 	{
+ 	  if ( sp.name == num )
+ 	    {
+ 	      PrintToLog("\npropertyId num: %d\t sp.name = %s\n", propertyId, sp.name);
+ 	      numId = propertyId;
+ 	    }
+ 	  if ( sp.name == den )
+ 	    {
+ 	      PrintToLog("\npropertyId den: %d\t sp.name = %s\n", propertyId, sp.name);
+ 	      denId = propertyId;
+ 	    }
+ 	}
+     }
+   PrintToLog("\nVWAPMapSubVector[nameId][denId] = %d\n", FormatDivisibleMP(VWAPMapSubVector[numId][denId]));
+   return VWAPMapSubVector[numId][denId];
+ }

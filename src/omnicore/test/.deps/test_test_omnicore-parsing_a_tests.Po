@@ -1172,6 +1172,7 @@ omnicore/test/test_test_omnicore-parsing_a_tests.o: \
  /usr/include/boost/multiprecision/cpp_int/literals.hpp \
  /usr/include/boost/multiprecision/cpp_int/serialize.hpp \
  /usr/include/boost/multiprecision/cpp_int/import_export.hpp \
+ omnicore/tradelayer_matrices.h /usr/include/boost/any.hpp \
  omnicore/parsing.h omnicore/rules.h omnicore/script.h omnicore/tx.h \
  util/strencodings.h base58.h coins.h compressor.h core_memusage.h \
  primitives/block.h memusage.h indirectmap.h crypto/siphash.h key_io.h \
@@ -4196,6 +4197,10 @@ univalue/include/univalue.h:
 /usr/include/boost/multiprecision/cpp_int/serialize.hpp:
 
 /usr/include/boost/multiprecision/cpp_int/import_export.hpp:
+
+omnicore/tradelayer_matrices.h:
+
+/usr/include/boost/any.hpp:
 
 omnicore/parsing.h:
 

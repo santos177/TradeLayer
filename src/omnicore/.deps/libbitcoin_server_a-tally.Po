@@ -1167,7 +1167,8 @@ omnicore/libbitcoin_server_a-tally.o: omnicore/tally.cpp \
  /usr/include/boost/multiprecision/cpp_int/limits.hpp \
  /usr/include/boost/multiprecision/cpp_int/literals.hpp \
  /usr/include/boost/multiprecision/cpp_int/serialize.hpp \
- /usr/include/boost/multiprecision/cpp_int/import_export.hpp
+ /usr/include/boost/multiprecision/cpp_int/import_export.hpp \
+ omnicore/tradelayer_matrices.h /usr/include/boost/any.hpp
 
 /usr/include/stdc-predef.h:
 
@@ -3806,3 +3807,7 @@ univalue/include/univalue.h:
 /usr/include/boost/multiprecision/cpp_int/serialize.hpp:
 
 /usr/include/boost/multiprecision/cpp_int/import_export.hpp:
+
+omnicore/tradelayer_matrices.h:
+
+/usr/include/boost/any.hpp:

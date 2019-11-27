@@ -1171,6 +1171,7 @@ omnicore/libbitcoin_server_a-encoding.o: omnicore/encoding.cpp \
  /usr/include/boost/multiprecision/cpp_int/literals.hpp \
  /usr/include/boost/multiprecision/cpp_int/serialize.hpp \
  /usr/include/boost/multiprecision/cpp_int/import_export.hpp \
+ omnicore/tradelayer_matrices.h /usr/include/boost/any.hpp \
  omnicore/script.h omnicore/parsing.h base58.h pubkey.h hash.h \
  crypto/ripemd160.h crypto/sha256.h version.h random.h crypto/chacha20.h \
  util/strencodings.h
@@ -3814,6 +3815,10 @@ univalue/include/univalue.h:
 /usr/include/boost/multiprecision/cpp_int/serialize.hpp:
 
 /usr/include/boost/multiprecision/cpp_int/import_export.hpp:
+
+omnicore/tradelayer_matrices.h:
+
+/usr/include/boost/any.hpp:
 
 omnicore/script.h:
 

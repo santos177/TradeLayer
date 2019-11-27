@@ -1171,7 +1171,8 @@ omnicore/libbitcoin_server_a-rpcpayload.o: omnicore/rpcpayload.cpp \
  /usr/include/boost/multiprecision/cpp_int/literals.hpp \
  /usr/include/boost/multiprecision/cpp_int/serialize.hpp \
  /usr/include/boost/multiprecision/cpp_int/import_export.hpp \
- omnicore/sp.h omnicore/dbbase.h leveldb/include/leveldb/db.h \
+ omnicore/tradelayer_matrices.h /usr/include/boost/any.hpp omnicore/sp.h \
+ omnicore/dbbase.h leveldb/include/leveldb/db.h \
  leveldb/include/leveldb/iterator.h leveldb/include/leveldb/slice.h \
  leveldb/include/leveldb/status.h leveldb/include/leveldb/options.h \
  omnicore/dbspinfo.h /usr/include/openssl/sha.h \
@@ -3895,6 +3896,10 @@ uint256.h:
 /usr/include/boost/multiprecision/cpp_int/serialize.hpp:
 
 /usr/include/boost/multiprecision/cpp_int/import_export.hpp:
+
+omnicore/tradelayer_matrices.h:
+
+/usr/include/boost/any.hpp:
 
 omnicore/sp.h:
 

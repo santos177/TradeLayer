@@ -1171,6 +1171,7 @@ omnicore/libbitcoin_server_a-wallettxbuilder.o: \
  /usr/include/boost/multiprecision/cpp_int/literals.hpp \
  /usr/include/boost/multiprecision/cpp_int/serialize.hpp \
  /usr/include/boost/multiprecision/cpp_int/import_export.hpp \
+ omnicore/tradelayer_matrices.h /usr/include/boost/any.hpp \
  omnicore/parsing.h omnicore/script.h omnicore/walletutils.h \
  script/ismine.h base58.h coins.h compressor.h core_memusage.h \
  primitives/block.h memusage.h indirectmap.h crypto/siphash.h \
@@ -4027,6 +4028,10 @@ univalue/include/univalue.h:
 /usr/include/boost/multiprecision/cpp_int/serialize.hpp:
 
 /usr/include/boost/multiprecision/cpp_int/import_export.hpp:
+
+omnicore/tradelayer_matrices.h:
+
+/usr/include/boost/any.hpp:
 
 omnicore/parsing.h:
 

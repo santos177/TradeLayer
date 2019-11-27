@@ -1169,7 +1169,7 @@ omnicore/libbitcoin_server_a-globals.o: omnicore/globals.cpp \
  /usr/include/boost/multiprecision/cpp_int/literals.hpp \
  /usr/include/boost/multiprecision/cpp_int/serialize.hpp \
  /usr/include/boost/multiprecision/cpp_int/import_export.hpp \
- omnicore/parsing.h util/strencodings.h \
+ omnicore/tradelayer_matrices.h omnicore/parsing.h util/strencodings.h \
  /usr/include/boost/multiprecision/cpp_dec_float.hpp \
  /usr/include/boost/multiprecision/detail/big_lanczos.hpp \
  /usr/include/boost/math/bindings/detail/big_lanczos.hpp \
@@ -3864,6 +3864,8 @@ univalue/include/univalue.h:
 /usr/include/boost/multiprecision/cpp_int/serialize.hpp:
 
 /usr/include/boost/multiprecision/cpp_int/import_export.hpp:
+
+omnicore/tradelayer_matrices.h:
 
 omnicore/parsing.h:
 

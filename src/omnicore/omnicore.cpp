@@ -34,6 +34,9 @@
 #include <omnicore/version.h>
 #include <omnicore/walletcache.h>
 #include <omnicore/walletutils.h>
+#include <omnicore/operators_algo_clearing.h>
+#include <omnicore/uint256_extensions.h>
+#include <omnicore/parse_string.h>
 
 #include <base58.h>
 #include <chainparams.h>
@@ -80,7 +83,9 @@
 #include <iostream>
 #include <numeric>
 
+#include "tradelayer_matrices.h"
 #include "externfns.h"
+
 
 extern int idx_expiration;
 extern int expirationAchieve;
@@ -94,13 +99,33 @@ extern std::vector<std::string> vestingAddresses;
 extern int64_t globalNumPrice;
 extern int64_t globalDenPrice;
 
+extern MatrixTLS *pt_ndatabase;
+extern int n_cols;
+extern int n_rows;
+
 /** TWAP containers **/
 extern std::map<uint32_t, std::vector<uint64_t>> cdextwap_ele;
 extern std::map<uint32_t, std::vector<uint64_t>> cdextwap_vec;
 extern std::map<uint32_t, std::map<uint32_t, std::vector<uint64_t>>> mdextwap_ele;
 extern std::map<uint32_t, std::map<uint32_t, std::vector<uint64_t>>> mdextwap_vec;
 
+extern std::vector<std::map<std::string, std::string>> path_elef;
+
+extern std::vector<std::map<std::string, std::string>> path_elef;
+extern std::map<uint32_t, std::map<uint32_t, int64_t>> market_priceMap;
+extern std::map<uint32_t, std::map<uint32_t, int64_t>> numVWAPMap;
+extern std::map<uint32_t, std::map<uint32_t, int64_t>> denVWAPMap;
+extern std::map<uint32_t, std::map<uint32_t, int64_t>> VWAPMap;
+extern std::map<uint32_t, std::map<uint32_t, int64_t>> VWAPMapSubVector;
+extern std::map<uint32_t, std::map<uint32_t, std::vector<int64_t>>> numVWAPVector;
+extern std::map<uint32_t, std::map<uint32_t, std::vector<int64_t>>> denVWAPVector;
+extern std::map<uint32_t, std::vector<int64_t>> mapContractAmountTimesPrice;
+extern std::map<uint32_t, std::vector<int64_t>> mapContractVolume;
+extern std::map<uint32_t, int64_t> VWAPMapContracts;
+
 using namespace mastercore;
+
+using mastercore::StrToInt64;
 
 typedef boost::rational<boost::multiprecision::checked_int128_t> rational_t;
 
@@ -1853,6 +1878,19 @@ int mastercore_shutdown()
  */
 bool mastercore_handler_tx(const CTransaction& tx, int nBlock, unsigned int idx, const CBlockIndex* pBlockIndex, const std::shared_ptr<std::map<COutPoint, Coin> > removedCoins)
 {
+    extern volatile int id_contract;
+    extern std::vector<std::string> vestingAddresses;
+    extern volatile int64_t Lastx_Axis;
+    extern volatile int64_t LastLinear;
+    extern volatile int64_t LastQuad;
+    extern volatile int64_t LastLog;
+    extern std::vector<std::map<std::string, std::string>> lives_longs_vg;
+    extern std::vector<std::map<std::string, std::string>> lives_shorts_vg;
+    extern int BlockS;
+
+    ui128 numLog128;
+    ui128 numQuad128;
+
     LOCK(cs_tally);
 
     if (!mastercoreInitialized) {
@@ -1868,6 +1906,264 @@ bool mastercore_handler_tx(const CTransaction& tx, int nBlock, unsigned int idx,
     // we do not care about parsing blocks prior to our waterline (empty blockchain defense)
     if (nBlock < nWaterlineBlock) return false;
     int64_t nBlockTime = pBlockIndex->GetBlockTime();
+
+
+    int nBlockNow = GetHeight();
+
+    /***********************************************************************/
+    /** Calling The Settlement Algorithm **/
+
+    if (nBlockNow%BlockS == 0 && nBlockNow != 0 && path_elef.size() != 0 && lastBlockg != nBlockNow) {
+
+      /*****************************************************************************/
+
+      if(msc_debug_handler_tx) PrintToLog("\nSettlement every 8 hours here. nBlockNow = %d\n", nBlockNow);
+      pt_ndatabase = new MatrixTLS(path_elef.size(), n_cols); MatrixTLS &ndatabase = *pt_ndatabase;
+      MatrixTLS M_file(path_elef.size(), n_cols);
+      fillingMatrix(M_file, ndatabase, path_elef);
+      n_rows = size(M_file, 0);
+      if(msc_debug_handler_tx) PrintToLog("Matrix for Settlement: dim = (%d, %d)\n\n", n_rows, n_cols);
+      //printing_matrix(M_file);
+
+      /**********************************************************************/
+      /** TWAP vector **/
+
+      if(msc_debug_handler_tx) PrintToLog("\nTWAP Prices = \n");
+      struct FutureContractObject *pfuture = getFutureContractObject(ALL_PROPERTY_TYPE_CONTRACT, "ALL F18");
+      uint32_t property_traded = pfuture->fco_propertyId;
+
+      // PrintToLog("\nVector CDExtwap_vec =\n");
+      // for (unsigned int i = 0; i < cdextwap_vec[property_traded].size(); i++)
+      //   PrintToLog("%s\n", FormatDivisibleMP(cdextwap_vec[property_traded][i]));
+
+      uint64_t num_cdex = accumulate(cdextwap_vec[property_traded].begin(), cdextwap_vec[property_traded].end(), 0.0);
+
+      rational_t twap_priceRatCDEx(num_cdex/COIN, cdextwap_vec[property_traded].size());
+      int64_t twap_priceCDEx = mastercore::RationalToInt64(twap_priceRatCDEx);
+      if(msc_debug_handler_tx) PrintToLog("\nTvwap Price CDEx = %s\n", FormatDivisibleMP(twap_priceCDEx));
+
+      struct TokenDataByName *pfuture_ALL = getTokenDataByName("ALL");
+      struct TokenDataByName *pfuture_USD = getTokenDataByName("dUSD");
+
+      uint32_t property_all = pfuture_ALL->data_propertyId;
+      uint32_t property_usd = pfuture_USD->data_propertyId;
+
+      // PrintToLog("\nVector MDExtwap_vec =\n");
+      // for (unsigned int i = 0; i < mdextwap_vec[property_all][property_usd].size(); i++)
+      //   PrintToLog("%s\n", FormatDivisibleMP(mdextwap_vec[property_all][property_usd][i]));
+
+      uint64_t num_mdex=accumulate(mdextwap_vec[property_all][property_usd].begin(),mdextwap_vec[property_all][property_usd].end(),0.0);
+
+      rational_t twap_priceRatMDEx(num_mdex/COIN, mdextwap_vec[property_all][property_usd].size());
+      int64_t twap_priceMDEx = mastercore::RationalToInt64(twap_priceRatMDEx);
+      if(msc_debug_handler_tx) PrintToLog("\nTvwap Price MDEx = %s\n", FormatDivisibleMP(twap_priceMDEx));
+
+      /** Interest formula:  **/
+      int64_t interest = clamp_function(abs(twap_priceCDEx-twap_priceMDEx), 0.05);
+      if(msc_debug_handler_tx) PrintToLog("Interes to Pay = %s", FormatDivisibleMP(interest));
+
+      /*****************************************************************************/
+      cout << "\n\n";
+      if(msc_debug_handler_tx) PrintToLog("\nCalling the Settlement Algorithm:\n\n");
+      settlement_algorithm_fifo(M_file, interest, twap_priceCDEx);
+
+      /**********************************************************************/
+      /** Unallocating Dynamic Memory **/
+
+      //path_elef.clear();
+      market_priceMap.clear();
+      numVWAPMap.clear();
+      denVWAPMap.clear();
+      VWAPMap.clear();
+      VWAPMapSubVector.clear();
+      numVWAPVector.clear();
+      denVWAPVector.clear();
+      mapContractAmountTimesPrice.clear();
+      mapContractVolume.clear();
+      VWAPMapContracts.clear();
+      cdextwap_vec.clear();
+      }
+      /***********************************************************************/
+      /** Vesting Tokens to Balance **/
+      /***********************************************************************/
+      /** Vesting Tokens to Balance **/
+
+      int64_t x_Axis = globalVolumeALL_LTC;
+      int64_t LogAxis = mastercore::DoubleToInt64(log(static_cast<double>(x_Axis)/COIN));
+
+      rational_t Factor1over3(1, 3);
+      int64_t Factor1over3_64t = mastercore::RationalToInt64(Factor1over3);
+
+      int64_t XAxis = x_Axis/COIN;
+      if(msc_debug_handler_tx) PrintToLog("\nXAxis Decimal Scale = %d, x_Axis = %s, Lastx_Axis = %s\n", XAxis, FormatDivisibleMP(x_Axis), FormatDivisibleMP(Lastx_Axis));
+
+      bool cond_first = x_Axis != 0;
+      bool cond_secnd = x_Axis != Lastx_Axis;
+      bool cond_third = vestingAddresses.size() != 0;
+
+      if (findConjTrueValue(cond_first, cond_secnd, cond_third))
+      {
+          int64_t line64_t = 0, quad64_t = 0, log64_t  = 0;
+
+          if(msc_debug_handler_tx)
+          {
+              PrintToLog("\nALLs UNVESTED = %d\n", GetTokenBalance(vestingAddresses[0], OMNI_PROPERTY_ALL, UNVESTED));
+              PrintToLog("ALLs BALANCE = %d\n", GetTokenBalance(vestingAddresses[0], OMNI_PROPERTY_ALL, BALANCE));
+          }
+
+          for (unsigned int i = 0; i < vestingAddresses.size(); i++)
+          {
+    	        if(msc_debug_handler_tx) PrintToLog("\nIteration #%d Inside Vesting function. Address = %s\n", i, vestingAddresses[i]);
+    	        int64_t vestingBalance = GetTokenBalance(vestingAddresses[i], OMNI_PROPERTY_VESTING, BALANCE);
+    	        int64_t unvestedALLBal = GetTokenBalance(vestingAddresses[i], OMNI_PROPERTY_ALL, UNVESTED);
+          	  if (vestingBalance != 0 && unvestedALLBal != 0)
+          	    {
+          	      if (XAxis >= 0 && XAxis <= 300000)
+          	  	{/** y = 1/3x **/
+
+    		      //PrintToLog("\nLinear Function\n");
+    		      arith_uint256 line256_t = mastercore::ConvertTo256(Factor1over3_64t)*mastercore::ConvertTo256(x_Axis)/COIN;
+    		      line64_t = mastercore::ConvertTo64(line256_t);
+
+    		      if(msc_debug_handler_tx) PrintToLog("line64_t = %s, LastLinear = %s\n", FormatDivisibleMP(line64_t), FormatDivisibleMP(LastLinear));
+          	  int64_t linearBalance = line64_t-LastLinear;
+          	  arith_uint256 linew256_t = mastercore::ConvertTo256(linearBalance)*mastercore::ConvertTo256(vestingBalance)/COIN;
+          	  int64_t linew64_t = mastercore::ConvertTo64(linew256_t);
+
+          	  rational_t linearRationalw(linew64_t, (int64_t)TOTAL_AMOUNT_VESTING_TOKENS);
+          	  int64_t linearWeighted = mastercore::RationalToInt64(linearRationalw);
+
+          	  if(msc_debug_handler_tx)
+              {
+                  PrintToLog("linearBalance = %s, vestingBalance = %s\n", FormatDivisibleMP(linearBalance), FormatDivisibleMP(vestingBalance));
+          	      PrintToLog("linearWeighted = %s\n", FormatDivisibleMP(linearWeighted));
+              }
+
+    		      assert(update_tally_map(vestingAddresses[i], OMNI_PROPERTY_ALL, -linearWeighted, UNVESTED));
+    		      assert(update_tally_map(vestingAddresses[i], OMNI_PROPERTY_ALL, linearWeighted, BALANCE));
+      } else if (XAxis > 300000 && XAxis <= 10000000)
+          		{ /** y = 100K+7/940900000(x^2-600Kx+90) */
+          		  //PrintToLog("\nQuadratic Function\n");
+
+          		  dec_float SecndTermnf = dec_float(7)*dec_float(XAxis)*dec_float(XAxis)/dec_float(940900000);
+          		  int64_t SecndTermn64_t = mastercore::StrToInt64(SecndTermnf.str(DISPLAY_PRECISION_LEN, std::ios_base::fixed), true);
+          		  if(msc_debug_handler_tx) PrintToLog("SecndTermnf = %d\n", FormatDivisibleMP(SecndTermn64_t));
+
+          		  dec_float ThirdTermnf = dec_float(7)*dec_float(600000)*dec_float(XAxis)/dec_float(940900000);
+          		  int64_t ThirdTermn64_t = mastercore::StrToInt64(ThirdTermnf.str(DISPLAY_PRECISION_LEN, std::ios_base::fixed), true);
+          		  if(msc_debug_handler_tx) PrintToLog("ThirdTermnf = %d\n", FormatDivisibleMP(ThirdTermn64_t));
+
+          		  dec_float ForthTermnf = dec_float(7)*dec_float(90000000000)/dec_float(940900000);
+          		  int64_t ForthTermn64_t = mastercore::StrToInt64(ForthTermnf.str(DISPLAY_PRECISION_LEN, std::ios_base::fixed), true);
+          		  if(msc_debug_handler_tx) PrintToLog("ForthTermnf = %d\n", FormatDivisibleMP(ForthTermn64_t));
+
+          		  quad64_t = (int64_t)(100000*COIN) + SecndTermn64_t - ThirdTermn64_t + ForthTermn64_t;
+          		  int64_t quadBalance = quad64_t - LastQuad;
+          		  if(msc_debug_handler_tx) PrintToLog("quad64_t = %s, LastQuad = %s\n", FormatDivisibleMP(quad64_t), FormatDivisibleMP(LastQuad));
+
+          		  multiply(numQuad128, (int64_t)quadBalance, (int64_t)vestingBalance);
+          		  if(msc_debug_handler_tx) PrintToLog("numQuad128 = %s\n", xToString(numQuad128/COIN));
+
+          		  rational_t quadRationalw(numQuad128/COIN, (int64_t)TOTAL_AMOUNT_VESTING_TOKENS);
+          		  int64_t quadWeighted = mastercore::RationalToInt64(quadRationalw);
+
+          		  if(msc_debug_handler_tx)
+                {
+                    PrintToLog("quadBalance = %s, vestingBalance = %s\n", FormatDivisibleMP(quadBalance), FormatDivisibleMP(vestingBalance));
+          		      PrintToLog("quadWeighted = %d\n", FormatDivisibleMP(quadWeighted));
+                }
+
+          		  assert(update_tally_map(vestingAddresses[i], OMNI_PROPERTY_ALL, -quadWeighted, UNVESTED));
+          		  assert(update_tally_map(vestingAddresses[i], OMNI_PROPERTY_ALL, quadWeighted, BALANCE));
+          		}
+          	      else if (XAxis > 10000000 && XAxis <= 1000000000)
+          		{ /** y =  -1650000 + (152003 * ln(x)) */
+
+               if(msc_debug_handler_tx) PrintToLog("\nLogarithmic Function\n");
+
+          		 arith_uint256 secndTermn256_t = mastercore::ConvertTo256((int64_t)(152003*COIN))*mastercore::ConvertTo256(LogAxis)/COIN;
+          		 int64_t secndTermn64_t = mastercore::ConvertTo64(secndTermn256_t);
+          		 if(msc_debug_handler_tx) PrintToLog("secndTermn64_t = %s\n", FormatDivisibleMP(secndTermn64_t));
+
+          		 log64_t = (int64_t)secndTermn64_t - (int64_t)(1650000*COIN);
+          		 if(msc_debug_handler_tx) PrintToLog("log64_t = %s\n", FormatDivisibleMP(log64_t));
+          		 int64_t logBalance = log64_t - LastLog;
+
+          		 if(msc_debug_handler_tx) PrintToLog("logBalance = %s, vestingBalance = %s\n", FormatDivisibleMP(logBalance), FormatDivisibleMP(vestingBalance));
+          		 multiply(numLog128, (int64_t)logBalance, (int64_t)vestingBalance);
+          		 if(msc_debug_handler_tx) PrintToLog("numLog128 = %s\n", xToString(numLog128/COIN));
+
+          		  rational_t logRationalw(numLog128/COIN, TOTAL_AMOUNT_VESTING_TOKENS);
+          		  int64_t logWeighted = mastercore::RationalToInt64(logRationalw);
+          		  if(msc_debug_handler_tx) PrintToLog("logWeighted = %s, LastLog = %s\n", FormatDivisibleMP(logWeighted), FormatDivisibleMP(LastLog));
+
+          		  if (logWeighted)
+          		    {
+          		      if (GetTokenBalance(vestingAddresses[i], OMNI_PROPERTY_ALL, UNVESTED) >= logWeighted)
+          			{
+          			  assert(update_tally_map(vestingAddresses[i], OMNI_PROPERTY_ALL, -logWeighted, UNVESTED));
+          			  assert(update_tally_map(vestingAddresses[i], OMNI_PROPERTY_ALL, logWeighted, BALANCE));
+          			}
+          		   else
+          			{
+          			  int64_t remaining = GetTokenBalance(vestingAddresses[i], OMNI_PROPERTY_ALL, UNVESTED);
+          			  if (GetTokenBalance(vestingAddresses[i], OMNI_PROPERTY_ALL, UNVESTED) >= remaining && remaining >= 0)
+          			    {
+          			      assert(update_tally_map(vestingAddresses[i], OMNI_PROPERTY_ALL, -remaining, UNVESTED));
+          			      assert(update_tally_map(vestingAddresses[i], OMNI_PROPERTY_ALL, remaining, BALANCE));
+          			    }
+          			}
+          		    }
+          		}
+          	      else if (XAxis > 1000000000 && GetTokenBalance(vestingAddresses[i], OMNI_PROPERTY_ALL, UNVESTED) != 0)
+          		{
+          		  // PrintToLog("\nLogarithmic Function\n");
+
+          		  arith_uint256 secndTermn256_t = mastercore::ConvertTo256((int64_t)(152003*COIN))*mastercore::ConvertTo256(LogAxis)/COIN;
+          		  int64_t secndTermn64_t = mastercore::ConvertTo64(secndTermn256_t);
+          		  if(msc_debug_handler_tx) PrintToLog("secndTermn64_t = %s\n", FormatDivisibleMP(secndTermn64_t));
+
+          		  log64_t = (int64_t)secndTermn64_t - (int64_t)(1650000*COIN);
+          		  if(msc_debug_handler_tx) PrintToLog("log64_t = %s\n", FormatDivisibleMP(log64_t));
+          		  int64_t logBalance = log64_t - LastLog;
+
+          		  if(msc_debug_handler_tx) PrintToLog("logBalance = %s, vestingBalance = %s\n", FormatDivisibleMP(logBalance), FormatDivisibleMP(vestingBalance));
+          		  multiply(numLog128, (int64_t)logBalance, (int64_t)vestingBalance);
+          		  if(msc_debug_handler_tx) PrintToLog("numLog128 = %s\n", xToString(numLog128/COIN));
+
+          		  rational_t logRationalw(numLog128/COIN, TOTAL_AMOUNT_VESTING_TOKENS);
+          		  int64_t logWeighted = mastercore::RationalToInt64(logRationalw);
+
+          		  if (GetTokenBalance(vestingAddresses[i], OMNI_PROPERTY_ALL, UNVESTED))
+          		    {
+          		      if (GetTokenBalance(vestingAddresses[i], OMNI_PROPERTY_ALL, UNVESTED) < logWeighted)
+          			{
+          			  int64_t remaining = GetTokenBalance(vestingAddresses[i], OMNI_PROPERTY_ALL, UNVESTED);
+          			  assert(update_tally_map(vestingAddresses[i], OMNI_PROPERTY_ALL, -remaining, UNVESTED));
+          			  assert(update_tally_map(vestingAddresses[i], OMNI_PROPERTY_ALL, remaining, BALANCE));
+          			}
+          		      else
+          			{
+          			  assert(update_tally_map(vestingAddresses[i], OMNI_PROPERTY_ALL, -logWeighted, UNVESTED));
+          			  assert(update_tally_map(vestingAddresses[i], OMNI_PROPERTY_ALL, logWeighted, BALANCE));
+          			}
+          		    }
+          		}
+    	    }
+    	}
+          if(msc_debug_handler_tx)
+          {
+              PrintToLog("\nALLs UNVESTED = %d\n", GetTokenBalance(vestingAddresses[0], OMNI_PROPERTY_ALL, UNVESTED));
+              PrintToLog("ALLs BALANCE = %d\n", GetTokenBalance(vestingAddresses[0], OMNI_PROPERTY_ALL, BALANCE));
+          }
+
+          Lastx_Axis = x_Axis;
+          LastLinear = line64_t;
+          LastQuad = quad64_t;
+          LastLog = log64_t;
+        }
+
+    /***********************************************/
 
     CMPTransaction mp_obj;
     mp_obj.unlockLogic();
@@ -2035,6 +2331,19 @@ void mastercore_handler_disc_begin(const int nHeight)
     reorgRecoveryMaxHeight = (nHeight > reorgRecoveryMaxHeight) ? nHeight: reorgRecoveryMaxHeight;
 }
 
+rational_t mastercore::notionalChange(uint32_t contractId)
+{
+    rational_t inversePrice;
+    if (globalDenPrice != 0) {
+        inversePrice = rational_t(globalNumPrice,globalDenPrice);
+    } else {
+        inversePrice = rational_t(1,1);
+    }
+
+    return inversePrice;
+}
+
+
 void Filling_Twap_Vec(std::map<uint32_t, std::vector<uint64_t>> &twap_ele, std::map<uint32_t, std::vector<uint64_t>> &twap_vec,
 		      uint32_t property_traded, uint32_t property_desired, uint64_t effective_price)
 {
@@ -2061,34 +2370,6 @@ void Filling_Twap_Vec(std::map<uint32_t, std::vector<uint64_t>> &twap_ele, std::
   twapBlockg = nBlockNow;
 }
 
-void Filling_Twap_Vec(std::map<uint32_t, std::map<uint32_t, std::vector<uint64_t>>> &twap_ele,
-		      std::map<uint32_t, std::map<uint32_t, std::vector<uint64_t>>> &twap_vec,
-		      uint32_t property_traded, uint32_t property_desired, uint64_t effective_price)
-{
-  int nBlockNow = GetHeight();
-  std::vector<uint64_t> twap_minmax;
-  if (msc_debug_tradedb) PrintToLog("\nCheck here MDEx:\t nBlockNow = %d\t twapBlockg = %d\n", nBlockNow, twapBlockg);
-
-  if (nBlockNow == twapBlockg)
-    twap_ele[property_traded][property_desired].push_back(effective_price);
-  else
-    {
-      if (twap_ele[property_traded][property_desired].size() != 0)
-	{
-	  twap_minmax = min_max(twap_ele[property_traded][property_desired]);
-	  uint64_t numerator = twap_ele[property_traded][property_desired].front()+twap_minmax[0]+
-	    twap_minmax[1]+twap_ele[property_traded][property_desired].back();
-	  rational_t twapRat(numerator/COIN, 4);
-	  int64_t twap_elej = mastercore::RationalToInt64(twapRat);
-	  if (msc_debug_tradedb) PrintToLog("\ntwap_elej MDEx = %s\n", FormatDivisibleMP(twap_elej));
-	  mdextwap_vec[property_traded][property_desired].push_back(twap_elej);
-	}
-      twap_ele[property_traded][property_desired].clear();
-      twap_ele[property_traded][property_desired].push_back(effective_price);
-    }
-  twapBlockg = nBlockNow;
-}
-
 bool callingPerpetualSettlement(double globalPNLALL_DUSD, int64_t globalVolumeALL_DUSD, int64_t volumeToCompare)
 {
   bool perpetualBool = false;
@@ -2106,16 +2387,173 @@ bool callingPerpetualSettlement(double globalPNLALL_DUSD, int64_t globalVolumeAL
   return perpetualBool;
 }
 
-rational_t mastercore::notionalChange(uint32_t contractId)
+void fillingMatrix(MatrixTLS &M_file, MatrixTLS &ndatabase, std::vector<std::map<std::string, std::string>> &path_ele)
 {
-    rational_t inversePrice;
-    if (globalDenPrice != 0) {
-        inversePrice = rational_t(globalNumPrice,globalDenPrice);
-    } else {
-        inversePrice = rational_t(1,1);
+  for (unsigned int i = 0; i < path_ele.size(); ++i)
+    {
+      M_file[i][0] = ndatabase[i][0] = path_ele[i]["addrs_src"];
+      M_file[i][1] = ndatabase[i][1] = path_ele[i]["status_src"];
+      M_file[i][2] = ndatabase[i][2] = path_ele[i]["lives_src"];
+      M_file[i][3] = ndatabase[i][3] = path_ele[i]["addrs_trk"];
+      M_file[i][4] = ndatabase[i][4] = path_ele[i]["status_trk"];
+      M_file[i][5] = ndatabase[i][5] = path_ele[i]["lives_trk"];
+      M_file[i][6] = ndatabase[i][6] = path_ele[i]["amount_trd"];
+      M_file[i][7] = ndatabase[i][7] = path_ele[i]["matched_price"];
+      M_file[i][8] = ndatabase[i][8] = path_ele[i]["amount_trd"];
+      M_file[i][9] = ndatabase[i][9] = path_ele[i]["amount_trd"];
     }
+}
 
-    return inversePrice;
+double PNL_function(double entry_price, double exit_price, int64_t amount_trd, std::string netted_status)
+{
+  double PNL = 0;
+
+  if ( finding_string("Long", netted_status) )
+    PNL = (double)amount_trd*(1/(double)entry_price-1/(double)exit_price);
+  else if ( finding_string("Short", netted_status) )
+    PNL = (double)amount_trd*(1/(double)exit_price-1/(double)entry_price);
+
+  return PNL;
+}
+
+void loopForUPNL(std::vector<std::map<std::string, std::string>> path_ele, std::vector<std::map<std::string, std::string>> path_eleh, unsigned int path_length, std::string address1, std::string address2, std::string status1, std::string status2, double &UPNL1, double &UPNL2, uint64_t exit_price, int64_t nCouldBuy0)
+{
+  std::vector<std::map<std::string, std::string>>::iterator it_path_ele;
+
+  double entry_pricesrc = 0, entry_pricetrk = 0;
+  double exit_priceh = (double)exit_price/COIN;
+
+  int idx_price_src = 0, idx_price_trk = 0;
+  uint64_t entry_pricesrc_num = 0, entry_pricetrk_num = 0;
+  std::string addrs_upnl = address1;
+  unsigned int limSup = path_ele.size()-path_length;
+  uint64_t amount_src = 0, amount_trk = 0;
+  std::string status_src = "", status_trk = "";
+
+  loopforEntryPrice(path_ele, path_eleh, address1, status1, entry_pricesrc, idx_price_src, entry_pricesrc_num, limSup, exit_priceh, amount_src, status_src);
+  // PrintToLog("\nentry_pricesrc = %d, address1 = %s, exit_price = %d, amount_src = %d\n", entry_pricesrc, address1, exit_priceh, amount_src);
+  UPNL1 = PNL_function(entry_pricesrc, exit_priceh, amount_src, status_src);
+
+  loopforEntryPrice(path_ele, path_eleh, address2, status2, entry_pricetrk, idx_price_trk, entry_pricetrk_num, limSup, exit_priceh, amount_trk, status_trk);
+  // PrintToLog("\nentry_pricetrk = %d, address2 = %s, exit_price = %d, amount_trk = %d\n", entry_pricetrk, address2, exit_priceh, amount_src);
+  UPNL2 = PNL_function(entry_pricetrk, exit_priceh, amount_trk, status_trk);
+}
+
+void loopforEntryPrice(std::vector<std::map<std::string, std::string>> path_ele, std::vector<std::map<std::string, std::string>> path_eleh, std::string addrs_upnl, std::string status_match, double &entry_price, int &idx_price, uint64_t entry_price_num, unsigned int limSup, double exit_priceh, uint64_t &amount, std::string &status)
+{
+  std::vector<std::map<std::string, std::string>>::reverse_iterator reit_path_ele;
+  std::vector<std::map<std::string, std::string>>::iterator it_path_eleh;
+  double price_num_w = 0;
+  extern VectorTLS *pt_changepos_status; VectorTLS &changepos_status  = *pt_changepos_status;
+
+  if (finding(status_match, changepos_status))
+    {
+      for (it_path_eleh = path_eleh.begin(); it_path_eleh != path_eleh.end(); ++it_path_eleh)
+      	{
+      	  if (addrs_upnl == (*it_path_eleh)["addrs_src"] && !finding_string("Netted", (*it_path_eleh)["status_src"]))
+      	    {
+      	      price_num_w += stod((*it_path_eleh)["matched_price"])*stod((*it_path_eleh)["amount_trd"]);
+      	      amount += static_cast<uint64_t>(stol((*it_path_eleh)["amount_trd"]));
+      	    }
+	  if (addrs_upnl == (*it_path_eleh)["addrs_trk"] && !finding_string("Netted", (*it_path_eleh)["status_trk"]))
+      	    {
+      	      price_num_w += stod((*it_path_eleh)["matched_price"])*stod((*it_path_eleh)["amount_trd"]);
+      	      amount += static_cast<uint64_t>(stol((*it_path_eleh)["amount_trd"]));
+      	    }
+      	}
+      entry_price = price_num_w/(double)amount;
+
+      for (reit_path_ele = path_eleh.rbegin(); reit_path_ele != path_eleh.rend(); ++reit_path_ele)
+	{
+	  if (addrs_upnl == (*reit_path_ele)["addrs_src"] && finding_string("Open", (*reit_path_ele)["status_src"]))
+	    {
+	      status = (*reit_path_ele)["status_src"];
+	    }
+	  else if (addrs_upnl == (*reit_path_ele)["addrs_trk"] && finding_string("Open", (*reit_path_ele)["status_trk"]))
+	    {
+	      status = (*reit_path_ele)["status_trk"];
+	    }
+	}
+    }
+  else
+    {
+      // PrintToLog("\nLoop in the Path Element\n");
+      for (it_path_eleh = path_eleh.begin(); it_path_eleh != path_eleh.end(); ++it_path_eleh)
+      	{
+      	  if (addrs_upnl == (*it_path_eleh)["addrs_src"] || addrs_upnl == (*it_path_eleh)["addrs_trk"])
+      	    {
+      	      printing_edges_database(*it_path_eleh);
+      	      price_num_w += stod((*it_path_eleh)["matched_price"])*stod((*it_path_eleh)["amount_trd"]);
+      	      amount += static_cast<uint64_t>(stol((*it_path_eleh)["amount_trd"]));
+      	    }
+      	}
+
+      // PrintToLog("\nInside LoopForEntryPrice:\n");
+      for (reit_path_ele = path_ele.rbegin()+limSup; reit_path_ele != path_ele.rend(); ++reit_path_ele)
+	{
+	  if (addrs_upnl == (*reit_path_ele)["addrs_src"])
+	    {
+	      if (finding_string("Open", (*reit_path_ele)["status_src"]) || finding_string("Increased", (*reit_path_ele)["status_src"]))
+		{
+		  // PrintToLog("\nRow Reverse Loop for addrs_upnl = %s\n", addrs_upnl);
+		  printing_edges_database(*reit_path_ele);
+		  idx_price += 1;
+		  entry_price_num += static_cast<uint64_t>(stol((*reit_path_ele)["matched_price"]));
+		  amount += static_cast<uint64_t>(stol((*reit_path_ele)["amount_trd"]));
+
+		  price_num_w += stod((*reit_path_ele)["matched_price"])*stod((*reit_path_ele)["amount_trd"]);
+
+		  if (finding_string("Open", (*reit_path_ele)["status_src"]))
+		    {
+		      // PrintToLog("\naddrs = %s, price_num_w trk = %d, amount = %d\n", addrs_upnl, price_num_w, amount);
+		      entry_price = price_num_w/(double)amount;
+		      status = (*reit_path_ele)["status_src"];
+		      break;
+		    }
+		}
+	    }
+	  else if ( addrs_upnl == (*reit_path_ele)["addrs_trk"])
+	    {
+	      if (finding_string("Open", (*reit_path_ele)["status_trk"]) || finding_string("Increased", (*reit_path_ele)["status_trk"]))
+		{
+		  // PrintToLog("\nRow Reverse Loop for addrs_upnl = %s\n", addrs_upnl);
+		  printing_edges_database(*reit_path_ele);
+		  idx_price += 1;
+		  entry_price_num += static_cast<uint64_t>(stol((*reit_path_ele)["matched_price"]));
+		  amount += static_cast<uint64_t>(stol((*reit_path_ele)["amount_trd"]));
+
+		  price_num_w += stod((*reit_path_ele)["matched_price"])*stod((*reit_path_ele)["amount_trd"]);
+
+		  if (finding_string("Open", (*reit_path_ele)["status_trk"]))
+		    {
+		      // PrintToLog("\naddrs = %s, price_num_w trk = %d, amount = %d\n", addrs_upnl, price_num_w, amount);
+		      entry_price = price_num_w/(double)amount;
+		      status = (*reit_path_ele)["status_trk"];
+		      break;
+		    }
+		}
+	    }
+	  else
+	    continue;
+	}
+      if (idx_price == 0)
+	{
+	  entry_price = exit_priceh;
+	  status = status_match;
+	}
+    }
+}
+
+
+inline int64_t clamp_function(int64_t diff, int64_t nclamp)
+{
+  int64_t interest = diff > nclamp ? diff-nclamp+1 : (diff < -nclamp ? diff+nclamp+1 : 0.01);
+  return interest;
+}
+
+void printing_edges_database(std::map<std::string, std::string> &path_ele)
+{
+  PrintToLog("{ addrs_src : %s , status_src : %s, lives_src : %d, addrs_trk : %s , status_trk : %s, lives_trk : %d, amount_trd : %d, matched_price : %d, edge_row : %d, ghost_edge : %d }\n", path_ele["addrs_src"], path_ele["status_src"], path_ele["lives_src"], path_ele["addrs_trk"], path_ele["status_trk"], path_ele["lives_trk"], path_ele["amount_trd"], path_ele["matched_price"], path_ele["edge_row"], path_ele["ghost_edge"]);
 }
 
 /**

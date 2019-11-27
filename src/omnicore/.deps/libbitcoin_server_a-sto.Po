@@ -1169,6 +1169,7 @@ omnicore/libbitcoin_server_a-sto.o: omnicore/sto.cpp \
  /usr/include/boost/multiprecision/cpp_int/literals.hpp \
  /usr/include/boost/multiprecision/cpp_int/serialize.hpp \
  /usr/include/boost/multiprecision/cpp_int/import_export.hpp \
+ omnicore/tradelayer_matrices.h /usr/include/boost/any.hpp \
  omnicore/uint256_extensions.h arith_uint256.h
 
 /usr/include/stdc-predef.h:
@@ -3810,6 +3811,10 @@ univalue/include/univalue.h:
 /usr/include/boost/multiprecision/cpp_int/serialize.hpp:
 
 /usr/include/boost/multiprecision/cpp_int/import_export.hpp:
+
+omnicore/tradelayer_matrices.h:
+
+/usr/include/boost/any.hpp:
 
 omnicore/uint256_extensions.h:
 

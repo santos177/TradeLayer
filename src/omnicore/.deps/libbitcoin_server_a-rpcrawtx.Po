@@ -1171,8 +1171,9 @@ omnicore/libbitcoin_server_a-rpcrawtx.o: omnicore/rpcrawtx.cpp \
  /usr/include/boost/multiprecision/cpp_int/literals.hpp \
  /usr/include/boost/multiprecision/cpp_int/serialize.hpp \
  /usr/include/boost/multiprecision/cpp_int/import_export.hpp \
- omnicore/rpc.h omnicore/rpctxobject.h omnicore/rpcvalues.h coins.h \
- compressor.h core_memusage.h primitives/block.h memusage.h indirectmap.h \
+ omnicore/tradelayer_matrices.h /usr/include/boost/any.hpp omnicore/rpc.h \
+ omnicore/rpctxobject.h omnicore/rpcvalues.h coins.h compressor.h \
+ core_memusage.h primitives/block.h memusage.h indirectmap.h \
  crypto/siphash.h core_io.h interfaces/wallet.h pubkey.h hash.h \
  crypto/ripemd160.h crypto/sha256.h version.h script/ismine.h \
  support/allocators/secure.h support/lockedpool.h support/cleanse.h \
@@ -3888,6 +3889,10 @@ univalue/include/univalue.h:
 /usr/include/boost/multiprecision/cpp_int/serialize.hpp:
 
 /usr/include/boost/multiprecision/cpp_int/import_export.hpp:
+
+omnicore/tradelayer_matrices.h:
+
+/usr/include/boost/any.hpp:
 
 omnicore/rpc.h:
 

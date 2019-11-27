@@ -1172,6 +1172,7 @@ omnicore/libbitcoin_server_a-walletutils.o: omnicore/walletutils.cpp \
  /usr/include/boost/multiprecision/cpp_int/literals.hpp \
  /usr/include/boost/multiprecision/cpp_int/serialize.hpp \
  /usr/include/boost/multiprecision/cpp_int/import_export.hpp \
+ omnicore/tradelayer_matrices.h /usr/include/boost/any.hpp \
  omnicore/rules.h omnicore/script.h omnicore/utilsbitcoin.h base58.h \
  init.h interfaces/wallet.h pubkey.h hash.h crypto/ripemd160.h \
  crypto/sha256.h version.h support/allocators/secure.h \
@@ -4024,6 +4025,10 @@ univalue/include/univalue.h:
 /usr/include/boost/multiprecision/cpp_int/serialize.hpp:
 
 /usr/include/boost/multiprecision/cpp_int/import_export.hpp:
+
+omnicore/tradelayer_matrices.h:
+
+/usr/include/boost/any.hpp:
 
 omnicore/rules.h:
 

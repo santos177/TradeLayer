@@ -1171,6 +1171,7 @@ omnicore/libbitcoin_server_a-walletcache.o: omnicore/walletcache.cpp \
  /usr/include/boost/multiprecision/cpp_int/literals.hpp \
  /usr/include/boost/multiprecision/cpp_int/serialize.hpp \
  /usr/include/boost/multiprecision/cpp_int/import_export.hpp \
+ omnicore/tradelayer_matrices.h /usr/include/boost/any.hpp \
  omnicore/walletutils.h script/ismine.h init.h wallet/wallet.h \
  interfaces/chain.h optional.h /usr/include/boost/optional.hpp \
  /usr/include/boost/optional/optional.hpp \
@@ -3889,6 +3890,10 @@ univalue/include/univalue.h:
 /usr/include/boost/multiprecision/cpp_int/serialize.hpp:
 
 /usr/include/boost/multiprecision/cpp_int/import_export.hpp:
+
+omnicore/tradelayer_matrices.h:
+
+/usr/include/boost/any.hpp:
 
 omnicore/walletutils.h:
 

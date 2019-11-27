@@ -1175,6 +1175,7 @@ omnicore/libbitcoin_server_a-dbstolist.o: omnicore/dbstolist.cpp \
  /usr/include/boost/multiprecision/cpp_int/literals.hpp \
  /usr/include/boost/multiprecision/cpp_int/serialize.hpp \
  /usr/include/boost/multiprecision/cpp_int/import_export.hpp \
+ omnicore/tradelayer_matrices.h /usr/include/boost/any.hpp \
  /usr/include/openssl/sha.h /usr/include/openssl/e_os2.h \
  /usr/include/x86_64-linux-gnu/openssl/opensslconf.h \
  omnicore/walletutils.h script/ismine.h interfaces/wallet.h pubkey.h \
@@ -3900,6 +3901,10 @@ span.h:
 /usr/include/boost/multiprecision/cpp_int/serialize.hpp:
 
 /usr/include/boost/multiprecision/cpp_int/import_export.hpp:
+
+omnicore/tradelayer_matrices.h:
+
+/usr/include/boost/any.hpp:
 
 /usr/include/openssl/sha.h:
 

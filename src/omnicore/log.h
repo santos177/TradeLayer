@@ -62,6 +62,7 @@ extern bool msc_debug_contractdex_tx;
 extern bool msc_debug_contract_cancel_every;
 extern bool msc_debug_contract_cancel_forblock;
 extern bool msc_debug_set_oracle;
+extern bool msc_debug_handler_tx;
 /* When we switch to C++11, this can be switched to variadic templates instead
  * of this macro-based construction (see tinyformat.h).
  */

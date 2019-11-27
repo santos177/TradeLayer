@@ -1172,6 +1172,7 @@ omnicore/libbitcoin_server_a-rpctxobject.o: omnicore/rpctxobject.cpp \
  /usr/include/boost/multiprecision/cpp_int/literals.hpp \
  /usr/include/boost/multiprecision/cpp_int/serialize.hpp \
  /usr/include/boost/multiprecision/cpp_int/import_export.hpp \
+ omnicore/tradelayer_matrices.h /usr/include/boost/any.hpp \
  omnicore/dbstolist.h omnicore/dbtradelist.h omnicore/dbtransaction.h \
  omnicore/dbtxlist.h omnicore/dex.h omnicore/tx.h omnicore/parsing.h \
  util/strencodings.h /usr/include/openssl/sha.h \
@@ -1223,7 +1224,6 @@ omnicore/libbitcoin_server_a-rpctxobject.o: omnicore/rpctxobject.cpp \
  /usr/include/boost/math/special_functions/detail/gamma_inva.hpp \
  /usr/include/boost/math/special_functions/erf.hpp \
  /usr/include/boost/math/special_functions/detail/erf_inv.hpp \
- omnicore/tradelayer_matrices.h /usr/include/boost/any.hpp \
  omnicore/pending.h omnicore/sp.h omnicore/sto.h omnicore/utilsbitcoin.h \
  omnicore/walletutils.h script/ismine.h chainparams.h chainparamsbase.h \
  consensus/params.h primitives/block.h protocol.h netaddress.h version.h \
@@ -3950,6 +3950,10 @@ uint256.h:
 
 /usr/include/boost/multiprecision/cpp_int/import_export.hpp:
 
+omnicore/tradelayer_matrices.h:
+
+/usr/include/boost/any.hpp:
+
 omnicore/dbstolist.h:
 
 omnicore/dbtradelist.h:
@@ -4067,10 +4071,6 @@ omnicore/mdex.h:
 /usr/include/boost/math/special_functions/erf.hpp:
 
 /usr/include/boost/math/special_functions/detail/erf_inv.hpp:
-
-omnicore/tradelayer_matrices.h:
-
-/usr/include/boost/any.hpp:
 
 omnicore/pending.h:
 

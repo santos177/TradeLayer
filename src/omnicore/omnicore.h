@@ -30,6 +30,8 @@ class Coin;
 #include <boost/rational.hpp>
 #include <boost/filesystem/path.hpp>
 
+#include "tradelayer_matrices.h"
+
 typedef boost::rational<boost::multiprecision::checked_int128_t> rational_t;
 
 int const MAX_STATE_HISTORY = 50;
@@ -198,8 +200,6 @@ void Filling_Twap_Vec(std::map<uint32_t, std::map<uint32_t, std::vector<uint64_t
 		      std::map<uint32_t, std::map<uint32_t, std::vector<uint64_t>>> &twap_vec,
 		      uint32_t property_traded, uint32_t property_desired, uint64_t effective_price);
 
-bool callingPerpetualSettlement(double globalPNLALL_DUSD, int64_t globalVolumeALL_DUSD, int64_t volumeToCompare);
-
 /** Number formatting related functions. */
 std::string FormatDivisibleMP(int64_t amount, bool fSign = false);
 std::string FormatDivisibleShortMP(int64_t amount);
@@ -247,6 +247,15 @@ void mastercore_handler_disc_begin(const int nHeight);
 int mastercore_handler_block_begin(int nBlockNow, CBlockIndex const * pBlockIndex);
 int mastercore_handler_block_end(int nBlockNow, CBlockIndex const * pBlockIndex, unsigned int);
 bool mastercore_handler_tx(const CTransaction& tx, int nBlock, unsigned int idx, const CBlockIndex* pBlockIndex, const std::shared_ptr<std::map<COutPoint, Coin>> removedCoins);
+void printing_edges_database(std::map<std::string, std::string> &path_ele);
+void loopforEntryPrice(std::vector<std::map<std::string, std::string>> path_ele, std::vector<std::map<std::string, std::string>> path_eleh, std::string addrs_upnl, std::string status_match, double &entry_price, int &idx_price, uint64_t entry_price_num, unsigned int limSup, double exit_priceh, uint64_t &amount, std::string &status);
+bool callingPerpetualSettlement(double globalPNLALL_DUSD, int64_t globalVolumeALL_DUSD, int64_t volumeToCompare);
+double PNL_function(double entry_price, double exit_price, int64_t amount_trd, std::string netted_status);
+void fillingMatrix(MatrixTLS &M_file, MatrixTLS &ndatabase, std::vector<std::map<std::string, std::string>> &path_ele);
+inline int64_t clamp_function(int64_t diff, int64_t nclamp);
+bool TxValidNodeReward(std::string ConsensusHash, std::string Tx);
+
+
 
 /** Scans for marker and if one is found, add transaction to marker cache. */
 void TryToAddToMarkerCache(const CTransactionRef& tx);

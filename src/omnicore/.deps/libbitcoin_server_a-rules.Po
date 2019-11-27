@@ -1174,6 +1174,7 @@ omnicore/libbitcoin_server_a-rules.o: omnicore/rules.cpp \
  /usr/include/boost/multiprecision/cpp_int/literals.hpp \
  /usr/include/boost/multiprecision/cpp_int/serialize.hpp \
  /usr/include/boost/multiprecision/cpp_int/import_export.hpp \
+ omnicore/tradelayer_matrices.h /usr/include/boost/any.hpp \
  omnicore/notifications.h omnicore/utilsbitcoin.h omnicore/version.h \
  chainparams.h chainparamsbase.h consensus/params.h primitives/block.h \
  protocol.h netaddress.h version.h validation.h coins.h compressor.h \
@@ -3839,6 +3840,10 @@ univalue/include/univalue.h:
 /usr/include/boost/multiprecision/cpp_int/serialize.hpp:
 
 /usr/include/boost/multiprecision/cpp_int/import_export.hpp:
+
+omnicore/tradelayer_matrices.h:
+
+/usr/include/boost/any.hpp:
 
 omnicore/notifications.h:
 

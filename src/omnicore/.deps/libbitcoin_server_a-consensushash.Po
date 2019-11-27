@@ -1173,7 +1173,8 @@ omnicore/libbitcoin_server_a-consensushash.o: omnicore/consensushash.cpp \
  /usr/include/boost/multiprecision/cpp_int/literals.hpp \
  /usr/include/boost/multiprecision/cpp_int/serialize.hpp \
  /usr/include/boost/multiprecision/cpp_int/import_export.hpp \
- omnicore/dex.h omnicore/tx.h omnicore/parsing.h util/strencodings.h \
+ omnicore/tradelayer_matrices.h /usr/include/boost/any.hpp omnicore/dex.h \
+ omnicore/tx.h omnicore/parsing.h util/strencodings.h \
  /usr/include/openssl/sha.h /usr/include/openssl/e_os2.h \
  /usr/include/x86_64-linux-gnu/openssl/opensslconf.h omnicore/mdex.h \
  /usr/include/boost/multiprecision/cpp_dec_float.hpp \
@@ -1222,7 +1223,6 @@ omnicore/libbitcoin_server_a-consensushash.o: omnicore/consensushash.cpp \
  /usr/include/boost/math/special_functions/detail/gamma_inva.hpp \
  /usr/include/boost/math/special_functions/erf.hpp \
  /usr/include/boost/math/special_functions/detail/erf_inv.hpp \
- omnicore/tradelayer_matrices.h /usr/include/boost/any.hpp \
  omnicore/parse_string.h omnicore/sp.h arith_uint256.h
 
 /usr/include/stdc-predef.h:
@@ -3879,6 +3879,10 @@ univalue/include/univalue.h:
 
 /usr/include/boost/multiprecision/cpp_int/import_export.hpp:
 
+omnicore/tradelayer_matrices.h:
+
+/usr/include/boost/any.hpp:
+
 omnicore/dex.h:
 
 omnicore/tx.h:
@@ -3986,10 +3990,6 @@ omnicore/mdex.h:
 /usr/include/boost/math/special_functions/erf.hpp:
 
 /usr/include/boost/math/special_functions/detail/erf_inv.hpp:
-
-omnicore/tradelayer_matrices.h:
-
-/usr/include/boost/any.hpp:
 
 omnicore/parse_string.h:
 

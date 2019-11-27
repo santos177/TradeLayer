@@ -1171,8 +1171,9 @@ omnicore/test/test_test_omnicore-dex_purchase_tests.o: \
  /usr/include/boost/multiprecision/cpp_int/literals.hpp \
  /usr/include/boost/multiprecision/cpp_int/serialize.hpp \
  /usr/include/boost/multiprecision/cpp_int/import_export.hpp \
- omnicore/tx.h omnicore/parsing.h util/strencodings.h \
- /usr/include/openssl/sha.h /usr/include/openssl/e_os2.h \
+ omnicore/tradelayer_matrices.h /usr/include/boost/any.hpp omnicore/tx.h \
+ omnicore/parsing.h util/strencodings.h /usr/include/openssl/sha.h \
+ /usr/include/openssl/e_os2.h \
  /usr/include/x86_64-linux-gnu/openssl/opensslconf.h test/test_bitcoin.h \
  chainparamsbase.h key.h pubkey.h hash.h crypto/ripemd160.h \
  crypto/sha256.h version.h support/allocators/secure.h \
@@ -4192,6 +4193,10 @@ univalue/include/univalue.h:
 /usr/include/boost/multiprecision/cpp_int/serialize.hpp:
 
 /usr/include/boost/multiprecision/cpp_int/import_export.hpp:
+
+omnicore/tradelayer_matrices.h:
+
+/usr/include/boost/any.hpp:
 
 omnicore/tx.h:
 

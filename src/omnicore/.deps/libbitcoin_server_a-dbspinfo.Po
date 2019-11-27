@@ -1172,7 +1172,8 @@ omnicore/libbitcoin_server_a-dbspinfo.o: omnicore/dbspinfo.cpp \
  /usr/include/boost/multiprecision/cpp_int/limits.hpp \
  /usr/include/boost/multiprecision/cpp_int/literals.hpp \
  /usr/include/boost/multiprecision/cpp_int/serialize.hpp \
- /usr/include/boost/multiprecision/cpp_int/import_export.hpp base58.h \
+ /usr/include/boost/multiprecision/cpp_int/import_export.hpp \
+ omnicore/tradelayer_matrices.h /usr/include/boost/any.hpp base58.h \
  clientversion.h key_io.h chainparams.h chainparamsbase.h \
  consensus/params.h primitives/block.h protocol.h netaddress.h version.h \
  key.h pubkey.h hash.h crypto/ripemd160.h crypto/sha256.h \
@@ -3831,6 +3832,10 @@ univalue/include/univalue.h:
 /usr/include/boost/multiprecision/cpp_int/serialize.hpp:
 
 /usr/include/boost/multiprecision/cpp_int/import_export.hpp:
+
+omnicore/tradelayer_matrices.h:
+
+/usr/include/boost/any.hpp:
 
 base58.h:
 

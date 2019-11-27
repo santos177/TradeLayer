@@ -1171,6 +1171,7 @@ omnicore/libbitcoin_server_a-omnicore.o: omnicore/omnicore.cpp \
  /usr/include/boost/multiprecision/cpp_int/literals.hpp \
  /usr/include/boost/multiprecision/cpp_int/serialize.hpp \
  /usr/include/boost/multiprecision/cpp_int/import_export.hpp \
+ omnicore/tradelayer_matrices.h /usr/include/boost/any.hpp \
  omnicore/activation.h omnicore/consensushash.h omnicore/convert.h \
  omnicore/dbbase.h leveldb/include/leveldb/db.h \
  leveldb/include/leveldb/iterator.h leveldb/include/leveldb/slice.h \
@@ -1226,20 +1227,20 @@ omnicore/libbitcoin_server_a-omnicore.o: omnicore/omnicore.cpp \
  /usr/include/boost/math/special_functions/detail/gamma_inva.hpp \
  /usr/include/boost/math/special_functions/erf.hpp \
  /usr/include/boost/math/special_functions/detail/erf_inv.hpp \
- omnicore/tradelayer_matrices.h /usr/include/boost/any.hpp \
  omnicore/notifications.h omnicore/pending.h omnicore/persistence.h \
  omnicore/rules.h omnicore/script.h omnicore/seedblocks.h omnicore/sp.h \
  omnicore/utilsbitcoin.h omnicore/utilsui.h omnicore/version.h \
- omnicore/walletcache.h omnicore/walletutils.h script/ismine.h base58.h \
- chainparams.h chainparamsbase.h consensus/params.h primitives/block.h \
- protocol.h netaddress.h version.h coins.h compressor.h core_memusage.h \
- memusage.h indirectmap.h crypto/siphash.h core_io.h key_io.h key.h \
- pubkey.h hash.h crypto/ripemd160.h crypto/sha256.h \
- support/allocators/secure.h support/lockedpool.h support/cleanse.h \
- init.h validation.h policy/feerate.h versionbits.h chain.h \
- arith_uint256.h shutdown.h ui_interface.h wallet/wallet.h \
- interfaces/chain.h optional.h /usr/include/boost/optional.hpp \
- /usr/include/boost/optional/optional.hpp \
+ omnicore/walletcache.h omnicore/walletutils.h script/ismine.h \
+ omnicore/operators_algo_clearing.h omnicore/uint256_extensions.h \
+ arith_uint256.h omnicore/parse_string.h base58.h chainparams.h \
+ chainparamsbase.h consensus/params.h primitives/block.h protocol.h \
+ netaddress.h version.h coins.h compressor.h core_memusage.h memusage.h \
+ indirectmap.h crypto/siphash.h core_io.h key_io.h key.h pubkey.h hash.h \
+ crypto/ripemd160.h crypto/sha256.h support/allocators/secure.h \
+ support/lockedpool.h support/cleanse.h init.h validation.h \
+ policy/feerate.h versionbits.h chain.h shutdown.h ui_interface.h \
+ wallet/wallet.h interfaces/chain.h optional.h \
+ /usr/include/boost/optional.hpp /usr/include/boost/optional/optional.hpp \
  /usr/include/boost/core/explicit_operator_bool.hpp \
  /usr/include/boost/optional/bad_optional_access.hpp \
  /usr/include/boost/none.hpp /usr/include/boost/none_t.hpp \
@@ -1363,7 +1364,8 @@ omnicore/libbitcoin_server_a-omnicore.o: omnicore/omnicore.cpp \
  /usr/include/boost/exception/detail/is_output_streamable.hpp \
  /usr/include/boost/foreach.hpp /usr/include/boost/foreach_fwd.hpp \
  /usr/include/c++/7/numeric /usr/include/c++/7/bits/stl_numeric.h \
- omnicore/externfns.h omnicore/tradelayer_matrices.h
+ omnicore/tradelayer_matrices.h omnicore/externfns.h \
+ omnicore/tradelayer_matrices.h
 
 /usr/include/stdc-predef.h:
 
@@ -4003,6 +4005,10 @@ univalue/include/univalue.h:
 
 /usr/include/boost/multiprecision/cpp_int/import_export.hpp:
 
+omnicore/tradelayer_matrices.h:
+
+/usr/include/boost/any.hpp:
+
 omnicore/activation.h:
 
 omnicore/consensushash.h:
@@ -4141,10 +4147,6 @@ omnicore/mdex.h:
 
 /usr/include/boost/math/special_functions/detail/erf_inv.hpp:
 
-omnicore/tradelayer_matrices.h:
-
-/usr/include/boost/any.hpp:
-
 omnicore/notifications.h:
 
 omnicore/pending.h:
@@ -4170,6 +4172,14 @@ omnicore/walletcache.h:
 omnicore/walletutils.h:
 
 script/ismine.h:
+
+omnicore/operators_algo_clearing.h:
+
+omnicore/uint256_extensions.h:
+
+arith_uint256.h:
+
+omnicore/parse_string.h:
 
 base58.h:
 
@@ -4228,8 +4238,6 @@ policy/feerate.h:
 versionbits.h:
 
 chain.h:
-
-arith_uint256.h:
 
 shutdown.h:
 
@@ -4538,6 +4546,8 @@ wallet/walletutil.h:
 /usr/include/c++/7/numeric:
 
 /usr/include/c++/7/bits/stl_numeric.h:
+
+omnicore/tradelayer_matrices.h:
 
 omnicore/externfns.h:
 
