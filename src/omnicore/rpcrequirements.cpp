@@ -1,5 +1,6 @@
 #include <omnicore/rpcrequirements.h>
 
+#include <omnicore/mdex.h>
 #include <omnicore/dbspinfo.h>
 #include <omnicore/dbtxlist.h>
 #include <omnicore/dex.h>
@@ -204,5 +205,54 @@ void RequireSaneName(std::string& name)
             }
         }
     }
+
+}
+
+void RequireContract(uint32_t propertyId)
+{
+    LOCK(cs_tally);
+    CMPSPInfo::Entry sp;
+    if (!mastercore::pDbSpInfo->getSP(propertyId, sp)) {
+        throw JSONRPCError(RPC_DATABASE_ERROR, "Failed to retrieve property");
+    }
+    if (sp.prop_type != ALL_PROPERTY_TYPE_CONTRACT) {
+        throw JSONRPCError(RPC_INVALID_PARAMETER, "contractId must be future contract\n");
+    }
+}
+
+void RequireOracleContract(uint32_t propertyId)
+{
+    LOCK(cs_tally);
+    CMPSPInfo::Entry sp;
+    if (!mastercore::pDbSpInfo->getSP(propertyId, sp)) {
+        throw JSONRPCError(RPC_DATABASE_ERROR, "Failed to retrieve property");
+    }
+
+    if (sp.prop_type !=ALL_PROPERTY_TYPE_ORACLE_CONTRACT) {
+        throw JSONRPCError(RPC_INVALID_PARAMETER, "contractId must be oracle future contract\n");
+    }
+}
+
+void RequireContractOrder(std::string& fromAddress, uint32_t contractId)
+{
+  LOCK(cs_tally);
+  bool found = false;
+  for (mastercore::cd_PropertiesMap::const_iterator my_it = mastercore::contractdex.begin(); my_it != mastercore::contractdex.end(); ++my_it) {
+      const mastercore::cd_PricesMap& prices = my_it->second;
+      for (mastercore::cd_PricesMap::const_iterator it = prices.begin(); it != prices.end(); ++it) {
+          const mastercore::cd_Set& indexes = it->second;
+          for (mastercore::cd_Set::const_iterator it = indexes.begin(); it != indexes.end(); ++it) {
+              const CMPContractDex& obj = *it;
+              if (obj.getProperty() != contractId || obj.getAddr() != fromAddress) continue;
+              PrintToLog("Order found!\n");
+              found = true;
+              break;
+          }
+      }
+  }
+
+  if (!found) {
+        throw JSONRPCError(RPC_INVALID_PARAMETER,"There's no order in this future contract\n");
+  }
 
 }

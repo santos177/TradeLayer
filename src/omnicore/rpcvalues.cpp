@@ -257,3 +257,49 @@ uint32_t ParseAmount32t(const UniValue& value)
   }
   return static_cast<uint32_t>(amount);
 }
+
+/** New things for Future Contracts */
+int64_t ParseAmountContract(const UniValue& value)
+{
+  int64_t amount = mastercore::StrToInt64(value.get_str(), true);
+  if (amount < 1) {
+    throw JSONRPCError(RPC_TYPE_ERROR, "Invalid amount");
+  }
+  return amount;
+}
+
+uint64_t ParseEffectivePrice(const UniValue& value)
+{
+  int64_t effPrice = StrToInt64(value.getValStr(), true);
+  if (effPrice < 0) {
+    throw JSONRPCError(RPC_TYPE_ERROR, "Price should be positive");
+  }
+  return effPrice;
+}
+
+uint8_t ParseContractDexAction(const UniValue& value)
+{
+    int64_t action = value.get_int64();
+    if (action < 1 || 2 < action) {
+        throw JSONRPCError(RPC_TYPE_ERROR, "Invalid action (1=BUY, 2=SELL only)");
+    }
+    return static_cast<uint8_t>(action);
+}
+
+uint64_t ParseLeverage(const UniValue& value)
+{
+    int64_t amount = mastercore::StrToInt64(value.get_str(), true);
+    if (amount < 100000000 || 1000000000 < amount) {
+        throw JSONRPCError(RPC_TYPE_ERROR, "Leverage out of range");
+    }
+    return static_cast<uint64_t>(amount);
+}
+
+uint32_t ParseNewValues(const UniValue& value)
+{
+  int64_t Nvalue = value.get_int64();
+  if (Nvalue < 1 || 4294967295LL < Nvalue) {
+    throw JSONRPCError(RPC_INVALID_PARAMETER, "Value is out of range");
+  }
+  return static_cast<uint32_t>(Nvalue);
+}

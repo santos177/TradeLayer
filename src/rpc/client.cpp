@@ -263,6 +263,11 @@ static const CRPCConvertParam vRPCConvertParams[] =
     { "tl_create_oraclecontract", 7, "arg7"},
     { "tl_tradecontract", 3, "arg3"},
     { "tl_tradecontract", 4, "arg4"},
+    { "tl_cancelallcontractsbyaddress", 1, "arg1"},
+    { "tl_closeposition", 1, "arg1" },
+    { "tl_closeposition", 2, "arg2" },
+    { "tl_cancelorderbyblock", 1, "arg1"},
+    { "tl_cancelorderbyblock", 2, "arg2" },
 
     /* Omni Core - raw transaction calls */
     { "omni_decodetransaction", 1, "prevtxs" },
