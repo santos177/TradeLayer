@@ -242,9 +242,9 @@ bool CMPTransaction::interpret_Transaction()
         // case MSC_TYPE_DEX_BUY_OFFER:
         //     return interpret_DExBuy();
         //
-        // case MSC_TYPE_CHANGE_ORACLE_REF:
-        //     return interpret_Change_OracleRef();
-        //
+        case MSC_TYPE_CHANGE_ORACLE_REF:
+            return interpret_Change_OracleRef();
+
         case MSC_TYPE_SET_ORACLE:
             return interpret_Set_Oracle();
 
@@ -1253,6 +1253,24 @@ bool CMPTransaction::interpret_CloseOracle()
     return true;
 }
 
+/** Tx 104 */
+bool CMPTransaction::interpret_Change_OracleRef()
+{
+    // if (pkt_size < 17) {
+    //     return false;
+    // }
+    memcpy(&contractId, &pkt[4], 4);
+    SwapByteOrder32(contractId);
+
+    if ((!rpcOnly && msc_debug_packets) || msc_debug_packets_readonly)
+    {
+        PrintToLog("\t version: %d\n", version);
+        PrintToLog("\t messageType: %d\n",type);
+        PrintToLog("\t propertyId: %d\n", propertyId);
+    }
+
+    return true;
+}
 
 
 // ---------------------- CORE LOGIC -------------------------
@@ -1384,6 +1402,8 @@ int CMPTransaction::interpretPacket()
         case MSC_TYPE_CLOSE_ORACLE:
                 return logicMath_CloseOracle();
 
+        case MSC_TYPE_CHANGE_ORACLE_REF:
+                return logicMath_Change_OracleRef();
     }
 
     return (PKT_ERROR -100);
@@ -3401,6 +3421,61 @@ int CMPTransaction::logicMath_OracleBackup()
 
     return 0;
 }
+
+/** Tx 104 */
+int CMPTransaction::logicMath_Change_OracleRef()
+{
+    uint256 blockHash;
+    {
+        LOCK(cs_main);
+
+        CBlockIndex* pindex = chainActive[block];
+        if (pindex == NULL) {
+            PrintToLog("%s(): ERROR: block %d not in the active chain\n", __func__, block);
+            return (PKT_ERROR_TOKENS -20);
+        }
+        blockHash = pindex->GetBlockHash();
+    }
+
+    if (!IsTransactionTypeAllowed(block, property, type, version)) {
+        PrintToLog("%s(): rejected: type %d or version %d not permitted for property %d at block %d\n",
+                __func__,
+                type,
+                version,
+                property,
+                block);
+        return (PKT_ERROR_TOKENS -22);
+    }
+
+    if (!IsPropertyIdValid(contractId)) {
+        PrintToLog("%s(): rejected: oracle contract %d does not exist\n", __func__, property);
+        return (PKT_ERROR_ORACLE -11);
+    }
+
+    CMPSPInfo::Entry sp;
+    assert(pDbSpInfo->getSP(contractId, sp));
+
+    if (sender != sp.issuer) {
+        PrintToLog("%s(): rejected: sender %s is not issuer of contract %d [issuer=%s]\n", __func__, sender, property, sp.issuer);
+        return (PKT_ERROR_ORACLE -12);
+    }
+
+    if (receiver.empty()) {
+        PrintToLog("%s(): rejected: receiver is empty\n", __func__);
+        return (PKT_ERROR_ORACLE -13);
+    }
+
+    // ------------------------------------------
+
+    sp.issuer = receiver;
+    sp.update_block = blockHash;
+
+    assert(pDbSpInfo->updateSP(contractId, sp));
+
+    return 0;
+}
+
+
 
 
 struct FutureContractObject *getFutureContractObject(uint32_t property_type, std::string identifier)
