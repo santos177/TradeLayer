@@ -2471,3 +2471,27 @@ const CMPMetaDEx* mastercore::MetaDEx_RetrieveTrade(const uint256& txid)
    PrintToLog("\nVWAPMapSubVector[nameId][denId] = %d\n", FormatDivisibleMP(VWAPMapSubVector[numId][denId]));
    return VWAPMapSubVector[numId][denId];
  }
+
+ void CMPContractDex::saveOffer(std::ofstream& file, SHA256_CTX* shaCtx) const
+ {
+     std::string lineOut = strprintf("%s,%d,%d,%d,%d,%d,%d,%d,%s,%d,%d,%d",
+         getAddr(),
+         getBlock(),
+         getAmountForSale(),
+         getProperty(),
+         getAmountDesired(),
+         getDesProperty(),
+         getAction(),
+         getIdx(),
+         getHash().ToString(),
+         getAmountRemaining(),
+         effective_price,
+         trading_action
+     );
+
+     // add the line to the hash
+     SHA256_Update(shaCtx, lineOut.c_str(), lineOut.length());
+
+     // write the line
+     file << lineOut << std::endl;
+ }

@@ -473,12 +473,12 @@ am__libbitcoin_server_a_SOURCES_DIST = addrdb.cpp addrman.cpp \
 	compat/sanity.h compressor.h consensus/consensus.h \
 	consensus/tx_verify.h core_io.h core_memusage.h cuckoocache.h \
 	fs.h httprpc.h httpserver.h index/base.h index/txindex.h \
-	indirectmap.h init.h interfaces/chain.h interfaces/handler.h \
-	interfaces/node.h interfaces/wallet.h key.h key_io.h \
-	keystore.h dbwrapper.h limitedmap.h logging.h memusage.h \
-	merkleblock.h miner.h net.h net_processing.h netaddress.h \
-	netbase.h netmessagemaker.h node/transaction.h noui.h \
-	optional.h outputtype.h policy/feerate.h policy/fees.h \
+	indirectmap.h init.h initial_conditions.h interfaces/chain.h \
+	interfaces/handler.h interfaces/node.h interfaces/wallet.h \
+	key.h key_io.h keystore.h dbwrapper.h limitedmap.h logging.h \
+	memusage.h merkleblock.h miner.h net.h net_processing.h \
+	netaddress.h netbase.h netmessagemaker.h node/transaction.h \
+	noui.h optional.h outputtype.h policy/feerate.h policy/fees.h \
 	policy/policy.h policy/rbf.h pow.h protocol.h psbt.h random.h \
 	reverse_iterator.h reverselock.h rpc/blockchain.h rpc/client.h \
 	rpc/mining.h rpc/protocol.h rpc/server.h rpc/rawtransaction.h \
@@ -652,12 +652,12 @@ am__libbitcoin_util_a_SOURCES_DIST = support/lockedpool.cpp \
 	compat/sanity.h compressor.h consensus/consensus.h \
 	consensus/tx_verify.h core_io.h core_memusage.h cuckoocache.h \
 	fs.h httprpc.h httpserver.h index/base.h index/txindex.h \
-	indirectmap.h init.h interfaces/chain.h interfaces/handler.h \
-	interfaces/node.h interfaces/wallet.h key.h key_io.h \
-	keystore.h dbwrapper.h limitedmap.h logging.h memusage.h \
-	merkleblock.h miner.h net.h net_processing.h netaddress.h \
-	netbase.h netmessagemaker.h node/transaction.h noui.h \
-	optional.h outputtype.h policy/feerate.h policy/fees.h \
+	indirectmap.h init.h initial_conditions.h interfaces/chain.h \
+	interfaces/handler.h interfaces/node.h interfaces/wallet.h \
+	key.h key_io.h keystore.h dbwrapper.h limitedmap.h logging.h \
+	memusage.h merkleblock.h miner.h net.h net_processing.h \
+	netaddress.h netbase.h netmessagemaker.h node/transaction.h \
+	noui.h optional.h outputtype.h policy/feerate.h policy/fees.h \
 	policy/policy.h policy/rbf.h pow.h protocol.h psbt.h random.h \
 	reverse_iterator.h reverselock.h rpc/blockchain.h rpc/client.h \
 	rpc/mining.h rpc/protocol.h rpc/server.h rpc/rawtransaction.h \
@@ -2921,6 +2921,7 @@ BITCOIN_CORE_H = \
   index/txindex.h \
   indirectmap.h \
   init.h \
+	initial_conditions.h \
   interfaces/chain.h \
   interfaces/handler.h \
   interfaces/node.h \

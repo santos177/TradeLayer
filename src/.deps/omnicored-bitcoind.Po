@@ -771,7 +771,11 @@ omnicored-bitcoind.o: bitcoind.cpp /usr/include/stdc-predef.h \
  /usr/include/boost/enable_shared_from_this.hpp \
  /usr/include/boost/smart_ptr/enable_shared_from_this.hpp \
  /usr/include/boost/smart_ptr/weak_ptr.hpp noui.h shutdown.h httpserver.h \
- httprpc.h util/strencodings.h walletinitinterface.h omnicore/utilsui.h
+ httprpc.h util/strencodings.h walletinitinterface.h omnicore/utilsui.h \
+ omnicore/tradelayer_matrices.h /usr/include/boost/any.hpp \
+ /usr/include/boost/type_index.hpp \
+ /usr/include/boost/type_index/stl_type_index.hpp \
+ /usr/include/boost/type_index/type_index_facade.hpp initial_conditions.h
 
 /usr/include/stdc-predef.h:
 
@@ -2602,3 +2606,15 @@ util/strencodings.h:
 walletinitinterface.h:
 
 omnicore/utilsui.h:
+
+omnicore/tradelayer_matrices.h:
+
+/usr/include/boost/any.hpp:
+
+/usr/include/boost/type_index.hpp:
+
+/usr/include/boost/type_index/stl_type_index.hpp:
+
+/usr/include/boost/type_index/type_index_facade.hpp:
+
+initial_conditions.h:

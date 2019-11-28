@@ -76,6 +76,8 @@ bool msc_debug_close_position                   = 0;
 bool msc_debug_contract_cancel_forblock         = 0;
 bool msc_debug_set_oracle                       = 0;
 bool msc_debug_handler_tx                       = 0;
+bool msc_debug_margin_main                      = 0;
+bool msc_debug_pos_margin                       = 0;
 
 /**
  * LogPrintf() has been broken a couple of times now
