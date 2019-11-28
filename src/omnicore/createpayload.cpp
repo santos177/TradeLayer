@@ -567,5 +567,238 @@ std::vector<unsigned char> CreatePayload_DEx_Payment()
     return payload;
 }
 
+std::vector<unsigned char> CreatePayload_SendVestingTokens(uint32_t propertyId, uint64_t amount)
+{
+  std::vector<unsigned char> payload;
+
+  uint16_t messageType = 5;
+  uint16_t messageVer = 0;
+
+  SwapByteOrder16(messageType);
+  SwapByteOrder16(messageVer);
+  SwapByteOrder32(propertyId);
+  SwapByteOrder64(amount);
+
+  PUSH_BACK_BYTES(payload, messageVer);
+  PUSH_BACK_BYTES(payload, messageType);
+  PUSH_BACK_BYTES(payload, propertyId);
+  PUSH_BACK_BYTES(payload, amount);
+
+  return payload;
+}
+
+std::vector<unsigned char> CreatePayload_CreateContract(uint8_t ecosystem, uint32_t denomType, std::string name, uint32_t blocks_until_expiration, uint32_t notional_size, uint32_t collateral_currency, uint32_t margin_requirement)
+{
+  std::vector<unsigned char> payload;
+
+  uint16_t messageType = 41;
+  uint16_t messageVer = 0;
+
+  SwapByteOrder16(messageVer);
+  SwapByteOrder16(messageType);
+  SwapByteOrder32(blocks_until_expiration);
+  SwapByteOrder32(notional_size);
+  SwapByteOrder32(collateral_currency);
+  SwapByteOrder32(margin_requirement);
+
+  if (name.size() > 255) name = name.substr(0,255);
+
+  PUSH_BACK_BYTES(payload, messageVer);
+  PUSH_BACK_BYTES(payload, messageType);
+
+  PUSH_BACK_BYTES(payload, ecosystem);
+  PUSH_BACK_BYTES(payload, blocks_until_expiration);
+  PUSH_BACK_BYTES(payload, notional_size);
+  PUSH_BACK_BYTES(payload, collateral_currency);
+  PUSH_BACK_BYTES(payload, margin_requirement);
+  payload.insert(payload.end(), name.begin(), name.end());
+  payload.push_back('\0');
+
+
+  return payload;
+}
+
+std::vector<unsigned char> CreatePayload_CreateOracleContract(uint8_t ecosystem, uint32_t denomType, std::string name, uint32_t blocks_until_expiration, uint32_t notional_size, uint32_t collateral_currency, uint32_t margin_requirement)
+{
+  std::vector<unsigned char> payload;
+
+  uint16_t messageType = 103;
+  uint16_t messageVer = 0;
+
+  SwapByteOrder16(messageVer);
+  SwapByteOrder16(messageType);
+  SwapByteOrder32(blocks_until_expiration);
+  SwapByteOrder32(notional_size);
+  SwapByteOrder32(collateral_currency);
+  SwapByteOrder32(margin_requirement);
+
+  if (name.size() > 255) name = name.substr(0,255);
+
+  PUSH_BACK_BYTES(payload, messageVer);
+  PUSH_BACK_BYTES(payload, messageType);
+
+  PUSH_BACK_BYTES(payload, ecosystem);
+  PUSH_BACK_BYTES(payload, blocks_until_expiration);
+  PUSH_BACK_BYTES(payload, notional_size);
+  PUSH_BACK_BYTES(payload, collateral_currency);
+  PUSH_BACK_BYTES(payload, margin_requirement);
+  payload.insert(payload.end(), name.begin(), name.end());
+  payload.push_back('\0');
+
+  return payload;
+}
+
+std::vector<unsigned char> CreatePayload_ContractDexTrade(std::string name_traded, uint64_t amountForSale, uint64_t effective_price, uint8_t trading_action, uint64_t leverage)
+{
+  std::vector<unsigned char> payload;
+
+  uint16_t messageVer = 0;
+  uint16_t messageType = 29;
+
+  SwapByteOrder16(messageVer);
+  SwapByteOrder16(messageType);
+  SwapByteOrder64(amountForSale);
+  SwapByteOrder64(effective_price);
+  SwapByteOrder64(leverage);
+
+  if (name_traded.size() > 255) name_traded = name_traded.substr(0,255);
+
+  PUSH_BACK_BYTES(payload, messageVer);
+  PUSH_BACK_BYTES(payload, messageType);
+
+  PUSH_BACK_BYTES(payload, amountForSale);
+  PUSH_BACK_BYTES(payload, effective_price);
+  PUSH_BACK_BYTES(payload, leverage);
+  PUSH_BACK_BYTES(payload, trading_action);
+
+  payload.insert(payload.end(), name_traded.begin(), name_traded.end());
+  payload.push_back('\0');
+
+  return payload;
+}
+
+std::vector<unsigned char> CreatePayload_ContractDexCancelEcosystem(uint8_t ecosystem, uint32_t contractId)
+{
+  std::vector<unsigned char> payload;
+
+    uint16_t messageType = 32;
+    uint16_t messageVer = 0;
+
+    SwapByteOrder16(messageVer);
+    SwapByteOrder16(messageType);
+
+    PUSH_BACK_BYTES(payload, messageVer);
+    PUSH_BACK_BYTES(payload, messageType);
+
+    PUSH_BACK_BYTES(payload, ecosystem);
+
+    return payload;
+}
+
+std::vector<unsigned char> CreatePayload_ContractDexClosePosition(uint8_t ecosystem, uint32_t contractId)
+{
+    std::vector<unsigned char> payload;
+
+    uint16_t messageType = 33;
+    uint16_t messageVer = 0;
+
+    SwapByteOrder16(messageVer);
+    SwapByteOrder16(messageType);
+    SwapByteOrder32(contractId);
+
+    PUSH_BACK_BYTES(payload, messageVer);
+    PUSH_BACK_BYTES(payload, messageType);
+
+    PUSH_BACK_BYTES(payload, ecosystem);
+    PUSH_BACK_BYTES(payload, contractId);
+
+    return payload;
+}
+
+std::vector<unsigned char> CreatePayload_ContractDexCancelOrderByTxId(int block, unsigned int idx)
+{
+    std::vector<unsigned char> payload;
+
+    uint16_t messageType = 34;
+    uint16_t messageVer = 0;
+
+    PUSH_BACK_BYTES(payload, messageVer);
+    PUSH_BACK_BYTES(payload, messageType);
+
+    PUSH_BACK_BYTES(payload, block);
+    PUSH_BACK_BYTES(payload,idx);
+
+    return payload;
+}
+
+/* Tx 104 */
+std::vector<unsigned char> CreatePayload_Change_OracleRef(uint32_t contractId)
+{
+    std::vector<unsigned char> payload;
+
+    uint16_t messageType = 104;
+    uint16_t messageVer = 0;
+
+    SwapByteOrder32(contractId);
+    PUSH_BACK_BYTES(payload, messageVer);
+    PUSH_BACK_BYTES(payload, messageType);
+    PUSH_BACK_BYTES(payload, contractId);
+
+    return payload;
+}
+
+/* Tx 105 */
+std::vector<unsigned char> CreatePayload_Set_Oracle(uint32_t contractId, uint64_t high, uint64_t low)
+{
+    std::vector<unsigned char> payload;
+
+    uint16_t messageType = 105;
+    uint16_t messageVer = 0;
+
+    SwapByteOrder32(contractId);
+    SwapByteOrder64(low);
+    SwapByteOrder64(high);
+
+    PUSH_BACK_BYTES(payload, messageVer);
+    PUSH_BACK_BYTES(payload, messageType);
+    PUSH_BACK_BYTES(payload, contractId);
+    PUSH_BACK_BYTES(payload, low);
+    PUSH_BACK_BYTES(payload, high);
+
+    return payload;
+}
+
+std::vector<unsigned char> CreatePayload_OracleBackup(uint32_t contractId)
+{
+    std::vector<unsigned char> payload;
+
+    uint16_t messageType = 106;
+    uint16_t messageVer = 0;
+
+    SwapByteOrder32(contractId);
+    PUSH_BACK_BYTES(payload, messageVer);
+    PUSH_BACK_BYTES(payload, messageType);
+    PUSH_BACK_BYTES(payload, contractId);
+
+    return payload;
+}
+
+std::vector<unsigned char> CreatePayload_Close_Oracle(uint32_t contractId)
+{
+    std::vector<unsigned char> payload;
+
+    uint16_t messageType = 107;
+    uint16_t messageVer = 0;
+
+    SwapByteOrder32(contractId);
+    PUSH_BACK_BYTES(payload, messageVer);
+    PUSH_BACK_BYTES(payload, messageType);
+    PUSH_BACK_BYTES(payload, contractId);
+
+    return payload;
+}
+
+
+
 #undef PUSH_BACK_BYTES
 #undef PUSH_BACK_BYTES_PTR

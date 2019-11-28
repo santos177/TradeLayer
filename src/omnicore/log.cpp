@@ -65,6 +65,20 @@ bool msc_debug_consensus_hash_every_transaction = 0;
 //! Debug fees
 bool msc_debug_fees               = 1;
 
+bool msc_debug_x_trade_bidirectional            = 0;
+bool msc_debug_contractdex_add                  = 0;
+bool msc_debug_contract_add_market              = 0;
+bool msc_debug_add_orderbook_edge               = 0;
+bool msc_debug_contract_cancel_inorder          = 0;
+bool msc_debug_contractdex_tx                   = 0;
+bool msc_debug_contract_cancel_every            = 0;
+bool msc_debug_close_position                   = 0;
+bool msc_debug_contract_cancel_forblock         = 0;
+bool msc_debug_set_oracle                       = 0;
+bool msc_debug_handler_tx                       = 0;
+bool msc_debug_margin_main                      = 0;
+bool msc_debug_pos_margin                       = 0;
+
 /**
  * LogPrintf() has been broken a couple of times now
  * by well-meaning people adding mutexes in the most straightforward way.
@@ -334,4 +348,3 @@ void ShrinkDebugLog()
         file = nullptr;
     }
 }
-

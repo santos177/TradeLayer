@@ -51,6 +51,7 @@ enum FILETYPES {
   FILETYPE_GLOBALS,
   FILETYPE_CROWDSALES,
   FILETYPE_MDEXORDERS,
+  FILETYPE_CDEXORDERS,
   NUM_FILETYPES
 };
 
@@ -61,6 +62,7 @@ static char const * const statePrefix[NUM_FILETYPES] = {
     "globals",
     "crowdsales",
     "mdexorders",
+    "cdexorders",
 };
 
 static bool is_state_prefix(std::string const &str)
@@ -190,6 +192,24 @@ static int write_mp_metadex(std::ofstream &file, SHA256_CTX* shaCtx)
     }
 
     return 0;
+}
+
+static int write_mp_contractdex(ofstream &file, SHA256_CTX *shaCtx)
+{
+  for (cd_PropertiesMap::iterator my_it = contractdex.begin(); my_it != contractdex.end(); ++my_it)
+  {
+    cd_PricesMap &prices = my_it->second;
+    for (cd_PricesMap::iterator it = prices.begin(); it != prices.end(); ++it)
+    {
+      cd_Set &indexes = (it->second);
+      for (cd_Set::iterator it = indexes.begin(); it != indexes.end(); ++it)
+      {
+        CMPContractDex contract = *it;
+        contract.saveOffer(file, shaCtx);
+      }
+    }
+  }
+  return 0;
 }
 
 static int input_msc_balances_string(const std::string& s)
@@ -400,6 +420,36 @@ static int input_mp_mdexorder_string(const std::string& s)
     return 0;
 }
 
+static int input_mp_contractdexorder_string(const std::string& s)
+{
+    std::vector<std::string> vstr;
+    boost::split(vstr, s, boost::is_any_of(" ,="), boost::token_compress_on);
+
+    if (12 != vstr.size()) return -1;
+
+    int i = 0;
+
+    std::string addr = vstr[i++];
+    int block = boost::lexical_cast<int>(vstr[i++]);
+    int64_t amount_forsale = boost::lexical_cast<int64_t>(vstr[i++]);
+    uint32_t property = boost::lexical_cast<uint32_t>(vstr[i++]);
+    int64_t amount_desired = boost::lexical_cast<int64_t>(vstr[i++]);
+    uint32_t desired_property = boost::lexical_cast<uint32_t>(vstr[i++]);
+    uint8_t subaction = boost::lexical_cast<unsigned int>(vstr[i++]); // lexical_cast can't handle char!
+    unsigned int idx = boost::lexical_cast<unsigned int>(vstr[i++]);
+    uint256 txid = uint256S(vstr[i++]);
+    int64_t amount_remaining = boost::lexical_cast<int64_t>(vstr[i++]);
+    uint64_t effective_price = boost::lexical_cast<uint64_t>(vstr[i++]);
+    uint8_t trading_action = boost::lexical_cast<unsigned int>(vstr[i++]);
+
+    CMPContractDex mdexObj(addr, block, property, amount_forsale, desired_property,
+            amount_desired, txid, idx, subaction, amount_remaining, effective_price, trading_action);
+
+    if (!ContractDex_INSERT(mdexObj)) return -1;
+
+    return 0;
+}
+
 static int write_state_file(const CBlockIndex* pBlockIndex, int what)
 {
     fs::path path = pathStateFiles / strprintf("%s-%s.dat", statePrefix[what], pBlockIndex->GetBlockHash().ToString());
@@ -436,6 +486,10 @@ static int write_state_file(const CBlockIndex* pBlockIndex, int what)
 
         case FILETYPE_MDEXORDERS:
             result = write_mp_metadex(file, &shaCtx);
+            break;
+
+        case FILETYPE_CDEXORDERS:
+            result = write_mp_contractdex(file, &shaCtx);
             break;
     }
 
@@ -531,6 +585,7 @@ int PersistInMemoryState(const CBlockIndex* pBlockIndex)
     write_state_file(pBlockIndex, FILETYPE_GLOBALS);
     write_state_file(pBlockIndex, FILETYPE_CROWDSALES);
     write_state_file(pBlockIndex, FILETYPE_MDEXORDERS);
+    write_state_file(pBlockIndex, FILETYPE_CDEXORDERS);
 
     // clean-up the directory
     prune_state_files(pBlockIndex);
@@ -583,6 +638,11 @@ int RestoreInMemoryState(const std::string& filename, int what, bool verifyHash)
             // ...
             metadex.clear();
             inputLineFunc = input_mp_mdexorder_string;
+            break;
+
+        case FILETYPE_CDEXORDERS:
+            contractdex.clear();
+            inputLineFunc = input_mp_contractdexorder_string;
             break;
 
         default:

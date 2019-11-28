@@ -38,6 +38,17 @@ CTransaction ParseTransaction(const UniValue& value);
 CMutableTransaction ParseMutableTransaction(const UniValue& value);
 CPubKey ParsePubKeyOrAddress(const interfaces::Wallet* iWallet, const UniValue& value);
 uint32_t ParseOutputIndex(const UniValue& value);
+uint32_t ParseContractType(const UniValue& value);
+uint32_t ParseAmount32t(const UniValue& value);
+int64_t ParseAmountContract(const UniValue& value, int propertyType);
+int64_t ParseAmountContract(const UniValue& value);
+uint64_t ParseEffectivePrice(const UniValue& value, uint32_t contractId);
+uint64_t ParseEffectivePrice(const UniValue& value);
+uint8_t ParseContractDexAction(const UniValue& value);
+uint64_t ParseLeverage(const UniValue& value);
+uint32_t ParseNewValues(const UniValue& value);
+
+
 /** Parses previous transaction outputs. */
 std::vector<PrevTxsEntry> ParsePrevTxs(const UniValue& value);
 

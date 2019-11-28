@@ -337,7 +337,21 @@ inline std::string error_str(int ec) {
       case PKT_ERROR_TOKENS -50:
           ec_str = "Address is already frozen";
           break;
-
+      case PKT_ERROR_ORACLE -10:
+          ec_str = "Oracle and backup addresses can't be the same";
+          break;
+      case PKT_ERROR_ORACLE -11:
+        ec_str = "Oracle contract doesn't exist";
+        break;
+      case PKT_ERROR_ORACLE -12:
+        ec_str = "Sender is not issuer of oracle contract";
+        break;
+      case PKT_ERROR_ORACLE -13:
+        ec_str = "Receiver is empty";
+        break;
+      case PKT_ERROR_ORACLE -14:
+        ec_str = "Wrong backup address";
+        break;
       default:
           ec_str = "Unknown error";
   }

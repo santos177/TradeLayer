@@ -77,6 +77,24 @@ public:
         bool fixed;
         bool manual;
 
+        /** New things for Contracts */
+        uint32_t blocks_until_expiration;
+        uint32_t notional_size;
+        uint32_t collateral_currency;
+        uint32_t margin_requirement;
+        uint32_t attribute_type;
+        int64_t contracts_needed;
+        int init_block;
+        uint32_t ecosystemSP;
+        /*uint32_t numerator; */
+        uint32_t denomination;
+        /* int64_t ticksize; */
+        std::string series;
+        std::string backup_address;
+        uint64_t oracle_high;
+        uint64_t oracle_low;
+        int oracle_last_update;
+
         // For crowdsale properties:
         //   txid -> amount invested, crowdsale deadline, user issued tokens, issuer issued tokens
         // For managed properties:
@@ -118,6 +136,20 @@ public:
             READWRITE(manual);
             READWRITE(historicalData);
             READWRITE(historicalIssuers);
+            /** New things for Contracts */
+            READWRITE(blocks_until_expiration);
+            READWRITE(notional_size);
+            READWRITE(collateral_currency);
+            READWRITE(margin_requirement);
+            READWRITE(attribute_type);
+            READWRITE(init_block);
+            // READWRITE(contract_associated);
+            READWRITE(denomination);
+            READWRITE(series);
+            READWRITE(backup_address);
+            READWRITE(oracle_high);
+            READWRITE(oracle_low);
+            READWRITE(oracle_last_update);
         }
 
         bool isDivisible() const;

@@ -100,6 +100,7 @@ endif
 .PHONY: FORCE check-symbols check-security
 # bitcoin core #
 BITCOIN_CORE_H = \
+  arith_uint256.h \
   addrdb.h \
   addrman.h \
   attributes.h \
@@ -135,6 +136,7 @@ BITCOIN_CORE_H = \
   index/txindex.h \
   indirectmap.h \
   init.h \
+	initial_conditions.h \
   interfaces/chain.h \
   interfaces/handler.h \
   interfaces/node.h \

@@ -23,6 +23,7 @@
 #include <walletinitinterface.h>
 
 #include <omnicore/utilsui.h>
+#include <omnicore/tradelayer_matrices.h>
 
 #include <stdio.h>
 
@@ -191,6 +192,32 @@ static bool AppInit(int argc, char* argv[])
 
 int main(int argc, char* argv[])
 {
+  extern int64_t factorE;
+  extern int64_t priceIndex;
+  extern int64_t allPrice;
+  extern double denMargin;
+  extern int n_cols;
+  extern int nVestingAddrs;
+  extern int64_t amountVesting;
+  extern int64_t totalVesting;
+  extern int volumeToVWAP;
+  extern int BlockS;
+  extern VectorTLS *pt_open_incr_long;
+  extern VectorTLS *pt_open_incr_short;
+  extern VectorTLS *pt_netted_npartly_long;
+  extern VectorTLS *pt_netted_npartly_short;
+  extern VectorTLS *pt_open_incr_anypos;
+  extern VectorTLS *pt_netted_npartly_anypos;
+  extern VectorTLS *pt_changepos_status;
+  extern VectorTLS *pt_expiration_dates;
+  extern std::string admin_addrs;
+  extern double CompoundRate;
+  extern double DecayRate;
+  extern double LongTailDecay;
+  extern int64_t SatoshiH;
+
+#include "initial_conditions.h"
+
 #ifdef WIN32
     util::WinCmdLineArgs winArgs;
     std::tie(argc, argv) = winArgs.get();

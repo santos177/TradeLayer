@@ -952,9 +952,6 @@ omnicore/test/test_test_omnicore-checkpoint_tests.o: \
  /usr/include/boost/variant/visitor_ptr.hpp \
  /usr/include/boost/variant/bad_visit.hpp univalue/include/univalue.h \
  /usr/include/c++/7/unordered_map /usr/include/c++/7/bits/unordered_map.h \
- omnicore/tx.h omnicore/parsing.h util/strencodings.h \
- /usr/include/openssl/sha.h /usr/include/openssl/e_os2.h \
- /usr/include/x86_64-linux-gnu/openssl/opensslconf.h omnicore/mdex.h \
  /usr/include/boost/lexical_cast.hpp \
  /usr/include/boost/range/iterator_range_core.hpp \
  /usr/include/boost/range/functions.hpp \
@@ -1128,13 +1125,13 @@ omnicore/test/test_test_omnicore-checkpoint_tests.o: \
  /usr/include/boost/math/tools/real_cast.hpp \
  /usr/include/boost/integer.hpp \
  /usr/include/boost/detail/basic_pointerbuf.hpp \
- /usr/include/boost/multiprecision/cpp_dec_float.hpp \
+ /usr/include/boost/multiprecision/cpp_int.hpp /usr/include/c++/7/iomanip \
  /usr/include/boost/multiprecision/number.hpp \
  /usr/include/boost/mpl/max.hpp \
  /usr/include/boost/multiprecision/detail/generic_interconvert.hpp \
  /usr/include/boost/multiprecision/detail/default_ops.hpp \
  /usr/include/boost/math/policies/error_handling.hpp \
- /usr/include/c++/7/iomanip /usr/include/boost/math/tools/precision.hpp \
+ /usr/include/boost/math/tools/precision.hpp \
  /usr/include/boost/multiprecision/detail/number_base.hpp \
  /usr/include/boost/math/special_functions/next.hpp \
  /usr/include/boost/math/special_functions/trunc.hpp \
@@ -1153,6 +1150,32 @@ omnicore/test/test_test_omnicore-checkpoint_tests.o: \
  /usr/include/boost/multiprecision/traits/is_restricted_conversion.hpp \
  /usr/include/boost/multiprecision/traits/explicit_conversion.hpp \
  /usr/include/boost/multiprecision/detail/ublas_interop.hpp \
+ /usr/include/boost/multiprecision/detail/integer_ops.hpp \
+ /usr/include/boost/multiprecision/cpp_int/cpp_int_config.hpp \
+ /usr/include/boost/multiprecision/rational_adaptor.hpp \
+ /usr/include/boost/rational.hpp \
+ /usr/include/boost/integer/common_factor_rt.hpp \
+ /usr/include/boost/multiprecision/traits/is_byte_container.hpp \
+ /usr/include/boost/integer/static_min_max.hpp \
+ /usr/include/boost/type_traits/make_signed.hpp \
+ /usr/include/boost/multiprecision/cpp_int/checked.hpp \
+ /usr/include/boost/multiprecision/cpp_int/value_pack.hpp \
+ /usr/include/boost/multiprecision/cpp_int/comparison.hpp \
+ /usr/include/boost/multiprecision/cpp_int/add.hpp \
+ /usr/include/boost/multiprecision/cpp_int/multiply.hpp \
+ /usr/include/boost/multiprecision/cpp_int/divide.hpp \
+ /usr/include/boost/multiprecision/cpp_int/bitwise.hpp \
+ /usr/include/boost/multiprecision/cpp_int/misc.hpp \
+ /usr/include/boost/multiprecision/detail/bitscan.hpp \
+ /usr/include/boost/multiprecision/cpp_int/limits.hpp \
+ /usr/include/boost/multiprecision/cpp_int/literals.hpp \
+ /usr/include/boost/multiprecision/cpp_int/serialize.hpp \
+ /usr/include/boost/multiprecision/cpp_int/import_export.hpp \
+ omnicore/tradelayer_matrices.h /usr/include/boost/any.hpp omnicore/tx.h \
+ omnicore/parsing.h util/strencodings.h /usr/include/openssl/sha.h \
+ /usr/include/openssl/e_os2.h \
+ /usr/include/x86_64-linux-gnu/openssl/opensslconf.h omnicore/mdex.h \
+ /usr/include/boost/multiprecision/cpp_dec_float.hpp \
  /usr/include/boost/multiprecision/detail/big_lanczos.hpp \
  /usr/include/boost/math/bindings/detail/big_lanczos.hpp \
  /usr/include/boost/math/special_functions/lanczos.hpp \
@@ -1198,28 +1221,6 @@ omnicore/test/test_test_omnicore-checkpoint_tests.o: \
  /usr/include/boost/math/special_functions/detail/gamma_inva.hpp \
  /usr/include/boost/math/special_functions/erf.hpp \
  /usr/include/boost/math/special_functions/detail/erf_inv.hpp \
- /usr/include/boost/multiprecision/cpp_int.hpp \
- /usr/include/boost/multiprecision/detail/integer_ops.hpp \
- /usr/include/boost/multiprecision/cpp_int/cpp_int_config.hpp \
- /usr/include/boost/multiprecision/rational_adaptor.hpp \
- /usr/include/boost/rational.hpp \
- /usr/include/boost/integer/common_factor_rt.hpp \
- /usr/include/boost/multiprecision/traits/is_byte_container.hpp \
- /usr/include/boost/integer/static_min_max.hpp \
- /usr/include/boost/type_traits/make_signed.hpp \
- /usr/include/boost/multiprecision/cpp_int/checked.hpp \
- /usr/include/boost/multiprecision/cpp_int/value_pack.hpp \
- /usr/include/boost/multiprecision/cpp_int/comparison.hpp \
- /usr/include/boost/multiprecision/cpp_int/add.hpp \
- /usr/include/boost/multiprecision/cpp_int/multiply.hpp \
- /usr/include/boost/multiprecision/cpp_int/divide.hpp \
- /usr/include/boost/multiprecision/cpp_int/bitwise.hpp \
- /usr/include/boost/multiprecision/cpp_int/misc.hpp \
- /usr/include/boost/multiprecision/detail/bitscan.hpp \
- /usr/include/boost/multiprecision/cpp_int/limits.hpp \
- /usr/include/boost/multiprecision/cpp_int/literals.hpp \
- /usr/include/boost/multiprecision/cpp_int/serialize.hpp \
- /usr/include/boost/multiprecision/cpp_int/import_export.hpp \
  omnicore/sp.h omnicore/dbbase.h leveldb/include/leveldb/db.h \
  leveldb/include/leveldb/iterator.h leveldb/include/leveldb/slice.h \
  leveldb/include/leveldb/status.h leveldb/include/leveldb/options.h \
@@ -3784,20 +3785,6 @@ univalue/include/univalue.h:
 
 /usr/include/c++/7/bits/unordered_map.h:
 
-omnicore/tx.h:
-
-omnicore/parsing.h:
-
-util/strencodings.h:
-
-/usr/include/openssl/sha.h:
-
-/usr/include/openssl/e_os2.h:
-
-/usr/include/x86_64-linux-gnu/openssl/opensslconf.h:
-
-omnicore/mdex.h:
-
 /usr/include/boost/lexical_cast.hpp:
 
 /usr/include/boost/range/iterator_range_core.hpp:
@@ -4162,7 +4149,9 @@ omnicore/mdex.h:
 
 /usr/include/boost/detail/basic_pointerbuf.hpp:
 
-/usr/include/boost/multiprecision/cpp_dec_float.hpp:
+/usr/include/boost/multiprecision/cpp_int.hpp:
+
+/usr/include/c++/7/iomanip:
 
 /usr/include/boost/multiprecision/number.hpp:
 
@@ -4173,8 +4162,6 @@ omnicore/mdex.h:
 /usr/include/boost/multiprecision/detail/default_ops.hpp:
 
 /usr/include/boost/math/policies/error_handling.hpp:
-
-/usr/include/c++/7/iomanip:
 
 /usr/include/boost/math/tools/precision.hpp:
 
@@ -4213,6 +4200,68 @@ omnicore/mdex.h:
 /usr/include/boost/multiprecision/traits/explicit_conversion.hpp:
 
 /usr/include/boost/multiprecision/detail/ublas_interop.hpp:
+
+/usr/include/boost/multiprecision/detail/integer_ops.hpp:
+
+/usr/include/boost/multiprecision/cpp_int/cpp_int_config.hpp:
+
+/usr/include/boost/multiprecision/rational_adaptor.hpp:
+
+/usr/include/boost/rational.hpp:
+
+/usr/include/boost/integer/common_factor_rt.hpp:
+
+/usr/include/boost/multiprecision/traits/is_byte_container.hpp:
+
+/usr/include/boost/integer/static_min_max.hpp:
+
+/usr/include/boost/type_traits/make_signed.hpp:
+
+/usr/include/boost/multiprecision/cpp_int/checked.hpp:
+
+/usr/include/boost/multiprecision/cpp_int/value_pack.hpp:
+
+/usr/include/boost/multiprecision/cpp_int/comparison.hpp:
+
+/usr/include/boost/multiprecision/cpp_int/add.hpp:
+
+/usr/include/boost/multiprecision/cpp_int/multiply.hpp:
+
+/usr/include/boost/multiprecision/cpp_int/divide.hpp:
+
+/usr/include/boost/multiprecision/cpp_int/bitwise.hpp:
+
+/usr/include/boost/multiprecision/cpp_int/misc.hpp:
+
+/usr/include/boost/multiprecision/detail/bitscan.hpp:
+
+/usr/include/boost/multiprecision/cpp_int/limits.hpp:
+
+/usr/include/boost/multiprecision/cpp_int/literals.hpp:
+
+/usr/include/boost/multiprecision/cpp_int/serialize.hpp:
+
+/usr/include/boost/multiprecision/cpp_int/import_export.hpp:
+
+omnicore/tradelayer_matrices.h:
+
+/usr/include/boost/any.hpp:
+
+omnicore/tx.h:
+
+omnicore/parsing.h:
+
+util/strencodings.h:
+
+/usr/include/openssl/sha.h:
+
+/usr/include/openssl/e_os2.h:
+
+/usr/include/x86_64-linux-gnu/openssl/opensslconf.h:
+
+omnicore/mdex.h:
+
+/usr/include/boost/multiprecision/cpp_dec_float.hpp:
 
 /usr/include/boost/multiprecision/detail/big_lanczos.hpp:
 
@@ -4303,50 +4352,6 @@ omnicore/mdex.h:
 /usr/include/boost/math/special_functions/erf.hpp:
 
 /usr/include/boost/math/special_functions/detail/erf_inv.hpp:
-
-/usr/include/boost/multiprecision/cpp_int.hpp:
-
-/usr/include/boost/multiprecision/detail/integer_ops.hpp:
-
-/usr/include/boost/multiprecision/cpp_int/cpp_int_config.hpp:
-
-/usr/include/boost/multiprecision/rational_adaptor.hpp:
-
-/usr/include/boost/rational.hpp:
-
-/usr/include/boost/integer/common_factor_rt.hpp:
-
-/usr/include/boost/multiprecision/traits/is_byte_container.hpp:
-
-/usr/include/boost/integer/static_min_max.hpp:
-
-/usr/include/boost/type_traits/make_signed.hpp:
-
-/usr/include/boost/multiprecision/cpp_int/checked.hpp:
-
-/usr/include/boost/multiprecision/cpp_int/value_pack.hpp:
-
-/usr/include/boost/multiprecision/cpp_int/comparison.hpp:
-
-/usr/include/boost/multiprecision/cpp_int/add.hpp:
-
-/usr/include/boost/multiprecision/cpp_int/multiply.hpp:
-
-/usr/include/boost/multiprecision/cpp_int/divide.hpp:
-
-/usr/include/boost/multiprecision/cpp_int/bitwise.hpp:
-
-/usr/include/boost/multiprecision/cpp_int/misc.hpp:
-
-/usr/include/boost/multiprecision/detail/bitscan.hpp:
-
-/usr/include/boost/multiprecision/cpp_int/limits.hpp:
-
-/usr/include/boost/multiprecision/cpp_int/literals.hpp:
-
-/usr/include/boost/multiprecision/cpp_int/serialize.hpp:
-
-/usr/include/boost/multiprecision/cpp_int/import_export.hpp:
 
 omnicore/sp.h:
 
