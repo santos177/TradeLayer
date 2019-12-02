@@ -950,6 +950,9 @@ omnicore/libbitcoin_server_a-rpcrawtx.o: omnicore/rpcrawtx.cpp \
  /usr/include/boost/enable_shared_from_this.hpp \
  /usr/include/boost/smart_ptr/enable_shared_from_this.hpp \
  /usr/include/boost/smart_ptr/weak_ptr.hpp omnicore/tally.h \
+ omnicore/dbtradelist.h omnicore/dbbase.h leveldb/include/leveldb/db.h \
+ leveldb/include/leveldb/iterator.h leveldb/include/leveldb/slice.h \
+ leveldb/include/leveldb/status.h leveldb/include/leveldb/options.h \
  univalue/include/univalue.h /usr/include/c++/7/unordered_map \
  /usr/include/c++/7/bits/unordered_map.h \
  /usr/include/boost/lexical_cast.hpp \
@@ -3425,6 +3428,20 @@ util/time.h:
 /usr/include/boost/smart_ptr/weak_ptr.hpp:
 
 omnicore/tally.h:
+
+omnicore/dbtradelist.h:
+
+omnicore/dbbase.h:
+
+leveldb/include/leveldb/db.h:
+
+leveldb/include/leveldb/iterator.h:
+
+leveldb/include/leveldb/slice.h:
+
+leveldb/include/leveldb/status.h:
+
+leveldb/include/leveldb/options.h:
 
 univalue/include/univalue.h:
 

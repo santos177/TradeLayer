@@ -9,6 +9,7 @@ class Coin;
 
 #include <omnicore/log.h>
 #include <omnicore/tally.h>
+#include <omnicore/dbtradelist.h>
 
 #include <script/standard.h>
 #include <sync.h>
@@ -167,15 +168,22 @@ enum TransactionType {
 #define OMNI_PROPERTY_ALL_ISSUANCE    6
 #define TOTAL_AMOUNT_VESTING_TOKENS   1500000*COIN
 
-
-
-
 #define BUY            1
 #define SELL           2
 #define ACTIONINVALID  3
 
 /*24 horus to blocks*/
 const int dayblocks = 576;
+
+// channels definitions
+#define TYPE_COMMIT                     "commit"
+#define TYPE_WITHDRAWAL                 "withdrawal"
+#define TYPE_INSTANT_TRADE              "instant_trade"
+#define TYPE_TRANSFER                   "transfer"
+#define TYPE_CONTRACT_INSTANT_TRADE     "contract_instat_trade"
+#define TYPE_CREATE_CHANNEL             "create channel"
+#define TYPE_NEW_ID_REGISTER            "new id register"
+
 
 // limits for margin dynamic
 const rational_t factor = rational_t(80,100);  // critical limit
@@ -270,16 +278,6 @@ void CheckWalletUpdate(bool forceUpdate = false);
 /** Used to notify that the number of tokens for a property has changed. */
 void NotifyTotalTokensChanged(uint32_t propertyId, int block);
 
-struct channel
-{
-  std::string multisig;
-  std::string first;
-  std::string second;
-  int expiry_height;
-  int last_exchange_block;
-
-  channel() : multisig(""), first(""), second(""), expiry_height(0), last_exchange_block(0) {}
-};
 
 namespace mastercore
 {
@@ -345,6 +343,11 @@ bool makeWithdrawals(int Block); // make the withdrawals for multisig channels
 
 bool closeChannels(int Block);
 
+// x_Trade function for contracts on instant trade
+bool Instant_x_Trade(const uint256& txid, uint8_t tradingAction, std::string& channelAddr, std::string& firstAddr, std::string& secondAddr, uint32_t property, int64_t amount_forsale, uint64_t price, int block, int tx_idx);
+
+//Fees for contract instant trades
+bool ContInst_Fees(const std::string& firstAddr,const std::string& secondAddr,const std::string& channelAddr, int64_t amountToReserve,uint16_t type, uint32_t colateral);
 
 }
 

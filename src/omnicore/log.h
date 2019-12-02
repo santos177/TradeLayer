@@ -65,6 +65,15 @@ extern bool msc_debug_set_oracle;
 extern bool msc_debug_handler_tx;
 extern bool msc_debug_margin_main;
 extern bool msc_debug_pos_margin;
+extern bool msc_create_channel;
+extern bool msc_debug_commit_channel;
+extern bool msc_debug_withdrawal_from_channel;
+extern bool msc_debug_instant_trade;
+extern bool msc_debug_contract_instant_trade;
+extern bool msc_debug_contract_inst_fee;
+extern bool msc_debug_instant_x_trade;
+extern bool msc_debug_new_id_registration;
+
 /* When we switch to C++11, this can be switched to variadic templates instead
  * of this macro-based construction (see tinyformat.h).
  */

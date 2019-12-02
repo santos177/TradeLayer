@@ -748,10 +748,13 @@ omnicore/test/test_test_omnicore-parsing_c_tests.o: \
  /usr/include/boost/enable_shared_from_this.hpp \
  /usr/include/boost/smart_ptr/enable_shared_from_this.hpp \
  /usr/include/boost/smart_ptr/weak_ptr.hpp omnicore/tally.h \
- script/standard.h script/interpreter.h script/script_error.h \
- primitives/transaction.h amount.h uint256.h \
- /usr/include/boost/variant.hpp /usr/include/boost/variant/variant.hpp \
- /usr/include/boost/type_index.hpp \
+ omnicore/dbtradelist.h omnicore/dbbase.h leveldb/include/leveldb/db.h \
+ leveldb/include/leveldb/iterator.h leveldb/include/leveldb/slice.h \
+ leveldb/include/leveldb/status.h leveldb/include/leveldb/options.h \
+ uint256.h univalue/include/univalue.h script/standard.h \
+ script/interpreter.h script/script_error.h primitives/transaction.h \
+ amount.h /usr/include/boost/variant.hpp \
+ /usr/include/boost/variant/variant.hpp /usr/include/boost/type_index.hpp \
  /usr/include/boost/type_index/stl_type_index.hpp \
  /usr/include/boost/type_index/type_index_facade.hpp \
  /usr/include/boost/variant/detail/config.hpp \
@@ -951,7 +954,7 @@ omnicore/test/test_test_omnicore-parsing_c_tests.o: \
  /usr/include/boost/mpl/equal.hpp /usr/include/boost/variant/get.hpp \
  /usr/include/boost/variant/detail/element_index.hpp \
  /usr/include/boost/variant/visitor_ptr.hpp \
- /usr/include/boost/variant/bad_visit.hpp univalue/include/univalue.h \
+ /usr/include/boost/variant/bad_visit.hpp \
  /usr/include/c++/7/unordered_map /usr/include/c++/7/bits/unordered_map.h \
  /usr/include/boost/lexical_cast.hpp \
  /usr/include/boost/range/iterator_range_core.hpp \
@@ -1334,10 +1337,8 @@ omnicore/test/test_test_omnicore-parsing_c_tests.o: \
  /usr/include/boost/detail/atomic_undef_macros.hpp \
  /usr/include/boost/detail/atomic_redef_macros.hpp txdb.h dbwrapper.h \
  clientversion.h streams.h support/allocators/zeroafterfree.h \
- leveldb/include/leveldb/db.h leveldb/include/leveldb/iterator.h \
- leveldb/include/leveldb/slice.h leveldb/include/leveldb/status.h \
- leveldb/include/leveldb/options.h leveldb/include/leveldb/write_batch.h \
- chain.h arith_uint256.h txmempool.h policy/feerate.h \
+ leveldb/include/leveldb/write_batch.h chain.h arith_uint256.h \
+ txmempool.h policy/feerate.h \
  /usr/include/boost/multi_index_container.hpp \
  /usr/include/boost/detail/allocator_utilities.hpp \
  /usr/include/boost/multi_index_container_fwd.hpp \
@@ -3294,6 +3295,24 @@ util/time.h:
 
 omnicore/tally.h:
 
+omnicore/dbtradelist.h:
+
+omnicore/dbbase.h:
+
+leveldb/include/leveldb/db.h:
+
+leveldb/include/leveldb/iterator.h:
+
+leveldb/include/leveldb/slice.h:
+
+leveldb/include/leveldb/status.h:
+
+leveldb/include/leveldb/options.h:
+
+uint256.h:
+
+univalue/include/univalue.h:
+
 script/standard.h:
 
 script/interpreter.h:
@@ -3303,8 +3322,6 @@ script/script_error.h:
 primitives/transaction.h:
 
 amount.h:
-
-uint256.h:
 
 /usr/include/boost/variant.hpp:
 
@@ -3733,8 +3750,6 @@ uint256.h:
 /usr/include/boost/variant/visitor_ptr.hpp:
 
 /usr/include/boost/variant/bad_visit.hpp:
-
-univalue/include/univalue.h:
 
 /usr/include/c++/7/unordered_map:
 
@@ -4609,16 +4624,6 @@ clientversion.h:
 streams.h:
 
 support/allocators/zeroafterfree.h:
-
-leveldb/include/leveldb/db.h:
-
-leveldb/include/leveldb/iterator.h:
-
-leveldb/include/leveldb/slice.h:
-
-leveldb/include/leveldb/status.h:
-
-leveldb/include/leveldb/options.h:
 
 leveldb/include/leveldb/write_batch.h:
 

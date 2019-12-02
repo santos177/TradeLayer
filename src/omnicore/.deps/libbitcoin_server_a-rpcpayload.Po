@@ -745,10 +745,13 @@ omnicore/libbitcoin_server_a-rpcpayload.o: omnicore/rpcpayload.cpp \
  /usr/include/boost/enable_shared_from_this.hpp \
  /usr/include/boost/smart_ptr/enable_shared_from_this.hpp \
  /usr/include/boost/smart_ptr/weak_ptr.hpp omnicore/tally.h \
- script/standard.h script/interpreter.h script/script_error.h \
+ omnicore/dbtradelist.h omnicore/dbbase.h leveldb/include/leveldb/db.h \
+ leveldb/include/leveldb/iterator.h leveldb/include/leveldb/slice.h \
+ leveldb/include/leveldb/status.h leveldb/include/leveldb/options.h \
+ uint256.h script/standard.h script/interpreter.h script/script_error.h \
  primitives/transaction.h amount.h script/script.h crypto/common.h \
  compat/endian.h compat/byteswap.h /usr/include/byteswap.h prevector.h \
- /usr/include/c++/7/stdlib.h serialize.h span.h uint256.h \
+ /usr/include/c++/7/stdlib.h serialize.h span.h \
  /usr/include/boost/variant.hpp /usr/include/boost/variant/variant.hpp \
  /usr/include/boost/type_index.hpp \
  /usr/include/boost/type_index/stl_type_index.hpp \
@@ -1172,9 +1175,6 @@ omnicore/libbitcoin_server_a-rpcpayload.o: omnicore/rpcpayload.cpp \
  /usr/include/boost/multiprecision/cpp_int/serialize.hpp \
  /usr/include/boost/multiprecision/cpp_int/import_export.hpp \
  omnicore/tradelayer_matrices.h /usr/include/boost/any.hpp omnicore/sp.h \
- omnicore/dbbase.h leveldb/include/leveldb/db.h \
- leveldb/include/leveldb/iterator.h leveldb/include/leveldb/slice.h \
- leveldb/include/leveldb/status.h leveldb/include/leveldb/options.h \
  omnicore/dbspinfo.h /usr/include/openssl/sha.h \
  /usr/include/openssl/e_os2.h \
  /usr/include/x86_64-linux-gnu/openssl/opensslconf.h omnicore/tx.h \
@@ -2977,6 +2977,22 @@ util/time.h:
 
 omnicore/tally.h:
 
+omnicore/dbtradelist.h:
+
+omnicore/dbbase.h:
+
+leveldb/include/leveldb/db.h:
+
+leveldb/include/leveldb/iterator.h:
+
+leveldb/include/leveldb/slice.h:
+
+leveldb/include/leveldb/status.h:
+
+leveldb/include/leveldb/options.h:
+
+uint256.h:
+
 script/standard.h:
 
 script/interpreter.h:
@@ -3004,8 +3020,6 @@ prevector.h:
 serialize.h:
 
 span.h:
-
-uint256.h:
 
 /usr/include/boost/variant.hpp:
 
@@ -3902,18 +3916,6 @@ omnicore/tradelayer_matrices.h:
 /usr/include/boost/any.hpp:
 
 omnicore/sp.h:
-
-omnicore/dbbase.h:
-
-leveldb/include/leveldb/db.h:
-
-leveldb/include/leveldb/iterator.h:
-
-leveldb/include/leveldb/slice.h:
-
-leveldb/include/leveldb/status.h:
-
-leveldb/include/leveldb/options.h:
 
 omnicore/dbspinfo.h:
 

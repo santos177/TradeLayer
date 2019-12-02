@@ -254,27 +254,27 @@ bool CMPTransaction::interpret_Transaction()
         case MSC_TYPE_CLOSE_ORACLE:
             return interpret_CloseOracle();
 
-        // case MSC_TYPE_COMMIT_CHANNEL:
-        //     return interpret_CommitChannel();
-        //
-        // case MSC_TYPE_WITHDRAWAL_FROM_CHANNEL:
-        //     return interpret_Withdrawal_FromChannel();
-        //
-        // case MSC_TYPE_INSTANT_TRADE:
-        //     return interpret_Instant_Trade();
-        //
+        case MSC_TYPE_COMMIT_CHANNEL:
+            return interpret_CommitChannel();
+
+        case MSC_TYPE_WITHDRAWAL_FROM_CHANNEL:
+            return interpret_Withdrawal_FromChannel();
+
+        case MSC_TYPE_INSTANT_TRADE:
+            return interpret_Instant_Trade();
+
         // case MSC_TYPE_TRANSFER:
         //     return interpret_Transfer();
         //
-        // case MSC_TYPE_CREATE_CHANNEL:
-        //     return interpret_Create_Channel();
-        //
-        // case MSC_TYPE_CONTRACT_INSTANT:
-        //     return interpret_Contract_Instant();
-        //
-        // case MSC_TYPE_NEW_ID_REGISTRATION:
-        //     return interpret_New_Id_Registration();
-        //
+        case MSC_TYPE_CREATE_CHANNEL:
+            return interpret_Create_Channel();
+
+        case MSC_TYPE_CONTRACT_INSTANT:
+            return interpret_Contract_Instant();
+
+        case MSC_TYPE_NEW_ID_REGISTRATION:
+            return interpret_New_Id_Registration();
+
         // case MSC_TYPE_UPDATE_ID_REGISTRATION:
         //     return interpret_Update_Id_Registration();
 
@@ -1110,8 +1110,7 @@ bool CMPTransaction::interpret_ContractDexTrade()
       p += spstr.back().size() + 1;
   }
 
-  int i = 0;
-  memcpy(name, spstr[i].c_str(), std::min(spstr[i].length(), sizeof(name)-1)); i++;
+  memcpy(name, spstr[0].c_str(), std::min(spstr[0].length(), sizeof(name)-1));
 
 
   if ((!rpcOnly && msc_debug_packets) || msc_debug_packets_readonly)
@@ -1272,6 +1271,183 @@ bool CMPTransaction::interpret_Change_OracleRef()
     return true;
 }
 
+/** Tx 113 */
+bool CMPTransaction::interpret_Create_Channel()
+{
+  // if (pkt_size < 17) {
+  //     return false;
+  // }
+
+    memcpy(&block_forexpiry, &pkt[4], 1);
+    const char* p = 1 + (char*) &pkt[4]; // next char
+    std::vector<std::string> spstr;
+
+    spstr.push_back(std::string(p));
+    p += spstr.back().size() + 1;
+
+    memcpy(channel_address, spstr[0].c_str(), std::min(spstr[0].length(), sizeof(channel_address)-1));
+
+
+  if ((!rpcOnly && msc_debug_packets) || msc_debug_packets_readonly)
+  {
+      PrintToLog("\t version: %d\n", version);
+      PrintToLog("\t messageType: %d\n",type);
+      PrintToLog("\t channelAddress : %d\n",channel_address);
+      PrintToLog("\t first address : %d\n", sender);
+      PrintToLog("\t second address : %d\n", receiver);
+      PrintToLog("\t blocks : %d\n", block_forexpiry);
+  }
+
+  return true;
+}
+
+/** Tx 108 */
+bool CMPTransaction::interpret_CommitChannel()
+{
+    // if (pkt_size < 17) {
+    //     return false;
+    // }
+    memcpy(&propertyId, &pkt[4], 4);
+    SwapByteOrder32(propertyId);
+    memcpy(&amount_commited, &pkt[8], 8);
+    SwapByteOrder64(amount_commited);
+
+    if ((!rpcOnly && msc_debug_packets) || msc_debug_packets_readonly)
+    {
+        PrintToLog("\t channelAddress: %s\n", receiver);
+        PrintToLog("\t version: %d\n", version);
+        PrintToLog("\t propertyId: %d\n", propertyId);
+        PrintToLog("\t amount commited: %d\n", amount_commited);
+    }
+
+    return true;
+}
+
+/** Tx 109 */
+bool CMPTransaction::interpret_Withdrawal_FromChannel()
+{
+    // if (pkt_size < 17) {
+    //     return false;
+    // }
+    memcpy(&propertyId, &pkt[4], 4);
+    SwapByteOrder32(propertyId);
+    memcpy(&amount_commited, &pkt[8], 8);
+    SwapByteOrder64(amount_to_withdraw);
+
+    if ((!rpcOnly && msc_debug_packets) || msc_debug_packets_readonly)
+    {
+        PrintToLog("\t channelAddress: %s\n", receiver);
+        PrintToLog("\t version: %d\n", version);
+        PrintToLog("\t propertyId: %d\n", propertyId);
+        PrintToLog("\t amount to withdrawal: %d\n", amount_to_withdraw);
+    }
+
+    return true;
+}
+
+/** Tx 110 */
+bool CMPTransaction::interpret_Instant_Trade()
+{
+    // if (pkt_size < 17) {
+    //     return false;
+    // }
+    memcpy(&property, &pkt[4], 4);
+    SwapByteOrder32(propertyId);
+    memcpy(&amount_forsale, &pkt[8], 8);
+    SwapByteOrder64(amount_to_withdraw);
+    memcpy(&block_forexpiry, &pkt[16], 1);
+    memcpy(&desired_property, &pkt[17], 4);
+    SwapByteOrder32(desired_property);
+    memcpy(&desired_value, &pkt[21], 8);
+
+
+    if ((!rpcOnly && msc_debug_packets) || msc_debug_packets_readonly)
+    {
+        PrintToLog("\t version: %d\n", version);
+        PrintToLog("\t messageType: %d\n",type);
+        PrintToLog("\t property: %d\n", property);
+        PrintToLog("\t amount : %d\n", amount_forsale);
+        PrintToLog("\t blockheight_expiry : %d\n", block_forexpiry);
+        PrintToLog("\t property desired : %d\n", desired_property);
+        PrintToLog("\t amount desired : %d\n", desired_value);
+    }
+
+    return true;
+}
+
+/** Tx 114 */
+bool CMPTransaction::interpret_Contract_Instant()
+{
+  // if (pkt_size < 17) {
+  //     return false;
+  // }
+
+  memcpy(&property, &pkt[4], 4);
+  SwapByteOrder32(propertyId);
+  memcpy(&amount_forsale, &pkt[8], 8);
+  SwapByteOrder64(amount_to_withdraw);
+  memcpy(&block_forexpiry, &pkt[16], 1);
+  memcpy(&price, &pkt[17], 8);
+  SwapByteOrder64(price);
+  memcpy(&itrading_action, &pkt[25], 8);
+  SwapByteOrder64(itrading_action);
+  memcpy(&ileverage, &pkt[33], 8);
+  SwapByteOrder64(ileverage);
+
+  if ((!rpcOnly && msc_debug_packets) || msc_debug_packets_readonly)
+  {
+      PrintToLog("\t version: %d\n", version);
+      PrintToLog("\t messageType: %d\n",type);
+      PrintToLog("\t property: %d\n", property);
+      PrintToLog("\t amount : %d\n", amount_forsale);
+      PrintToLog("\t blockfor_expiry : %d\n", block_forexpiry);
+      PrintToLog("\t price : %d\n", price);
+      PrintToLog("\t trading action : %d\n", itrading_action);
+      PrintToLog("\t leverage : %d\n", ileverage);
+  }
+
+  return true;
+}
+
+/** Tx  115*/
+bool CMPTransaction::interpret_New_Id_Registration()
+{
+  // if (pkt_size < 17) {
+  //     return false;
+  // }
+
+  memcpy(&tokens, &pkt[4], 1);
+  memcpy(&ltc, &pkt[5], 1);
+  memcpy(&natives, &pkt[6], 1);
+  memcpy(&oracles, &pkt[7], 1);
+
+  const char* p = 1 + (char*) &pkt[7]; // next char
+  std::vector<std::string> spstr;
+
+  for (int i = 0; i < 2; i++) {
+      spstr.push_back(std::string(p));
+      p += spstr.back().size() + 1;
+  }
+
+  int i = 0;
+
+  memcpy(website, spstr[i].c_str(), std::min(spstr[i].length(), sizeof(website)-1));i++;
+  memcpy(company_name, spstr[i].c_str(), std::min(spstr[i].length(), sizeof(company_name)-1));i++;
+
+  if ((!rpcOnly && msc_debug_packets) || msc_debug_packets_readonly)
+  {
+      PrintToLog("\t address: %s\n", sender);
+      PrintToLog("\t website: %s\n", website);
+      PrintToLog("\t company name: %s\n", company_name);
+      PrintToLog("\t tokens: %d\n", tokens);
+      PrintToLog("\t ltc: %d\n", ltc);
+      PrintToLog("\t natives: %d\n", natives);
+      PrintToLog("\t oracles: %d\n", oracles);
+  }
+
+  return true;
+}
+
 
 // ---------------------- CORE LOGIC -------------------------
 
@@ -1404,9 +1580,80 @@ int CMPTransaction::interpretPacket()
 
         case MSC_TYPE_CHANGE_ORACLE_REF:
                 return logicMath_Change_OracleRef();
+
+/**********************************************************/
+        case MSC_TYPE_CREATE_CHANNEL:
+                return logicMath_Create_Channel();
+
+        case MSC_TYPE_COMMIT_CHANNEL:
+                return logicMath_CommitChannel();
+
+        case MSC_TYPE_WITHDRAWAL_FROM_CHANNEL:
+                return logicMath_Withdrawal_FromChannel();
+
+        case MSC_TYPE_INSTANT_TRADE:
+                return logicMath_Instant_Trade();
+
+        case MSC_TYPE_NEW_ID_REGISTRATION:
+                return logicMath_New_Id_Registration();
     }
 
     return (PKT_ERROR -100);
+}
+
+/** Tx 108 */
+int CMPTransaction::logicMath_CommitChannel()
+{
+    uint256 blockHash;
+    {
+        LOCK(cs_main);
+
+        CBlockIndex* pindex = chainActive[block];
+        if (pindex == NULL) {
+            PrintToLog("%s(): ERROR: block %d not in the active chain\n", __func__, block);
+            return (PKT_ERROR_TOKENS -20);
+        }
+        blockHash = pindex->GetBlockHash();
+    }
+
+    if (!IsTransactionTypeAllowed(block, property, type, version)) {
+        PrintToLog("%s(): rejected: type %d or version %d not permitted for property %d at block %d\n",
+                __func__,
+                type,
+                version,
+                property,
+                block);
+        return (PKT_ERROR_TOKENS -22);
+    }
+
+    if (!pDbTradeList->checkChannelAddress(receiver)) {
+        PrintToLog("%s(): rejected: address %s doesn't belong to multisig channel\n", __func__, receiver);
+        return (PKT_ERROR_CHANNELS -10);
+    }
+
+    if (!IsPropertyIdValid(propertyId)) {
+        PrintToLog("%s(): rejected: property %d does not exist\n", __func__, property);
+        return (PKT_ERROR_TOKENS -24);
+    }
+
+
+    // ------------------------------------------
+
+    // logic for the commit Here
+
+    if(msc_debug_commit_channel) PrintToLog("%s():sender: %s, channelAddress: %s\n",__func__, sender, receiver);
+
+    //putting money into channel reserve
+    assert(update_tally_map(sender, propertyId, -amount_commited, BALANCE));
+    assert(update_tally_map(receiver, propertyId, amount_commited, CHANNEL_RESERVE));
+
+    pDbTradeList->recordNewCommit(txid, receiver, sender, propertyId, amount_commited, block, tx_idx);
+
+    int64_t amountCheck = GetTokenBalance(receiver, propertyId,CHANNEL_RESERVE);
+
+    if(msc_debug_commit_channel) PrintToLog("amount inside channel multisig: %s\n",amountCheck);
+
+    return 0;
 }
 
 /** Passive effect of crowdsale participation. */
@@ -3475,8 +3722,419 @@ int CMPTransaction::logicMath_Change_OracleRef()
     return 0;
 }
 
+/** Tx 113*/
+int CMPTransaction::logicMath_Create_Channel()
+{
+    uint256 blockHash;
+    {
+        LOCK(cs_main);
+
+        CBlockIndex* pindex = chainActive[block];
+        if (pindex == NULL) {
+            PrintToLog("%s(): ERROR: block %d not in the active chain\n", __func__, block);
+            return (PKT_ERROR_TOKENS -20);
+        }
+        blockHash = pindex->GetBlockHash();
+    }
+
+    if (!IsTransactionTypeAllowed(block, property, type, version)) {
+        PrintToLog("%s(): rejected: type %d or version %d not permitted for property %d at block %d\n",
+                __func__,
+                type,
+                version,
+                property,
+                block);
+        return (PKT_ERROR_TOKENS -22);
+    }
 
 
+    // ------------------------------------------
+
+    int expiry_height = block + block_forexpiry;
+
+    channel chn;
+
+    chn.multisig = channel_address;
+    chn.first = sender;
+    chn.second = receiver;
+    chn.expiry_height = expiry_height;
+
+    if(msc_create_channel) PrintToLog("checking channel elements : channel address: %s, first address: %d, second address: %d, expiry_height: %d \n", chn.multisig, chn.first, chn.second, chn.expiry_height);
+
+    channels_Map[channel_address] = chn;
+
+    pDbTradeList->recordNewChannel(channel_address,sender,receiver, expiry_height, tx_idx);
+
+    return 0;
+}
+
+/** Tx 109 */
+int CMPTransaction::logicMath_Withdrawal_FromChannel()
+{
+    uint256 blockHash;
+    {
+        LOCK(cs_main);
+
+        CBlockIndex* pindex = chainActive[block];
+        if (pindex == NULL) {
+            PrintToLog("%s(): ERROR: block %d not in the active chain\n", __func__, block);
+            return (PKT_ERROR_TOKENS -20);
+        }
+        blockHash = pindex->GetBlockHash();
+    }
+
+    if (!IsTransactionTypeAllowed(block, property, type, version)) {
+        PrintToLog("%s(): rejected: type %d or version %d not permitted for property %d at block %d\n",
+                __func__,
+                type,
+                version,
+                property,
+                block);
+        return (PKT_ERROR_TOKENS -22);
+    }
+
+    if (!IsPropertyIdValid(propertyId)) {
+        PrintToLog("%s(): rejected: property %d does not exist\n", __func__, property);
+        return (PKT_ERROR_TOKENS -24);
+    }
+
+    if (!pDbTradeList->checkChannelAddress(receiver)) {
+        PrintToLog("%s(): rejected: address %s doesn't belong to multisig channel\n", __func__, receiver);
+        return (PKT_ERROR_CHANNELS -10);
+    }
+
+
+    // ------------------------------------------
+
+    //checking balance of channelAddress
+    uint64_t totalAmount = static_cast<uint64_t>(GetTokenBalance(receiver, propertyId, CHANNEL_RESERVE));
+
+    if (msc_debug_withdrawal_from_channel) PrintToLog("%s(): amount_to_withdraw : %d, totalAmount in channel: %d\n", __func__, amount_to_withdraw, totalAmount);
+
+    if (amount_to_withdraw > totalAmount)
+    {
+        PrintToLog("%s(): amount to withdrawal is bigger than totalAmount on channel\n", __func__);
+        return (PKT_ERROR_TOKENS -25);
+    }
+
+    uint64_t amount_remaining = pDbTradeList->getRemaining(receiver, sender, propertyId);
+
+    if (msc_debug_withdrawal_from_channel) PrintToLog("all the amount remaining for the receiver address : %s\n",amount_remaining);
+
+    if (amount_to_withdraw > amount_remaining)
+    {
+        PrintToLog("%s(): amount to withdrawal is bigger than amount remaining in channel for the address %s\n", __func__, sender);
+        return (PKT_ERROR_TOKENS -26);
+    }
+
+    withdrawalAccepted wthd;
+
+    wthd.address = sender;
+    wthd.deadline_block = block + 7;
+    wthd.propertyId = propertyId;
+    wthd.amount = amount_to_withdraw;
+
+    if (msc_debug_withdrawal_from_channel) PrintToLog("checking wthd element : address: %s, deadline: %d, propertyId: %d, amount: %d \n", wthd.address, wthd.deadline_block, wthd.propertyId, wthd.amount);
+
+    withdrawal_Map[receiver].push_back(wthd);
+
+    pDbTradeList->recordNewWithdrawal(txid, receiver, sender, propertyId, amount_to_withdraw, block, tx_idx);
+
+    return 0;
+}
+
+/** Tx 110 */
+int CMPTransaction::logicMath_Instant_Trade()
+{
+  int rc = 0;
+
+  if (!IsTransactionTypeAllowed(block, property, type, version)) {
+      PrintToLog("%s(): rejected: type %d or version %d not permitted for property %d at block %d\n",
+              __func__,
+              type,
+              version,
+              property,
+              block);
+      return (PKT_ERROR_METADEX -22);
+  }
+
+  if (property == desired_property) {
+      PrintToLog("%s(): rejected: property for sale %d and desired property %d must not be equal\n",
+              __func__,
+              property,
+              desired_property);
+      return (PKT_ERROR_CHANNELS -11);
+  }
+
+  if (isTestEcosystemProperty(property) != isTestEcosystemProperty(desired_property)) {
+      PrintToLog("%s(): rejected: property for sale %d and desired property %d not in same ecosystem\n",
+              __func__,
+              property,
+              desired_property);
+      return (PKT_ERROR_CHANNELS -12);
+  }
+
+  if (!IsPropertyIdValid(property)) {
+      PrintToLog("%s(): rejected: property for sale %d does not exist\n", __func__, property);
+      return (PKT_ERROR_CHANNELS -13);
+  }
+
+  if (!IsPropertyIdValid(desired_property)) {
+      PrintToLog("%s(): rejected: desired property %d does not exist\n", __func__, desired_property);
+      return (PKT_ERROR_CHANNELS -14);
+  }
+
+  channel chnAddrs = pDbTradeList->getChannelAddresses(sender);
+
+  if (sender.empty() || chnAddrs.first.empty() || chnAddrs.second.empty()) {
+      PrintToLog("%s(): rejected: some address doesn't belong to multisig channel \n", __func__);
+      return (PKT_ERROR_CHANNELS -15);
+  }
+
+  if (chnAddrs.expiry_height < block) {
+      PrintToLog("%s(): rejected: out of channel deadline: actual block: %d, deadline: %d\n", __func__, block, chnAddrs.expiry_height);
+      return (PKT_ERROR_CHANNELS -16);
+  }
+
+  int64_t nBalance = GetTokenBalance(sender, property, CHANNEL_RESERVE);
+  if (property > 0 && nBalance < (int64_t) amount_forsale) {
+      PrintToLog("%s(): rejected: channel address %s has insufficient balance of property %d [%s < %s]\n",
+              __func__,
+              sender,
+              property,
+              FormatMP(property, nBalance),
+              FormatMP(property, amount_forsale));
+      return (PKT_ERROR_CHANNELS -17);
+  }
+
+  nBalance = GetTokenBalance(sender, desired_property, CHANNEL_RESERVE);
+  if (desired_property > 0 && nBalance < (int64_t) desired_value) {
+      PrintToLog("%s(): rejected: channel address %s has insufficient balance of property %d [%s < %s]\n",
+              __func__,
+              sender,
+              desired_property,
+              FormatMP(desired_property, nBalance),
+              FormatMP(desired_property, desired_value));
+      return (PKT_ERROR_CHANNELS -17);
+  }
+
+  // ------------------------------------------
+
+  // if property = 0 ; we are exchanging litecoins
+  // if (false)
+  if (property > 0 && desired_property > 0)
+  {
+      assert(update_tally_map(chnAddrs.second, property, amount_forsale, BALANCE));
+      assert(update_tally_map(sender, property, -amount_forsale, CHANNEL_RESERVE));
+      assert(update_tally_map(chnAddrs.first, desired_property, desired_value, BALANCE));
+      assert(update_tally_map(sender, desired_property, -desired_value, CHANNEL_RESERVE));
+
+      pDbTradeList->recordNewInstantTrade(txid, sender, chnAddrs.first, property, amount_forsale, desired_property, desired_value, block, tx_idx);
+
+      // NOTE: require discount for address and tokens (to consider commits and withdrawals too)
+
+      // updating last exchange block
+      std::map<std::string,channel>::iterator it = channels_Map.find(sender);
+      channel& chn = it->second;
+
+      int difference = block - chn.last_exchange_block;
+
+      if (msc_debug_instant_trade) PrintToLog("expiry height after update: %d\n",chn.expiry_height);
+
+      if (difference < dayblocks)
+      {
+          // updating expiry_height
+          chn.expiry_height += difference;
+
+      }
+
+
+  } else {
+
+      assert(update_tally_map(chnAddrs.first, desired_property, desired_value, BALANCE));
+      assert(update_tally_map(sender, desired_property, -desired_value, CHANNEL_RESERVE));
+      rc = 1;
+      if(msc_debug_instant_trade) PrintToLog("Trading litecoins vs tokens\n");
+
+  }
+
+  return rc;
+}
+
+/** Tx 114 */
+int CMPTransaction::logicMath_Contract_Instant()
+{
+  int rc = 0;
+
+
+  if (!IsTransactionTypeAllowed(block, property, type, version)) {
+      PrintToLog("%s(): rejected: type %d or version %d not permitted for property %d at block %d\n",
+              __func__,
+              type,
+              version,
+              property,
+              block);
+      return (PKT_ERROR_METADEX -22);
+  }
+
+
+  if (!IsPropertyIdValid(property)) {
+      PrintToLog("%s(): rejected: property for sale %d does not exist\n", __func__, property);
+      return (PKT_ERROR_CHANNELS -13);
+  }
+
+  if (!IsPropertyIdValid(desired_property)) {
+      PrintToLog("%s(): rejected: desired property %d does not exist\n", __func__, desired_property);
+      return (PKT_ERROR_CHANNELS -14);
+  }
+
+  channel chnAddrs = pDbTradeList->getChannelAddresses(sender);
+
+  if (sender.empty() || chnAddrs.first.empty() || chnAddrs.second.empty()) {
+      PrintToLog("%s(): rejected: some address doesn't belong to multisig channel\n", __func__);
+      return (PKT_ERROR_CHANNELS -15);
+  }
+
+  if (chnAddrs.expiry_height < block) {
+      PrintToLog("%s(): rejected: out of channel deadline: actual block: %d, deadline: %d\n", __func__, block, chnAddrs.expiry_height);
+      return (PKT_ERROR_CHANNELS -16);
+  }
+
+  CMPSPInfo::Entry sp;
+  if (!pDbSpInfo->getSP(property, sp))
+      return (PKT_ERROR_CHANNELS -13);
+
+
+  if (block > sp.init_block + static_cast<int>(sp.blocks_until_expiration) || block < sp.init_block)
+  {
+      int initblock = sp.init_block ;
+      int deadline = initblock + static_cast<int>(sp.blocks_until_expiration);
+      PrintToLog("\nTrade out of deadline!!: actual block: %d, deadline: %d\n",initblock,deadline);
+      return (PKT_ERROR_CHANNELS -16);
+  }
+
+  int result;
+
+  (sp.prop_type == ALL_PROPERTY_TYPE_CONTRACT) ? result = 5 : result = 6;
+
+  if(!pDbTradeList->checkKYCRegister(sender,result))
+  {
+      PrintToLog("%s: tx disable from kyc register!\n",__func__);
+      return (PKT_ERROR_KYC -10);
+  }
+
+  uint32_t colateralh = sp.collateral_currency;
+  int64_t marginRe = static_cast<int64_t>(sp.margin_requirement);
+  int64_t nBalance = GetTokenBalance(sender, colateralh, CHANNEL_RESERVE);
+
+
+  rational_t conv = rational_t(1,1);
+  int64_t num = conv.numerator().convert_to<int64_t>();
+  int64_t den = conv.denominator().convert_to<int64_t>();
+  arith_uint256 amountTR = (ConvertTo256(instant_amount)*ConvertTo256(marginRe)*ConvertTo256(num))/(ConvertTo256(den)*ConvertTo256(ileverage));
+  int64_t amountToReserve = ConvertTo64(amountTR);
+
+  if(msc_debug_contract_instant_trade) PrintToLog("%s: AmountToReserve: %d, channel Balance: %d\n", __func__, amountToReserve,nBalance);
+
+  //fees
+  if(!mastercore::ContInst_Fees(chnAddrs.first, chnAddrs.second, chnAddrs.multisig, amountToReserve, sp.prop_type, sp.collateral_currency))
+  {
+      PrintToLog("\n %s: no enogh money to pay fees\n", __func__);
+      return (PKT_ERROR_CHANNELS -18);
+  }
+
+  if (nBalance < (2 * amountToReserve) || nBalance == 0)
+  {
+      PrintToLog("%s(): rejected: sender %s has insufficient balance for contracts %d [%s < %s] \n",
+      __func__,
+      sender,
+      colateralh,
+      FormatMP(colateralh, nBalance),
+      FormatMP(colateralh, amountToReserve));
+      return (PKT_ERROR_CHANNELS -17);
+  }
+  else {
+
+      if (amountToReserve > 0)
+       {
+           assert(update_tally_map(sender, colateralh, -amountToReserve, CHANNEL_RESERVE));
+           assert(update_tally_map(chnAddrs.first, colateralh, ConvertTo64(amountTR), CONTRACTDEX_MARGIN));
+           assert(update_tally_map(chnAddrs.second, colateralh, ConvertTo64(amountTR), CONTRACTDEX_MARGIN));
+       }
+  }
+
+   /*********************************************/
+   /**Logic for Node Reward**/
+
+   // const CConsensusParams &params = ConsensusParams();
+   // int BlockInit = params.MSC_NODE_REWARD;
+   // int nBlockNow = GetHeight();
+   //
+   // BlockClass NodeRewardObj(BlockInit, nBlockNow);
+   // NodeRewardObj.SendNodeReward(sender);
+
+   /********************************************************/
+
+   // updating last exchange block
+   std::map<std::string,channel>::iterator it = channels_Map.find(sender);
+   channel& chn = it->second;
+
+   int difference = block - chn.last_exchange_block;
+
+   if(msc_debug_contract_instant_trade) PrintToLog("%s: expiry height after update: %d\n",__func__, chn.expiry_height);
+
+   if (difference < dayblocks)
+   {
+       // updating expiry_height
+       chn.expiry_height += difference;
+
+   }
+
+   mastercore::Instant_x_Trade(txid, itrading_action, chnAddrs.multisig, chnAddrs.first, chnAddrs.second, property, instant_amount, price, block, tx_idx);
+
+   // t_tradelistdb->recordNewInstContTrade(txid, receiver, sender, propertyId, amount_commited, block, tx_idx);
+   // NOTE: add discount from channel of fees + amountToReserve
+
+   if (msc_debug_contract_instant_trade)PrintToLog("%s: End of Logic Instant Contract Trade\n\n",__func__);
+
+
+   return rc;
+}
+
+/** Tx 115 */
+int CMPTransaction::logicMath_New_Id_Registration()
+{
+  uint256 blockHash;
+  {
+      LOCK(cs_main);
+
+      CBlockIndex* pindex = chainActive[block];
+      if (pindex == NULL) {
+          PrintToLog("%s(): ERROR: block %d not in the active chain\n", __func__, block);
+          return (PKT_ERROR_TOKENS -20);
+      }
+      blockHash = pindex->GetBlockHash();
+  }
+
+  if (!IsTransactionTypeAllowed(block, property, type, version)) {
+      PrintToLog("%s(): rejected: type %d or version %d not permitted for property %d at block %d\n",
+              __func__,
+              type,
+              version,
+              property,
+              block);
+      return (PKT_ERROR_TOKENS -22);
+  }
+
+  // ---------------------------------------
+  if (msc_debug_new_id_registration) PrintToLog("%s(): channelAddres in register: %s \n",__func__,receiver);
+
+  pDbTradeList->recordNewIdRegister(txid, receiver, website, company_name, tokens, ltc, natives, oracles, block, tx_idx);
+
+  // std::string dummy = "1EXoDusjGwvnjZUyKkxZ4UHEf77z6A5S4P";
+  // t_tradelistdb->updateIdRegister(txid,sender, dummy,block, tx_idx);
+  return 0;
+}
 
 struct FutureContractObject *getFutureContractObject(uint32_t property_type, std::string identifier)
 {

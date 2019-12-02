@@ -78,6 +78,14 @@ bool msc_debug_set_oracle                       = 0;
 bool msc_debug_handler_tx                       = 0;
 bool msc_debug_margin_main                      = 0;
 bool msc_debug_pos_margin                       = 0;
+bool msc_create_channel                         = 0;
+bool msc_debug_commit_channel                   = 0;
+bool msc_debug_withdrawal_from_channel          = 0;
+bool msc_debug_instant_trade                    = 0;
+bool msc_debug_contract_instant_trade           = 0;
+bool msc_debug_contract_inst_fee                = 0;
+bool msc_debug_instant_x_trade                  = 0;
+bool msc_debug_new_id_registration              = 0;
 
 /**
  * LogPrintf() has been broken a couple of times now

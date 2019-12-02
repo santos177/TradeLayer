@@ -745,12 +745,16 @@ omnicore/test/test_test_omnicore-checkpoint_tests.o: \
  /usr/include/boost/enable_shared_from_this.hpp \
  /usr/include/boost/smart_ptr/enable_shared_from_this.hpp \
  /usr/include/boost/smart_ptr/weak_ptr.hpp omnicore/omnicore.h \
- omnicore/tally.h script/standard.h script/interpreter.h \
- script/script_error.h primitives/transaction.h amount.h script/script.h \
- crypto/common.h compat/endian.h compat/byteswap.h \
- /usr/include/byteswap.h prevector.h /usr/include/c++/7/stdlib.h \
- serialize.h span.h /usr/include/boost/variant.hpp \
- /usr/include/boost/variant/variant.hpp /usr/include/boost/type_index.hpp \
+ omnicore/tally.h omnicore/dbtradelist.h omnicore/dbbase.h \
+ leveldb/include/leveldb/db.h leveldb/include/leveldb/iterator.h \
+ leveldb/include/leveldb/slice.h leveldb/include/leveldb/status.h \
+ leveldb/include/leveldb/options.h univalue/include/univalue.h \
+ script/standard.h script/interpreter.h script/script_error.h \
+ primitives/transaction.h amount.h script/script.h crypto/common.h \
+ compat/endian.h compat/byteswap.h /usr/include/byteswap.h prevector.h \
+ /usr/include/c++/7/stdlib.h serialize.h span.h \
+ /usr/include/boost/variant.hpp /usr/include/boost/variant/variant.hpp \
+ /usr/include/boost/type_index.hpp \
  /usr/include/boost/type_index/stl_type_index.hpp \
  /usr/include/boost/type_index/type_index_facade.hpp \
  /usr/include/boost/variant/detail/config.hpp \
@@ -950,7 +954,7 @@ omnicore/test/test_test_omnicore-checkpoint_tests.o: \
  /usr/include/boost/mpl/equal.hpp /usr/include/boost/variant/get.hpp \
  /usr/include/boost/variant/detail/element_index.hpp \
  /usr/include/boost/variant/visitor_ptr.hpp \
- /usr/include/boost/variant/bad_visit.hpp univalue/include/univalue.h \
+ /usr/include/boost/variant/bad_visit.hpp \
  /usr/include/c++/7/unordered_map /usr/include/c++/7/bits/unordered_map.h \
  /usr/include/boost/lexical_cast.hpp \
  /usr/include/boost/range/iterator_range_core.hpp \
@@ -1221,12 +1225,9 @@ omnicore/test/test_test_omnicore-checkpoint_tests.o: \
  /usr/include/boost/math/special_functions/detail/gamma_inva.hpp \
  /usr/include/boost/math/special_functions/erf.hpp \
  /usr/include/boost/math/special_functions/detail/erf_inv.hpp \
- omnicore/sp.h omnicore/dbbase.h leveldb/include/leveldb/db.h \
- leveldb/include/leveldb/iterator.h leveldb/include/leveldb/slice.h \
- leveldb/include/leveldb/status.h leveldb/include/leveldb/options.h \
- omnicore/dbspinfo.h omnicore/rules.h arith_uint256.h test/test_bitcoin.h \
- chainparamsbase.h key.h pubkey.h hash.h crypto/ripemd160.h \
- crypto/sha256.h version.h support/allocators/secure.h \
+ omnicore/sp.h omnicore/dbspinfo.h omnicore/rules.h arith_uint256.h \
+ test/test_bitcoin.h chainparamsbase.h key.h pubkey.h hash.h \
+ crypto/ripemd160.h crypto/sha256.h version.h support/allocators/secure.h \
  support/lockedpool.h support/cleanse.h random.h crypto/chacha20.h \
  scheduler.h /usr/include/boost/chrono/chrono.hpp \
  /usr/include/boost/thread.hpp /usr/include/boost/thread/thread.hpp \
@@ -3323,6 +3324,22 @@ omnicore/omnicore.h:
 
 omnicore/tally.h:
 
+omnicore/dbtradelist.h:
+
+omnicore/dbbase.h:
+
+leveldb/include/leveldb/db.h:
+
+leveldb/include/leveldb/iterator.h:
+
+leveldb/include/leveldb/slice.h:
+
+leveldb/include/leveldb/status.h:
+
+leveldb/include/leveldb/options.h:
+
+univalue/include/univalue.h:
+
 script/standard.h:
 
 script/interpreter.h:
@@ -3778,8 +3795,6 @@ span.h:
 /usr/include/boost/variant/visitor_ptr.hpp:
 
 /usr/include/boost/variant/bad_visit.hpp:
-
-univalue/include/univalue.h:
 
 /usr/include/c++/7/unordered_map:
 
@@ -4354,18 +4369,6 @@ omnicore/mdex.h:
 /usr/include/boost/math/special_functions/detail/erf_inv.hpp:
 
 omnicore/sp.h:
-
-omnicore/dbbase.h:
-
-leveldb/include/leveldb/db.h:
-
-leveldb/include/leveldb/iterator.h:
-
-leveldb/include/leveldb/slice.h:
-
-leveldb/include/leveldb/status.h:
-
-leveldb/include/leveldb/options.h:
 
 omnicore/dbspinfo.h:
 
