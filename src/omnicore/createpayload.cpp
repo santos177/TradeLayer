@@ -798,6 +798,189 @@ std::vector<unsigned char> CreatePayload_Close_Oracle(uint32_t contractId)
     return payload;
 }
 
+std::vector<unsigned char> CreatePayload_Commit_Channel(uint32_t propertyId, uint64_t amount)
+{
+  std::vector<unsigned char> payload;
+
+  uint16_t messageType = 108;
+  uint16_t messageVer = 0;
+
+  SwapByteOrder32(propertyId);
+  SwapByteOrder64(amount);
+
+  PUSH_BACK_BYTES(payload, messageVer);
+  PUSH_BACK_BYTES(payload, messageType);
+  PUSH_BACK_BYTES(payload, propertyId);
+  PUSH_BACK_BYTES(payload, amount);
+
+  return payload;
+}
+
+std::vector<unsigned char> CreatePayload_Withdrawal_FromChannel(uint32_t propertyId, uint64_t amount)
+{
+  std::vector<unsigned char> payload;
+
+  uint16_t messageType = 109;
+  uint16_t messageVer = 0;
+
+  SwapByteOrder32(propertyId);
+  SwapByteOrder64(amount);
+
+  PUSH_BACK_BYTES(payload, messageVer);
+  PUSH_BACK_BYTES(payload, messageType);
+  PUSH_BACK_BYTES(payload, propertyId);
+  PUSH_BACK_BYTES(payload, amount);
+
+  return payload;
+}
+
+std::vector<unsigned char> CreatePayload_Instant_Trade(uint32_t propertyId, uint64_t amount, uint32_t blockheight_expiry, uint32_t propertyDesired, uint64_t amountDesired)
+{
+  std::vector<unsigned char> payload;
+
+  uint16_t messageType = 110;
+  uint16_t messageVer = 0;
+
+  SwapByteOrder32(propertyId);
+  SwapByteOrder64(amount);
+  SwapByteOrder32(propertyDesired);
+  SwapByteOrder32(blockheight_expiry);
+  SwapByteOrder64(amountDesired);
+
+  PUSH_BACK_BYTES(payload, messageVer);
+  PUSH_BACK_BYTES(payload, messageType);
+  PUSH_BACK_BYTES(payload, propertyId);
+  PUSH_BACK_BYTES(payload, amount);
+  PUSH_BACK_BYTES(payload, blockheight_expiry);
+  PUSH_BACK_BYTES(payload, propertyDesired);
+  PUSH_BACK_BYTES(payload, amountDesired);
+
+  return payload;
+}
+
+std::vector<unsigned char> CreatePayload_Contract_Instant_Trade(uint32_t contractId, uint64_t amount, uint32_t blockheight_expiry, uint64_t price, uint8_t trading_action, uint64_t leverage)
+{
+  std::vector<unsigned char> payload;
+
+  uint16_t messageType = 114;
+  uint16_t messageVer = 0;
+
+  SwapByteOrder32(contractId);
+  SwapByteOrder64(amount);
+  SwapByteOrder32(blockheight_expiry);
+  SwapByteOrder64(price);
+  SwapByteOrder64(leverage);
+
+  PUSH_BACK_BYTES(payload, messageVer);
+  PUSH_BACK_BYTES(payload, messageType);
+  PUSH_BACK_BYTES(payload, contractId);
+  PUSH_BACK_BYTES(payload, amount);
+  PUSH_BACK_BYTES(payload, blockheight_expiry);
+  PUSH_BACK_BYTES(payload, price);
+  PUSH_BACK_BYTES(payload, trading_action);
+  PUSH_BACK_BYTES(payload, leverage);
+
+  return payload;
+}
+
+// std::vector<unsigned char> CreatePayload_PNL_Update(uint32_t propertyId, uint64_t amount, uint32_t blockheight_expiry)
+// {
+//   std::vector<unsigned char> payload;
+//
+//   uint64_t messageType = 111;
+//   uint64_t messageVer = 0;
+//
+//   std::vector<uint8_t> vecMessageType = CompressInteger((uint64_t)messageType);
+//   std::vector<uint8_t> vecMessageVer = CompressInteger((uint64_t)messageVer);
+//   std::vector<uint8_t> vecPropertyId = CompressInteger((uint64_t)propertyId);
+//   std::vector<uint8_t> vecAmount = CompressInteger((uint64_t)amount);
+//   std::vector<uint8_t> vecBlock = CompressInteger((uint64_t)blockheight_expiry);
+//
+//   payload.insert(payload.end(), vecMessageVer.begin(), vecMessageVer.end());
+//   payload.insert(payload.end(), vecMessageType.begin(), vecMessageType.end());
+//   payload.insert(payload.end(), vecPropertyId.begin(), vecPropertyId.end());
+//   payload.insert(payload.end(), vecAmount.begin(), vecAmount.end());
+//   payload.insert(payload.end(), vecBlock.begin(), vecBlock.end());
+//
+//   return payload;
+// }
+
+std::vector<unsigned char> CreatePayload_Transfer(uint32_t propertyId, uint64_t amount)
+{
+  std::vector<unsigned char> payload;
+
+  uint16_t messageType = 112;
+  uint16_t messageVer = 0;
+
+  SwapByteOrder32(propertyId);
+  SwapByteOrder64(amount);
+
+  PUSH_BACK_BYTES(payload, messageVer);
+  PUSH_BACK_BYTES(payload, messageType);
+  PUSH_BACK_BYTES(payload, propertyId);
+  PUSH_BACK_BYTES(payload, amount);
+
+  return payload;
+}
+
+std::vector<unsigned char> CreatePayload_Create_Channel(std::string channelAddress, uint32_t blocks)
+{
+  std::vector<unsigned char> payload;
+
+  uint16_t messageType = 113;
+  uint16_t messageVer = 0;
+
+  SwapByteOrder32(blocks);
+
+  PUSH_BACK_BYTES(payload, messageVer);
+  PUSH_BACK_BYTES(payload, messageType);
+  PUSH_BACK_BYTES(payload, blocks);
+
+  if ((channelAddress).size() > 255) channelAddress = channelAddress.substr(0,255);
+
+  payload.insert(payload.end(), channelAddress.begin(), channelAddress.end());
+  payload.push_back('\0');
+
+  return payload;
+}
+
+std::vector<unsigned char> CreatePayload_New_Id_Registration(std::string website, std::string name, uint8_t tokens, uint8_t ltc, uint8_t natives, uint8_t oracles)
+{
+  std::vector<unsigned char> payload;
+
+  uint16_t messageType = 115;
+  uint16_t messageVer = 0;
+
+  if ((website).size() > 255) website = website.substr(0,255);
+  if ((name).size() > 255) name = name.substr(0,255);
+
+  PUSH_BACK_BYTES(payload, messageVer);
+  PUSH_BACK_BYTES(payload, messageType);
+  PUSH_BACK_BYTES(payload, tokens);
+  PUSH_BACK_BYTES(payload, ltc);
+  PUSH_BACK_BYTES(payload, natives);
+  PUSH_BACK_BYTES(payload, oracles);
+
+  payload.insert(payload.end(), website.begin(), website.end());
+  payload.push_back('\0');
+  payload.insert(payload.end(), name.begin(), name.end());
+  payload.push_back('\0');
+
+  return payload;
+}
+
+std::vector<unsigned char> CreatePayload_Update_Id_Registration()
+{
+  std::vector<unsigned char> payload;
+
+  uint16_t messageType = 116;
+  uint16_t messageVer = 0;
+
+  PUSH_BACK_BYTES(payload, messageVer);
+  PUSH_BACK_BYTES(payload, messageType);
+  
+  return payload;
+}
 
 
 #undef PUSH_BACK_BYTES

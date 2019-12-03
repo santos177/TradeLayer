@@ -55,7 +55,7 @@ public:
     bool checkKYCRegister(const std::string& address, int registered);
     int getNextId();
     void recordNewIdRegister(const uint256& txid, const std::string& address, const std::string& website, const std::string& name, uint8_t tokens, uint8_t ltc, uint8_t natives, uint8_t oracles, int blockNum, int blockIndex);
-
+    bool updateIdRegister(const uint256& txid, const std::string& address,  const std::string& newAddr, int blockNum, int blockIndex);
 };
 
 namespace mastercore

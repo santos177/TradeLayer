@@ -263,9 +263,9 @@ bool CMPTransaction::interpret_Transaction()
         case MSC_TYPE_INSTANT_TRADE:
             return interpret_Instant_Trade();
 
-        // case MSC_TYPE_TRANSFER:
-        //     return interpret_Transfer();
-        //
+        case MSC_TYPE_TRANSFER:
+            return interpret_Transfer();
+
         case MSC_TYPE_CREATE_CHANNEL:
             return interpret_Create_Channel();
 
@@ -275,8 +275,8 @@ bool CMPTransaction::interpret_Transaction()
         case MSC_TYPE_NEW_ID_REGISTRATION:
             return interpret_New_Id_Registration();
 
-        // case MSC_TYPE_UPDATE_ID_REGISTRATION:
-        //     return interpret_Update_Id_Registration();
+        case MSC_TYPE_UPDATE_ID_REGISTRATION:
+            return interpret_Update_Id_Registration();
 
     }
 
@@ -1448,6 +1448,46 @@ bool CMPTransaction::interpret_New_Id_Registration()
   return true;
 }
 
+/** Tx  116*/
+bool CMPTransaction::interpret_Update_Id_Registration()
+{
+  // if (pkt_size < 17) {
+  //     return false;
+  // }
+
+  if ((!rpcOnly && msc_debug_packets) || msc_debug_packets_readonly)
+  {
+      PrintToLog("\t sender: %s\n", sender);
+      PrintToLog("\t receiver: %s\n", receiver);
+  }
+
+  return true;
+}
+
+/** Tx 112 */
+bool CMPTransaction::interpret_Transfer()
+{
+  // if (pkt_size < 17) {
+  //     return false;
+  // }
+
+  memcpy(&property, &pkt[4], 4);
+  SwapByteOrder32(propertyId);
+  memcpy(&amount, &pkt[8], 8);
+  SwapByteOrder64(amount);
+
+
+  if ((!rpcOnly && msc_debug_packets) || msc_debug_packets_readonly)
+  {
+      PrintToLog("\t version: %d\n", version);
+      PrintToLog("\t messageType: %d\n",type);
+      PrintToLog("\t property: %d\n", property);
+      PrintToLog("\t amount : %d\n", amount);
+  }
+
+  return true;
+}
+
 
 // ---------------------- CORE LOGIC -------------------------
 
@@ -1596,6 +1636,9 @@ int CMPTransaction::interpretPacket()
 
         case MSC_TYPE_NEW_ID_REGISTRATION:
                 return logicMath_New_Id_Registration();
+
+        case MSC_TYPE_TRANSFER:
+                return logicMath_Transfer();
     }
 
     return (PKT_ERROR -100);
@@ -4134,6 +4177,84 @@ int CMPTransaction::logicMath_New_Id_Registration()
   // std::string dummy = "1EXoDusjGwvnjZUyKkxZ4UHEf77z6A5S4P";
   // t_tradelistdb->updateIdRegister(txid,sender, dummy,block, tx_idx);
   return 0;
+}
+
+/** Tx 116 */
+int CMPTransaction::logicMath_Update_Id_Registration()
+{
+  uint256 blockHash;
+  {
+      LOCK(cs_main);
+
+      CBlockIndex* pindex = chainActive[block];
+      if (pindex == NULL) {
+          PrintToLog("%s(): ERROR: block %d not in the active chain\n", __func__, block);
+          return (PKT_ERROR_TOKENS -20);
+      }
+      blockHash = pindex->GetBlockHash();
+  }
+
+  if (!IsTransactionTypeAllowed(block, property, type, version)) {
+      PrintToLog("%s(): rejected: type %d or version %d not permitted for property %d at block %d\n",
+              __func__,
+              type,
+              version,
+              property,
+              block);
+      return (PKT_ERROR_TOKENS -22);
+  }
+
+  // ---------------------------------------
+
+  pDbTradeList->updateIdRegister(txid,sender, receiver,block, tx_idx);
+
+  return 0;
+}
+
+/** Tx 112 */
+int CMPTransaction::logicMath_Transfer()
+{
+  uint256 blockHash;
+  {
+      LOCK(cs_main);
+
+      CBlockIndex* pindex = chainActive[block];
+      if (pindex == NULL) {
+          PrintToLog("%s(): ERROR: block %d not in the active chain\n", __func__, block);
+          return (PKT_ERROR_TOKENS -20);
+      }
+      blockHash = pindex->GetBlockHash();
+  }
+
+  if (!IsTransactionTypeAllowed(block, property, type, version)) {
+      PrintToLog("%s(): rejected: type %d or version %d not permitted for property %d at block %d\n",
+              __func__,
+              type,
+              version,
+              property,
+              block);
+      return (PKT_ERROR_TOKENS -22);
+  }
+
+  if (!IsPropertyIdValid(propertyId)) {
+      PrintToLog("%s(): rejected: property %d does not exist\n", __func__, property);
+      return (PKT_ERROR_CHANNELS -13);
+  }
+
+
+  // ------------------------------------------
+
+
+  // TRANSFER logic here
+
+  assert(update_tally_map(sender, propertyId, -amount, CHANNEL_RESERVE));
+  assert(update_tally_map(receiver, propertyId, amount, CHANNEL_RESERVE));
+
+  // recordNewTransfer
+  pDbTradeList->recordNewTransfer(txid, sender,receiver, propertyId, amount, block, tx_idx);
+
+  return 0;
+
 }
 
 struct FutureContractObject *getFutureContractObject(uint32_t property_type, std::string identifier)

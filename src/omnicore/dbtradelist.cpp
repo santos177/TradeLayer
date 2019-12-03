@@ -936,3 +936,74 @@ int CMPTradeList::getNextId()
     return count;
 
 }
+
+bool CMPTradeList::updateIdRegister(const uint256& txid, const std::string& address,  const std::string& newAddr, int blockNum, int blockIndex)
+{
+    bool status = false;
+    std::string strKey, newKey, newValue;
+
+    if (!pdb) return status;
+
+    std::vector<std::string> vstr;
+
+    leveldb::Iterator* it = NewIterator(); // Allocation proccess
+
+    for(it->SeekToLast(); it->Valid(); it->Prev())
+    {
+        // search key to see if this is a matching trade
+        strKey = it->key().ToString();
+        // PrintToLog("key of this match: %s ****************************\n",strKey);
+        std::string strValue = it->value().ToString();
+
+        // ensure correct amount of tokens in value string
+        boost::split(vstr, strValue, boost::is_any_of(":"), token_compress_on);
+        if (vstr.size() != 12)
+        {
+            // PrintToLog("TRADEDB error - unexpected number of tokens in value (%s)\n", strValue);
+            // PrintToConsole("TRADEDB error - unexpected number of tokens in value %d \n",vstr.size());
+            continue;
+        }
+
+        std::string type = vstr[10];
+
+        PrintToLog("%s: type: %s\n",__func__,type);
+
+        if( type != TYPE_NEW_ID_REGISTER)
+          continue;
+
+
+        PrintToLog("%s: strKey: %s\n", __func__, strKey);
+
+        if(address != strKey)
+            continue;
+
+        std::string website = vstr[0];
+        std::string name = vstr[1];
+        std::string tokens = vstr[2];
+        std::string ltc = vstr[3];
+        std::string natives = vstr[4];
+        std::string oracles = vstr[5];
+        std::string nextId = vstr[8];
+
+        newValue = strprintf("%s:%s:%s:%s:%s:%s:%d:%d:%s:%s:%s", website, name, tokens, ltc, natives, oracles, blockNum, blockIndex, nextId,txid.ToString(), TYPE_NEW_ID_REGISTER);
+
+        status = true;
+        break;
+
+    }
+
+    // clean up
+    delete it;
+
+    Status status1 = pdb->Delete(writeoptions, strKey);
+    // PrintToLog("%s() ERROR: can't delete old value\n", __func__);
+
+    Status status2 = pdb->Put(writeoptions, newAddr, newValue);
+
+    PrintToLog("%s: %s\n", __FUNCTION__, status1.ToString());
+    PrintToLog("%s: %s\n", __FUNCTION__, status2.ToString());
+
+    ++nWritten;
+
+    return status;
+}

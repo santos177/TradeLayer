@@ -123,6 +123,9 @@ extern std::map<uint32_t, std::vector<int64_t>> mapContractAmountTimesPrice;
 extern std::map<uint32_t, std::vector<int64_t>> mapContractVolume;
 extern std::map<uint32_t, int64_t> VWAPMapContracts;
 
+/** Pending withdrawals **/
+extern std::map<std::string,vector<withdrawalAccepted>> withdrawal_Map;
+
 extern std::map<uint32_t, std::map<std::string, double>> addrs_upnlc;
 extern std::map<std::string, int64_t> sum_upnls;
 extern std::map<uint32_t, int64_t> cachefees;
@@ -2306,6 +2309,15 @@ int mastercore_handler_block_begin(int nBlockPrev, CBlockIndex const * pBlockInd
 
     eraseExpiredCrowdsale(pBlockIndex);
 
+    // handle any features that go live with this block
+    makeWithdrawals(pBlockIndex->nHeight);
+    CheckLiveActivations(pBlockIndex->nHeight);
+    update_sum_upnls();
+    // marginMain(pBlockIndex->nHeight);
+    // addInterestPegged(nBlockPrev,pBlockIndex);
+    // eraseExpiredCrowdsale(pBlockIndex);
+    // _my_sps->rollingContractsBlock(pBlockIndex); // NOTE: we are checking every contract expiration
+
     return 0;
 }
 
@@ -3135,6 +3147,48 @@ bool mastercore::Instant_x_Trade(const uint256& txid, uint8_t tradingAction, std
          amountTraded);
 
   return true;
+}
+
+bool mastercore::makeWithdrawals(int Block)
+{
+    for(std::map<std::string,vector<withdrawalAccepted>>::iterator it = withdrawal_Map.begin(); it != withdrawal_Map.end(); ++it)
+    {
+        std::string channelAddress = it->first;
+
+        vector<withdrawalAccepted> &accepted = it->second;
+
+        for (std::vector<withdrawalAccepted>::iterator itt = accepted.begin() ; itt != accepted.end();)
+        {
+            withdrawalAccepted wthd = *itt;
+
+            const int deadline = wthd.deadline_block;
+
+            if (Block != deadline)
+            {
+                ++itt;
+                continue;
+            }
+
+            const std::string address = wthd.address;
+            const uint32_t propertyId = wthd.propertyId;
+            const int64_t amount = static_cast<int64_t>(wthd.amount);
+
+
+            PrintToLog("%s: withdrawal: block: %d, deadline: %d, address: %s, propertyId: %d, amount: %d \n", __func__, Block, deadline, address, propertyId, amount);
+
+            // updating tally map
+            assert(update_tally_map(address, propertyId, amount, BALANCE));
+            assert(update_tally_map(channelAddress, propertyId, -amount, CHANNEL_RESERVE));
+
+            // deleting element from vector
+            accepted.erase(itt);
+
+        }
+
+    }
+
+    return true;
+
 }
 
 /**

@@ -303,3 +303,12 @@ uint32_t ParseNewValues(const UniValue& value)
   }
   return static_cast<uint32_t>(Nvalue);
 }
+
+uint8_t ParsePermission(const UniValue& value)
+{
+    int64_t number = value.get_int64();
+    if (number != 0 && number != 1) {
+        throw JSONRPCError(RPC_INVALID_PARAMETER, "Invalid number (0 = false, 1 = true)");
+    }
+    return static_cast<uint8_t>(number);
+}
