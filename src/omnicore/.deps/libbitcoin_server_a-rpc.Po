@@ -746,13 +746,13 @@ omnicore/libbitcoin_server_a-rpc.o: omnicore/rpc.cpp \
  /usr/include/boost/enable_shared_from_this.hpp \
  /usr/include/boost/smart_ptr/enable_shared_from_this.hpp \
  /usr/include/boost/smart_ptr/weak_ptr.hpp omnicore/dbspinfo.h \
- omnicore/omnicore.h omnicore/tally.h script/standard.h \
- script/interpreter.h script/script_error.h primitives/transaction.h \
- amount.h script/script.h crypto/common.h compat/endian.h \
- compat/byteswap.h /usr/include/byteswap.h prevector.h \
- /usr/include/c++/7/stdlib.h serialize.h span.h \
- /usr/include/boost/variant.hpp /usr/include/boost/variant/variant.hpp \
- /usr/include/boost/type_index.hpp \
+ omnicore/omnicore.h omnicore/tally.h omnicore/dbtradelist.h \
+ univalue/include/univalue.h script/standard.h script/interpreter.h \
+ script/script_error.h primitives/transaction.h amount.h script/script.h \
+ crypto/common.h compat/endian.h compat/byteswap.h \
+ /usr/include/byteswap.h prevector.h /usr/include/c++/7/stdlib.h \
+ serialize.h span.h /usr/include/boost/variant.hpp \
+ /usr/include/boost/variant/variant.hpp /usr/include/boost/type_index.hpp \
  /usr/include/boost/type_index/stl_type_index.hpp \
  /usr/include/boost/type_index/type_index_facade.hpp \
  /usr/include/boost/variant/detail/config.hpp \
@@ -952,7 +952,7 @@ omnicore/libbitcoin_server_a-rpc.o: omnicore/rpc.cpp \
  /usr/include/boost/mpl/equal.hpp /usr/include/boost/variant/get.hpp \
  /usr/include/boost/variant/detail/element_index.hpp \
  /usr/include/boost/variant/visitor_ptr.hpp \
- /usr/include/boost/variant/bad_visit.hpp univalue/include/univalue.h \
+ /usr/include/boost/variant/bad_visit.hpp \
  /usr/include/c++/7/unordered_map /usr/include/c++/7/bits/unordered_map.h \
  /usr/include/boost/lexical_cast.hpp \
  /usr/include/boost/range/iterator_range_core.hpp \
@@ -1174,9 +1174,9 @@ omnicore/libbitcoin_server_a-rpc.o: omnicore/rpc.cpp \
  /usr/include/boost/multiprecision/cpp_int/serialize.hpp \
  /usr/include/boost/multiprecision/cpp_int/import_export.hpp \
  omnicore/tradelayer_matrices.h /usr/include/boost/any.hpp \
- omnicore/dbstolist.h omnicore/dbtradelist.h omnicore/dbtxlist.h \
- omnicore/dex.h omnicore/tx.h omnicore/parsing.h util/strencodings.h \
- /usr/include/openssl/sha.h /usr/include/openssl/e_os2.h \
+ omnicore/dbstolist.h omnicore/dbtxlist.h omnicore/dex.h omnicore/tx.h \
+ omnicore/parsing.h util/strencodings.h /usr/include/openssl/sha.h \
+ /usr/include/openssl/e_os2.h \
  /usr/include/x86_64-linux-gnu/openssl/opensslconf.h omnicore/errors.h \
  omnicore/mdex.h /usr/include/boost/multiprecision/cpp_dec_float.hpp \
  /usr/include/boost/multiprecision/detail/big_lanczos.hpp \
@@ -3181,6 +3181,10 @@ omnicore/omnicore.h:
 
 omnicore/tally.h:
 
+omnicore/dbtradelist.h:
+
+univalue/include/univalue.h:
+
 script/standard.h:
 
 script/interpreter.h:
@@ -3636,8 +3640,6 @@ span.h:
 /usr/include/boost/variant/visitor_ptr.hpp:
 
 /usr/include/boost/variant/bad_visit.hpp:
-
-univalue/include/univalue.h:
 
 /usr/include/c++/7/unordered_map:
 
@@ -4106,8 +4108,6 @@ omnicore/tradelayer_matrices.h:
 /usr/include/boost/any.hpp:
 
 omnicore/dbstolist.h:
-
-omnicore/dbtradelist.h:
 
 omnicore/dbtxlist.h:
 

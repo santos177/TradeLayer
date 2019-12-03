@@ -1109,12 +1109,15 @@ omnicore/libbitcoin_server_a-externfns.o: omnicore/externfns.cpp \
  /usr/include/boost/multiprecision/cpp_int/serialize.hpp \
  /usr/include/boost/multiprecision/cpp_int/import_export.hpp \
  omnicore/parse_string.h omnicore/mdex.h omnicore/tx.h \
- omnicore/omnicore.h omnicore/tally.h script/standard.h \
+ omnicore/omnicore.h omnicore/tally.h omnicore/dbtradelist.h \
+ omnicore/dbbase.h leveldb/include/leveldb/db.h \
+ leveldb/include/leveldb/iterator.h leveldb/include/leveldb/slice.h \
+ leveldb/include/leveldb/status.h leveldb/include/leveldb/options.h \
+ uint256.h univalue/include/univalue.h script/standard.h \
  script/interpreter.h script/script_error.h primitives/transaction.h \
  amount.h script/script.h crypto/common.h compat/endian.h \
  compat/byteswap.h /usr/include/byteswap.h prevector.h serialize.h span.h \
- uint256.h /usr/include/boost/variant.hpp \
- /usr/include/boost/variant/variant.hpp \
+ /usr/include/boost/variant.hpp /usr/include/boost/variant/variant.hpp \
  /usr/include/boost/variant/detail/config.hpp \
  /usr/include/boost/variant/variant_fwd.hpp \
  /usr/include/boost/blank_fwd.hpp \
@@ -1208,7 +1211,7 @@ omnicore/libbitcoin_server_a-externfns.o: omnicore/externfns.cpp \
  /usr/include/boost/mpl/equal.hpp /usr/include/boost/variant/get.hpp \
  /usr/include/boost/variant/detail/element_index.hpp \
  /usr/include/boost/variant/visitor_ptr.hpp \
- /usr/include/boost/variant/bad_visit.hpp univalue/include/univalue.h \
+ /usr/include/boost/variant/bad_visit.hpp \
  /usr/include/c++/7/unordered_map /usr/include/c++/7/bits/unordered_map.h \
  omnicore/tradelayer_matrices.h omnicore/parsing.h util/strencodings.h \
  /usr/include/openssl/sha.h /usr/include/openssl/e_os2.h \
@@ -3720,6 +3723,24 @@ omnicore/omnicore.h:
 
 omnicore/tally.h:
 
+omnicore/dbtradelist.h:
+
+omnicore/dbbase.h:
+
+leveldb/include/leveldb/db.h:
+
+leveldb/include/leveldb/iterator.h:
+
+leveldb/include/leveldb/slice.h:
+
+leveldb/include/leveldb/status.h:
+
+leveldb/include/leveldb/options.h:
+
+uint256.h:
+
+univalue/include/univalue.h:
+
 script/standard.h:
 
 script/interpreter.h:
@@ -3745,8 +3766,6 @@ prevector.h:
 serialize.h:
 
 span.h:
-
-uint256.h:
 
 /usr/include/boost/variant.hpp:
 
@@ -3949,8 +3968,6 @@ uint256.h:
 /usr/include/boost/variant/visitor_ptr.hpp:
 
 /usr/include/boost/variant/bad_visit.hpp:
-
-univalue/include/univalue.h:
 
 /usr/include/c++/7/unordered_map:
 

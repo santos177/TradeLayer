@@ -83,6 +83,7 @@ private:
     unsigned int desired_property;
     uint64_t desired_value;
     unsigned char action; // depreciated
+    int64_t amount_forsale;
 
     // TradeOffer
     uint64_t amount_desired;
@@ -117,6 +118,24 @@ private:
     uint32_t attribute_type;
     uint64_t leverage;
     uint32_t denomination;
+
+    //Multisig channels
+    char channel_address[SP_STRING_FIELD_LEN];
+    uint64_t amount_commited;
+    uint64_t amount_to_withdraw;
+    uint64_t pnl_amount;
+    uint64_t vOut;
+    uint64_t price;
+    uint64_t ileverage;
+    uint64_t itrading_action;
+    uint64_t instant_amount;
+
+
+    //KYC
+    char company_name[SP_STRING_FIELD_LEN];
+    char website[SP_STRING_FIELD_LEN];
+    int block_forexpiry;
+    uint8_t tokens, ltc, natives, oracles;
 
 
     // Indicates whether the transaction can be used to execute logic
@@ -355,6 +374,26 @@ public:
         // timeLimit = 0;
         // denomination = 0;
 
+        memset(&name_traded, 0, sizeof(name_traded));
+        memset(&channel_address, 0, sizeof(channel_address));
+        memset(&website, 0, sizeof(website));
+        memset(&company_name, 0, sizeof(company_name));
+
+        //Multisig channels
+        amount_commited = 0;
+        amount_to_withdraw = 0;
+        vOut = 0;
+        block_forexpiry = 0;
+        pnl_amount= 0;
+        ileverage = 0;
+        itrading_action = 0;
+        instant_amount = 0;
+
+        //Kyc
+        tokens = 0;
+        ltc = 0;
+        natives = 0;
+        oracles = 0;
     }
 
     /** Sets the given values. */

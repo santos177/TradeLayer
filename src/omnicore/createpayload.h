@@ -44,4 +44,12 @@ std::vector<unsigned char> CreatePayload_OracleBackup(uint32_t contractId);
 std::vector<unsigned char> CreatePayload_Close_Oracle(uint32_t contractId);
 std::vector<unsigned char> CreatePayload_Set_Oracle(uint32_t contractId, uint64_t high, uint64_t low);
 std::vector<unsigned char> CreatePayload_ContractDexCancelOrderByTxId(int block, unsigned int idx);
+std::vector<unsigned char> CreatePayload_Commit_Channel(uint32_t propertyId, uint64_t amount);
+std::vector<unsigned char> CreatePayload_Withdrawal_FromChannel(uint32_t propertyId, uint64_t amount);
+std::vector<unsigned char> CreatePayload_Instant_Trade(uint32_t propertyId, uint64_t amount, uint32_t blockheight_expiry, uint32_t propertyDesired, uint64_t amountDesired);
+std::vector<unsigned char> CreatePayload_Contract_Instant_Trade(uint32_t contractId, uint64_t amount, uint32_t blockheight_expiry, uint64_t price, uint8_t trading_action, uint64_t leverage);
+std::vector<unsigned char> CreatePayload_Transfer(uint32_t propertyId, uint64_t amount);
+std::vector<unsigned char> CreatePayload_Create_Channel(std::string channelAddress, uint32_t blocks);
+std::vector<unsigned char> CreatePayload_New_Id_Registration(std::string website, std::string name, uint8_t tokens, uint8_t ltc, uint8_t natives, uint8_t oracles);
+std::vector<unsigned char> CreatePayload_Update_Id_Registration();
 #endif // BITCOIN_OMNICORE_CREATEPAYLOAD_H

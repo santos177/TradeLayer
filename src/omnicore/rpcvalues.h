@@ -47,6 +47,7 @@ uint64_t ParseEffectivePrice(const UniValue& value);
 uint8_t ParseContractDexAction(const UniValue& value);
 uint64_t ParseLeverage(const UniValue& value);
 uint32_t ParseNewValues(const UniValue& value);
+uint8_t ParsePermission(const UniValue& value);
 
 
 /** Parses previous transaction outputs. */

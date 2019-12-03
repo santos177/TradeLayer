@@ -745,10 +745,14 @@ omnicore/libbitcoin_server_a-mdex.o: omnicore/mdex.cpp \
  /usr/include/boost/enable_shared_from_this.hpp \
  /usr/include/boost/smart_ptr/enable_shared_from_this.hpp \
  /usr/include/boost/smart_ptr/weak_ptr.hpp omnicore/tally.h \
- script/standard.h script/interpreter.h script/script_error.h \
- primitives/transaction.h amount.h script/script.h crypto/common.h \
- compat/endian.h compat/byteswap.h /usr/include/byteswap.h prevector.h \
- /usr/include/c++/7/stdlib.h serialize.h span.h uint256.h \
+ omnicore/dbtradelist.h omnicore/dbbase.h leveldb/include/leveldb/db.h \
+ leveldb/include/leveldb/iterator.h leveldb/include/leveldb/slice.h \
+ leveldb/include/leveldb/status.h leveldb/include/leveldb/options.h \
+ uint256.h univalue/include/univalue.h script/standard.h \
+ script/interpreter.h script/script_error.h primitives/transaction.h \
+ amount.h script/script.h crypto/common.h compat/endian.h \
+ compat/byteswap.h /usr/include/byteswap.h prevector.h \
+ /usr/include/c++/7/stdlib.h serialize.h span.h \
  /usr/include/boost/variant.hpp /usr/include/boost/variant/variant.hpp \
  /usr/include/boost/type_index.hpp \
  /usr/include/boost/type_index/stl_type_index.hpp \
@@ -950,7 +954,7 @@ omnicore/libbitcoin_server_a-mdex.o: omnicore/mdex.cpp \
  /usr/include/boost/mpl/equal.hpp /usr/include/boost/variant/get.hpp \
  /usr/include/boost/variant/detail/element_index.hpp \
  /usr/include/boost/variant/visitor_ptr.hpp \
- /usr/include/boost/variant/bad_visit.hpp univalue/include/univalue.h \
+ /usr/include/boost/variant/bad_visit.hpp \
  /usr/include/c++/7/unordered_map /usr/include/c++/7/bits/unordered_map.h \
  /usr/include/boost/lexical_cast.hpp \
  /usr/include/boost/range/iterator_range_core.hpp \
@@ -1221,12 +1225,9 @@ omnicore/libbitcoin_server_a-mdex.o: omnicore/mdex.cpp \
  /usr/include/boost/math/special_functions/detail/erf_inv.hpp \
  /usr/include/openssl/sha.h /usr/include/openssl/e_os2.h \
  /usr/include/x86_64-linux-gnu/openssl/opensslconf.h omnicore/dbfees.h \
- omnicore/dbbase.h leveldb/include/leveldb/db.h \
- leveldb/include/leveldb/iterator.h leveldb/include/leveldb/slice.h \
- leveldb/include/leveldb/status.h leveldb/include/leveldb/options.h \
- omnicore/dbtradelist.h omnicore/dbtxlist.h omnicore/rules.h \
- omnicore/sp.h omnicore/dbspinfo.h omnicore/uint256_extensions.h \
- arith_uint256.h omnicore/tradelayer_matrices.h omnicore/externfns.h \
+ omnicore/dbtxlist.h omnicore/rules.h omnicore/sp.h omnicore/dbspinfo.h \
+ omnicore/uint256_extensions.h arith_uint256.h \
+ omnicore/tradelayer_matrices.h omnicore/externfns.h \
  omnicore/operators_algo_clearing.h chain.h consensus/params.h \
  primitives/block.h validation.h coins.h compressor.h core_memusage.h \
  memusage.h indirectmap.h crypto/siphash.h policy/feerate.h protocol.h \
@@ -2952,6 +2953,24 @@ util/time.h:
 
 omnicore/tally.h:
 
+omnicore/dbtradelist.h:
+
+omnicore/dbbase.h:
+
+leveldb/include/leveldb/db.h:
+
+leveldb/include/leveldb/iterator.h:
+
+leveldb/include/leveldb/slice.h:
+
+leveldb/include/leveldb/status.h:
+
+leveldb/include/leveldb/options.h:
+
+uint256.h:
+
+univalue/include/univalue.h:
+
 script/standard.h:
 
 script/interpreter.h:
@@ -2979,8 +2998,6 @@ prevector.h:
 serialize.h:
 
 span.h:
-
-uint256.h:
 
 /usr/include/boost/variant.hpp:
 
@@ -3409,8 +3426,6 @@ uint256.h:
 /usr/include/boost/variant/visitor_ptr.hpp:
 
 /usr/include/boost/variant/bad_visit.hpp:
-
-univalue/include/univalue.h:
 
 /usr/include/c++/7/unordered_map:
 
@@ -3981,20 +3996,6 @@ util/strencodings.h:
 /usr/include/x86_64-linux-gnu/openssl/opensslconf.h:
 
 omnicore/dbfees.h:
-
-omnicore/dbbase.h:
-
-leveldb/include/leveldb/db.h:
-
-leveldb/include/leveldb/iterator.h:
-
-leveldb/include/leveldb/slice.h:
-
-leveldb/include/leveldb/status.h:
-
-leveldb/include/leveldb/options.h:
-
-omnicore/dbtradelist.h:
 
 omnicore/dbtxlist.h:
 

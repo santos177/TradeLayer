@@ -747,12 +747,13 @@ omnicore/libbitcoin_server_a-walletfetchtxs.o: \
  /usr/include/boost/enable_shared_from_this.hpp \
  /usr/include/boost/smart_ptr/enable_shared_from_this.hpp \
  /usr/include/boost/smart_ptr/weak_ptr.hpp omnicore/omnicore.h \
- omnicore/tally.h script/standard.h script/interpreter.h \
- script/script_error.h primitives/transaction.h amount.h script/script.h \
- crypto/common.h compat/endian.h compat/byteswap.h \
- /usr/include/byteswap.h prevector.h /usr/include/c++/7/stdlib.h \
- serialize.h span.h /usr/include/boost/variant.hpp \
- /usr/include/boost/variant/variant.hpp /usr/include/boost/type_index.hpp \
+ omnicore/tally.h omnicore/dbtradelist.h script/standard.h \
+ script/interpreter.h script/script_error.h primitives/transaction.h \
+ amount.h script/script.h crypto/common.h compat/endian.h \
+ compat/byteswap.h /usr/include/byteswap.h prevector.h \
+ /usr/include/c++/7/stdlib.h serialize.h span.h \
+ /usr/include/boost/variant.hpp /usr/include/boost/variant/variant.hpp \
+ /usr/include/boost/type_index.hpp \
  /usr/include/boost/type_index/stl_type_index.hpp \
  /usr/include/boost/type_index/type_index_facade.hpp \
  /usr/include/boost/variant/detail/config.hpp \
@@ -3043,6 +3044,8 @@ util/time.h:
 omnicore/omnicore.h:
 
 omnicore/tally.h:
+
+omnicore/dbtradelist.h:
 
 script/standard.h:
 

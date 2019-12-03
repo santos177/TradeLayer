@@ -123,6 +123,9 @@ extern std::map<uint32_t, std::vector<int64_t>> mapContractAmountTimesPrice;
 extern std::map<uint32_t, std::vector<int64_t>> mapContractVolume;
 extern std::map<uint32_t, int64_t> VWAPMapContracts;
 
+/** Pending withdrawals **/
+extern std::map<std::string,vector<withdrawalAccepted>> withdrawal_Map;
+
 extern std::map<uint32_t, std::map<std::string, double>> addrs_upnlc;
 extern std::map<std::string, int64_t> sum_upnls;
 extern std::map<uint32_t, int64_t> cachefees;
@@ -164,8 +167,10 @@ static int reorgRecoveryMaxHeight = 0;
 CMPSPInfo* mastercore::pDbSpInfo;
 //! LevelDB based storage for transactions, with txid as key and validity bit, and other data as value
 CMPTxList* mastercore::pDbTransactionList;
+
 //! LevelDB based storage for the MetaDEx trade history
 CMPTradeList* mastercore::pDbTradeList;
+
 //! LevelDB based storage for STO recipients
 CMPSTOList* mastercore::pDbStoList;
 //! LevelDB based storage for storing Omni transaction validation and position in block data
@@ -2304,6 +2309,15 @@ int mastercore_handler_block_begin(int nBlockPrev, CBlockIndex const * pBlockInd
 
     eraseExpiredCrowdsale(pBlockIndex);
 
+    // handle any features that go live with this block
+    makeWithdrawals(pBlockIndex->nHeight);
+    CheckLiveActivations(pBlockIndex->nHeight);
+    update_sum_upnls();
+    // marginMain(pBlockIndex->nHeight);
+    // addInterestPegged(nBlockPrev,pBlockIndex);
+    // eraseExpiredCrowdsale(pBlockIndex);
+    // _my_sps->rollingContractsBlock(pBlockIndex); // NOTE: we are checking every contract expiration
+
     return 0;
 }
 
@@ -2890,6 +2904,291 @@ int64_t mastercore::pos_margin(uint32_t contractId, std::string address, uint16_
         int64_t maint_margin = ConvertTo64(maintMargin);
         if(msc_debug_pos_margin) PrintToLog("%s: maint margin: %d\n", __func__, maint_margin);
         return maint_margin;
+}
+
+
+int64_t setPosition(int64_t positive, int64_t negative)
+{
+    if (positive > 0 && negative == 0)
+        return positive;
+    else if (positive == 0 && negative > 0)
+        return -negative;
+    else
+        return 0;
+}
+
+std::string updateStatus(int64_t oldPos, int64_t newPos)
+{
+
+    PrintToLog("%s: old position: %d, new position: %d \n", __func__, oldPos, newPos);
+
+    if(oldPos == 0 && newPos > 0)
+        return "OpenLongPosition";
+
+    else if (oldPos == 0 && newPos < 0)
+        return "OpenShortPosition";
+
+    else if (oldPos > newPos && oldPos > 0 && newPos > 0)
+        return "LongPosNettedPartly";
+
+    else if (oldPos < newPos && oldPos < 0 && newPos < 0)
+        return "ShortPosNettedPartly";
+
+    else if (oldPos < newPos && oldPos > 0 && newPos > 0)
+        return "LongPosIncreased";
+
+    else if (oldPos > newPos && oldPos < 0 && newPos < 0)
+        return "ShortPosIncreased";
+
+    else if (newPos == 0 && oldPos > 0)
+        return "LongPosNetted";
+
+    else if (newPos == 0 && oldPos < 0)
+        return "ShortPosNetted";
+
+    else if (newPos > 0 && oldPos < 0)
+        return "OpenLongPosByShortPosNetted";
+
+    else if (newPos < 0 && oldPos > 0)
+        return "OpenShortPosByLongPosNetted";
+    else
+        return "None";
+}
+
+bool mastercore::ContInst_Fees(const std::string& firstAddr,const std::string& secondAddr,const std::string& channelAddr, int64_t amountToReserve,uint16_t type, uint32_t colateral)
+{
+    arith_uint256 fee;
+
+    if(msc_debug_contract_inst_fee)
+    {
+        PrintToLog("%s: firstAddr: %d\n", __func__, firstAddr);
+        PrintToLog("%s: secondAddr: %d\n", __func__, secondAddr);
+        PrintToLog("%s: amountToReserve: %d\n", __func__, amountToReserve);
+        PrintToLog("%s: colateral: %d\n", __func__,colateral);
+    }
+
+    if (type == ALL_PROPERTY_TYPE_CONTRACT)
+    {
+        // 0.5% minus for firstAddr, 0.5% minus for secondAddr
+        fee = (ConvertTo256(amountToReserve) * ConvertTo256(5)) / ConvertTo256(1000);
+
+    } else if (type == ALL_PROPERTY_TYPE_ORACLE_CONTRACT){
+        // 1.25% minus each
+        fee = (ConvertTo256(amountToReserve) * ConvertTo256(5)) / (ConvertTo256(4000) * ConvertTo256(COIN));
+    }
+
+    PrintToLog("%s: checkpoin 1\n",__func__);
+
+    int64_t uFee = ConvertTo64(fee);
+
+
+    // checking if each address can pay the totalAmount + uFee:
+
+    int64_t totalAmount = uFee + amountToReserve;
+    int64_t firstRem = static_cast<int64_t>(pDbTradeList->getRemaining(channelAddr, firstAddr, colateral));
+
+    PrintToLog("%s: checkpoin 2\n",__func__);
+
+    if (firstRem < totalAmount)
+    {
+
+            if(msc_debug_contract_inst_fee) PrintToLog("%s:address %s doesn't have enough money %d\n", __func__, firstAddr);
+
+            return false;
+    }
+
+    PrintToLog("%s: checkpoin 3\n",__func__);
+
+    int64_t secondRem = static_cast<int64_t>(pDbTradeList->getRemaining(channelAddr, secondAddr, colateral));
+
+    if (secondRem < totalAmount)
+    {
+            if(msc_debug_contract_inst_fee) PrintToLog("%s:address %s doesn't have enough money %d\n", __func__, secondAddr);
+            return false;
+    }
+
+
+    if(msc_debug_contract_inst_fee) PrintToLog("%s: uFee: %d\n",__func__,uFee);
+
+    update_tally_map(channelAddr, colateral, -2*uFee, CHANNEL_RESERVE);
+
+    PrintToLog("%s: checkpoin 5\n",__func__);
+    // % to feecache
+    cachefees[colateral] += 2*uFee;
+
+    PrintToLog("%s: checkpoin 6\n",__func__);
+    return true;
+}
+
+
+
+bool mastercore::Instant_x_Trade(const uint256& txid, uint8_t tradingAction, std::string& channelAddr, std::string& firstAddr, std::string& secondAddr, uint32_t property, int64_t amount_forsale, uint64_t price, int block, int tx_idx)
+{
+
+    int64_t firstPoss = GetTokenBalance(firstAddr, property, POSSITIVE_BALANCE);
+    int64_t firstNeg = GetTokenBalance(firstAddr, property, NEGATIVE_BALANCE);
+    int64_t secondPoss = GetTokenBalance(secondAddr, property, POSSITIVE_BALANCE);
+    int64_t secondNeg = GetTokenBalance(secondAddr, property, NEGATIVE_BALANCE);
+
+    if(tradingAction == SELL)
+        amount_forsale = -amount_forsale;
+
+    int64_t first_p = firstPoss - firstNeg + amount_forsale;
+    int64_t second_p = secondPoss - secondNeg - amount_forsale;
+
+    if(first_p > 0)
+    {
+        assert(update_tally_map(firstAddr, property, first_p - firstPoss, POSSITIVE_BALANCE));
+        if(firstNeg != 0)
+            assert(update_tally_map(firstAddr, property, -firstNeg, NEGATIVE_BALANCE));
+
+    } else if (first_p < 0){
+        assert(update_tally_map(firstAddr, property, -first_p - firstNeg, NEGATIVE_BALANCE));
+        if(firstPoss != 0)
+            assert(update_tally_map(firstAddr, property, -firstPoss, POSSITIVE_BALANCE));
+
+    } else {  //cleaning the tally
+
+        if(firstPoss != 0)
+            assert(update_tally_map(firstAddr, property, -firstPoss, POSSITIVE_BALANCE));
+        else if (firstNeg != 0)
+            assert(update_tally_map(firstAddr, property, -firstNeg, NEGATIVE_BALANCE));
+
+    }
+
+    if(second_p > 0){
+        assert(update_tally_map(secondAddr, property, second_p - secondPoss, POSSITIVE_BALANCE));
+        if (secondNeg != 0)
+            assert(update_tally_map(secondAddr, property, -secondNeg, NEGATIVE_BALANCE));
+
+    } else if (second_p < 0){
+        assert(update_tally_map(secondAddr, property, -second_p - secondNeg, NEGATIVE_BALANCE));
+        if (secondPoss != 0)
+            assert(update_tally_map(secondAddr, property, -secondPoss, POSSITIVE_BALANCE));
+
+    } else {
+
+        if (secondPoss != 0)
+            assert(update_tally_map(secondAddr, property, -secondPoss, POSSITIVE_BALANCE));
+        else if (secondNeg != 0)
+            assert(update_tally_map(secondAddr, property, -secondNeg, NEGATIVE_BALANCE));
+    }
+
+  // fees here?
+
+  std::string Status_s0 = "EmptyStr", Status_s1 = "EmptyStr", Status_s2 = "EmptyStr", Status_s3 = "EmptyStr";
+  std::string Status_b0 = "EmptyStr", Status_b1 = "EmptyStr", Status_b2 = "EmptyStr", Status_b3 = "EmptyStr";
+
+  // old positions
+  int64_t oldFrs = setPosition(firstPoss,firstNeg);
+  int64_t oldSec = setPosition(secondPoss,secondNeg);
+
+  std::string Status_maker0 = updateStatus(oldFrs,first_p);
+  std::string Status_taker0 = updateStatus(oldSec,second_p);
+
+  if(msc_debug_instant_x_trade)
+  {
+      PrintToLog("%s: old first position: %d, old second position: %d \n", __func__, oldFrs, oldSec);
+      PrintToLog("%s: new first position: %d, new second position: %d \n", __func__, first_p, second_p);
+      PrintToLog("%s: Status_marker0: %s, Status_taker0: %s \n",__func__,Status_maker0, Status_taker0);
+      PrintToLog("%s: amount_forsale: %d\n", __func__, amount_forsale);
+  }
+
+  uint64_t amountTraded ,newPosMaker ,newPosTaker;
+
+  (amount_forsale < 0) ? amountTraded = static_cast<uint64_t>(-amount_forsale) : amountTraded = static_cast<uint64_t>(amount_forsale);
+
+  (first_p < 0) ? newPosMaker = static_cast<uint64_t>(-first_p) : newPosMaker = static_cast<uint64_t>(first_p);
+
+  (second_p < 0) ? newPosTaker = static_cast<uint64_t>(-second_p) : newPosTaker = static_cast<uint64_t>(second_p);
+
+  if(msc_debug_instant_x_trade)
+  {
+      PrintToLog("%s: newPosMaker: %d\n", __func__, newPosMaker);
+      PrintToLog("%s: newPosTaker: %d\n", __func__, newPosTaker);
+      PrintToLog("%s: amountTraded: %d\n", __func__, amountTraded);
+  }
+
+  // (const uint256 txid1, const uint256 txid2, string address1, string address2, uint64_t effective_price, uint64_t amount_maker, uint64_t amount_taker, int blockNum1, int blockNum2, uint32_t property_traded, string tradeStatus, int64_t lives_s0, int64_t lives_s1, int64_t lives_s2, int64_t lives_s3, int64_t lives_b0, int64_t lives_b1, int64_t lives_b2, int64_t lives_b3, string s_maker0, string s_taker0, string s_maker1, string s_taker1, string s_maker2, string s_taker2, string s_maker3, string //s_taker3, int64_t nCouldBuy0, int64_t nCouldBuy1, int64_t nCouldBuy2, int64_t nCouldBuy3,uint64_t amountpnew, uint64_t amountpold)
+
+
+    pDbTradeList->recordMatchedTrade(txid,
+         txid,
+         firstAddr,
+         secondAddr,
+         price,
+         amountTraded,
+         amountTraded,
+         block,
+         block,
+         property,
+         "Matched",
+         newPosMaker,
+         0,
+         0,
+         0,
+         newPosTaker,
+         0,
+         0,
+         0,
+         Status_maker0,
+         Status_taker0,
+         "EmptyStr",
+         "EmptyStr",
+         "EmptyStr",
+         "EmptyStr",
+         "EmptyStr",
+         "EmptyStr",
+         amountTraded,
+         0,
+         0,
+         0,
+         amountTraded,
+         amountTraded);
+
+  return true;
+}
+
+bool mastercore::makeWithdrawals(int Block)
+{
+    for(std::map<std::string,vector<withdrawalAccepted>>::iterator it = withdrawal_Map.begin(); it != withdrawal_Map.end(); ++it)
+    {
+        std::string channelAddress = it->first;
+
+        vector<withdrawalAccepted> &accepted = it->second;
+
+        for (std::vector<withdrawalAccepted>::iterator itt = accepted.begin() ; itt != accepted.end();)
+        {
+            withdrawalAccepted wthd = *itt;
+
+            const int deadline = wthd.deadline_block;
+
+            if (Block != deadline)
+            {
+                ++itt;
+                continue;
+            }
+
+            const std::string address = wthd.address;
+            const uint32_t propertyId = wthd.propertyId;
+            const int64_t amount = static_cast<int64_t>(wthd.amount);
+
+
+            PrintToLog("%s: withdrawal: block: %d, deadline: %d, address: %s, propertyId: %d, amount: %d \n", __func__, Block, deadline, address, propertyId, amount);
+
+            // updating tally map
+            assert(update_tally_map(address, propertyId, amount, BALANCE));
+            assert(update_tally_map(channelAddress, propertyId, -amount, CHANNEL_RESERVE));
+
+            // deleting element from vector
+            accepted.erase(itt);
+
+        }
+
+    }
+
+    return true;
+
 }
 
 /**

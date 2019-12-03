@@ -748,11 +748,12 @@ omnicore/test/test_test_omnicore-crowdsale_participation_tests.o: \
  /usr/include/boost/enable_shared_from_this.hpp \
  /usr/include/boost/smart_ptr/enable_shared_from_this.hpp \
  /usr/include/boost/smart_ptr/weak_ptr.hpp omnicore/omnicore.h \
- omnicore/tally.h script/standard.h script/interpreter.h \
+ omnicore/tally.h omnicore/dbtradelist.h uint256.h \
+ univalue/include/univalue.h script/standard.h script/interpreter.h \
  script/script_error.h primitives/transaction.h amount.h script/script.h \
  crypto/common.h compat/endian.h compat/byteswap.h \
  /usr/include/byteswap.h prevector.h /usr/include/c++/7/stdlib.h \
- serialize.h span.h uint256.h /usr/include/boost/variant.hpp \
+ serialize.h span.h /usr/include/boost/variant.hpp \
  /usr/include/boost/variant/variant.hpp /usr/include/boost/type_index.hpp \
  /usr/include/boost/type_index/stl_type_index.hpp \
  /usr/include/boost/type_index/type_index_facade.hpp \
@@ -953,7 +954,7 @@ omnicore/test/test_test_omnicore-crowdsale_participation_tests.o: \
  /usr/include/boost/mpl/equal.hpp /usr/include/boost/variant/get.hpp \
  /usr/include/boost/variant/detail/element_index.hpp \
  /usr/include/boost/variant/visitor_ptr.hpp \
- /usr/include/boost/variant/bad_visit.hpp univalue/include/univalue.h \
+ /usr/include/boost/variant/bad_visit.hpp \
  /usr/include/c++/7/unordered_map /usr/include/c++/7/bits/unordered_map.h \
  /usr/include/boost/lexical_cast.hpp \
  /usr/include/boost/range/iterator_range_core.hpp \
@@ -3286,6 +3287,12 @@ omnicore/omnicore.h:
 
 omnicore/tally.h:
 
+omnicore/dbtradelist.h:
+
+uint256.h:
+
+univalue/include/univalue.h:
+
 script/standard.h:
 
 script/interpreter.h:
@@ -3313,8 +3320,6 @@ prevector.h:
 serialize.h:
 
 span.h:
-
-uint256.h:
 
 /usr/include/boost/variant.hpp:
 
@@ -3743,8 +3748,6 @@ uint256.h:
 /usr/include/boost/variant/visitor_ptr.hpp:
 
 /usr/include/boost/variant/bad_visit.hpp:
-
-univalue/include/univalue.h:
 
 /usr/include/c++/7/unordered_map:
 

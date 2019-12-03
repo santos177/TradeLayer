@@ -2215,7 +2215,7 @@ UniValue tl_setoracle(const JSONRPCRequest& request)
 #else
     std::unique_ptr<interfaces::Wallet> pwallet = interfaces::MakeWallet(nullptr);
 #endif
-    if (request.params.size() != 4)
+    if (request.fHelp || request.params.size() != 4)
         throw runtime_error(
             "tl_setoracle \"fromaddress\" \"contract name\" price\n"
 
@@ -2281,7 +2281,7 @@ UniValue tl_change_oracleref(const JSONRPCRequest& request)
 #else
     std::unique_ptr<interfaces::Wallet> pwallet = interfaces::MakeWallet(nullptr);
 #endif
-    if (request.params.size() != 3)
+    if (request.fHelp || request.params.size() != 3)
         throw runtime_error(
             "tl_change_oracleref \"fromaddress\" \"toaddress\" contract name\n"
 
@@ -2345,7 +2345,7 @@ UniValue tl_oraclebackup(const JSONRPCRequest& request)
 #else
     std::unique_ptr<interfaces::Wallet> pwallet = interfaces::MakeWallet(nullptr);
 #endif
-    if (request.params.size() != 2)
+    if (request.fHelp || request.params.size() != 2)
         throw runtime_error(
             "tl_oraclebackup \"oracle address\" \"contract name\n"
 
@@ -2406,7 +2406,7 @@ UniValue tl_closeoracle(const JSONRPCRequest& request)
 #else
     std::unique_ptr<interfaces::Wallet> pwallet = interfaces::MakeWallet(nullptr);
 #endif
-    if (request.params.size() != 2)
+    if (request.fHelp || request.params.size() != 2)
         throw runtime_error(
             "tl_closeoracle \"backupaddress\" \"contract name\n"
 
@@ -2447,6 +2447,284 @@ UniValue tl_closeoracle(const JSONRPCRequest& request)
     std::string rawHex;
     int result = WalletTxBuilder(backupAddress, "", "", 0, payload, txid, rawHex, autoCommit, pwallet.get());
 
+    // check error and return the txid (or raw hex depending on autocommit)
+    if (result != 0) {
+        throw JSONRPCError(result, error_str(result));
+    } else {
+        if (!autoCommit) {
+            return rawHex;
+        } else {
+            return txid.GetHex();
+        }
+    }
+}
+
+UniValue tl_commit_tochannel(const JSONRPCRequest& request)
+{
+  #ifdef ENABLE_WALLET
+      std::shared_ptr<CWallet> const wallet = GetWalletForJSONRPCRequest(request);
+      std::unique_ptr<interfaces::Wallet> pwallet = interfaces::MakeWallet(wallet);
+  #else
+      std::unique_ptr<interfaces::Wallet> pwallet = interfaces::MakeWallet(nullptr);
+  #endif
+    if (request.fHelp || request.params.size() != 4)
+        throw runtime_error(
+            "tl_commit_tochannel \"sender\" \"channel address\" \"propertyId\" \"amount\"vout\n"
+
+            "\nCommit fundings into the channel.\n"
+
+            "\nArguments:\n"
+            "1. sender                 (string, required) the sender address that commit into the channel\n"
+            "2. channel address        (string, required) multisig address of channel\n"
+            "3. propertyId             (number, required) the propertyId of token commited into the channel\n"
+            "4. amount                 (number, required) amount of tokens traded in the channel\n"
+            "\nResult:\n"
+            "\"hash\"                  (string) the hex-encoded transaction hash\n"
+
+            "\nExamples:\n"
+
+            + HelpExampleCli("tl_commit_tochannel", "\"1M9qvHKtgARhqcMtM5cRT9VaiDJ5PSfQGY\" \"37FaKponF7zqoMLUjEiko25pDiuVH5YLEa\" 3 100 \"1\"")
+            + HelpExampleRpc("tl_commit_tochannel", "\"1M9qvHKtgARhqcMtM5cRT9VaiDJ5PSfQGY\", \"37FaKponF7zqoMLUjEiko25pDiuVH5YLEa\",3, 100, \"1\"")
+        );
+
+    // obtain parameters & info
+    std::string senderAddress = ParseAddress(request.params[0]);
+    std::string channelAddress = ParseAddress(request.params[1]);
+    uint32_t propertyId = ParsePropertyId(request.params[2]);
+    int64_t amount = ParseAmount(request.params[3], true);
+
+
+    RequireExistingProperty(propertyId);
+    RequireBalance(senderAddress, propertyId, amount);
+
+    PrintToLog("channelAddress inside rpctx : %s\n",channelAddress);
+
+    // create a payload for the transaction
+    std::vector<unsigned char> payload = CreatePayload_Commit_Channel(propertyId, amount);
+
+    // request the wallet build the transaction (and if needed commit it)
+    uint256 txid;
+    std::string rawHex;
+    int result = WalletTxBuilder(senderAddress, channelAddress,"", 0, payload, txid, rawHex, autoCommit, pwallet.get());
+
+    // check error and return the txid (or raw hex depending on autocommit)
+    if (result != 0) {
+        throw JSONRPCError(result, error_str(result));
+    } else {
+        if (!autoCommit) {
+            return rawHex;
+        } else {
+            return txid.GetHex();
+        }
+    }
+}
+
+UniValue tl_withdrawal_fromchannel(const JSONRPCRequest& request)
+{
+#ifdef ENABLE_WALLET
+    std::shared_ptr<CWallet> const wallet = GetWalletForJSONRPCRequest(request);
+    std::unique_ptr<interfaces::Wallet> pwallet = interfaces::MakeWallet(wallet);
+#else
+    std::unique_ptr<interfaces::Wallet> pwallet = interfaces::MakeWallet(nullptr);
+#endif
+    if (request.fHelp || request.params.size() != 4)
+        throw runtime_error(
+            "tl_withdrawal_fromchannel \"sender\" \"channel address\" \"propertyId\" \"amount\"vout\n"
+
+            "\nwithdrawal from the channel.\n"
+
+            "\nArguments:\n"
+            "1. sender                 (string, required) the sender address that commit into the channel\n"
+            "2. channel address        (string, required) multisig address of channel\n"
+            "3. propertyId             (number, required) the propertyId of token commited into the channel\n"
+            "4. amount                 (number, required) amount to withdrawal from channel\n"
+            "\nResult:\n"
+            "\"hash\"                  (string) the hex-encoded transaction hash\n"
+
+            "\nExamples:\n"
+            + HelpExampleCli("tl_withdrawal_fromchannel", "\"1M9qvHKtgARhqcMtM5cRT9VaiDJ5PSfQGY\" \"37FaKponF7zqoMLUjEiko25pDiuVH5YLEa\" 3 100 \"1\"")
+            + HelpExampleRpc("tl_withdrawal_fromchannel", "\"1M9qvHKtgARhqcMtM5cRT9VaiDJ5PSfQGY\", \"37FaKponF7zqoMLUjEiko25pDiuVH5YLEa\",3, 100, \"1\"")
+        );
+
+    // obtain parameters & info
+    std::string senderAddress = ParseAddress(request.params[0]);
+    std::string channelAddress = ParseAddress(request.params[1]);
+    uint32_t propertyId = ParsePropertyId(request.params[2]);
+    int64_t amount = ParseAmount(request.params[3], true);
+
+
+    RequireExistingProperty(propertyId);
+
+    // create a payload for the transaction
+    std::vector<unsigned char> payload = CreatePayload_Withdrawal_FromChannel(propertyId, amount);
+
+    // request the wallet build the transaction (and if needed commit it)
+    uint256 txid;
+    std::string rawHex;
+    int result = WalletTxBuilder(senderAddress, channelAddress,"", 0, payload, txid, rawHex, autoCommit, pwallet.get());
+
+    // check error and return the txid (or raw hex depending on autocommit)
+    if (result != 0) {
+        throw JSONRPCError(result, error_str(result));
+    } else {
+        if (!autoCommit) {
+            return rawHex;
+        } else {
+            return txid.GetHex();
+        }
+    }
+}
+
+UniValue tl_create_channel(const JSONRPCRequest& request)
+{
+#ifdef ENABLE_WALLET
+    std::shared_ptr<CWallet> const wallet = GetWalletForJSONRPCRequest(request);
+    std::unique_ptr<interfaces::Wallet> pwallet = interfaces::MakeWallet(wallet);
+#else
+    std::unique_ptr<interfaces::Wallet> pwallet = interfaces::MakeWallet(nullptr);
+#endif
+    if (request.fHelp || request.params.size() != 4)
+        throw runtime_error(
+            "tl_create_channel \"sender\" \"channel address\" \"propertyId\" \"amount\"vout\n"
+
+            "\nsetting multisig address channel.\n"
+
+            "\nArguments:\n"
+            "1. first address            (string, required) the first address that commit into the channel\n"
+            "2. second address           (string, required) the second address that commit into the channel\n"
+            "3. channel address          (string, required) multisig address of channel\n"
+            "4. blocks          (string, required) blocks until channel expiration\n"
+            "\nResult:\n"
+            "\"hash\"                  (string) the hex-encoded transaction hash\n"
+
+            "\nExamples:\n"
+            + HelpExampleCli("tl_withdrawal_fromchannel", "\"1M9qvHKtgARhqcMtM5cRT9VaiDJ5PSfQGY\" \"37FaKponF7zqoMLUjEiko25pDiuVH5YLEa\" 3 100 \"1\"")
+            + HelpExampleRpc("tl_withdrawal_fromchannel", "\"1M9qvHKtgARhqcMtM5cRT9VaiDJ5PSfQGY\", \"37FaKponF7zqoMLUjEiko25pDiuVH5YLEa\",3, 100, \"1\"")
+        );
+
+    // obtain parameters & info
+    std::string firstAddress = ParseAddress(request.params[0]);
+    std::string secondAddress = ParseAddress(request.params[1]);
+    std::string channelAddress = ParseAddress(request.params[2]);
+    uint32_t blocks = request.params[3].get_int();
+
+    // create a payload for the transaction
+    std::vector<unsigned char> payload = CreatePayload_Create_Channel(channelAddress,blocks);
+
+    // request the wallet build the transaction (and if needed commit it)
+    uint256 txid;
+    std::string rawHex;
+    int result = WalletTxBuilder(firstAddress, secondAddress, "", 0, payload, txid, rawHex, autoCommit, pwallet.get());
+
+    // check error and return the txid (or raw hex depending on autocommit)
+    if (result != 0) {
+        throw JSONRPCError(result, error_str(result));
+    } else {
+        if (!autoCommit) {
+            return rawHex;
+        } else {
+            return txid.GetHex();
+        }
+    }
+}
+
+UniValue tl_new_id_registration(const JSONRPCRequest& request)
+{
+#ifdef ENABLE_WALLET
+    std::shared_ptr<CWallet> const wallet = GetWalletForJSONRPCRequest(request);
+    std::unique_ptr<interfaces::Wallet> pwallet = interfaces::MakeWallet(wallet);
+#else
+    std::unique_ptr<interfaces::Wallet> pwallet = interfaces::MakeWallet(nullptr);
+#endif
+    if (request.fHelp || request.params.size() != 8)
+        throw runtime_error(
+            "tl_new_id_registration \"sender\" \"address\" \"website url\" \"company name\" \n"
+
+            "\nsetting identity registrar Id number for address.\n"
+
+            "\nArguments:\n"
+            "1. sender                       (string, required) sender address\n"
+            "2. channel address              (string, required) channel address\n"
+            "3. website url                  (string, required) the second address that commit into the channel\n"
+            "4. company name                 (string, required) multisig address of channel\n"
+            "5. token/token permission       (int, required) trading token for tokens (0 = false, 1 = true)\n"
+            "6. ltc/token permission         (int, required) trading litecoins for tokens (0 = false, 1 = true)\n"
+            "7. native-contract permission   (int, required) trading native contracts (0 = false, 1 = true)\n"
+            "8. oracle-contract permission   (int, required) trading oracle contracts (0 = false, 1 = true)\n"
+
+            "\nResult:\n"
+            "\"hash\"                  (string) the hex-encoded transaction hash\n"
+
+            "\nExamples:\n"
+            + HelpExampleCli("tl_new_id_registration", "\"1M9qvHKtgARhqcMtM5cRT9VaiDJ5PSfQGY\" \"www.companyone.com\" company one , 1,0,0,0 \"")
+            + HelpExampleRpc("tl_new_id_registration", "\"1M9qvHKtgARhqcMtM5cRT9VaiDJ5PSfQGY\", \"www.companyone.com\",company one, 1,1,0,0 \"")
+        );
+
+    // obtain parameters & info
+    std::string sender = ParseAddress(request.params[0]);
+    std::string address = ParseAddress(request.params[1]);
+    std::string website = ParseText(request.params[2]);
+    std::string name = ParseText(request.params[3]);
+    uint8_t tokens = ParsePermission(request.params[4]);
+    uint8_t ltc = ParsePermission(request.params[5]);
+    uint8_t natives = ParsePermission(request.params[6]);
+    uint8_t oracles = ParsePermission(request.params[7]);
+
+    // create a payload for the transaction
+    std::vector<unsigned char> payload = CreatePayload_New_Id_Registration(website, name, tokens, ltc, natives, oracles);
+
+    // request the wallet build the transaction (and if needed commit it)
+    uint256 txid;
+    std::string rawHex;
+    int result = WalletTxBuilder(sender, address, "", 0, payload, txid, rawHex, autoCommit, pwallet.get());
+    // check error and return the txid (or raw hex depending on autocommit)
+    if (result != 0) {
+        throw JSONRPCError(result, error_str(result));
+    } else {
+        if (!autoCommit) {
+            return rawHex;
+        } else {
+            return txid.GetHex();
+        }
+    }
+}
+
+UniValue tl_update_id_registration(const JSONRPCRequest& request)
+{
+#ifdef ENABLE_WALLET
+    std::shared_ptr<CWallet> const wallet = GetWalletForJSONRPCRequest(request);
+    std::unique_ptr<interfaces::Wallet> pwallet = interfaces::MakeWallet(wallet);
+#else
+    std::unique_ptr<interfaces::Wallet> pwallet = interfaces::MakeWallet(nullptr);
+#endif
+    if (request.fHelp || request.params.size() != 2)
+        throw runtime_error(
+            "tl_update_id_registration \"address\" \"new address\" \n"
+
+            "\nupdate the address on id registration.\n"
+
+            "\nArguments:\n"
+            "1. address                      (string, required) old address registered\n"
+            "2. new address                  (string, required) new address into register\n"
+
+            "\nResult:\n"
+            "\"hash\"                  (string) the hex-encoded transaction hash\n"
+
+            "\nExamples:\n"
+            + HelpExampleCli("tl_update_id_registration", "\"1M9qvHKtgARhqcMtM5cRT9VaiDJ5PSfQGY\" , \"1M9qvHKtgARhqcMtM5cRT9VaiDJ5PSfQGY\"")
+            + HelpExampleRpc("tl_update_id_registration", "\"1M9qvHKtgARhqcMtM5cRT9VaiDJ5PSfQGY\",  \"1M9qvHKtgARhqcMtM5cRT9VaiDJ5PSfQGY\"")
+        );
+
+    // obtain parameters & info
+    std::string address = ParseAddress(request.params[0]);
+    std::string newAddr = ParseAddress(request.params[1]);
+    // create a payload for the transaction
+    std::vector<unsigned char> payload = CreatePayload_Update_Id_Registration();
+
+    // request the wallet build the transaction (and if needed commit it)
+    uint256 txid;
+    std::string rawHex;
+    int result = WalletTxBuilder(address, newAddr, "", 0, payload, txid, rawHex, autoCommit, pwallet.get());
     // check error and return the txid (or raw hex depending on autocommit)
     if (result != 0) {
         throw JSONRPCError(result, error_str(result));
@@ -2501,6 +2779,13 @@ static const CRPCCommand commands[] =
     { "trade layer (transaction creation)",  "tl_change_oracleref",         &tl_change_oracleref,                {} },
     { "trade layer (transaction creation)",  "tl_oraclebackup",             &tl_oraclebackup,                    {} },
     { "trade layer (transaction creation)",  "tl_closeoracle",              &tl_closeoracle,                     {} },
+    { "trade layer (transaction creation)",  "tl_commit_tochannel",         &tl_commit_tochannel,                {} },
+    { "trade layer (transaction creation)",  "tl_withdrawal_fromchannel",   &tl_withdrawal_fromchannel,          {} },
+    { "trade layer (transaction creation)",  "tl_create_channel",           &tl_create_channel,                  {} },
+    { "trade layer (transaction cration)",   "tl_new_id_registration",      &tl_new_id_registration,             {} },
+    { "trade layer (transaction cration)",   "tl_update_id_registration",   &tl_update_id_registration,          {} },
+    { "trade layer (transaction cration)",   "tl_send_dex_payment",         &tl_send_dex_payment,                {} },
+    { "trade layer (transaction creation)",  "tl_commit_tochannel",         &tl_commit_tochannel,                {} },
 
     /* depreciated: */
     { "hidden",                            "sendrawtx_MP",                 &omni_sendrawtx,               {"fromaddress", "rawtransaction", "referenceaddress", "redeemaddress", "referenceamount"} },

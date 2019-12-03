@@ -571,12 +571,7 @@ omnicore/libbitcoin_server_a-dbtradelist.o: omnicore/dbtradelist.cpp \
  /usr/include/boost/filesystem/fstream.hpp /usr/include/c++/7/fstream \
  /usr/include/x86_64-linux-gnu/c++/7/bits/basic_file.h \
  /usr/include/x86_64-linux-gnu/c++/7/bits/c++io.h \
- /usr/include/c++/7/bits/fstream.tcc uint256.h \
- univalue/include/univalue.h /usr/include/c++/7/map \
- /usr/include/c++/7/bits/stl_tree.h /usr/include/c++/7/bits/stl_map.h \
- /usr/include/c++/7/bits/stl_multimap.h /usr/include/c++/7/sstream \
- /usr/include/c++/7/bits/sstream.tcc omnicore/uint256_extensions.h \
- arith_uint256.h omnicore/sp.h omnicore/dbspinfo.h omnicore/log.h \
+ /usr/include/c++/7/bits/fstream.tcc omnicore/omnicore.h omnicore/log.h \
  util/system.h config/bitcoin-config.h attributes.h compat.h \
  /usr/include/fcntl.h /usr/include/x86_64-linux-gnu/bits/fcntl.h \
  /usr/include/x86_64-linux-gnu/bits/fcntl-linux.h \
@@ -613,11 +608,14 @@ omnicore/libbitcoin_server_a-dbtradelist.o: omnicore/dbtradelist.cpp \
  /usr/include/x86_64-linux-gnu/bits/types/__sigval_t.h \
  /usr/include/x86_64-linux-gnu/bits/netdb.h compat/assumptions.h \
  logging.h tinyformat.h /usr/include/c++/7/iostream \
+ /usr/include/c++/7/sstream /usr/include/c++/7/bits/sstream.tcc \
  /usr/include/c++/7/mutex /usr/include/c++/7/chrono \
  /usr/include/c++/7/ratio /usr/include/c++/7/bits/parse_numbers.h \
  /usr/include/c++/7/bits/std_mutex.h sync.h threadsafety.h \
  /usr/include/c++/7/condition_variable /usr/include/c++/7/thread \
- util/memory.h util/time.h /usr/include/c++/7/set \
+ util/memory.h util/time.h /usr/include/c++/7/map \
+ /usr/include/c++/7/bits/stl_tree.h /usr/include/c++/7/bits/stl_map.h \
+ /usr/include/c++/7/bits/stl_multimap.h /usr/include/c++/7/set \
  /usr/include/c++/7/bits/stl_set.h /usr/include/c++/7/bits/stl_multiset.h \
  /usr/include/c++/7/unordered_set /usr/include/c++/7/bits/hashtable.h \
  /usr/include/c++/7/bits/hashtable_policy.h \
@@ -748,13 +746,13 @@ omnicore/libbitcoin_server_a-dbtradelist.o: omnicore/dbtradelist.cpp \
  /usr/include/boost/thread/cv_status.hpp \
  /usr/include/boost/enable_shared_from_this.hpp \
  /usr/include/boost/smart_ptr/enable_shared_from_this.hpp \
- /usr/include/boost/smart_ptr/weak_ptr.hpp omnicore/omnicore.h \
- omnicore/tally.h script/standard.h script/interpreter.h \
- script/script_error.h primitives/transaction.h amount.h script/script.h \
- crypto/common.h compat/endian.h compat/byteswap.h \
- /usr/include/byteswap.h prevector.h /usr/include/c++/7/stdlib.h \
- serialize.h span.h /usr/include/boost/variant.hpp \
- /usr/include/boost/variant/variant.hpp /usr/include/boost/type_index.hpp \
+ /usr/include/boost/smart_ptr/weak_ptr.hpp omnicore/tally.h \
+ script/standard.h script/interpreter.h script/script_error.h \
+ primitives/transaction.h amount.h script/script.h crypto/common.h \
+ compat/endian.h compat/byteswap.h /usr/include/byteswap.h prevector.h \
+ /usr/include/c++/7/stdlib.h serialize.h span.h uint256.h \
+ /usr/include/boost/variant.hpp /usr/include/boost/variant/variant.hpp \
+ /usr/include/boost/type_index.hpp \
  /usr/include/boost/type_index/stl_type_index.hpp \
  /usr/include/boost/type_index/type_index_facade.hpp \
  /usr/include/boost/variant/detail/config.hpp \
@@ -954,7 +952,7 @@ omnicore/libbitcoin_server_a-dbtradelist.o: omnicore/dbtradelist.cpp \
  /usr/include/boost/mpl/equal.hpp /usr/include/boost/variant/get.hpp \
  /usr/include/boost/variant/detail/element_index.hpp \
  /usr/include/boost/variant/visitor_ptr.hpp \
- /usr/include/boost/variant/bad_visit.hpp \
+ /usr/include/boost/variant/bad_visit.hpp univalue/include/univalue.h \
  /usr/include/c++/7/unordered_map /usr/include/c++/7/bits/unordered_map.h \
  /usr/include/boost/lexical_cast.hpp \
  /usr/include/boost/range/iterator_range_core.hpp \
@@ -1176,7 +1174,9 @@ omnicore/libbitcoin_server_a-dbtradelist.o: omnicore/dbtradelist.cpp \
  /usr/include/boost/multiprecision/cpp_int/serialize.hpp \
  /usr/include/boost/multiprecision/cpp_int/import_export.hpp \
  omnicore/tradelayer_matrices.h /usr/include/boost/any.hpp \
- /usr/include/openssl/sha.h /usr/include/openssl/e_os2.h \
+ omnicore/uint256_extensions.h arith_uint256.h omnicore/sp.h \
+ omnicore/dbspinfo.h /usr/include/openssl/sha.h \
+ /usr/include/openssl/e_os2.h \
  /usr/include/x86_64-linux-gnu/openssl/opensslconf.h omnicore/mdex.h \
  omnicore/tx.h omnicore/parsing.h util/strencodings.h \
  /usr/include/boost/multiprecision/cpp_dec_float.hpp \
@@ -2605,29 +2605,7 @@ fs.h:
 
 /usr/include/c++/7/bits/fstream.tcc:
 
-uint256.h:
-
-univalue/include/univalue.h:
-
-/usr/include/c++/7/map:
-
-/usr/include/c++/7/bits/stl_tree.h:
-
-/usr/include/c++/7/bits/stl_map.h:
-
-/usr/include/c++/7/bits/stl_multimap.h:
-
-/usr/include/c++/7/sstream:
-
-/usr/include/c++/7/bits/sstream.tcc:
-
-omnicore/uint256_extensions.h:
-
-arith_uint256.h:
-
-omnicore/sp.h:
-
-omnicore/dbspinfo.h:
+omnicore/omnicore.h:
 
 omnicore/log.h:
 
@@ -2729,6 +2707,10 @@ tinyformat.h:
 
 /usr/include/c++/7/iostream:
 
+/usr/include/c++/7/sstream:
+
+/usr/include/c++/7/bits/sstream.tcc:
+
 /usr/include/c++/7/mutex:
 
 /usr/include/c++/7/chrono:
@@ -2750,6 +2732,14 @@ threadsafety.h:
 util/memory.h:
 
 util/time.h:
+
+/usr/include/c++/7/map:
+
+/usr/include/c++/7/bits/stl_tree.h:
+
+/usr/include/c++/7/bits/stl_map.h:
+
+/usr/include/c++/7/bits/stl_multimap.h:
 
 /usr/include/c++/7/set:
 
@@ -3027,8 +3017,6 @@ util/time.h:
 
 /usr/include/boost/smart_ptr/weak_ptr.hpp:
 
-omnicore/omnicore.h:
-
 omnicore/tally.h:
 
 script/standard.h:
@@ -3058,6 +3046,8 @@ prevector.h:
 serialize.h:
 
 span.h:
+
+uint256.h:
 
 /usr/include/boost/variant.hpp:
 
@@ -3486,6 +3476,8 @@ span.h:
 /usr/include/boost/variant/visitor_ptr.hpp:
 
 /usr/include/boost/variant/bad_visit.hpp:
+
+univalue/include/univalue.h:
 
 /usr/include/c++/7/unordered_map:
 
@@ -3952,6 +3944,14 @@ span.h:
 omnicore/tradelayer_matrices.h:
 
 /usr/include/boost/any.hpp:
+
+omnicore/uint256_extensions.h:
+
+arith_uint256.h:
+
+omnicore/sp.h:
+
+omnicore/dbspinfo.h:
 
 /usr/include/openssl/sha.h:
 
