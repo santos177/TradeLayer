@@ -1833,7 +1833,7 @@ const CMPMetaDEx* mastercore::MetaDEx_RetrieveTrade(const uint256& txid)
     *
     *
     */
-     // mastercore::ContractDex_Fees(pnew->getAddr(),pold->getAddr(), nCouldBuy, property_traded);
+     mastercore::ContractDex_Fees(pnew->getAddr(),pold->getAddr(), nCouldBuy, property_traded);
 
      if(msc_debug_x_trade_bidirectional)
      {
@@ -2494,4 +2494,114 @@ const CMPMetaDEx* mastercore::MetaDEx_RetrieveTrade(const uint256& txid)
 
      // write the line
      file << lineOut << std::endl;
+ }
+
+
+ bool mastercore::MetaDEx_Fees(const CMPMetaDEx *pnew,const CMPMetaDEx *pold, int64_t buyer_amountGot)
+ {
+     if(pnew->getBlock() == 0 && pnew->getHash() == uint256() && pnew->getIdx() == 0) {
+        if(msc_debug_metadex_fees) PrintToLog("%s: Buy from  ContractDex_Fees \n",__func__);
+        return false;
+     }
+
+     arith_uint256 uTakerFee = (ConvertTo256(buyer_amountGot) * ConvertTo256(5)) / ConvertTo256(100);
+     arith_uint256 uMakerFee = (ConvertTo256(buyer_amountGot) * ConvertTo256(4)) / ConvertTo256(100);
+     arith_uint256 uCacheFee = ConvertTo256(buyer_amountGot) / ConvertTo256(100);
+
+     int64_t takerFee = ConvertTo64(uTakerFee);
+     int64_t makerFee = ConvertTo64(uMakerFee);
+     int64_t cacheFee = ConvertTo64(uCacheFee);
+
+     if(msc_debug_metadex_fees) PrintToLog("%s: buyer_amountGot: %d, cacheFee: %d, takerFee: %d, makerFee: %d\n",__func__, buyer_amountGot, cacheFee, takerFee, makerFee);
+     //sum check
+     assert(takerFee == makerFee + cacheFee);
+
+     // checking the same property for both
+     assert(pnew->getDesProperty() == pold->getProperty());
+     if(msc_debug_metadex_fees) PrintToLog("%s: propertyId: %d\n",__func__,pold->getProperty());
+
+     // -% to taker, +% to maker
+     update_tally_map(pnew->getAddr(), pnew->getDesProperty(), -takerFee,BALANCE);
+     update_tally_map(pold->getAddr(), pold->getProperty(), makerFee,BALANCE);
+
+
+     // to feecache
+     cachefees[pnew->getProperty()] += cacheFee;
+
+     return true;
+
+ }
+
+ bool mastercore::ContractDex_Fees(std::string addressTaker,std::string addressMaker, int64_t nCouldBuy,uint32_t contractId)
+ {
+     int64_t takerFee, makerFee, cacheFee;
+
+     CMPSPInfo::Entry sp;
+     if (!pDbSpInfo->getSP(contractId, sp))
+        return false;
+
+     int64_t marginRe = static_cast<int64_t>(sp.margin_requirement);
+
+     if (msc_debug_contractdex_fees) PrintToLog("%s: addressTaker: %d, addressMaker: %d, nCouldBuy: %d, contractIds: %d\n",__func__,addressTaker, addressMaker, nCouldBuy, contractId);
+
+
+     if (sp.prop_type == ALL_PROPERTY_TYPE_ORACLE_CONTRACT)
+     {
+         arith_uint256 uTakerFee = (ConvertTo256(nCouldBuy) * ConvertTo256(marginRe) * ConvertTo256(25)) / (ConvertTo256(1000) * ConvertTo256(COIN));  //2.5%
+         arith_uint256 uMakerFee = (ConvertTo256(nCouldBuy) * ConvertTo256(marginRe)) / (ConvertTo256(100) * ConvertTo256(COIN));  // 1%
+
+         cacheFee = ConvertTo64(uMakerFee / ConvertTo256(2));
+         takerFee = ConvertTo64(uTakerFee);
+         makerFee = ConvertTo64(uMakerFee);
+
+         if (msc_debug_contractdex_fees) PrintToLog("%s: oracles cacheFee: %d, oracles takerFee: %d, oracles makerFee: %d\n",__func__,cacheFee, takerFee, makerFee);
+
+         // 0.5% to oracle maintaineer
+         update_tally_map(sp.issuer,sp.collateral_currency, cacheFee,BALANCE);
+
+         if (sp.collateral_currency == 4) //ALLS
+         {
+           // 0.5% to feecache
+           cachefees[sp.collateral_currency] += cacheFee;
+
+         }else {
+             // Create the metadex object with specific params
+
+             uint256 txid;
+             int block = 0;
+             unsigned int idx = 0;
+
+             CMPSPInfo::Entry spp;
+             pDbSpInfo->getSP(sp.collateral_currency, spp);
+             if (msc_debug_contractdex_fees) PrintToLog("name of collateral currency:%s \n",spp.name);
+
+             int64_t VWAPMetaDExPrice = mastercore::getVWAPPriceByPair(spp.name, "ALL");
+             if (msc_debug_contractdex_fees) PrintToLog("\nVWAPMetaDExPrice = %s\n", FormatDivisibleMP(VWAPMetaDExPrice));
+             // int64_t amount_desired = 1; // we need to ajust this to market prices
+             // CMPMetaDEx new_mdex(addressTaker, block, sp.collateral_currency, cacheFee, 1, amount_desired, txid, idx, CMPTransaction::ADD);
+             // mastercore::MetaDEx_INSERT(new_mdex);
+
+         }
+
+     } else {      //natives
+
+           arith_uint256 uTakerFee = (ConvertTo256(nCouldBuy) * ConvertTo256(marginRe)) / (ConvertTo256(100) * ConvertTo256(COIN));
+           arith_uint256 uMakerFee = (ConvertTo256(nCouldBuy) * ConvertTo256(marginRe) * ConvertTo256(5)) / (ConvertTo256(1000) * ConvertTo256(COIN));
+
+           takerFee = ConvertTo64(uTakerFee);
+           makerFee = ConvertTo64(uMakerFee);
+
+           if (msc_debug_contractdex_fees) PrintToLog("%s: natives takerFee: %d, natives makerFee: %d\n",__func__,takerFee, makerFee);
+
+     }
+
+     // -% to taker, +% to maker
+     update_tally_map(addressTaker,sp.collateral_currency,-takerFee,BALANCE);
+     update_tally_map(addressMaker,sp.collateral_currency, makerFee,BALANCE);
+
+     //sum check
+     assert(takerFee == makerFee + 3*cacheFee); // 2.5% = 1% +3* 0.5 %
+
+     return true;
+
  }

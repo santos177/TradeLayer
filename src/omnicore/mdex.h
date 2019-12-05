@@ -202,6 +202,8 @@ void MetaDEx_debug_print(bool bShowPriceLevel = false, bool bDisplay = false);
 bool MetaDEx_isOpen(const uint256& txid, uint32_t propertyIdForSale = 0);
 int MetaDEx_getStatus(const uint256& txid, uint32_t propertyIdForSale, int64_t amountForSale, int64_t totalSold = -1);
 std::string MetaDEx_getStatusText(int tradeStatus);
+bool MetaDEx_Fees(const CMPMetaDEx *pnew, const CMPMetaDEx *pold, int64_t nCouldBuy);
+
 
 // Locates a trade in the MetaDEx maps via txid and returns the trade object
 const CMPMetaDEx* MetaDEx_RetrieveTrade(const uint256& txid);
@@ -248,8 +250,6 @@ bool ContractDex_Fees(std::string addressTaker,std::string addressMaker, int64_t
 int64_t getPairMarketPrice(std::string num, std::string den);
 int64_t getVWAPPriceByPair(std::string num, std::string den);
 int64_t getVWAPPriceContracts(std::string namec);
-
-bool MetaDEx_Fees(const CMPMetaDEx *pnew, const CMPMetaDEx *pold, int64_t nCouldBuy);
 
 uint64_t edgeOrderbook(uint32_t contractId, uint8_t tradingAction);
 
