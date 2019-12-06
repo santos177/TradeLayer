@@ -227,9 +227,6 @@ static const CRPCConvertParam vRPCConvertParams[] =
     { "omni_sendissuancecrowdsale", 11, "deadline" },
     { "omni_sendissuancecrowdsale", 12, "earlybonus" },
     { "omni_sendissuancecrowdsale", 13, "issuerpercentage" },
-    { "omni_senddexsell", 1, "propertyidforsale" },
-    { "omni_senddexsell", 4, "paymentwindow" },
-    { "omni_senddexsell", 6, "action" },
     { "omni_senddexaccept", 2, "propertyid" },
     { "omni_senddexaccept", 4, "override" },
     { "omni_sendclosecrowdsale", 1, "propertyid" },
@@ -277,6 +274,9 @@ static const CRPCConvertParam vRPCConvertParams[] =
     { "tl_new_id_registration", 5, "arg4" },
     { "tl_new_id_registration", 6, "arg5" },
     { "tl_new_id_registration", 7, "arg6" },
+    { "tl_senddexoffer", 1, "arg1" },
+    { "tl_senddexoffer", 4, "arg4" },
+    { "tl_senddexoffer", 7, "arg7" },
 
     /* Omni Core - raw transaction calls */
     { "omni_decodetransaction", 1, "prevtxs" },

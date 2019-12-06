@@ -9,11 +9,11 @@ SetCompressor /SOLID lzma
 !define URL http://www.omnilayer.org/
 
 # MUI Symbol Definitions
-!define MUI_ICON "/home/ale/Escritorio/AWork/bmetadex/share/pixmaps/bitcoin.ico"
-!define MUI_WELCOMEFINISHPAGE_BITMAP "/home/ale/Escritorio/AWork/bmetadex/share/pixmaps/nsis-wizard.bmp"
+!define MUI_ICON "/home/ale/Escritorio/AWork/bdex/share/pixmaps/bitcoin.ico"
+!define MUI_WELCOMEFINISHPAGE_BITMAP "/home/ale/Escritorio/AWork/bdex/share/pixmaps/nsis-wizard.bmp"
 !define MUI_HEADERIMAGE
 !define MUI_HEADERIMAGE_RIGHT
-!define MUI_HEADERIMAGE_BITMAP "/home/ale/Escritorio/AWork/bmetadex/share/pixmaps/nsis-header.bmp"
+!define MUI_HEADERIMAGE_BITMAP "/home/ale/Escritorio/AWork/bdex/share/pixmaps/nsis-header.bmp"
 !define MUI_FINISHPAGE_NOAUTOCLOSE
 !define MUI_STARTMENUPAGE_REGISTRY_ROOT HKLM
 !define MUI_STARTMENUPAGE_REGISTRY_KEY ${REGKEY}
@@ -22,7 +22,7 @@ SetCompressor /SOLID lzma
 !define MUI_FINISHPAGE_RUN "$WINDIR\explorer.exe"
 !define MUI_FINISHPAGE_RUN_PARAMETERS $INSTDIR\omnicore-qt
 !define MUI_UNICON "${NSISDIR}\Contrib\Graphics\Icons\modern-uninstall.ico"
-!define MUI_UNWELCOMEFINISHPAGE_BITMAP "/home/ale/Escritorio/AWork/bmetadex/share/pixmaps/nsis-wizard.bmp"
+!define MUI_UNWELCOMEFINISHPAGE_BITMAP "/home/ale/Escritorio/AWork/bdex/share/pixmaps/nsis-wizard.bmp"
 !define MUI_UNFINISHPAGE_NOAUTOCLOSE
 
 # Included files
@@ -48,7 +48,7 @@ Var StartMenuGroup
 !insertmacro MUI_LANGUAGE English
 
 # Installer attributes
-OutFile /home/ale/Escritorio/AWork/bmetadex/omnicore-0.7.0-win-setup.exe
+OutFile /home/ale/Escritorio/AWork/bdex/omnicore-0.7.0-win-setup.exe
 !if "" == "64"
 InstallDir $PROGRAMFILES64\Bitcoin
 !else
@@ -73,16 +73,16 @@ ShowUninstDetails show
 Section -Main SEC0000
     SetOutPath $INSTDIR
     SetOverwrite on
-    File /home/ale/Escritorio/AWork/bmetadex/release/omnicore-qt
-    File /oname=COPYING.txt /home/ale/Escritorio/AWork/bmetadex/COPYING
-    File /oname=readme.txt /home/ale/Escritorio/AWork/bmetadex/doc/README_windows.txt
+    File /home/ale/Escritorio/AWork/bdex/release/omnicore-qt
+    File /oname=COPYING.txt /home/ale/Escritorio/AWork/bdex/COPYING
+    File /oname=readme.txt /home/ale/Escritorio/AWork/bdex/doc/README_windows.txt
     SetOutPath $INSTDIR\daemon
-    File /home/ale/Escritorio/AWork/bmetadex/release/omnicored
-    File /home/ale/Escritorio/AWork/bmetadex/release/omnicore-cli
-    File /home/ale/Escritorio/AWork/bmetadex/release/bitcoin-tx
-    File /home/ale/Escritorio/AWork/bmetadex/release/bitcoin-wallet
+    File /home/ale/Escritorio/AWork/bdex/release/omnicored
+    File /home/ale/Escritorio/AWork/bdex/release/omnicore-cli
+    File /home/ale/Escritorio/AWork/bdex/release/bitcoin-tx
+    File /home/ale/Escritorio/AWork/bdex/release/bitcoin-wallet
     SetOutPath $INSTDIR\doc
-    File /r /x Makefile* /home/ale/Escritorio/AWork/bmetadex/doc\*.*
+    File /r /x Makefile* /home/ale/Escritorio/AWork/bdex/doc\*.*
     SetOutPath $INSTDIR
     WriteRegStr HKCU "${REGKEY}\Components" Main 1
 SectionEnd

@@ -239,9 +239,9 @@ bool CMPTransaction::interpret_Transaction()
         case MSC_TYPE_CONTRACTDEX_CANCEL_ORDERS_BY_BLOCK:
             return interpret_ContractDex_Cancel_Orders_By_Block();
 
-        // case MSC_TYPE_DEX_BUY_OFFER:
-        //     return interpret_DExBuy();
-        //
+        case MSC_TYPE_DEX_BUY_OFFER:
+            return interpret_DExBuy();
+
         case MSC_TYPE_CHANGE_ORACLE_REF:
             return interpret_Change_OracleRef();
 
@@ -1472,7 +1472,7 @@ bool CMPTransaction::interpret_Transfer()
   // }
 
   memcpy(&property, &pkt[4], 4);
-  SwapByteOrder32(propertyId);
+  SwapByteOrder32(property);
   memcpy(&amount, &pkt[8], 8);
   SwapByteOrder64(amount);
 
@@ -1488,6 +1488,38 @@ bool CMPTransaction::interpret_Transfer()
   return true;
 }
 
+/*Tx 21*/
+bool CMPTransaction::interpret_DExBuy()
+{
+    // if (pkt_size < 17) {
+    //     return false;
+    // }
+
+    memcpy(&propertyId, &pkt[4], 4);
+    SwapByteOrder32(propertyId);
+    memcpy(&nValue, &pkt[8], 8);
+    SwapByteOrder64(nValue);
+    memcpy(&effective_price, &pkt[16], 8);
+    SwapByteOrder64(effective_price);
+    memcpy(&min_fee, &pkt[24], 8);
+    SwapByteOrder64(min_fee);
+    memcpy(&timeLimit, &pkt[32], 1);
+    memcpy(&subAction, &pkt[33], 1);
+
+    if ((!rpcOnly && msc_debug_packets) || msc_debug_packets_readonly)
+    {
+        PrintToLog("\t version: %d\n", version);
+        PrintToLog("\t messageType: %d\n",type);
+        PrintToLog("\t property: %d\n", propertyId);
+        PrintToLog("\t amount : %d\n", nValue);
+        PrintToLog("\t price : %d\n", effective_price);
+        PrintToLog("\t block limit : %d\n", timeLimit);
+        PrintToLog("\t min fees : %d\n", min_fee);
+        PrintToLog("\t subaction : %d\n", subAction);
+    }
+
+    return true;
+}
 
 // ---------------------- CORE LOGIC -------------------------
 
@@ -1622,6 +1654,9 @@ int CMPTransaction::interpretPacket()
                 return logicMath_Change_OracleRef();
 
 /**********************************************************/
+        case MSC_TYPE_DEX_BUY_OFFER:
+                return logicMath_DExBuy();
+
         case MSC_TYPE_CREATE_CHANNEL:
                 return logicMath_Create_Channel();
 
@@ -3412,8 +3447,8 @@ int CMPTransaction::logicMath_ContractDexTrade()
 
   (pfuture->fco_prop_type == ALL_PROPERTY_TYPE_CONTRACT) ? result = 5 : result = 6;
 
-  // if(!t_tradelistdb->checkKYCRegister(sender,result))
-  //     return PKT_ERROR_KYC -10;
+  if(!pDbTradeList->checkKYCRegister(sender,result))
+      return PKT_ERROR_KYC -10;
 
 
   if (block > pfuture->fco_init_block + static_cast<int>(pfuture->fco_blocks_until_expiration) || block < pfuture->fco_init_block)
@@ -4255,6 +4290,104 @@ int CMPTransaction::logicMath_Transfer()
 
   return 0;
 
+}
+
+/*Tx 21*/
+int CMPTransaction::logicMath_DExBuy()
+{
+    if (!IsTransactionTypeAllowed(block, propertyId, type, version)) {
+     PrintToLog("%s(): rejected: type %d or version %d not permitted for property %d at block %d\n",
+             __func__,
+             type,
+             version,
+             propertyId,
+             block);
+      return (PKT_ERROR_TRADEOFFER -22);
+    }
+
+    if(!pDbTradeList->checkKYCRegister(sender,4))
+    {
+        PrintToLog("%s: tx disable from kyc register!\n",__func__);
+        return (PKT_ERROR_KYC -10);
+    }
+
+    if (MAX_INT_8_BYTES < nValue) {
+        PrintToLog("%s(): rejected: value out of range or zero: %d\n", __func__, nValue);
+        return (PKT_ERROR_SEND -23);
+    }
+
+
+  // ------------------------------------------
+
+    int rc = PKT_ERROR_TRADEOFFER;
+
+    // figure out which Action this is based on amount for sale, version & etc.
+    switch (version)
+      {
+      case MP_TX_PKT_V0:
+        {
+	  if (0 != nValue) {
+
+	    if (!DEx_offerExists(sender, propertyId)) {
+	      PrintToLog("%s():Dex offer doesn't exist\n");
+	      rc = DEx_BuyOfferCreate(sender, propertyId, nValue, block, effective_price, min_fee, timeLimit, txid, &nNewValue);
+	    } else {
+	      rc = DEx_offerUpdate(sender, propertyId, nValue, block, effective_price, min_fee, timeLimit, txid, &nNewValue);
+	    }
+	  } else {
+	    // what happens if nValue is 0 for V0 ?  ANSWER: check if exists and it does -- cancel, otherwise invalid
+	    if (DEx_offerExists(sender, propertyId)) {
+	      rc = DEx_offerDestroy(sender, propertyId);
+	    } else {
+	      PrintToLog("%s(): rejected: sender %s has no active sell offer for property: %d\n", __func__, sender, propertyId);
+	      rc = (PKT_ERROR_TRADEOFFER -49);
+	    }
+	  }
+
+	  break;
+        }
+
+        case MP_TX_PKT_V1:
+        {
+            PrintToLog("%s():Case MP_TX_PKT_V1\n");
+            if (DEx_offerExists(sender, propertyId)) {
+                if (CANCEL != subAction && UPDATE != subAction) {
+                    PrintToLog("%s(): rejected: sender %s has an active sell offer for property: %d\n", __func__, sender, property);
+                    rc = (PKT_ERROR_TRADEOFFER -48);
+                    break;
+                }
+            } else {
+                // Offer does not exist
+                if (NEW != subAction) {
+                    PrintToLog("%s(): rejected: sender %s has no active sell offer for property: %d\n", __func__, sender, property);
+                    rc = (PKT_ERROR_TRADEOFFER -49);
+                    break;
+                }
+            }
+
+            switch (subAction) {
+                case NEW:
+                    PrintToLog("%s():Subaction: NEW\n");
+                    rc = DEx_BuyOfferCreate(sender, propertyId, nValue, block, effective_price, min_fee, timeLimit, txid, &nNewValue);
+                    break;
+
+              case UPDATE:
+                  rc = DEx_offerUpdate(sender, propertyId, nValue, block, effective_price, min_fee, timeLimit, txid, &nNewValue);
+                  break;
+
+              case CANCEL:
+                  rc = DEx_offerDestroy(sender, propertyId);
+                  break;
+
+                default:
+                    rc = (PKT_ERROR -999);
+                    break;
+            }
+        }
+        break;
+    }
+
+    return rc;
 }
 
 struct FutureContractObject *getFutureContractObject(uint32_t property_type, std::string identifier)

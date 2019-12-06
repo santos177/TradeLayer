@@ -277,12 +277,13 @@ static int input_mp_offers_string(const std::string& s)
     int64_t minFee = boost::lexical_cast<int64_t>(vstr[i++]);
     uint8_t blocktimelimit = boost::lexical_cast<unsigned int>(vstr[i++]); // lexical_cast can't handle char!
     uint256 txid = uint256S(vstr[i++]);
+    uint8_t option = boost::lexical_cast<int>(vstr[i++]);
 
     // TODO: should this be here? There are usually no sanity checks..
     if (OMNI_PROPERTY_BTC != prop_desired) return -1;
 
     const std::string combo = STR_SELLOFFER_ADDR_PROP_COMBO(sellerAddr, prop);
-    CMPOffer newOffer(offerBlock, amountOriginal, prop, btcDesired, minFee, blocktimelimit, txid);
+    CMPOffer newOffer(offerBlock, amountOriginal, prop, btcDesired, minFee, blocktimelimit, txid, option);
 
     if (!my_offers.insert(std::make_pair(combo, newOffer)).second) return -1;
 
