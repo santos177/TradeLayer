@@ -1,5 +1,5 @@
 #include <omnicore/rpcrequirements.h>
-
+#include <omnicore/uint256_extensions.h>
 #include <omnicore/mdex.h>
 #include <omnicore/dbspinfo.h>
 #include <omnicore/dbtxlist.h>
@@ -264,4 +264,95 @@ void RequireNoOtherDExOffer(const std::string& address, uint32_t propertyId)
     if (mastercore::DEx_offerExists(address, propertyId)) {
         throw JSONRPCError(RPC_TYPE_ERROR, "Another active sell offer from the given address already exists on the distributed exchange");
     }
+}
+
+void RequirePeggedSaneName(std::string& name)
+{
+    if (name.empty()) { throw JSONRPCError(RPC_INVALID_PARAMETER,"Pegged need a name!\n"); }
+}
+
+void RequireNotContract(uint32_t propertyId)
+{
+    LOCK(cs_tally);
+    CMPSPInfo::Entry sp;
+    if (!mastercore::pDbSpInfo->getSP(propertyId, sp)) {
+        throw JSONRPCError(RPC_DATABASE_ERROR, "Failed to retrieve property");
+    }
+    if (sp.prop_type == ALL_PROPERTY_TYPE_CONTRACT) {
+        throw JSONRPCError(RPC_INVALID_PARAMETER, "Property must not be future contract\n");
+    }
+}
+
+void RequireShort(std::string& fromAddress, uint32_t contractId, uint64_t amount)
+{
+    LOCK(cs_tally);
+    int64_t contractsNeeded = 0;
+    // int index = static_cast<int>(contractId);
+
+    CMPSPInfo::Entry sp;
+    if (!mastercore::pDbSpInfo->getSP(contractId, sp)) {
+        throw JSONRPCError(RPC_DATABASE_ERROR, "Failed to retrieve property");
+    }
+
+    if (sp.prop_type == ALL_PROPERTY_TYPE_CONTRACT) {
+        int64_t notionalSize = static_cast<int64_t>(sp.notional_size);
+        int64_t position = GetTokenBalance(fromAddress, contractId, NEGATIVE_BALANCE);
+        // rational_t conv = mastercore::notionalChange(contractId);
+        rational_t conv = rational_t(1,1);
+        int64_t num = conv.numerator().convert_to<int64_t>();
+        int64_t denom = conv.denominator().convert_to<int64_t>();
+        arith_uint256 Amount = mastercore::ConvertTo256(num) * mastercore::ConvertTo256(amount) / mastercore::ConvertTo256(denom); // Alls needed
+        arith_uint256 contracts = mastercore::DivideAndRoundUp(Amount * mastercore::ConvertTo256(notionalSize), mastercore::ConvertTo256(1)) ;
+        contractsNeeded = mastercore::ConvertTo64(contracts);
+        if (contractsNeeded > position) {
+            throw JSONRPCError(RPC_INVALID_PARAMETER, "Not enough short position\n");
+        }
+
+    } else  {
+        throw JSONRPCError(RPC_INVALID_PARAMETER, "contractId must be future contract\n");
+    }
+}
+
+void RequireForPegged(const std::string& address, uint32_t propertyId, uint32_t contractId, uint64_t amount)
+{
+    uint64_t balance = static_cast<uint64_t>(GetTokenBalance(address, propertyId, BALANCE));
+    int64_t position = GetTokenBalance(address, contractId, NEGATIVE_BALANCE);
+    if (balance < amount) {
+        throw JSONRPCError(RPC_TYPE_ERROR, "Sender has not enough amount of collateral currency");
+    }
+
+    if (position == 0) {
+        throw JSONRPCError(RPC_TYPE_ERROR, "Sender has not the short position required on this contract");
+    }
+    // int64_t balanceUnconfirmed = getUserAvailableMPbalance(address, propertyId); // check the pending amounts
+    // if (balanceUnconfirmed > 0) {
+    //     throw JSONRPCError(RPC_TYPE_ERROR, "Sender has insufficient balance (due to pending transactions)");
+    // }
+
+
+}
+
+void RequirePeggedCurrency(uint32_t propertyId)
+{
+    LOCK(cs_tally);
+    CMPSPInfo::Entry sp;
+    if (!mastercore::pDbSpInfo->getSP(propertyId, sp)) {
+      throw JSONRPCError(RPC_DATABASE_ERROR, "Failed to retrieve property");
+    }
+
+    if (sp.prop_type != ALL_PROPERTY_TYPE_PEGGEDS) {
+      throw JSONRPCError(RPC_INVALID_PARAMETER, "propertyId must be a pegged currency\n");
+    }
+}
+
+void RequireAssociation(uint32_t propertyId,uint32_t contractId)
+{
+  LOCK(cs_tally);
+  CMPSPInfo::Entry sp;
+  if (!mastercore::pDbSpInfo->getSP(propertyId, sp)) {
+      throw JSONRPCError(RPC_DATABASE_ERROR, "Failed to retrieve property");
+  }
+  if (sp.contract_associated != contractId) {
+      throw JSONRPCError(RPC_INVALID_PARAMETER, "Pegged does not comes from this contract");
+  }
 }

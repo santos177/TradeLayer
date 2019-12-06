@@ -76,6 +76,8 @@ extern bool msc_debug_new_id_registration;
 extern bool msc_debug_metadex_fees;
 extern bool msc_debug_contractdex_fees;
 extern bool msc_debug_get_pair_market_price;
+extern bool msc_debug_create_pegged;
+extern bool msc_debug_send_pegged;
 
 /* When we switch to C++11, this can be switched to variadic templates instead
  * of this macro-based construction (see tinyformat.h).

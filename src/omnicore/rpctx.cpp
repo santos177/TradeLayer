@@ -47,7 +47,6 @@ static UniValue omni_funded_send(const JSONRPCRequest& request)
 #else
     std::unique_ptr<interfaces::Wallet> pwallet = interfaces::MakeWallet(nullptr);
 #endif
-
     if (request.fHelp || request.params.size() != 5)
         throw runtime_error(
             RPCHelpMan{"omni_funded_send",
@@ -2717,6 +2716,222 @@ UniValue tl_update_id_registration(const JSONRPCRequest& request)
             return txid.GetHex();
         }
     }
+}
+
+UniValue tl_sendissuance_pegged(const JSONRPCRequest& request)
+{
+#ifdef ENABLE_WALLET
+    std::shared_ptr<CWallet> const wallet = GetWalletForJSONRPCRequest(request);
+    std::unique_ptr<interfaces::Wallet> pwallet = interfaces::MakeWallet(wallet);
+#else
+    std::unique_ptr<interfaces::Wallet> pwallet = interfaces::MakeWallet(nullptr);
+#endif
+  if (request.fHelp || request.params.size() != 7)
+    throw runtime_error(
+			"tl_sendissuance_pegged\"fromaddress\" ecosystem type previousid \"category\" \"subcategory\" \"name\" \"url\" \"data\"\n"
+
+			"\nCreate new pegged currency with manageable supply.\n"
+
+			"\nArguments:\n"
+			"1. fromaddress          (string, required) the address to send from\n"
+			"2. ecosystem            (string, required) the ecosystem to create the pegged currency in (1 for main ecosystem, 2 for test ecosystem)\n"
+			"3. type                 (number, required) the type of the pegged to create: (1 for indivisible tokens, 2 for divisible tokens)\n"
+			"4. previousid           (number, required) an identifier of a predecessor token (use 0 for new tokens)\n"
+			"5. name                 (string, required) the name of the new pegged to create\n"
+			"6. collateralcurrency  (number, required) the collateral currency for the new pegged \n"
+			"7. future contract name  (number, required) the future contract name for the new pegged \n"
+			"8. amount of pegged    (number, required) amount of pegged to create \n"
+			"\nResult:\n"
+			"\"hash\"                  (string) the hex-encoded transaction hash\n"
+
+			"\nExamples:\n"
+			+ HelpExampleCli("tl_sendissuance_pegged", "\"3HsJvhr9qzgRe3ss97b1QHs38rmaLExLcH\" 2 1 0 \"Companies\" \"Bitcoin Mining\" \"Quantum Miner\" \"\" \"\"")
+			+ HelpExampleRpc("tl_sendissuance_pegged", "\"3HsJvhr9qzgRe3ss97b1QHs38rmaLExLcH\", 2, 1, 0, \"Companies\", \"Bitcoin Mining\", \"Quantum Miner\", \"\", \"\"")
+			);
+
+  // obtain parameters & info
+  std::string fromAddress = ParseAddress(request.params[0]);
+  uint8_t ecosystem = ParseEcosystem(request.params[1]);
+  uint32_t previousId = ParsePreviousPropertyId(request.params[2]);
+  std::string name = ParseText(request.params[3]);
+  uint32_t propertyId = ParsePropertyId(request.params[4]);
+  std::string name_traded = ParseText(request.params[5]);
+  uint64_t amount = ParseAmount(request.params[6], isPropertyDivisible(propertyId));
+
+  struct FutureContractObject *pfuture = getFutureContractObject(ALL_PROPERTY_TYPE_CONTRACT, name_traded);
+  uint32_t contractId = pfuture->fco_propertyId;
+
+  // perform checks
+  RequirePeggedSaneName(name);
+
+  // Checking existing
+  RequireExistingProperty(propertyId);
+
+  // Property must not be a future contract
+  RequireNotContract(propertyId);
+
+  // Checking for future contract
+  RequireContract(contractId);
+
+  // Checking for short position in given future contract
+  RequireShort(fromAddress, contractId, amount);
+
+  // checking for collateral balance, checking for short position in given contract
+  RequireForPegged(fromAddress, propertyId, contractId, amount);
+
+  // create a payload for the transaction
+  std::vector<unsigned char> payload = CreatePayload_IssuancePegged(ecosystem, previousId, name, propertyId, contractId, amount);
+
+  // request the wallet build the transaction (and if needed commit it)
+  uint256 txid;
+  std::string rawHex;
+  int result = WalletTxBuilder(fromAddress, "", "", 0, payload, txid, rawHex, autoCommit, pwallet.get());
+
+  // check error and return the txid (or raw hex depending on autocommit)
+  if (result != 0) {
+    throw JSONRPCError(result, error_str(result));
+  } else {
+    if (!autoCommit) {
+      return rawHex;
+    } else {
+      return txid.GetHex();
+    }
+  }
+}
+
+UniValue tl_send_pegged(const JSONRPCRequest& request)
+{
+#ifdef ENABLE_WALLET
+    std::shared_ptr<CWallet> const wallet = GetWalletForJSONRPCRequest(request);
+    std::unique_ptr<interfaces::Wallet> pwallet = interfaces::MakeWallet(wallet);
+#else
+    std::unique_ptr<interfaces::Wallet> pwallet = interfaces::MakeWallet(nullptr);
+#endif
+  if (request.fHelp || request.params.size() != 4)
+    throw runtime_error(
+			"tl_send \"fromaddress\" \"toaddress\" propertyid \"amount\" ( \"redeemaddress\" \"referenceamount\" )\n"
+
+			"\nSend the pegged currency to other addresses.\n"
+
+			"\nArguments:\n"
+			"1. fromaddress          (string, required) the address to send from\n"
+			"2. toaddress            (string, required) the address of the receiver\n"
+			"3. property name        (string, required) the identifier of the tokens to send\n"
+			"4. amount               (string, required) the amount to send\n"
+
+
+			"\nResult:\n"
+			"\"hash\"                  (string) the hex-encoded transaction hash\n"
+
+			"\nExamples:\n"
+			+ HelpExampleCli("tl_send_pegged", "\"3M9qvHKtgARhqcMtM5cRT9VaiDJ5PSfQGY\" \"37FaKponF7zqoMLUjEiko25pDiuVH5YLEa\" 1 \"100.0\"")
+			+ HelpExampleRpc("tl_send_pegged", "\"3M9qvHKtgARhqcMtM5cRT9VaiDJ5PSfQGY\", \"37FaKponF7zqoMLUjEiko25pDiuVH5YLEa\", 1, \"100.0\"")
+			);
+
+  // obtain parameters & info
+  std::string fromAddress = ParseAddress(request.params[0]);
+  std::string toAddress = ParseAddress(request.params[1]);
+  std::string name_pegged = ParseText(request.params[2]);
+
+  struct FutureContractObject *pfuture = getFutureContractObject(ALL_PROPERTY_TYPE_PEGGEDS, name_pegged);
+  uint32_t propertyId = pfuture->fco_propertyId;
+
+  RequirePeggedCurrency(propertyId);
+
+  int64_t amount = ParseAmount(request.params[3], true);
+
+  // perform checks
+  RequireExistingProperty(propertyId);
+  RequireBalance(fromAddress, propertyId, amount);
+
+  // create a payload for the transaction
+  std::vector<unsigned char> payload = CreatePayload_SendPeggedCurrency(propertyId, amount);
+
+  // request the wallet build the transaction (and if needed commit it)
+  uint256 txid;
+  std::string rawHex;
+  int result = WalletTxBuilder(fromAddress, toAddress, "", 0, payload, txid, rawHex, autoCommit, pwallet.get());
+
+  // check error and return the txid (or raw hex depending on autocommit)
+  if (result != 0) {
+    throw JSONRPCError(result, error_str(result));
+  } else {
+    if (!autoCommit) {
+      return rawHex;
+    } else {
+      PendingAdd(txid, fromAddress, MSC_TYPE_SEND_PEGGED_CURRENCY, propertyId, amount);
+      return txid.GetHex();
+    }
+  }
+}
+
+UniValue tl_redemption_pegged(const JSONRPCRequest& request)
+{
+#ifdef ENABLE_WALLET
+    std::shared_ptr<CWallet> const wallet = GetWalletForJSONRPCRequest(request);
+    std::unique_ptr<interfaces::Wallet> pwallet = interfaces::MakeWallet(wallet);
+#else
+    std::unique_ptr<interfaces::Wallet> pwallet = interfaces::MakeWallet(nullptr);
+#endif
+  if (request.fHelp || request.params.size() != 4)
+    throw runtime_error(
+			"tl_redemption_pegged \"fromaddress\" propertyid \"amount\" ( \"redeemaddress\" distributionproperty )\n"
+
+			"\n Redemption of the pegged currency .\n"
+
+			"\nArguments:\n"
+			"1. redeemaddress        (string, required) the address of owner \n"
+			"2. name of pegged       (string, required) name of the tokens to redeem\n"
+			"3. amount               (number, required) the amount of pegged currency for redemption"
+			"4. name of contract     (string, required) the identifier of the future contract involved\n"
+			"\nResult:\n"
+			"\"hash\"                  (string) the hex-encoded transaction hash\n"
+
+			"\nExamples:\n"
+			+ HelpExampleCli("tl_redemption_pegged", "\"3M9qvHKtgARhqcMtM5cRT9VaiDJ5PSfQGY\" , 1")
+			+ HelpExampleRpc("tl_redemption_pegged", "\"3M9qvHKtgARhqcMtM5cRT9VaiDJ5PSfQGY\", 1")
+			);
+
+  // obtain parameters & info
+  std::string fromAddress = ParseAddress(request.params[0]);
+
+  std::string name_pegged = ParseText(request.params[1]);
+  std::string name_contract = ParseText(request.params[3]);
+  struct FutureContractObject *pfuture_pegged = getFutureContractObject(ALL_PROPERTY_TYPE_PEGGEDS, name_pegged);
+  uint32_t propertyId = pfuture_pegged->fco_propertyId;
+
+  uint64_t amount = ParseAmount(request.params[2], true);
+
+  struct FutureContractObject *pfuture_contract = getFutureContractObject(ALL_PROPERTY_TYPE_CONTRACT, name_contract);
+  uint32_t contractId = pfuture_contract->fco_propertyId;
+
+  // perform checks
+  RequireExistingProperty(propertyId);
+  RequirePeggedCurrency(propertyId);
+  RequireContract(contractId);
+  RequireBalance(fromAddress, propertyId, amount);
+
+  // is given contract origin of pegged?
+  RequireAssociation(propertyId,contractId);
+
+  // create a payload for the transaction
+  std::vector<unsigned char> payload = CreatePayload_RedemptionPegged(propertyId, contractId, amount);
+
+  // request the wallet build the transaction (and if needed commit it)
+  uint256 txid;
+  std::string rawHex;
+  int result = WalletTxBuilder(fromAddress, "", "", 0, payload, txid, rawHex, autoCommit, pwallet.get());
+
+  // check error and return the txid (or raw hex depending on autocommit)
+  if (result != 0) {
+    throw JSONRPCError(result, error_str(result));
+  } else {
+    if (!autoCommit) {
+      return rawHex;
+    } else {
+      return txid.GetHex();
+    }
+  }
 }
 
 static const CRPCCommand commands[] =
