@@ -129,6 +129,8 @@ bool mastercore::isPropertyDivisible(uint32_t propertyId)
     return true;
 }
 
+
+
 std::string mastercore::getPropertyName(uint32_t propertyId)
 {
     CMPSPInfo::Entry sp;

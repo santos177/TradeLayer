@@ -1005,6 +1005,73 @@ std::vector<unsigned char> CreatePayload_DEx(uint32_t propertyId, uint64_t amoun
     return payload;
 }
 
+std::vector<unsigned char> CreatePayload_IssuancePegged(uint8_t ecosystem, uint32_t previousPropertyId, std::string name, uint32_t propertyId, uint32_t contractId, uint64_t amount)
+{
+    std::vector<unsigned char> payload;
+
+    uint16_t messageType = 100;
+    uint16_t messageVer = 0;
+
+    SwapByteOrder32(previousPropertyId);
+    SwapByteOrder32(propertyId);
+    SwapByteOrder32(contractId);
+    SwapByteOrder64(amount);
+
+    PUSH_BACK_BYTES(payload, messageVer);
+    PUSH_BACK_BYTES(payload, messageType);
+    PUSH_BACK_BYTES(payload, ecosystem);
+    PUSH_BACK_BYTES(payload, previousPropertyId);
+    PUSH_BACK_BYTES(payload, propertyId);
+    PUSH_BACK_BYTES(payload, contractId);
+    PUSH_BACK_BYTES(payload, amount);
+
+
+    if (name.size() > 255) name = name.substr(0,255);
+
+    payload.insert(payload.end(), name.begin(), name.end());
+    payload.push_back('\0');
+
+    return payload;
+}
+
+std::vector<unsigned char> CreatePayload_SendPeggedCurrency(uint32_t propertyId, uint64_t amount)
+{
+    std::vector<unsigned char> payload;
+
+    uint16_t messageType = 102;
+    uint16_t messageVer = 0;
+
+    SwapByteOrder32(propertyId);
+    SwapByteOrder64(amount);
+
+    PUSH_BACK_BYTES(payload, messageVer);
+    PUSH_BACK_BYTES(payload, messageType);
+    PUSH_BACK_BYTES(payload, propertyId);
+    PUSH_BACK_BYTES(payload, amount);
+
+    return payload;
+}
+
+std::vector<unsigned char> CreatePayload_RedemptionPegged(uint32_t propertyId, uint32_t contractId, uint64_t amount)
+{
+    std::vector<unsigned char> payload;
+
+    uint16_t messageType = 101;
+    uint16_t messageVer = 0;
+
+    SwapByteOrder32(propertyId);
+    SwapByteOrder32(contractId);
+    SwapByteOrder64(amount);
+
+    PUSH_BACK_BYTES(payload, messageVer);
+    PUSH_BACK_BYTES(payload, messageType);
+    PUSH_BACK_BYTES(payload, propertyId);
+    PUSH_BACK_BYTES(payload, contractId);
+    PUSH_BACK_BYTES(payload, amount);
+
+    return payload;
+
+}
 
 #undef PUSH_BACK_BYTES
 #undef PUSH_BACK_BYTES_PTR

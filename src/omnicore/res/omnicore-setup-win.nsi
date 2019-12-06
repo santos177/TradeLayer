@@ -11,11 +11,11 @@ SetCompressor /SOLID lzma
 !define URL http://www.omnilayer.org/
 
 # MUI Symbol Definitions
-!define MUI_ICON "/home/ale/Escritorio/AWork/bdex/share/pixmaps/bitcoin.ico"
-!define MUI_WELCOMEFINISHPAGE_BITMAP "/home/ale/Escritorio/AWork/bdex/share/pixmaps/nsis-wizard.bmp"
+!define MUI_ICON "/home/ale/Escritorio/AWork/bmaster/share/pixmaps/bitcoin.ico"
+!define MUI_WELCOMEFINISHPAGE_BITMAP "/home/ale/Escritorio/AWork/bmaster/share/pixmaps/nsis-wizard.bmp"
 !define MUI_HEADERIMAGE
 !define MUI_HEADERIMAGE_RIGHT
-!define MUI_HEADERIMAGE_BITMAP "/home/ale/Escritorio/AWork/bdex/share/pixmaps/nsis-header.bmp"
+!define MUI_HEADERIMAGE_BITMAP "/home/ale/Escritorio/AWork/bmaster/share/pixmaps/nsis-header.bmp"
 !define MUI_FINISHPAGE_NOAUTOCLOSE
 !define MUI_STARTMENUPAGE_REGISTRY_ROOT HKLM
 !define MUI_STARTMENUPAGE_REGISTRY_KEY ${REGKEY}
@@ -23,7 +23,7 @@ SetCompressor /SOLID lzma
 !define MUI_STARTMENUPAGE_DEFAULTFOLDER "Omni Core"
 !define MUI_FINISHPAGE_RUN $INSTDIR\omnicore-qt.exe
 !define MUI_UNICON "${NSISDIR}\Contrib\Graphics\Icons\modern-uninstall.ico"
-!define MUI_UNWELCOMEFINISHPAGE_BITMAP "/home/ale/Escritorio/AWork/bdex/share/pixmaps/nsis-wizard.bmp"
+!define MUI_UNWELCOMEFINISHPAGE_BITMAP "/home/ale/Escritorio/AWork/bmaster/share/pixmaps/nsis-wizard.bmp"
 !define MUI_UNFINISHPAGE_NOAUTOCLOSE
 
 # Included files
@@ -49,7 +49,7 @@ Var StartMenuGroup
 !insertmacro MUI_LANGUAGE English
 
 # Installer attributes
-OutFile /home/ale/Escritorio/AWork/bdex/omnicore-${VERSION}-win-setup.exe
+OutFile /home/ale/Escritorio/AWork/bmaster/omnicore-${VERSION}-win-setup.exe
 !if "" == "64"
 InstallDir "$PROGRAMFILES64\Omni Core"
 !else
@@ -74,15 +74,15 @@ ShowUninstDetails show
 Section -Main SEC0000
     SetOutPath $INSTDIR
     SetOverwrite on
-    File /home/ale/Escritorio/AWork/bdex/release/omnicore-qt.exe
-    File /oname=copying.txt /home/ale/Escritorio/AWork/bdex/src/omnicore/COPYING.md
-    File /oname=readme.txt /home/ale/Escritorio/AWork/bdex/src/omnicore/README.md
-    File /oname=release-notes.txt /home/ale/Escritorio/AWork/bdex/src/omnicore/doc/release-notes.md
+    File /home/ale/Escritorio/AWork/bmaster/release/omnicore-qt.exe
+    File /oname=copying.txt /home/ale/Escritorio/AWork/bmaster/src/omnicore/COPYING.md
+    File /oname=readme.txt /home/ale/Escritorio/AWork/bmaster/src/omnicore/README.md
+    File /oname=release-notes.txt /home/ale/Escritorio/AWork/bmaster/src/omnicore/doc/release-notes.md
     SetOutPath $INSTDIR\daemon
-    File /home/ale/Escritorio/AWork/bdex/release/omnicored.exe
-    File /home/ale/Escritorio/AWork/bdex/release/omnicore-cli.exe
+    File /home/ale/Escritorio/AWork/bmaster/release/omnicored.exe
+    File /home/ale/Escritorio/AWork/bmaster/release/omnicore-cli.exe
     SetOutPath $INSTDIR\doc
-    File /r /home/ale/Escritorio/AWork/bdex/src/omnicore/doc\*.*
+    File /r /home/ale/Escritorio/AWork/bmaster/src/omnicore/doc\*.*
     SetOutPath $INSTDIR
     WriteRegStr HKCU "${REGKEY}\Components" Main 1
 

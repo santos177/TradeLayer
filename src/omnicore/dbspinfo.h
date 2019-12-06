@@ -95,6 +95,9 @@ public:
         uint64_t oracle_low;
         int oracle_last_update;
 
+        // for pegged currency
+        uint32_t contract_associated;
+
         // For crowdsale properties:
         //   txid -> amount invested, crowdsale deadline, user issued tokens, issuer issued tokens
         // For managed properties:
@@ -143,7 +146,7 @@ public:
             READWRITE(margin_requirement);
             READWRITE(attribute_type);
             READWRITE(init_block);
-            // READWRITE(contract_associated);
+            READWRITE(contract_associated);
             READWRITE(denomination);
             READWRITE(series);
             READWRITE(backup_address);
@@ -153,6 +156,9 @@ public:
         }
 
         bool isDivisible() const;
+        bool isContract() const;
+        bool isOracle() const;
+        bool isPegged() const;
         void print() const;
 
         /** Stores a new issuer in the DB. */

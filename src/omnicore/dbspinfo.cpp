@@ -32,9 +32,42 @@ bool CMPSPInfo::Entry::isDivisible() const
         case MSC_PROPERTY_TYPE_DIVISIBLE:
         case MSC_PROPERTY_TYPE_DIVISIBLE_REPLACING:
         case MSC_PROPERTY_TYPE_DIVISIBLE_APPENDING:
+        case ALL_PROPERTY_TYPE_PEGGEDS:
+
             return true;
     }
     return false;
+}
+
+
+bool CMPSPInfo::Entry::isContract() const
+{
+  switch (prop_type)
+    {
+    case ALL_PROPERTY_TYPE_CONTRACT:
+      return true;
+    }
+  return false;
+}
+
+bool CMPSPInfo::Entry::isOracle() const
+{
+  switch (prop_type)
+    {
+    case ALL_PROPERTY_TYPE_ORACLE_CONTRACT:
+      return true;
+    }
+  return false;
+}
+
+bool CMPSPInfo::Entry::isPegged() const
+{
+  switch (prop_type)
+    {
+    case ALL_PROPERTY_TYPE_PEGGEDS:
+      return true;
+    }
+  return false;
 }
 
 void CMPSPInfo::Entry::print() const

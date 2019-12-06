@@ -118,10 +118,19 @@ omnicore/libbitcoin_server_a-rpcrequirements.o: \
  /usr/include/linux/errno.h /usr/include/x86_64-linux-gnu/asm/errno.h \
  /usr/include/asm-generic/errno.h /usr/include/asm-generic/errno-base.h \
  /usr/include/c++/7/bits/functional_hash.h \
- /usr/include/c++/7/bits/basic_string.tcc omnicore/mdex.h omnicore/tx.h \
- omnicore/omnicore.h omnicore/log.h util/system.h config/bitcoin-config.h \
- attributes.h compat.h /usr/include/fcntl.h \
- /usr/include/x86_64-linux-gnu/bits/fcntl.h \
+ /usr/include/c++/7/bits/basic_string.tcc omnicore/uint256_extensions.h \
+ arith_uint256.h /usr/include/assert.h /usr/include/c++/7/cstring \
+ /usr/include/string.h /usr/include/strings.h \
+ /usr/include/x86_64-linux-gnu/bits/strings_fortified.h \
+ /usr/include/x86_64-linux-gnu/bits/string_fortified.h \
+ /usr/include/c++/7/limits /usr/include/c++/7/stdexcept \
+ /usr/include/c++/7/vector /usr/include/c++/7/bits/stl_construct.h \
+ /usr/include/c++/7/bits/stl_uninitialized.h \
+ /usr/include/c++/7/bits/stl_vector.h \
+ /usr/include/c++/7/bits/stl_bvector.h /usr/include/c++/7/bits/vector.tcc \
+ omnicore/mdex.h omnicore/tx.h omnicore/omnicore.h omnicore/log.h \
+ util/system.h config/bitcoin-config.h attributes.h compat.h \
+ /usr/include/fcntl.h /usr/include/x86_64-linux-gnu/bits/fcntl.h \
  /usr/include/x86_64-linux-gnu/bits/fcntl-linux.h \
  /usr/include/x86_64-linux-gnu/bits/types/struct_iovec.h \
  /usr/include/linux/falloc.h /usr/include/x86_64-linux-gnu/bits/stat.h \
@@ -160,8 +169,8 @@ omnicore/libbitcoin_server_a-rpcrequirements.o: \
  /usr/include/x86_64-linux-gnu/bits/confname.h \
  /usr/include/x86_64-linux-gnu/bits/getopt_posix.h \
  /usr/include/x86_64-linux-gnu/bits/getopt_core.h \
- /usr/include/x86_64-linux-gnu/bits/unistd.h compat/assumptions.h \
- /usr/include/c++/7/limits fs.h /usr/include/boost/filesystem.hpp \
+ /usr/include/x86_64-linux-gnu/bits/unistd.h compat/assumptions.h fs.h \
+ /usr/include/boost/filesystem.hpp \
  /usr/include/boost/filesystem/config.hpp /usr/include/boost/config.hpp \
  /usr/include/boost/config/user.hpp \
  /usr/include/boost/config/detail/select_compiler_config.hpp \
@@ -208,16 +217,14 @@ omnicore/libbitcoin_server_a-rpcrequirements.o: \
  /usr/include/boost/predef/platform/windows_runtime.h \
  /usr/include/boost/predef/platform/ios.h \
  /usr/include/boost/predef/os/ios.h /usr/include/boost/cstdint.hpp \
- /usr/include/boost/assert.hpp /usr/include/assert.h \
- /usr/include/boost/noncopyable.hpp \
+ /usr/include/boost/assert.hpp /usr/include/boost/noncopyable.hpp \
  /usr/include/boost/core/noncopyable.hpp /usr/include/c++/7/ostream \
  /usr/include/c++/7/ios /usr/include/c++/7/bits/ios_base.h \
  /usr/include/c++/7/bits/locale_classes.h \
  /usr/include/c++/7/bits/locale_classes.tcc \
  /usr/include/c++/7/system_error \
  /usr/include/x86_64-linux-gnu/c++/7/bits/error_constants.h \
- /usr/include/c++/7/stdexcept /usr/include/c++/7/streambuf \
- /usr/include/c++/7/bits/streambuf.tcc \
+ /usr/include/c++/7/streambuf /usr/include/c++/7/bits/streambuf.tcc \
  /usr/include/c++/7/bits/basic_ios.h \
  /usr/include/c++/7/bits/locale_facets.h /usr/include/c++/7/cwctype \
  /usr/include/wctype.h /usr/include/x86_64-linux-gnu/bits/wctype-wchar.h \
@@ -233,12 +240,8 @@ omnicore/libbitcoin_server_a-rpcrequirements.o: \
  /usr/include/c++/7/bits/invoke.h /usr/include/c++/7/bits/std_function.h \
  /usr/include/c++/7/bits/refwrap.h /usr/include/boost/cerrno.hpp \
  /usr/include/boost/config/abi_prefix.hpp \
- /usr/include/boost/config/abi_suffix.hpp /usr/include/c++/7/vector \
- /usr/include/c++/7/bits/stl_construct.h \
- /usr/include/c++/7/bits/stl_uninitialized.h \
- /usr/include/c++/7/bits/stl_vector.h \
- /usr/include/c++/7/bits/stl_bvector.h /usr/include/c++/7/bits/vector.tcc \
- /usr/include/c++/7/list /usr/include/c++/7/bits/stl_list.h \
+ /usr/include/boost/config/abi_suffix.hpp /usr/include/c++/7/list \
+ /usr/include/c++/7/bits/stl_list.h \
  /usr/include/c++/7/bits/allocated_ptr.h \
  /usr/include/c++/7/ext/aligned_buffer.h /usr/include/c++/7/bits/list.tcc \
  /usr/include/c++/7/iterator /usr/include/c++/7/istream \
@@ -584,9 +587,6 @@ omnicore/libbitcoin_server_a-rpcrequirements.o: \
  /usr/include/boost/io/ios_state.hpp /usr/include/boost/io_fwd.hpp \
  /usr/include/boost/functional/hash_fwd.hpp \
  /usr/include/boost/functional/hash/hash_fwd.hpp \
- /usr/include/c++/7/cstring /usr/include/string.h /usr/include/strings.h \
- /usr/include/x86_64-linux-gnu/bits/strings_fortified.h \
- /usr/include/x86_64-linux-gnu/bits/string_fortified.h \
  /usr/include/boost/filesystem/operations.hpp \
  /usr/include/boost/detail/scoped_enum_emulation.hpp \
  /usr/include/boost/core/scoped_enum.hpp \
@@ -1291,7 +1291,7 @@ omnicore/libbitcoin_server_a-rpcrequirements.o: \
  /usr/include/boost/algorithm/string/erase.hpp validation.h coins.h \
  compressor.h core_memusage.h primitives/block.h memusage.h indirectmap.h \
  crypto/siphash.h policy/feerate.h protocol.h netaddress.h version.h \
- versionbits.h chain.h arith_uint256.h consensus/params.h rpc/protocol.h
+ versionbits.h chain.h consensus/params.h rpc/protocol.h
 
 /usr/include/stdc-predef.h:
 
@@ -1587,6 +1587,38 @@ omnicore/rpcrequirements.h:
 
 /usr/include/c++/7/bits/basic_string.tcc:
 
+omnicore/uint256_extensions.h:
+
+arith_uint256.h:
+
+/usr/include/assert.h:
+
+/usr/include/c++/7/cstring:
+
+/usr/include/string.h:
+
+/usr/include/strings.h:
+
+/usr/include/x86_64-linux-gnu/bits/strings_fortified.h:
+
+/usr/include/x86_64-linux-gnu/bits/string_fortified.h:
+
+/usr/include/c++/7/limits:
+
+/usr/include/c++/7/stdexcept:
+
+/usr/include/c++/7/vector:
+
+/usr/include/c++/7/bits/stl_construct.h:
+
+/usr/include/c++/7/bits/stl_uninitialized.h:
+
+/usr/include/c++/7/bits/stl_vector.h:
+
+/usr/include/c++/7/bits/stl_bvector.h:
+
+/usr/include/c++/7/bits/vector.tcc:
+
 omnicore/mdex.h:
 
 omnicore/tx.h:
@@ -1701,8 +1733,6 @@ compat.h:
 
 compat/assumptions.h:
 
-/usr/include/c++/7/limits:
-
 fs.h:
 
 /usr/include/boost/filesystem.hpp:
@@ -1809,8 +1839,6 @@ fs.h:
 
 /usr/include/boost/assert.hpp:
 
-/usr/include/assert.h:
-
 /usr/include/boost/noncopyable.hpp:
 
 /usr/include/boost/core/noncopyable.hpp:
@@ -1828,8 +1856,6 @@ fs.h:
 /usr/include/c++/7/system_error:
 
 /usr/include/x86_64-linux-gnu/c++/7/bits/error_constants.h:
-
-/usr/include/c++/7/stdexcept:
 
 /usr/include/c++/7/streambuf:
 
@@ -1880,18 +1906,6 @@ fs.h:
 /usr/include/boost/config/abi_prefix.hpp:
 
 /usr/include/boost/config/abi_suffix.hpp:
-
-/usr/include/c++/7/vector:
-
-/usr/include/c++/7/bits/stl_construct.h:
-
-/usr/include/c++/7/bits/stl_uninitialized.h:
-
-/usr/include/c++/7/bits/stl_vector.h:
-
-/usr/include/c++/7/bits/stl_bvector.h:
-
-/usr/include/c++/7/bits/vector.tcc:
 
 /usr/include/c++/7/list:
 
@@ -2642,16 +2656,6 @@ fs.h:
 /usr/include/boost/functional/hash_fwd.hpp:
 
 /usr/include/boost/functional/hash/hash_fwd.hpp:
-
-/usr/include/c++/7/cstring:
-
-/usr/include/string.h:
-
-/usr/include/strings.h:
-
-/usr/include/x86_64-linux-gnu/bits/strings_fortified.h:
-
-/usr/include/x86_64-linux-gnu/bits/string_fortified.h:
 
 /usr/include/boost/filesystem/operations.hpp:
 
@@ -4226,8 +4230,6 @@ version.h:
 versionbits.h:
 
 chain.h:
-
-arith_uint256.h:
 
 consensus/params.h:
 

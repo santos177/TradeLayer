@@ -36,6 +36,7 @@ void RequireContractTxId(std::string& txid);
 void RequireSaneName(std::string& name);
 void RequireDifferentAddrs(const std::string& oracleAddress, const std::string& backupAddress);
 void RequireShort(std::string& fromAddress, uint32_t contractId, uint64_t amount);
+void RequirePeggedSaneName(std::string& name);
 ////////////////////////////////////////////////////////////////////////////////
 
 // TODO:
