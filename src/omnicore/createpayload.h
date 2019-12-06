@@ -52,4 +52,5 @@ std::vector<unsigned char> CreatePayload_Transfer(uint32_t propertyId, uint64_t 
 std::vector<unsigned char> CreatePayload_Create_Channel(std::string channelAddress, uint32_t blocks);
 std::vector<unsigned char> CreatePayload_New_Id_Registration(std::string website, std::string name, uint8_t tokens, uint8_t ltc, uint8_t natives, uint8_t oracles);
 std::vector<unsigned char> CreatePayload_Update_Id_Registration();
+std::vector<unsigned char> CreatePayload_DEx(uint32_t propertyId, uint64_t amount, uint64_t price,  uint8_t timeLimit, uint64_t minFee, uint8_t subAction);
 #endif // BITCOIN_OMNICORE_CREATEPAYLOAD_H

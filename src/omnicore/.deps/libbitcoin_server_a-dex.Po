@@ -1178,11 +1178,58 @@ omnicore/libbitcoin_server_a-dex.o: omnicore/dex.cpp \
  omnicore/parsing.h util/strencodings.h /usr/include/openssl/sha.h \
  /usr/include/openssl/e_os2.h \
  /usr/include/x86_64-linux-gnu/openssl/opensslconf.h omnicore/convert.h \
- omnicore/dbtxlist.h omnicore/rules.h omnicore/uint256_extensions.h \
- arith_uint256.h validation.h coins.h compressor.h core_memusage.h \
- primitives/block.h memusage.h indirectmap.h crypto/siphash.h \
- policy/feerate.h protocol.h netaddress.h version.h versionbits.h chain.h \
- consensus/params.h /usr/include/boost/algorithm/string.hpp \
+ omnicore/dbspinfo.h omnicore/dbtxlist.h omnicore/mdex.h \
+ /usr/include/boost/multiprecision/cpp_dec_float.hpp \
+ /usr/include/boost/multiprecision/detail/big_lanczos.hpp \
+ /usr/include/boost/math/bindings/detail/big_lanczos.hpp \
+ /usr/include/boost/math/special_functions/lanczos.hpp \
+ /usr/include/boost/math/tools/big_constant.hpp \
+ /usr/include/boost/math/tools/rational.hpp \
+ /usr/include/boost/math/tools/detail/polynomial_horner3_20.hpp \
+ /usr/include/boost/math/tools/detail/rational_horner1_20.hpp \
+ /usr/include/boost/math/special_functions/detail/lanczos_sse2.hpp \
+ /usr/include/boost/multiprecision/detail/dynamic_array.hpp \
+ /usr/include/boost/multiprecision/detail/rebind.hpp \
+ /usr/include/boost/math/special_functions/asinh.hpp \
+ /usr/include/boost/math/special_functions/sqrt1pm1.hpp \
+ /usr/include/boost/math/special_functions/log1p.hpp \
+ /usr/include/boost/math/tools/series.hpp \
+ /usr/include/boost/math/special_functions/expm1.hpp \
+ /usr/include/boost/math/constants/constants.hpp \
+ /usr/include/boost/math/tools/convert_from_string.hpp \
+ /usr/include/boost/math/constants/calculate_constants.hpp \
+ /usr/include/boost/math/special_functions/acosh.hpp \
+ /usr/include/boost/math/special_functions/atanh.hpp \
+ /usr/include/boost/math/special_functions/cbrt.hpp \
+ /usr/include/boost/mpl/divides.hpp \
+ /usr/include/boost/mpl/aux_/preprocessed/gcc/divides.hpp \
+ /usr/include/boost/math/special_functions/gamma.hpp \
+ /usr/include/boost/math/tools/fraction.hpp \
+ /usr/include/boost/math/special_functions/powm1.hpp \
+ /usr/include/boost/math/special_functions/detail/igamma_large.hpp \
+ /usr/include/boost/math/special_functions/detail/unchecked_factorial.hpp \
+ /usr/include/boost/math/special_functions/detail/lgamma_small.hpp \
+ /usr/include/boost/math/special_functions/bernoulli.hpp \
+ /usr/include/boost/math/special_functions/detail/unchecked_bernoulli.hpp \
+ /usr/include/boost/math/special_functions/detail/bernoulli_details.hpp \
+ /usr/include/boost/detail/lightweight_mutex.hpp \
+ /usr/include/boost/smart_ptr/detail/lightweight_mutex.hpp \
+ /usr/include/boost/smart_ptr/detail/lwm_pthreads.hpp \
+ /usr/include/boost/math/tools/toms748_solve.hpp \
+ /usr/include/boost/math/special_functions/zeta.hpp \
+ /usr/include/boost/math/special_functions/factorials.hpp \
+ /usr/include/boost/math/special_functions/sin_pi.hpp \
+ /usr/include/boost/math/special_functions/detail/igamma_inverse.hpp \
+ /usr/include/boost/math/tools/tuple.hpp \
+ /usr/include/boost/math/tools/roots.hpp \
+ /usr/include/boost/math/special_functions/detail/gamma_inva.hpp \
+ /usr/include/boost/math/special_functions/erf.hpp \
+ /usr/include/boost/math/special_functions/detail/erf_inv.hpp \
+ omnicore/rules.h omnicore/uint256_extensions.h arith_uint256.h \
+ validation.h coins.h compressor.h core_memusage.h primitives/block.h \
+ memusage.h indirectmap.h crypto/siphash.h policy/feerate.h protocol.h \
+ netaddress.h version.h versionbits.h chain.h consensus/params.h \
+ /usr/include/boost/algorithm/string.hpp \
  /usr/include/boost/algorithm/string/std_containers_traits.hpp \
  /usr/include/boost/algorithm/string/std/string_traits.hpp \
  /usr/include/boost/algorithm/string/yes_no_type.hpp \
@@ -3918,7 +3965,103 @@ util/strencodings.h:
 
 omnicore/convert.h:
 
+omnicore/dbspinfo.h:
+
 omnicore/dbtxlist.h:
+
+omnicore/mdex.h:
+
+/usr/include/boost/multiprecision/cpp_dec_float.hpp:
+
+/usr/include/boost/multiprecision/detail/big_lanczos.hpp:
+
+/usr/include/boost/math/bindings/detail/big_lanczos.hpp:
+
+/usr/include/boost/math/special_functions/lanczos.hpp:
+
+/usr/include/boost/math/tools/big_constant.hpp:
+
+/usr/include/boost/math/tools/rational.hpp:
+
+/usr/include/boost/math/tools/detail/polynomial_horner3_20.hpp:
+
+/usr/include/boost/math/tools/detail/rational_horner1_20.hpp:
+
+/usr/include/boost/math/special_functions/detail/lanczos_sse2.hpp:
+
+/usr/include/boost/multiprecision/detail/dynamic_array.hpp:
+
+/usr/include/boost/multiprecision/detail/rebind.hpp:
+
+/usr/include/boost/math/special_functions/asinh.hpp:
+
+/usr/include/boost/math/special_functions/sqrt1pm1.hpp:
+
+/usr/include/boost/math/special_functions/log1p.hpp:
+
+/usr/include/boost/math/tools/series.hpp:
+
+/usr/include/boost/math/special_functions/expm1.hpp:
+
+/usr/include/boost/math/constants/constants.hpp:
+
+/usr/include/boost/math/tools/convert_from_string.hpp:
+
+/usr/include/boost/math/constants/calculate_constants.hpp:
+
+/usr/include/boost/math/special_functions/acosh.hpp:
+
+/usr/include/boost/math/special_functions/atanh.hpp:
+
+/usr/include/boost/math/special_functions/cbrt.hpp:
+
+/usr/include/boost/mpl/divides.hpp:
+
+/usr/include/boost/mpl/aux_/preprocessed/gcc/divides.hpp:
+
+/usr/include/boost/math/special_functions/gamma.hpp:
+
+/usr/include/boost/math/tools/fraction.hpp:
+
+/usr/include/boost/math/special_functions/powm1.hpp:
+
+/usr/include/boost/math/special_functions/detail/igamma_large.hpp:
+
+/usr/include/boost/math/special_functions/detail/unchecked_factorial.hpp:
+
+/usr/include/boost/math/special_functions/detail/lgamma_small.hpp:
+
+/usr/include/boost/math/special_functions/bernoulli.hpp:
+
+/usr/include/boost/math/special_functions/detail/unchecked_bernoulli.hpp:
+
+/usr/include/boost/math/special_functions/detail/bernoulli_details.hpp:
+
+/usr/include/boost/detail/lightweight_mutex.hpp:
+
+/usr/include/boost/smart_ptr/detail/lightweight_mutex.hpp:
+
+/usr/include/boost/smart_ptr/detail/lwm_pthreads.hpp:
+
+/usr/include/boost/math/tools/toms748_solve.hpp:
+
+/usr/include/boost/math/special_functions/zeta.hpp:
+
+/usr/include/boost/math/special_functions/factorials.hpp:
+
+/usr/include/boost/math/special_functions/sin_pi.hpp:
+
+/usr/include/boost/math/special_functions/detail/igamma_inverse.hpp:
+
+/usr/include/boost/math/tools/tuple.hpp:
+
+/usr/include/boost/math/tools/roots.hpp:
+
+/usr/include/boost/math/special_functions/detail/gamma_inva.hpp:
+
+/usr/include/boost/math/special_functions/erf.hpp:
+
+/usr/include/boost/math/special_functions/detail/erf_inv.hpp:
 
 omnicore/rules.h:
 

@@ -9,11 +9,19 @@ SetCompressor /SOLID lzma
 !define URL http://www.omnilayer.org/
 
 # MUI Symbol Definitions
+<<<<<<< HEAD
 !define MUI_ICON "/home/ale/Escritorio/AWork/bdex/share/pixmaps/bitcoin.ico"
 !define MUI_WELCOMEFINISHPAGE_BITMAP "/home/ale/Escritorio/AWork/bdex/share/pixmaps/nsis-wizard.bmp"
 !define MUI_HEADERIMAGE
 !define MUI_HEADERIMAGE_RIGHT
 !define MUI_HEADERIMAGE_BITMAP "/home/ale/Escritorio/AWork/bdex/share/pixmaps/nsis-header.bmp"
+=======
+!define MUI_ICON "/home/ale/Escritorio/AWork/bdex/bdex/bdex/share/pixmaps/bitcoin.ico"
+!define MUI_WELCOMEFINISHPAGE_BITMAP "/home/ale/Escritorio/AWork/bdex/bdex/bdex/share/pixmaps/nsis-wizard.bmp"
+!define MUI_HEADERIMAGE
+!define MUI_HEADERIMAGE_RIGHT
+!define MUI_HEADERIMAGE_BITMAP "/home/ale/Escritorio/AWork/bdex/bdex/bdex/share/pixmaps/nsis-header.bmp"
+>>>>>>> 89b2a6d017bb6438b8df465c8f5068f54688493e
 !define MUI_FINISHPAGE_NOAUTOCLOSE
 !define MUI_STARTMENUPAGE_REGISTRY_ROOT HKLM
 !define MUI_STARTMENUPAGE_REGISTRY_KEY ${REGKEY}
@@ -22,7 +30,11 @@ SetCompressor /SOLID lzma
 !define MUI_FINISHPAGE_RUN "$WINDIR\explorer.exe"
 !define MUI_FINISHPAGE_RUN_PARAMETERS $INSTDIR\omnicore-qt
 !define MUI_UNICON "${NSISDIR}\Contrib\Graphics\Icons\modern-uninstall.ico"
+<<<<<<< HEAD
 !define MUI_UNWELCOMEFINISHPAGE_BITMAP "/home/ale/Escritorio/AWork/bdex/share/pixmaps/nsis-wizard.bmp"
+=======
+!define MUI_UNWELCOMEFINISHPAGE_BITMAP "/home/ale/Escritorio/AWork/bdex/bdex/bdex/share/pixmaps/nsis-wizard.bmp"
+>>>>>>> 89b2a6d017bb6438b8df465c8f5068f54688493e
 !define MUI_UNFINISHPAGE_NOAUTOCLOSE
 
 # Included files
@@ -48,7 +60,11 @@ Var StartMenuGroup
 !insertmacro MUI_LANGUAGE English
 
 # Installer attributes
+<<<<<<< HEAD
 OutFile /home/ale/Escritorio/AWork/bdex/omnicore-0.7.0-win-setup.exe
+=======
+OutFile /home/ale/Escritorio/AWork/bdex/bdex/bdex/omnicore-0.7.0-win-setup.exe
+>>>>>>> 89b2a6d017bb6438b8df465c8f5068f54688493e
 !if "" == "64"
 InstallDir $PROGRAMFILES64\Bitcoin
 !else
@@ -73,6 +89,7 @@ ShowUninstDetails show
 Section -Main SEC0000
     SetOutPath $INSTDIR
     SetOverwrite on
+<<<<<<< HEAD
     File /home/ale/Escritorio/AWork/bdex/release/omnicore-qt
     File /oname=COPYING.txt /home/ale/Escritorio/AWork/bdex/COPYING
     File /oname=readme.txt /home/ale/Escritorio/AWork/bdex/doc/README_windows.txt
@@ -83,6 +100,18 @@ Section -Main SEC0000
     File /home/ale/Escritorio/AWork/bdex/release/bitcoin-wallet
     SetOutPath $INSTDIR\doc
     File /r /x Makefile* /home/ale/Escritorio/AWork/bdex/doc\*.*
+=======
+    File /home/ale/Escritorio/AWork/bdex/bdex/bdex/release/omnicore-qt
+    File /oname=COPYING.txt /home/ale/Escritorio/AWork/bdex/bdex/bdex/COPYING
+    File /oname=readme.txt /home/ale/Escritorio/AWork/bdex/bdex/bdex/doc/README_windows.txt
+    SetOutPath $INSTDIR\daemon
+    File /home/ale/Escritorio/AWork/bdex/bdex/bdex/release/omnicored
+    File /home/ale/Escritorio/AWork/bdex/bdex/bdex/release/omnicore-cli
+    File /home/ale/Escritorio/AWork/bdex/bdex/bdex/release/bitcoin-tx
+    File /home/ale/Escritorio/AWork/bdex/bdex/bdex/release/bitcoin-wallet
+    SetOutPath $INSTDIR\doc
+    File /r /x Makefile* /home/ale/Escritorio/AWork/bdex/bdex/bdex/doc\*.*
+>>>>>>> 89b2a6d017bb6438b8df465c8f5068f54688493e
     SetOutPath $INSTDIR
     WriteRegStr HKCU "${REGKEY}\Components" Main 1
 SectionEnd

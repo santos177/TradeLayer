@@ -91,6 +91,11 @@ private:
     uint64_t min_fee;
     unsigned char subaction;
 
+    // DEX 1
+    uint8_t timeLimit;
+    uint8_t subAction;
+    uint8_t option; // buy=1 , sell=2
+
     // Alert
     uint16_t alert_type;
     uint32_t alert_expiry;

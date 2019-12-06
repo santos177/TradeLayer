@@ -6,10 +6,17 @@
 # test/functional/test_runner.py and test/util/bitcoin-util-test.py
 
 [environment]
+<<<<<<< HEAD
 SRCDIR=/home/ale/Escritorio/AWork/bdex
 BUILDDIR=/home/ale/Escritorio/AWork/bdex
 EXEEXT=
 RPCAUTH=/home/ale/Escritorio/AWork/bdex/share/rpcauth/rpcauth.py
+=======
+SRCDIR=/home/ale/Escritorio/AWork/bdex/bdex/bdex
+BUILDDIR=/home/ale/Escritorio/AWork/bdex/bdex/bdex
+EXEEXT=
+RPCAUTH=/home/ale/Escritorio/AWork/bdex/bdex/bdex/share/rpcauth/rpcauth.py
+>>>>>>> 89b2a6d017bb6438b8df465c8f5068f54688493e
 
 [components]
 # Which components are enabled. These are commented out by `configure` if they were disabled when running config.

@@ -88,7 +88,7 @@ bool msc_debug_instant_x_trade                  = 0;
 bool msc_debug_new_id_registration              = 0;
 bool msc_debug_metadex_fees                     = 0;
 bool msc_debug_contractdex_fees                 = 0;
-
+bool msc_debug_get_pair_market_price            = 0;
 /**
  * LogPrintf() has been broken a couple of times now
  * by well-meaning people adding mutexes in the most straightforward way.

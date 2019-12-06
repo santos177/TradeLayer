@@ -54,6 +54,7 @@ private:
     uint8_t blocktimelimit;
     uint256 txid;
     uint8_t subaction;
+    uint8_t option_; // buyer=1, seller=2.
 
 public:
     uint256 getHash() const { return txid; }
@@ -61,29 +62,36 @@ public:
     int64_t getMinFee() const { return min_fee ; }
     uint8_t getBlockTimeLimit() const { return blocktimelimit; }
     uint8_t getSubaction() const { return subaction; }
+    uint8_t getOption() const { return option_; } // improvement for DEX 1
+
 
     int64_t getOfferAmountOriginal() const { return offer_amount_original; }
     int64_t getBTCDesiredOriginal() const { return BTC_desired_original; }
 
+    void setAmount(int64_t amount) // NOTE: new for DEX1
+    {
+        offer_amount_original = amount;
+    }
+
     CMPOffer()
       : offerBlock(0), offer_amount_original(0), property(0), BTC_desired_original(0), min_fee(0),
-        blocktimelimit(0), subaction(0)
+        blocktimelimit(0), subaction(0), option_(0)
     {
     }
 
     CMPOffer(int block, int64_t amountOffered, uint32_t propertyId, int64_t amountDesired,
-             int64_t minAcceptFee, uint8_t paymentWindow, const uint256& tx)
+             int64_t minAcceptFee, uint8_t paymentWindow, const uint256& tx, uint8_t option)
       : offerBlock(block), offer_amount_original(amountOffered), property(propertyId),
         BTC_desired_original(amountDesired), min_fee(minAcceptFee), blocktimelimit(paymentWindow),
-        txid(tx), subaction(0)
+        txid(tx), subaction(0), option_(option)
     {
-        if (msc_debug_dex) PrintToLog("%s(%d): %s\n", __func__, amountOffered, txid.GetHex());
+        // if (msc_debug_dex) PrintToLog("%s(%d): %s\n", __func__, amountOffered, txid.GetHex());
     }
 
     CMPOffer(const CMPTransaction& tx)
       : offerBlock(tx.block), offer_amount_original(tx.nValue), property(tx.property),
         BTC_desired_original(tx.amount_desired), min_fee(tx.min_fee),
-        blocktimelimit(tx.blocktimelimit), subaction(tx.subaction)
+        blocktimelimit(tx.blocktimelimit), subaction(tx.subaction), option_(tx.option)
     {
     }
 
@@ -242,6 +250,7 @@ int DEx_offerUpdate(const std::string& addressSeller, uint32_t propertyId, int64
 int DEx_acceptCreate(const std::string& addressBuyer, const std::string& addressSeller, uint32_t propertyId, int64_t amountAccepted, int block, int64_t feePaid, uint64_t* nAmended = nullptr);
 int DEx_acceptDestroy(const std::string& addressBuyer, const std::string& addressSeller, uint32_t propertyid, bool fForceErase = false);
 int DEx_payment(const uint256& txid, unsigned int vout, const std::string& addressSeller, const std::string& addressBuyer, int64_t amountPaid, int block, uint64_t* nAmended = nullptr);
+int DEx_BuyOfferCreate(const std::string& addressMaker, uint32_t propertyId, int64_t price, int block, int64_t amountDesired, int64_t minAcceptFee, uint8_t paymentWindow, const uint256& txid, uint64_t* nAmended = NULL);
 
 unsigned int eraseExpiredAccepts(int block);
 }

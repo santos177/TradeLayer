@@ -2605,3 +2605,32 @@ const CMPMetaDEx* mastercore::MetaDEx_RetrieveTrade(const uint256& txid)
      return true;
 
  }
+
+ int64_t mastercore::getPairMarketPrice(std::string num, std::string den)
+ {
+   LOCK(cs_tally);
+   uint32_t nextSPID = pDbSpInfo->peekNextSPID(1);
+
+   uint32_t numId = 0;
+   uint32_t denId = 0;
+
+   for (uint32_t propertyId = 1; propertyId < nextSPID; propertyId++)
+     {
+       CMPSPInfo::Entry sp;
+       if (pDbSpInfo->getSP(propertyId, sp))
+        	{
+ 	  if ( sp.name == num )
+ 	    {
+ 	      if(msc_debug_get_pair_market_price) PrintToLog("\npropertyId num: %d\n", propertyId);
+ 	      numId = propertyId;
+ 	    }
+ 	  if ( sp.name == den )
+ 	    {
+ 	      if(msc_debug_get_pair_market_price) PrintToLog("\npropertyId den: %d\n", propertyId);
+ 	      denId = propertyId;
+ 	    }
+ 	}
+     }
+
+   return market_priceMap[numId][denId];
+ }

@@ -978,8 +978,31 @@ std::vector<unsigned char> CreatePayload_Update_Id_Registration()
 
   PUSH_BACK_BYTES(payload, messageVer);
   PUSH_BACK_BYTES(payload, messageType);
-  
+
   return payload;
+}
+
+std::vector<unsigned char> CreatePayload_DEx(uint32_t propertyId, uint64_t amount, uint64_t price,  uint8_t timeLimit, uint64_t minFee, uint8_t subAction)
+{
+    std::vector<unsigned char> payload;
+
+    uint16_t messageType = 21;
+    uint16_t messageVer = 0;
+
+    SwapByteOrder32(propertyId);
+    SwapByteOrder64(amount);
+    SwapByteOrder64(price);
+    SwapByteOrder64(minFee);
+
+    PUSH_BACK_BYTES(payload, messageVer);
+    PUSH_BACK_BYTES(payload, messageType);
+    PUSH_BACK_BYTES(payload, propertyId);
+    PUSH_BACK_BYTES(payload, amount);
+    PUSH_BACK_BYTES(payload, timeLimit);
+    PUSH_BACK_BYTES(payload, minFee);
+    PUSH_BACK_BYTES(payload, subAction);
+
+    return payload;
 }
 
 

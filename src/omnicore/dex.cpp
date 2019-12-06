@@ -7,7 +7,9 @@
 #include <omnicore/dex.h>
 
 #include <omnicore/convert.h>
+#include <omnicore/dbspinfo.h>
 #include <omnicore/dbtxlist.h>
+#include <omnicore/mdex.h>
 #include <omnicore/log.h>
 #include <omnicore/rules.h>
 #include <omnicore/uint256_extensions.h>
@@ -30,6 +32,8 @@
 #include <string>
 #include <utility>
 #include <vector>
+
+extern int64_t factorE;
 
 namespace mastercore
 {
@@ -252,7 +256,7 @@ int DEx_offerCreate(const std::string& addressSeller, uint32_t propertyId, int64
         assert(update_tally_map(addressSeller, propertyId, -amountOffered, BALANCE));
         assert(update_tally_map(addressSeller, propertyId, amountOffered, SELLOFFER_RESERVE));
 
-        CMPOffer sellOffer(block, amountOffered, propertyId, amountDesired, minAcceptFee, paymentWindow, txid);
+        CMPOffer sellOffer(block, amountOffered, propertyId, amountDesired, minAcceptFee, paymentWindow, txid, 2);
         my_offers.insert(std::make_pair(key, sellOffer));
 
         rc = 0;
@@ -498,12 +502,50 @@ int64_t calculateDExPurchase(const int64_t amountOffered, const int64_t amountDe
  */
 int DEx_payment(const uint256& txid, unsigned int vout, const std::string& addressSeller, const std::string& addressBuyer, int64_t amountPaid, int block, uint64_t* nAmended)
 {
-    if (msc_debug_dex) PrintToLog("%s(%s, %s)\n", __func__, addressSeller, addressBuyer);
+  CMPSPInfo* pDbSpInfo = NULL;
+  uint32_t nextSPID = pDbSpInfo->peekNextSPID(1);
 
-    int rc = DEX_ERROR_PAYMENT;
+  if (msc_debug_dex) PrintToLog("%s(%s, %s)\n", __func__, addressSeller, addressBuyer);
+  int rc = DEX_ERROR_PAYMENT;
+  uint32_t propertyId;
 
-    uint32_t propertyId = OMNI_PROPERTY_MSC;
-    CMPAccept* p_accept = NULL;
+  CMPAccept* p_accept = NULL;
+
+  // logic here: we look only into main properties if there's some match
+  for (propertyId = 1; propertyId < nextSPID; propertyId++)
+  {
+      CMPSPInfo::Entry sp;
+      if (msc_debug_dex) PrintToLog("propertyId: %d\n",propertyId);
+      if (!pDbSpInfo->getSP(propertyId, sp)) continue;
+
+      // seller market maker?
+      p_accept = DEx_getAccept(addressSeller, propertyId, addressBuyer);
+
+      if (p_accept)
+      {
+          if (msc_debug_dex) PrintToLog("Found seller market maker!\n");
+          break;
+      }
+
+      // buyer market maker?
+      p_accept = DEx_getAccept(addressBuyer, propertyId, addressSeller);
+
+      if (p_accept)
+      {
+          if (msc_debug_dex) PrintToLog("Found buyer market maker!\n");
+          break;
+      }
+
+
+  }
+
+  if (!p_accept && msc_debug_dex)
+  {
+     // there must be an active accept order for this payment
+     PrintToLog("first return!\n");
+     return (DEX_ERROR_PAYMENT -1);
+  }
+
 
     /**
      * When the feature is not activated, first check, if there is an open offer
@@ -644,6 +686,89 @@ unsigned int eraseExpiredAccepts(int blockNow)
     }
 
     return how_many_erased;
+}
+
+int DEx_BuyOfferCreate(const std::string& addressMaker, uint32_t propertyId, int64_t amountOffered, int block, int64_t price, int64_t minAcceptFee, uint8_t paymentWindow, const uint256& txid, uint64_t* nAmended)
+{
+    bool ready = false;
+    int rc = DEX_ERROR_SELLOFFER;
+
+    // sanity checks
+    if (paymentWindow == 0)
+    {
+        if (msc_debug_dex) PrintToLog("DEX_ERROR_SELLOFFER\n");
+        return (DEX_ERROR_SELLOFFER -101);
+    }
+
+    if (price == 0)
+    {
+        if (msc_debug_dex) PrintToLog("DEX_ERROR_SELLOFFER\n");
+        return (DEX_ERROR_SELLOFFER -101);
+    }
+
+    if (DEx_getOffer(addressMaker, propertyId))
+    {
+        if (msc_debug_dex) PrintToLog("DEX_ERROR_SELLOFFER\n");
+        return (DEX_ERROR_SELLOFFER -10); // offer already exists
+    }
+
+    const std::string key = STR_SELLOFFER_ADDR_PROP_COMBO(addressMaker, propertyId);
+    if (msc_debug_dex) PrintToLog("%s(%s|%s), nValue=%d)\n", __func__, addressMaker, key, amountOffered);
+
+    // ------------------------------------------------------------------------
+    // On this part we need to put in reserve synth Litecoins.
+    LOCK(cs_tally);
+
+    CMPSPInfo* pDbSpInfo = NULL;
+
+    arith_uint256 sumValues;
+    uint32_t nextSPID = pDbSpInfo->peekNextSPID(1);
+
+    for (uint32_t propertyId = 1; propertyId < nextSPID; propertyId++)
+    {
+        CMPSPInfo::Entry sp;
+        if (pDbSpInfo->getSP(propertyId, sp))
+        {
+            if (msc_debug_dex) PrintToLog("Property Id: %d\n",propertyId);
+            if (sp.prop_type != ALL_PROPERTY_TYPE_CONTRACT)
+	              continue;
+
+            int64_t longs = GetTokenBalance(addressMaker, propertyId, POSSITIVE_BALANCE);
+            int64_t shorts = GetTokenBalance(addressMaker, propertyId, NEGATIVE_BALANCE);
+            int64_t notional = static_cast<int64_t>(sp.notional_size);
+
+            if (msc_debug_dex) PrintToLog("%s(): longs: %d, shorts: %d, notional: %d\n",__func__, longs, shorts, notional);
+
+            // price of one sLTC in ALLs
+            int64_t pair = getPairMarketPrice("sLTC", "ALL");
+
+            if (msc_debug_dex) PrintToLog("pair: %d\n", pair);
+
+            if (longs >= 0 && shorts == 0)
+	              sumValues += (ConvertTo256(longs) * ConvertTo256(notional)) * ConvertTo256(pair) / ConvertTo256(factorE);
+            else if (longs == 0 && shorts >= 0)
+	              sumValues += (ConvertTo256(shorts) * ConvertTo256(notional)) * ConvertTo256(pair) / ConvertTo256(factorE);
+
+	          if (sumValues > ConvertTo256(price))
+            {
+                // price = price of entire order   .
+	              if (msc_debug_dex) PrintToLog("You can buy tokens now\n");
+	              ready = true;
+	              break;
+            }
+        }
+    }
+
+    if (ready)
+    {
+        CMPOffer sellOffer(block, amountOffered, propertyId, price, minAcceptFee, paymentWindow, txid, 1);
+        my_offers.insert(std::make_pair(key, sellOffer));
+    } else {
+        if (msc_debug_dex) PrintToLog("You can't buy tokens, you need more position value\n");
+        return -1;
+    }
+
+    return rc;
 }
 
 
