@@ -387,9 +387,9 @@ bool CMPTransaction::interpret_SendVestingTokens()
 {
   PrintToLog("%s(): inside interpret!\n",__func__);
 
-  // if (pkt_size < 5) { /** TODO: check minimum size here */
-  //     return false;
-  // }
+  if (pkt_size < 16) {
+      return false;
+  }
 
   memcpy(&property, &pkt[4], 4);
   SwapByteOrder32(property);
@@ -397,10 +397,10 @@ bool CMPTransaction::interpret_SendVestingTokens()
   SwapByteOrder64(nValue);
   nNewValue = nValue;
 
-  // if ((!rpcOnly && msc_debug_packets) || msc_debug_packets_readonly) {
+  if ((!rpcOnly && msc_debug_packets) || msc_debug_packets_readonly) {
     PrintToLog("\t        property: %d (%s)\n", property, strMPProperty(property));
     PrintToLog("\t           value: %s\n", FormatMP(property, nValue));
-  // }
+  }
 
   return true;
 }
@@ -971,11 +971,9 @@ bool CMPTransaction::interpret_Alert()
 /** Tx  117*/
 bool CMPTransaction::interpret_DEx_Payment()
 {
-
-  // memcpy(&property, &pkt[4], 4);
-  // SwapByteOrder32(property);
-  // memcpy(&nValue, &pkt[8], 8);
-  // SwapByteOrder64(nValue);
+  if (pkt_size < 4) {
+      return false;
+  }
 
   if ((!rpcOnly && msc_debug_packets) || msc_debug_packets_readonly)
   {
@@ -1130,9 +1128,9 @@ bool CMPTransaction::interpret_ContractDexTrade()
 bool CMPTransaction::interpret_ContractDexCancelEcosystem()
 {
 
-  // if (pkt_size < 17) {
-  //     return false;
-  // }
+  if (pkt_size < 5) {
+      return false;
+  }
 
   memcpy(&ecosystem, &pkt[4], 1);
 
@@ -1151,9 +1149,9 @@ bool CMPTransaction::interpret_ContractDexCancelEcosystem()
 bool CMPTransaction::interpret_ContractDexClosePosition()
 {
 
-  // if (pkt_size < 17) {
-  //     return false;
-  // }
+  if (pkt_size < 9) {
+      return false;
+  }
 
   memcpy(&ecosystem, &pkt[4], 1);
   memcpy(&contractId, &pkt[5], 4);
@@ -1173,9 +1171,9 @@ bool CMPTransaction::interpret_ContractDexClosePosition()
 /** Tx 34 */
 bool CMPTransaction::interpret_ContractDex_Cancel_Orders_By_Block()
 {
-    // if (pkt_size < 17) {
-    //     return false;
-    // }
+    if (pkt_size < 6) {
+        return false;
+    }
 
     memcpy(&block, &pkt[4], 1);
     memcpy(&tx_idx, &pkt[5], 1);
@@ -1194,9 +1192,9 @@ bool CMPTransaction::interpret_ContractDex_Cancel_Orders_By_Block()
 /** Tx 105 */
 bool CMPTransaction::interpret_Set_Oracle()
 {
-  // if (pkt_size < 17) {
-  //     return false;
-  // }
+    if (pkt_size < 24) {
+        return false;
+    }
 
     memcpy(&oracle_high, &pkt[4], 8);
     SwapByteOrder64(oracle_high);
@@ -1219,9 +1217,10 @@ bool CMPTransaction::interpret_Set_Oracle()
 /** Tx 106 */
 bool CMPTransaction::interpret_OracleBackup()
 {
-    // if (pkt_size < 17) {
-    //     return false;
-    // }
+    if (pkt_size < 8) {
+        return false;
+    }
+
     memcpy(&contractId, &pkt[4], 4);
     SwapByteOrder32(contractId);
 
@@ -1237,9 +1236,10 @@ bool CMPTransaction::interpret_OracleBackup()
 /** Tx 107 */
 bool CMPTransaction::interpret_CloseOracle()
 {
-    // if (pkt_size < 17) {
-    //     return false;
-    // }
+    if (pkt_size < 8) {
+        return false;
+    }
+
     memcpy(&contractId, &pkt[4], 4);
     SwapByteOrder32(contractId);
 
@@ -1255,9 +1255,10 @@ bool CMPTransaction::interpret_CloseOracle()
 /** Tx 104 */
 bool CMPTransaction::interpret_Change_OracleRef()
 {
-    // if (pkt_size < 17) {
-    //     return false;
-    // }
+    if (pkt_size < 8) {
+        return false;
+    }
+
     memcpy(&contractId, &pkt[4], 4);
     SwapByteOrder32(contractId);
 
@@ -1274,9 +1275,9 @@ bool CMPTransaction::interpret_Change_OracleRef()
 /** Tx 113 */
 bool CMPTransaction::interpret_Create_Channel()
 {
-  // if (pkt_size < 17) {
-  //     return false;
-  // }
+    if (pkt_size < 5) {
+        return false;
+    }
 
     memcpy(&block_forexpiry, &pkt[4], 1);
     const char* p = 1 + (char*) &pkt[4]; // next char
@@ -1304,9 +1305,10 @@ bool CMPTransaction::interpret_Create_Channel()
 /** Tx 108 */
 bool CMPTransaction::interpret_CommitChannel()
 {
-    // if (pkt_size < 17) {
-    //     return false;
-    // }
+    if (pkt_size < 16) {
+        return false;
+    }
+
     memcpy(&propertyId, &pkt[4], 4);
     SwapByteOrder32(propertyId);
     memcpy(&amount_commited, &pkt[8], 8);
@@ -1326,9 +1328,10 @@ bool CMPTransaction::interpret_CommitChannel()
 /** Tx 109 */
 bool CMPTransaction::interpret_Withdrawal_FromChannel()
 {
-    // if (pkt_size < 17) {
-    //     return false;
-    // }
+    if (pkt_size < 16) {
+        return false;
+    }
+
     memcpy(&propertyId, &pkt[4], 4);
     SwapByteOrder32(propertyId);
     memcpy(&amount_commited, &pkt[8], 8);
@@ -1348,9 +1351,10 @@ bool CMPTransaction::interpret_Withdrawal_FromChannel()
 /** Tx 110 */
 bool CMPTransaction::interpret_Instant_Trade()
 {
-    // if (pkt_size < 17) {
-    //     return false;
-    // }
+    if (pkt_size < 29) {
+        return false;
+    }
+
     memcpy(&property, &pkt[4], 4);
     SwapByteOrder32(propertyId);
     memcpy(&amount_forsale, &pkt[8], 8);
@@ -1378,9 +1382,9 @@ bool CMPTransaction::interpret_Instant_Trade()
 /** Tx 114 */
 bool CMPTransaction::interpret_Contract_Instant()
 {
-  // if (pkt_size < 17) {
-  //     return false;
-  // }
+  if (pkt_size < 41) {
+      return false;
+  }
 
   memcpy(&property, &pkt[4], 4);
   SwapByteOrder32(propertyId);
@@ -1412,9 +1416,9 @@ bool CMPTransaction::interpret_Contract_Instant()
 /** Tx  115*/
 bool CMPTransaction::interpret_New_Id_Registration()
 {
-  // if (pkt_size < 17) {
-  //     return false;
-  // }
+  if (pkt_size < 7) {
+      return false;
+  }
 
   memcpy(&tokens, &pkt[4], 1);
   memcpy(&ltc, &pkt[5], 1);
@@ -1451,9 +1455,9 @@ bool CMPTransaction::interpret_New_Id_Registration()
 /** Tx  116*/
 bool CMPTransaction::interpret_Update_Id_Registration()
 {
-  // if (pkt_size < 17) {
-  //     return false;
-  // }
+  if (pkt_size < 4) {
+      return false;
+  }
 
   if ((!rpcOnly && msc_debug_packets) || msc_debug_packets_readonly)
   {
@@ -1467,9 +1471,9 @@ bool CMPTransaction::interpret_Update_Id_Registration()
 /** Tx 112 */
 bool CMPTransaction::interpret_Transfer()
 {
-  // if (pkt_size < 17) {
-  //     return false;
-  // }
+  if (pkt_size < 16) {
+      return false;
+  }
 
   memcpy(&property, &pkt[4], 4);
   SwapByteOrder32(property);
@@ -1491,9 +1495,9 @@ bool CMPTransaction::interpret_Transfer()
 /*Tx 21*/
 bool CMPTransaction::interpret_DExBuy()
 {
-    // if (pkt_size < 17) {
-    //     return false;
-    // }
+    if (pkt_size < 34) {
+        return false;
+    }
 
     memcpy(&propertyId, &pkt[4], 4);
     SwapByteOrder32(propertyId);
@@ -1524,9 +1528,9 @@ bool CMPTransaction::interpret_DExBuy()
 /*Tx 101 */
 bool CMPTransaction::interpret_CreatePeggedCurrency()
 {
-  // if (pkt_size < 17) {
-  //     return false;
-  // }
+  if (pkt_size < 25) {
+      return false;
+  }
 
   memcpy(&ecosystem, &pkt[4], 1);
   memcpy(&prev_prop_id, &pkt[5], 4);
@@ -1570,9 +1574,9 @@ bool CMPTransaction::interpret_CreatePeggedCurrency()
 
 bool CMPTransaction::interpret_SendPeggedCurrency()
 {
-    // if (pkt_size < 17) {
-    //     return false;
-    // }
+    if (pkt_size < 16) {
+        return false;
+    }
 
     memcpy(&propertyId, &pkt[4], 4);
     SwapByteOrder32(propertyId);
@@ -1592,9 +1596,9 @@ bool CMPTransaction::interpret_SendPeggedCurrency()
 
 bool CMPTransaction::interpret_RedemptionPegged()
 {
-  // if (pkt_size < 17) {
-  //     return false;
-  // }
+  if (pkt_size < 20) {
+      return false;
+  }
 
   memcpy(&propertyId, &pkt[4], 4);
   SwapByteOrder32(propertyId);
