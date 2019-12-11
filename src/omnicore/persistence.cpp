@@ -38,6 +38,11 @@
 
 using namespace mastercore;
 
+extern std::map<uint32_t, int64_t> cachefees;
+extern std::map<std::string,vector<withdrawalAccepted>> withdrawal_Map;
+extern std::map<std::string,channel> channels_Map;
+extern uint64_t marketP[NPTYPES];
+
 //! Number of "Dev Omni" of the last processed block (needed to save global state)
 extern int64_t exodus_prev;
 
@@ -51,7 +56,11 @@ enum FILETYPES {
   FILETYPE_GLOBALS,
   FILETYPE_CROWDSALES,
   FILETYPE_MDEXORDERS,
+  FILETYPE_MARKETPRICES,
   FILETYPE_CDEXORDERS,
+  FILETYPE_CACHEFEES,
+  FILETYPE_WITHDRAWALS,
+  FILETYPE_ACTIVE_CHANNELS,
   NUM_FILETYPES
 };
 
@@ -135,6 +144,19 @@ static int write_mp_offers(std::ofstream& file, SHA256_CTX* shaCtx)
     return 0;
 }
 
+static int write_market_pricescd(ofstream &file, SHA256_CTX *shaCtx)
+{
+  std::string lineOut;
+
+  for (int i = 0; i < NPTYPES; i++) lineOut.append(strprintf("%d", marketP[i]));
+  // add the line to the hash
+  SHA256_Update(shaCtx, lineOut.c_str(), lineOut.length());
+  // write the line
+  file << lineOut << endl;
+
+  return 0;
+}
+
 static int write_mp_accepts(std::ofstream& file, SHA256_CTX* shaCtx)
 {
     AcceptMap::const_iterator iter;
@@ -210,6 +232,80 @@ static int write_mp_contractdex(ofstream &file, SHA256_CTX *shaCtx)
     }
   }
   return 0;
+}
+
+static int write_mp_cachefees(std::ofstream& file, SHA256_CTX* shaCtx)
+{
+    std::string lineOut;
+
+    for (std::map<uint32_t, int64_t>::iterator itt = cachefees.begin(); itt != cachefees.end(); ++itt) {
+        // decompose the key for address
+        uint32_t propertyId = itt->first;
+        int64_t cache = itt->second;
+
+        lineOut.append(strprintf("%d,%d",propertyId, cache));
+    }
+
+    // add the line to the hash
+    SHA256_Update(shaCtx, lineOut.c_str(), lineOut.length());
+
+    // write the line
+    file << lineOut << endl;
+
+    return 0;
+}
+
+/** Saving pending withdrawals **/
+static int write_mp_withdrawals(std::ofstream& file, SHA256_CTX* shaCtx)
+{
+    std::string lineOut;
+
+    for (std::map<std::string,vector<withdrawalAccepted>>::iterator it = withdrawal_Map.begin(); it != withdrawal_Map.end(); ++it)
+    {
+        // decompose the key for address
+        std::string chnAddr = it->first;
+        vector<withdrawalAccepted> whd = it->second;
+
+        for(std::vector<withdrawalAccepted>::iterator itt = whd.begin(); itt != whd.end(); ++itt)
+        {
+            withdrawalAccepted  w = *(itt);
+            lineOut.append(strprintf("%s,%s,%d,%d,%d", chnAddr, w.address, w.deadline_block, w.propertyId, w.amount));
+
+        }
+
+    }
+
+    // add the line to the hash
+    SHA256_Update(shaCtx, lineOut.c_str(), lineOut.length());
+
+    // write the line
+    file << lineOut << endl;
+
+    return 0;
+}
+
+/**Saving map of active channels**/
+static int write_mp_active_channels(std::ofstream& file, SHA256_CTX* shaCtx)
+{
+    std::string lineOut;
+
+    for (std::map<std::string,channel>::iterator it = channels_Map.begin(); it != channels_Map.end(); ++it)
+    {
+        // decompose the key for address
+        std::string chnAddr = it->first;
+        channel chnObj = it->second;
+
+        lineOut.append(strprintf("%s,%s,%s,%s,%d,%d", chnAddr, chnObj.multisig, chnObj.first, chnObj.second, chnObj.expiry_height, chnObj.last_exchange_block));
+
+    }
+
+    // add the line to the hash
+    SHA256_Update(shaCtx, lineOut.c_str(), lineOut.length());
+
+    // write the line
+    file << lineOut << endl;
+
+    return 0;
 }
 
 static int input_msc_balances_string(const std::string& s)
@@ -451,6 +547,84 @@ static int input_mp_contractdexorder_string(const std::string& s)
     return 0;
 }
 
+
+static int input_market_prices_string(const std::string& s)
+{
+   std::vector<std::string> vstr;
+   boost::split(vstr, s, boost::is_any_of(" ,="), boost::token_compress_on);
+
+   if (NPTYPES != vstr.size()) return -1;
+   for (int i = 0; i < NPTYPES; i++) marketP[i] = boost::lexical_cast<uint64_t>(vstr[i]);
+
+   return 0;
+}
+
+static int input_cachefees_string(const std::string& s)
+{
+   std::vector<std::string> vstr;
+   boost::split(vstr, s, boost::is_any_of(" ,="), boost::token_compress_on);
+
+   uint32_t propertyId = boost::lexical_cast<uint32_t>(vstr[0]);
+
+   int64_t amount = boost::lexical_cast<int64_t>(vstr[1]);;
+
+   if (!cachefees.insert(std::make_pair(propertyId, amount)).second) return -1;
+
+   return 0;
+}
+
+static int input_withdrawals_string(const std::string& s)
+{
+    std::vector<std::string> vstr;
+    boost::split(vstr, s, boost::is_any_of(" ,="), boost::token_compress_on);
+
+    withdrawalAccepted w;
+
+    std::string chnAddr = vstr[0];
+    w.address = vstr[1];
+    w.deadline_block = boost::lexical_cast<int>(vstr[2]);
+    w.propertyId = boost::lexical_cast<uint32_t>(vstr[3]);
+    w.amount = boost::lexical_cast<int64_t>(vstr[4]);
+
+    vector<withdrawalAccepted> whAc;
+
+    std::map<std::string,vector<withdrawalAccepted>>::iterator it = withdrawal_Map.find(chnAddr);
+
+    if (it != withdrawal_Map.end())
+    {
+        whAc = it->second;
+        whAc.push_back(w);
+    } else {
+        whAc.push_back(w);
+        if(!withdrawal_Map.insert(std::make_pair(chnAddr,whAc)).second) return -1;
+    }
+
+    return 0;
+
+}
+
+static int input_activechannels_string(const std::string& s)
+{
+    std::vector<std::string> vstr;
+    boost::split(vstr, s, boost::is_any_of(" ,="), boost::token_compress_on);
+
+    channel chn;
+
+    std::string chnAddr = vstr[0];
+    chn.multisig = vstr[1];
+    chn.first = vstr[2];
+    chn.second = vstr[3];
+    chn.expiry_height = boost::lexical_cast<int>(vstr[4]);
+    chn.last_exchange_block = boost::lexical_cast<int>(vstr[5]);
+
+    //inserting chn into map
+    if(!channels_Map.insert(std::make_pair(chnAddr,chn)).second) return -1;
+
+    return 0;
+
+}
+
+
 static int write_state_file(const CBlockIndex* pBlockIndex, int what)
 {
     fs::path path = pathStateFiles / strprintf("%s-%s.dat", statePrefix[what], pBlockIndex->GetBlockHash().ToString());
@@ -492,6 +666,22 @@ static int write_state_file(const CBlockIndex* pBlockIndex, int what)
         case FILETYPE_CDEXORDERS:
             result = write_mp_contractdex(file, &shaCtx);
             break;
+
+        case FILETYPE_CACHEFEES:
+            result = write_mp_cachefees(file, &shaCtx);
+            break;
+
+        case FILETYPE_WITHDRAWALS:
+            result = write_mp_withdrawals(file, &shaCtx);
+            break;
+
+        case FILETYPE_ACTIVE_CHANNELS:
+            result = write_mp_active_channels(file, &shaCtx);
+            break;
+
+        case FILETYPE_MARKETPRICES:
+           result = write_market_pricescd(file, &shaCtx);
+           break;
     }
 
     // generate and wite the double hash of all the contents written
@@ -587,6 +777,10 @@ int PersistInMemoryState(const CBlockIndex* pBlockIndex)
     write_state_file(pBlockIndex, FILETYPE_CROWDSALES);
     write_state_file(pBlockIndex, FILETYPE_MDEXORDERS);
     write_state_file(pBlockIndex, FILETYPE_CDEXORDERS);
+    write_state_file(pBlockIndex, FILETYPE_CACHEFEES);
+    write_state_file(pBlockIndex, FILETYPE_WITHDRAWALS);
+    write_state_file(pBlockIndex, FILETYPE_ACTIVE_CHANNELS);
+
 
     // clean-up the directory
     prune_state_files(pBlockIndex);
@@ -644,6 +838,22 @@ int RestoreInMemoryState(const std::string& filename, int what, bool verifyHash)
         case FILETYPE_CDEXORDERS:
             contractdex.clear();
             inputLineFunc = input_mp_contractdexorder_string;
+            break;
+
+        case FILETYPE_MARKETPRICES:
+            inputLineFunc = input_market_prices_string;
+            break;
+
+        case FILETYPE_CACHEFEES:
+            inputLineFunc = input_cachefees_string;
+            break;
+
+        case FILETYPE_WITHDRAWALS:
+            inputLineFunc = input_withdrawals_string;
+            break;
+
+        case FILETYPE_ACTIVE_CHANNELS:
+            inputLineFunc = input_activechannels_string;
             break;
 
         default:
