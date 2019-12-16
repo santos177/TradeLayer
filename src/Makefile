@@ -211,7 +211,7 @@ am__append_39 = $(CLEAN_BITCOIN_BENCH)
 #am__append_58 = $(LIBBITCOIN_UTIL) $(LIBBITCOIN_WALLET)
 #am__append_59 = $(LIBBITCOIN_ZMQ) $(ZMQ_LIBS)
 #am__append_60 = $(CLEAN_BITCOIN_QT_TEST)
-am__append_61 = $(CLEAN_OMNICORE_TEST)
+am__append_61 = $(CLEAN_TRADELAYER_TEST)
 subdir = src
 SUBDIRS =
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
@@ -248,7 +248,7 @@ CONFIG_CLEAN_VPATH_FILES =
 AM_V_AR = $(am__v_AR_$(V))
 am__v_AR_ = $(am__v_AR_$(AM_DEFAULT_VERBOSITY))
 am__v_AR_0 = @echo "  AR      " $@;
-am__v_AR_1 = 
+am__v_AR_1 =
 crypto_libbitcoin_crypto_avx2_a_AR = $(AR) $(ARFLAGS)
 crypto_libbitcoin_crypto_avx2_a_LIBADD =
 am__dirstamp = $(am__leading_dot)dirstamp
@@ -498,94 +498,98 @@ am__libbitcoin_server_a_SOURCES_DIST = addrdb.cpp addrman.cpp \
 	wallet/wallettool.h wallet/walletutil.h wallet/coinselection.h \
 	warnings.h zmq/zmqabstractnotifier.h zmq/zmqconfig.h \
 	zmq/zmqnotificationinterface.h zmq/zmqpublishnotifier.h \
-	zmq/zmqrpc.h dummywallet.cpp omnicore/activation.cpp \
-	omnicore/consensushash.cpp omnicore/convert.cpp \
-	omnicore/createpayload.cpp omnicore/createtx.cpp \
-	omnicore/dbbase.cpp omnicore/dbfees.cpp omnicore/dbspinfo.cpp \
-	omnicore/dbstolist.cpp omnicore/dbtradelist.cpp \
-	omnicore/dbtransaction.cpp omnicore/dbtxlist.cpp \
-	omnicore/dex.cpp omnicore/encoding.cpp omnicore/log.cpp \
-	omnicore/mdex.cpp omnicore/notifications.cpp \
-	omnicore/omnicore.cpp omnicore/operators_algo_clearing.cpp \
-	omnicore/parse_string.cpp omnicore/parsing.cpp \
-	omnicore/pending.cpp omnicore/persistence.cpp omnicore/rpc.cpp \
-	omnicore/rpcmbstring.cpp omnicore/rpcpayload.cpp \
-	omnicore/rpcrawtx.cpp omnicore/rpcrequirements.cpp \
-	omnicore/rpctx.cpp omnicore/rpctxobject.cpp \
-	omnicore/rpcvalues.cpp omnicore/rules.cpp omnicore/script.cpp \
-	omnicore/seedblocks.cpp omnicore/sp.cpp omnicore/sto.cpp \
-	omnicore/tally.cpp omnicore/tx.cpp omnicore/utilsbitcoin.cpp \
-	omnicore/utilsui.cpp omnicore/version.cpp \
-	omnicore/walletcache.cpp omnicore/walletfetchtxs.cpp \
-	omnicore/wallettxbuilder.cpp omnicore/globals.cpp \
-	omnicore/externfns.cpp omnicore/walletutils.cpp \
-	omnicore/activation.h omnicore/consensushash.h \
-	omnicore/convert.h omnicore/createpayload.h \
-	omnicore/createtx.h omnicore/dbbase.h omnicore/dbfees.h \
-	omnicore/dbspinfo.h omnicore/dbstolist.h \
-	omnicore/dbtradelist.h omnicore/dbtransaction.h \
-	omnicore/dbtxlist.h omnicore/dex.h omnicore/encoding.h \
-	omnicore/errors.h omnicore/log.h omnicore/mdex.h \
-	omnicore/notifications.h omnicore/omnicore.h \
-	omnicore/operators_algo_clearing.h omnicore/parse_string.h \
-	omnicore/parsing.h omnicore/pending.h omnicore/persistence.h \
-	omnicore/rpc.h omnicore/rpcmbstring.h \
-	omnicore/rpcrequirements.h omnicore/rpctxobject.h \
-	omnicore/rpcvalues.h omnicore/rules.h omnicore/script.h \
-	omnicore/seedblocks.h omnicore/sp.h omnicore/sto.h \
-	omnicore/tally.h omnicore/tx.h omnicore/uint256_extensions.h \
-	omnicore/utilsbitcoin.h omnicore/utilsui.h omnicore/version.h \
-	omnicore/walletcache.h omnicore/walletfetchtxs.h \
-	omnicore/wallettxbuilder.h omnicore/tradelayer_matrices.h \
-	omnicore/externfns.h omnicore/walletutils.h
+	zmq/zmqrpc.h dummywallet.cpp tradelayer/activation.cpp \
+	tradelayer/consensushash.cpp tradelayer/convert.cpp \
+	tradelayer/createpayload.cpp tradelayer/createtx.cpp \
+	tradelayer/dbbase.cpp tradelayer/dbfees.cpp \
+	tradelayer/dbspinfo.cpp tradelayer/dbstolist.cpp \
+	tradelayer/dbtradelist.cpp tradelayer/dbtransaction.cpp \
+	tradelayer/dbtxlist.cpp tradelayer/dex.cpp \
+	tradelayer/encoding.cpp tradelayer/log.cpp tradelayer/mdex.cpp \
+	tradelayer/notifications.cpp tradelayer/tradelayer.cpp \
+	tradelayer/operators_algo_clearing.cpp \
+	tradelayer/parse_string.cpp tradelayer/parsing.cpp \
+	tradelayer/pending.cpp tradelayer/persistence.cpp \
+	tradelayer/rpc.cpp tradelayer/rpcmbstring.cpp \
+	tradelayer/rpcpayload.cpp tradelayer/rpcrawtx.cpp \
+	tradelayer/rpcrequirements.cpp tradelayer/rpctx.cpp \
+	tradelayer/rpctxobject.cpp tradelayer/rpcvalues.cpp \
+	tradelayer/rules.cpp tradelayer/script.cpp \
+	tradelayer/seedblocks.cpp tradelayer/sp.cpp tradelayer/sto.cpp \
+	tradelayer/tally.cpp tradelayer/tx.cpp \
+	tradelayer/utilsbitcoin.cpp tradelayer/utilsui.cpp \
+	tradelayer/version.cpp tradelayer/walletcache.cpp \
+	tradelayer/walletfetchtxs.cpp tradelayer/wallettxbuilder.cpp \
+	tradelayer/globals.cpp tradelayer/externfns.cpp \
+	tradelayer/walletutils.cpp tradelayer/activation.h \
+	tradelayer/consensushash.h tradelayer/convert.h \
+	tradelayer/createpayload.h tradelayer/createtx.h \
+	tradelayer/dbbase.h tradelayer/dbfees.h tradelayer/dbspinfo.h \
+	tradelayer/dbstolist.h tradelayer/dbtradelist.h \
+	tradelayer/dbtransaction.h tradelayer/dbtxlist.h \
+	tradelayer/dex.h tradelayer/encoding.h tradelayer/errors.h \
+	tradelayer/log.h tradelayer/mdex.h tradelayer/notifications.h \
+	tradelayer/tradelayer.h tradelayer/operators_algo_clearing.h \
+	tradelayer/parse_string.h tradelayer/parsing.h \
+	tradelayer/pending.h tradelayer/persistence.h tradelayer/rpc.h \
+	tradelayer/rpcmbstring.h tradelayer/rpcrequirements.h \
+	tradelayer/rpctxobject.h tradelayer/rpcvalues.h \
+	tradelayer/rules.h tradelayer/script.h tradelayer/seedblocks.h \
+	tradelayer/sp.h tradelayer/sto.h tradelayer/tally.h \
+	tradelayer/tx.h tradelayer/uint256_extensions.h \
+	tradelayer/utilsbitcoin.h tradelayer/utilsui.h \
+	tradelayer/version.h tradelayer/walletcache.h \
+	tradelayer/walletfetchtxs.h tradelayer/wallettxbuilder.h \
+	tradelayer/tradelayer_matrices.h tradelayer/externfns.h \
+	tradelayer/walletutils.h
 #am__objects_5 = libbitcoin_server_a-dummywallet.$(OBJEXT)
-am__objects_6 = omnicore/libbitcoin_server_a-activation.$(OBJEXT) \
-	omnicore/libbitcoin_server_a-consensushash.$(OBJEXT) \
-	omnicore/libbitcoin_server_a-convert.$(OBJEXT) \
-	omnicore/libbitcoin_server_a-createpayload.$(OBJEXT) \
-	omnicore/libbitcoin_server_a-createtx.$(OBJEXT) \
-	omnicore/libbitcoin_server_a-dbbase.$(OBJEXT) \
-	omnicore/libbitcoin_server_a-dbfees.$(OBJEXT) \
-	omnicore/libbitcoin_server_a-dbspinfo.$(OBJEXT) \
-	omnicore/libbitcoin_server_a-dbstolist.$(OBJEXT) \
-	omnicore/libbitcoin_server_a-dbtradelist.$(OBJEXT) \
-	omnicore/libbitcoin_server_a-dbtransaction.$(OBJEXT) \
-	omnicore/libbitcoin_server_a-dbtxlist.$(OBJEXT) \
-	omnicore/libbitcoin_server_a-dex.$(OBJEXT) \
-	omnicore/libbitcoin_server_a-encoding.$(OBJEXT) \
-	omnicore/libbitcoin_server_a-log.$(OBJEXT) \
-	omnicore/libbitcoin_server_a-mdex.$(OBJEXT) \
-	omnicore/libbitcoin_server_a-notifications.$(OBJEXT) \
-	omnicore/libbitcoin_server_a-omnicore.$(OBJEXT) \
-	omnicore/libbitcoin_server_a-operators_algo_clearing.$(OBJEXT) \
-	omnicore/libbitcoin_server_a-parse_string.$(OBJEXT) \
-	omnicore/libbitcoin_server_a-parsing.$(OBJEXT) \
-	omnicore/libbitcoin_server_a-pending.$(OBJEXT) \
-	omnicore/libbitcoin_server_a-persistence.$(OBJEXT) \
-	omnicore/libbitcoin_server_a-rpc.$(OBJEXT) \
-	omnicore/libbitcoin_server_a-rpcmbstring.$(OBJEXT) \
-	omnicore/libbitcoin_server_a-rpcpayload.$(OBJEXT) \
-	omnicore/libbitcoin_server_a-rpcrawtx.$(OBJEXT) \
-	omnicore/libbitcoin_server_a-rpcrequirements.$(OBJEXT) \
-	omnicore/libbitcoin_server_a-rpctx.$(OBJEXT) \
-	omnicore/libbitcoin_server_a-rpctxobject.$(OBJEXT) \
-	omnicore/libbitcoin_server_a-rpcvalues.$(OBJEXT) \
-	omnicore/libbitcoin_server_a-rules.$(OBJEXT) \
-	omnicore/libbitcoin_server_a-script.$(OBJEXT) \
-	omnicore/libbitcoin_server_a-seedblocks.$(OBJEXT) \
-	omnicore/libbitcoin_server_a-sp.$(OBJEXT) \
-	omnicore/libbitcoin_server_a-sto.$(OBJEXT) \
-	omnicore/libbitcoin_server_a-tally.$(OBJEXT) \
-	omnicore/libbitcoin_server_a-tx.$(OBJEXT) \
-	omnicore/libbitcoin_server_a-utilsbitcoin.$(OBJEXT) \
-	omnicore/libbitcoin_server_a-utilsui.$(OBJEXT) \
-	omnicore/libbitcoin_server_a-version.$(OBJEXT) \
-	omnicore/libbitcoin_server_a-walletcache.$(OBJEXT) \
-	omnicore/libbitcoin_server_a-walletfetchtxs.$(OBJEXT) \
-	omnicore/libbitcoin_server_a-wallettxbuilder.$(OBJEXT) \
-	omnicore/libbitcoin_server_a-globals.$(OBJEXT) \
-	omnicore/libbitcoin_server_a-externfns.$(OBJEXT) \
-	omnicore/libbitcoin_server_a-walletutils.$(OBJEXT)
+am__objects_6 = tradelayer/libbitcoin_server_a-activation.$(OBJEXT) \
+	tradelayer/libbitcoin_server_a-consensushash.$(OBJEXT) \
+	tradelayer/libbitcoin_server_a-convert.$(OBJEXT) \
+	tradelayer/libbitcoin_server_a-createpayload.$(OBJEXT) \
+	tradelayer/libbitcoin_server_a-createtx.$(OBJEXT) \
+	tradelayer/libbitcoin_server_a-dbbase.$(OBJEXT) \
+	tradelayer/libbitcoin_server_a-dbfees.$(OBJEXT) \
+	tradelayer/libbitcoin_server_a-dbspinfo.$(OBJEXT) \
+	tradelayer/libbitcoin_server_a-dbstolist.$(OBJEXT) \
+	tradelayer/libbitcoin_server_a-dbtradelist.$(OBJEXT) \
+	tradelayer/libbitcoin_server_a-dbtransaction.$(OBJEXT) \
+	tradelayer/libbitcoin_server_a-dbtxlist.$(OBJEXT) \
+	tradelayer/libbitcoin_server_a-dex.$(OBJEXT) \
+	tradelayer/libbitcoin_server_a-encoding.$(OBJEXT) \
+	tradelayer/libbitcoin_server_a-log.$(OBJEXT) \
+	tradelayer/libbitcoin_server_a-mdex.$(OBJEXT) \
+	tradelayer/libbitcoin_server_a-notifications.$(OBJEXT) \
+	tradelayer/libbitcoin_server_a-tradelayer.$(OBJEXT) \
+	tradelayer/libbitcoin_server_a-operators_algo_clearing.$(OBJEXT) \
+	tradelayer/libbitcoin_server_a-parse_string.$(OBJEXT) \
+	tradelayer/libbitcoin_server_a-parsing.$(OBJEXT) \
+	tradelayer/libbitcoin_server_a-pending.$(OBJEXT) \
+	tradelayer/libbitcoin_server_a-persistence.$(OBJEXT) \
+	tradelayer/libbitcoin_server_a-rpc.$(OBJEXT) \
+	tradelayer/libbitcoin_server_a-rpcmbstring.$(OBJEXT) \
+	tradelayer/libbitcoin_server_a-rpcpayload.$(OBJEXT) \
+	tradelayer/libbitcoin_server_a-rpcrawtx.$(OBJEXT) \
+	tradelayer/libbitcoin_server_a-rpcrequirements.$(OBJEXT) \
+	tradelayer/libbitcoin_server_a-rpctx.$(OBJEXT) \
+	tradelayer/libbitcoin_server_a-rpctxobject.$(OBJEXT) \
+	tradelayer/libbitcoin_server_a-rpcvalues.$(OBJEXT) \
+	tradelayer/libbitcoin_server_a-rules.$(OBJEXT) \
+	tradelayer/libbitcoin_server_a-script.$(OBJEXT) \
+	tradelayer/libbitcoin_server_a-seedblocks.$(OBJEXT) \
+	tradelayer/libbitcoin_server_a-sp.$(OBJEXT) \
+	tradelayer/libbitcoin_server_a-sto.$(OBJEXT) \
+	tradelayer/libbitcoin_server_a-tally.$(OBJEXT) \
+	tradelayer/libbitcoin_server_a-tx.$(OBJEXT) \
+	tradelayer/libbitcoin_server_a-utilsbitcoin.$(OBJEXT) \
+	tradelayer/libbitcoin_server_a-utilsui.$(OBJEXT) \
+	tradelayer/libbitcoin_server_a-version.$(OBJEXT) \
+	tradelayer/libbitcoin_server_a-walletcache.$(OBJEXT) \
+	tradelayer/libbitcoin_server_a-walletfetchtxs.$(OBJEXT) \
+	tradelayer/libbitcoin_server_a-wallettxbuilder.$(OBJEXT) \
+	tradelayer/libbitcoin_server_a-globals.$(OBJEXT) \
+	tradelayer/libbitcoin_server_a-externfns.$(OBJEXT) \
+	tradelayer/libbitcoin_server_a-walletutils.$(OBJEXT)
 am_libbitcoin_server_a_OBJECTS = libbitcoin_server_a-addrdb.$(OBJEXT) \
 	libbitcoin_server_a-addrman.$(OBJEXT) \
 	libbitcoin_server_a-banman.$(OBJEXT) \
@@ -1141,7 +1145,7 @@ libbitcoinconsensus_la_OBJECTS = $(am_libbitcoinconsensus_la_OBJECTS)
 AM_V_lt = $(am__v_lt_$(V))
 am__v_lt_ = $(am__v_lt_$(AM_DEFAULT_VERBOSITY))
 am__v_lt_0 = --silent
-am__v_lt_1 = 
+am__v_lt_1 =
 libbitcoinconsensus_la_LINK = $(LIBTOOL) $(AM_V_lt) --tag=CXX \
 	$(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=link $(CXXLD) \
 	$(libbitcoinconsensus_la_CXXFLAGS) $(CXXFLAGS) \
@@ -1977,37 +1981,38 @@ am__test_test_omnicore_SOURCES_DIST = test/test_bitcoin_main.cpp \
 	wallet/test/wallet_tests.cpp \
 	wallet/test/wallet_crypto_tests.cpp \
 	wallet/test/coinselector_tests.cpp wallet/test/init_tests.cpp \
-	omnicore/test/alert_tests.cpp \
-	omnicore/test/change_issuer_tests.cpp \
-	omnicore/test/checkpoint_tests.cpp \
-	omnicore/test/create_payload_tests.cpp \
-	omnicore/test/create_tx_tests.cpp \
-	omnicore/test/crowdsale_participation_tests.cpp \
-	omnicore/test/dex_purchase_tests.cpp \
-	omnicore/test/encoding_b_tests.cpp \
-	omnicore/test/encoding_c_tests.cpp \
-	omnicore/test/exodus_tests.cpp omnicore/test/lock_tests.cpp \
-	omnicore/test/marker_tests.cpp \
-	omnicore/test/mbstring_tests.cpp \
-	omnicore/test/params_tests.cpp \
-	omnicore/test/obfuscation_tests.cpp \
-	omnicore/test/output_restriction_tests.cpp \
-	omnicore/test/parsing_a_tests.cpp \
-	omnicore/test/parsing_b_tests.cpp \
-	omnicore/test/parsing_c_tests.cpp \
-	omnicore/test/rounduint64_tests.cpp \
-	omnicore/test/rules_txs_tests.cpp \
-	omnicore/test/script_dust_tests.cpp \
-	omnicore/test/script_extraction_tests.cpp \
-	omnicore/test/script_solver_tests.cpp \
-	omnicore/test/sender_bycontribution_tests.cpp \
-	omnicore/test/sender_firstin_tests.cpp \
-	omnicore/test/strtoint64_tests.cpp \
-	omnicore/test/swapbyteorder_tests.cpp \
-	omnicore/test/tally_tests.cpp \
-	omnicore/test/uint256_extensions_tests.cpp \
-	omnicore/test/utils_tx.cpp omnicore/test/version_tests.cpp \
-	omnicore/test/utils_tx.h test/data/script_tests.json \
+	tradelayer/test/alert_tests.cpp \
+	tradelayer/test/change_issuer_tests.cpp \
+	tradelayer/test/checkpoint_tests.cpp \
+	tradelayer/test/create_payload_tests.cpp \
+	tradelayer/test/create_tx_tests.cpp \
+	tradelayer/test/crowdsale_participation_tests.cpp \
+	tradelayer/test/dex_purchase_tests.cpp \
+	tradelayer/test/encoding_b_tests.cpp \
+	tradelayer/test/encoding_c_tests.cpp \
+	tradelayer/test/exodus_tests.cpp \
+	tradelayer/test/lock_tests.cpp \
+	tradelayer/test/marker_tests.cpp \
+	tradelayer/test/mbstring_tests.cpp \
+	tradelayer/test/params_tests.cpp \
+	tradelayer/test/obfuscation_tests.cpp \
+	tradelayer/test/output_restriction_tests.cpp \
+	tradelayer/test/parsing_a_tests.cpp \
+	tradelayer/test/parsing_b_tests.cpp \
+	tradelayer/test/parsing_c_tests.cpp \
+	tradelayer/test/rounduint64_tests.cpp \
+	tradelayer/test/rules_txs_tests.cpp \
+	tradelayer/test/script_dust_tests.cpp \
+	tradelayer/test/script_extraction_tests.cpp \
+	tradelayer/test/script_solver_tests.cpp \
+	tradelayer/test/sender_bycontribution_tests.cpp \
+	tradelayer/test/sender_firstin_tests.cpp \
+	tradelayer/test/strtoint64_tests.cpp \
+	tradelayer/test/swapbyteorder_tests.cpp \
+	tradelayer/test/tally_tests.cpp \
+	tradelayer/test/uint256_extensions_tests.cpp \
+	tradelayer/test/utils_tx.cpp tradelayer/test/version_tests.cpp \
+	tradelayer/test/utils_tx.h test/data/script_tests.json \
 	test/data/base58_encode_decode.json \
 	test/data/blockfilters.json test/data/key_io_valid.json \
 	test/data/key_io_invalid.json test/data/sighash.json \
@@ -2025,38 +2030,38 @@ am__objects_65 = wallet/test/test_test_omnicore-db_tests.$(OBJEXT) \
 	wallet/test/test_test_omnicore-wallet_crypto_tests.$(OBJEXT) \
 	wallet/test/test_test_omnicore-coinselector_tests.$(OBJEXT) \
 	wallet/test/test_test_omnicore-init_tests.$(OBJEXT)
-am__objects_66 = omnicore/test/test_test_omnicore-alert_tests.$(OBJEXT) \
-	omnicore/test/test_test_omnicore-change_issuer_tests.$(OBJEXT) \
-	omnicore/test/test_test_omnicore-checkpoint_tests.$(OBJEXT) \
-	omnicore/test/test_test_omnicore-create_payload_tests.$(OBJEXT) \
-	omnicore/test/test_test_omnicore-create_tx_tests.$(OBJEXT) \
-	omnicore/test/test_test_omnicore-crowdsale_participation_tests.$(OBJEXT) \
-	omnicore/test/test_test_omnicore-dex_purchase_tests.$(OBJEXT) \
-	omnicore/test/test_test_omnicore-encoding_b_tests.$(OBJEXT) \
-	omnicore/test/test_test_omnicore-encoding_c_tests.$(OBJEXT) \
-	omnicore/test/test_test_omnicore-exodus_tests.$(OBJEXT) \
-	omnicore/test/test_test_omnicore-lock_tests.$(OBJEXT) \
-	omnicore/test/test_test_omnicore-marker_tests.$(OBJEXT) \
-	omnicore/test/test_test_omnicore-mbstring_tests.$(OBJEXT) \
-	omnicore/test/test_test_omnicore-params_tests.$(OBJEXT) \
-	omnicore/test/test_test_omnicore-obfuscation_tests.$(OBJEXT) \
-	omnicore/test/test_test_omnicore-output_restriction_tests.$(OBJEXT) \
-	omnicore/test/test_test_omnicore-parsing_a_tests.$(OBJEXT) \
-	omnicore/test/test_test_omnicore-parsing_b_tests.$(OBJEXT) \
-	omnicore/test/test_test_omnicore-parsing_c_tests.$(OBJEXT) \
-	omnicore/test/test_test_omnicore-rounduint64_tests.$(OBJEXT) \
-	omnicore/test/test_test_omnicore-rules_txs_tests.$(OBJEXT) \
-	omnicore/test/test_test_omnicore-script_dust_tests.$(OBJEXT) \
-	omnicore/test/test_test_omnicore-script_extraction_tests.$(OBJEXT) \
-	omnicore/test/test_test_omnicore-script_solver_tests.$(OBJEXT) \
-	omnicore/test/test_test_omnicore-sender_bycontribution_tests.$(OBJEXT) \
-	omnicore/test/test_test_omnicore-sender_firstin_tests.$(OBJEXT) \
-	omnicore/test/test_test_omnicore-strtoint64_tests.$(OBJEXT) \
-	omnicore/test/test_test_omnicore-swapbyteorder_tests.$(OBJEXT) \
-	omnicore/test/test_test_omnicore-tally_tests.$(OBJEXT) \
-	omnicore/test/test_test_omnicore-uint256_extensions_tests.$(OBJEXT) \
-	omnicore/test/test_test_omnicore-utils_tx.$(OBJEXT) \
-	omnicore/test/test_test_omnicore-version_tests.$(OBJEXT)
+am__objects_66 = tradelayer/test/test_test_omnicore-alert_tests.$(OBJEXT) \
+	tradelayer/test/test_test_omnicore-change_issuer_tests.$(OBJEXT) \
+	tradelayer/test/test_test_omnicore-checkpoint_tests.$(OBJEXT) \
+	tradelayer/test/test_test_omnicore-create_payload_tests.$(OBJEXT) \
+	tradelayer/test/test_test_omnicore-create_tx_tests.$(OBJEXT) \
+	tradelayer/test/test_test_omnicore-crowdsale_participation_tests.$(OBJEXT) \
+	tradelayer/test/test_test_omnicore-dex_purchase_tests.$(OBJEXT) \
+	tradelayer/test/test_test_omnicore-encoding_b_tests.$(OBJEXT) \
+	tradelayer/test/test_test_omnicore-encoding_c_tests.$(OBJEXT) \
+	tradelayer/test/test_test_omnicore-exodus_tests.$(OBJEXT) \
+	tradelayer/test/test_test_omnicore-lock_tests.$(OBJEXT) \
+	tradelayer/test/test_test_omnicore-marker_tests.$(OBJEXT) \
+	tradelayer/test/test_test_omnicore-mbstring_tests.$(OBJEXT) \
+	tradelayer/test/test_test_omnicore-params_tests.$(OBJEXT) \
+	tradelayer/test/test_test_omnicore-obfuscation_tests.$(OBJEXT) \
+	tradelayer/test/test_test_omnicore-output_restriction_tests.$(OBJEXT) \
+	tradelayer/test/test_test_omnicore-parsing_a_tests.$(OBJEXT) \
+	tradelayer/test/test_test_omnicore-parsing_b_tests.$(OBJEXT) \
+	tradelayer/test/test_test_omnicore-parsing_c_tests.$(OBJEXT) \
+	tradelayer/test/test_test_omnicore-rounduint64_tests.$(OBJEXT) \
+	tradelayer/test/test_test_omnicore-rules_txs_tests.$(OBJEXT) \
+	tradelayer/test/test_test_omnicore-script_dust_tests.$(OBJEXT) \
+	tradelayer/test/test_test_omnicore-script_extraction_tests.$(OBJEXT) \
+	tradelayer/test/test_test_omnicore-script_solver_tests.$(OBJEXT) \
+	tradelayer/test/test_test_omnicore-sender_bycontribution_tests.$(OBJEXT) \
+	tradelayer/test/test_test_omnicore-sender_firstin_tests.$(OBJEXT) \
+	tradelayer/test/test_test_omnicore-strtoint64_tests.$(OBJEXT) \
+	tradelayer/test/test_test_omnicore-swapbyteorder_tests.$(OBJEXT) \
+	tradelayer/test/test_test_omnicore-tally_tests.$(OBJEXT) \
+	tradelayer/test/test_test_omnicore-uint256_extensions_tests.$(OBJEXT) \
+	tradelayer/test/test_test_omnicore-utils_tx.$(OBJEXT) \
+	tradelayer/test/test_test_omnicore-version_tests.$(OBJEXT)
 am__objects_67 = test/test_test_omnicore-arith_uint256_tests.$(OBJEXT) \
 	test/test_test_omnicore-addrman_tests.$(OBJEXT) \
 	test/test_test_omnicore-amount_tests.$(OBJEXT) \
@@ -2159,11 +2164,11 @@ am__v_P_1 = :
 AM_V_GEN = $(am__v_GEN_$(V))
 am__v_GEN_ = $(am__v_GEN_$(AM_DEFAULT_VERBOSITY))
 am__v_GEN_0 = @echo "  GEN     " $@;
-am__v_GEN_1 = 
+am__v_GEN_1 =
 AM_V_at = $(am__v_at_$(V))
 am__v_at_ = $(am__v_at_$(AM_DEFAULT_VERBOSITY))
 am__v_at_0 = @
-am__v_at_1 = 
+am__v_at_1 =
 DEFAULT_INCLUDES = -I. -I$(top_builddir)/src/config
 depcomp = $(SHELL) $(top_srcdir)/build-aux/depcomp
 am__depfiles_maybe = depfiles
@@ -2177,7 +2182,7 @@ LTCXXCOMPILE = $(LIBTOOL) $(AM_V_lt) --tag=CXX $(AM_LIBTOOLFLAGS) \
 AM_V_CXX = $(am__v_CXX_$(V))
 am__v_CXX_ = $(am__v_CXX_$(AM_DEFAULT_VERBOSITY))
 am__v_CXX_0 = @echo "  CXX     " $@;
-am__v_CXX_1 = 
+am__v_CXX_1 =
 CXXLD = $(CXX)
 CXXLINK = $(LIBTOOL) $(AM_V_lt) --tag=CXX $(AM_LIBTOOLFLAGS) \
 	$(LIBTOOLFLAGS) --mode=link $(CXXLD) $(AM_CXXFLAGS) \
@@ -2185,7 +2190,7 @@ CXXLINK = $(LIBTOOL) $(AM_V_lt) --tag=CXX $(AM_LIBTOOLFLAGS) \
 AM_V_CXXLD = $(am__v_CXXLD_$(V))
 am__v_CXXLD_ = $(am__v_CXXLD_$(AM_DEFAULT_VERBOSITY))
 am__v_CXXLD_0 = @echo "  CXXLD   " $@;
-am__v_CXXLD_1 = 
+am__v_CXXLD_1 =
 OBJCXXCOMPILE = $(OBJCXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) \
 	$(AM_CPPFLAGS) $(CPPFLAGS) $(AM_OBJCXXFLAGS) $(OBJCXXFLAGS)
 LTOBJCXXCOMPILE = $(LIBTOOL) $(AM_V_lt) $(AM_LIBTOOLFLAGS) \
@@ -2195,7 +2200,7 @@ LTOBJCXXCOMPILE = $(LIBTOOL) $(AM_V_lt) $(AM_LIBTOOLFLAGS) \
 AM_V_OBJCXX = $(am__v_OBJCXX_$(V))
 am__v_OBJCXX_ = $(am__v_OBJCXX_$(AM_DEFAULT_VERBOSITY))
 am__v_OBJCXX_0 = @echo "  OBJCXX  " $@;
-am__v_OBJCXX_1 = 
+am__v_OBJCXX_1 =
 OBJCXXLD = $(OBJCXX)
 OBJCXXLINK = $(LIBTOOL) $(AM_V_lt) $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) \
 	--mode=link $(OBJCXXLD) $(AM_OBJCXXFLAGS) $(OBJCXXFLAGS) \
@@ -2203,7 +2208,7 @@ OBJCXXLINK = $(LIBTOOL) $(AM_V_lt) $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) \
 AM_V_OBJCXXLD = $(am__v_OBJCXXLD_$(V))
 am__v_OBJCXXLD_ = $(am__v_OBJCXXLD_$(AM_DEFAULT_VERBOSITY))
 am__v_OBJCXXLD_0 = @echo "  OBJCXXLD" $@;
-am__v_OBJCXXLD_1 = 
+am__v_OBJCXXLD_1 =
 COMPILE = $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) \
 	$(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS)
 LTCOMPILE = $(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) \
@@ -2213,7 +2218,7 @@ LTCOMPILE = $(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) \
 AM_V_CC = $(am__v_CC_$(V))
 am__v_CC_ = $(am__v_CC_$(AM_DEFAULT_VERBOSITY))
 am__v_CC_0 = @echo "  CC      " $@;
-am__v_CC_1 = 
+am__v_CC_1 =
 CCLD = $(CC)
 LINK = $(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) \
 	$(LIBTOOLFLAGS) --mode=link $(CCLD) $(AM_CFLAGS) $(CFLAGS) \
@@ -2221,7 +2226,7 @@ LINK = $(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) \
 AM_V_CCLD = $(am__v_CCLD_$(V))
 am__v_CCLD_ = $(am__v_CCLD_$(AM_DEFAULT_VERBOSITY))
 am__v_CCLD_0 = @echo "  CCLD    " $@;
-am__v_CCLD_1 = 
+am__v_CCLD_1 =
 SOURCES = $(crypto_libbitcoin_crypto_avx2_a_SOURCES) \
 	$(crypto_libbitcoin_crypto_base_a_SOURCES) \
 	$(crypto_libbitcoin_crypto_shani_a_SOURCES) \
@@ -2564,18 +2569,18 @@ am__relativize = \
     dir1=`echo "$$dir1" | sed -e "$$sed_rest"`; \
   done; \
   reldir="$$dir2"
-ACLOCAL = ${SHELL} /home/ale/Escritorio/AWork/btesting/build-aux/missing aclocal-1.15
+ACLOCAL = ${SHELL} /home/ale/Escritorio/AWork/bnome/build-aux/missing aclocal-1.15
 AMTAR = $${TAR-tar}
 AM_DEFAULT_VERBOSITY = 0
 AR = /usr/bin/ar
 ARFLAGS = cr
-AUTOCONF = ${SHELL} /home/ale/Escritorio/AWork/btesting/build-aux/missing autoconf
-AUTOHEADER = ${SHELL} /home/ale/Escritorio/AWork/btesting/build-aux/missing autoheader
-AUTOMAKE = ${SHELL} /home/ale/Escritorio/AWork/btesting/build-aux/missing automake-1.15
+AUTOCONF = ${SHELL} /home/ale/Escritorio/AWork/bnome/build-aux/missing autoconf
+AUTOHEADER = ${SHELL} /home/ale/Escritorio/AWork/bnome/build-aux/missing autoheader
+AUTOMAKE = ${SHELL} /home/ale/Escritorio/AWork/bnome/build-aux/missing automake-1.15
 AVX2_CXXFLAGS = -mavx -mavx2
 AWK = gawk
-BDB_CFLAGS = 
-BDB_CPPFLAGS = 
+BDB_CFLAGS =
+BDB_CPPFLAGS =
 BDB_LIBS = -ldb_cxx-4.8
 BITCOIN_CLI_NAME = omnicore-cli
 BITCOIN_DAEMON_NAME = omnicored
@@ -2590,9 +2595,9 @@ BOOST_LIBS = -L/usr/lib/x86_64-linux-gnu -lboost_system -lboost_filesystem -lboo
 BOOST_SYSTEM_LIB = -lboost_system
 BOOST_THREAD_LIB = -lboost_thread
 BOOST_UNIT_TEST_FRAMEWORK_LIB = -lboost_unit_test_framework
-BREW = 
+BREW =
 CC = gcc
-CCACHE = 
+CCACHE =
 CCDEPMODE = depmode=gcc3
 CFLAGS = -g -O2 -fPIC
 CLIENT_VERSION_BUILD = 0
@@ -2600,7 +2605,7 @@ CLIENT_VERSION_IS_RELEASE = true
 CLIENT_VERSION_MAJOR = 0
 CLIENT_VERSION_MINOR = 18
 CLIENT_VERSION_REVISION = 1
-COMPAT_LDFLAGS = 
+COMPAT_LDFLAGS =
 COPYRIGHT_HOLDERS = The %s developers
 COPYRIGHT_HOLDERS_FINAL = The Bitcoin Core and Omni Core developers
 COPYRIGHT_HOLDERS_SUBSTITUTION = Bitcoin Core and Omni Core
@@ -2608,94 +2613,94 @@ COPYRIGHT_YEAR = 2019
 CPP = gcc -E
 CPPFILT = /usr/bin/c++filt
 CPPFLAGS =  -DHAVE_BUILD_INFO -D__STDC_FORMAT_MACROS -fPIC
-CRYPTO_CFLAGS = 
+CRYPTO_CFLAGS =
 CRYPTO_LIBS = -lcrypto
 CXX = g++ -std=c++11
 CXXCPP = g++ -std=c++11 -E
 CXXDEPMODE = depmode=gcc3
 CXXFLAGS = -g -O2 -fPIC
 CYGPATH_W = echo
-DEBUG_CPPFLAGS = 
-DEBUG_CXXFLAGS = 
+DEBUG_CPPFLAGS =
+DEBUG_CXXFLAGS =
 DEFS = -DHAVE_CONFIG_H
 DEPDIR = .deps
 DLLTOOL = false
-DOXYGEN = 
-DSYMUTIL = 
-DUMPBIN = 
-ECHO_C = 
+DOXYGEN =
+DSYMUTIL =
+DUMPBIN =
+ECHO_C =
 ECHO_N = -n
-ECHO_T = 
+ECHO_T =
 EGREP = /bin/grep -E
-ERROR_CXXFLAGS = 
-EVENT_CFLAGS = 
+ERROR_CXXFLAGS =
+EVENT_CFLAGS =
 EVENT_LIBS = -levent
 EVENT_PTHREADS_CFLAGS = -pthread
 EVENT_PTHREADS_LIBS = -levent_pthreads -levent
-EXEEXT = 
-EXTENDED_FUNCTIONAL_TESTS = 
+EXEEXT =
+EXTENDED_FUNCTIONAL_TESTS =
 FGREP = /bin/grep -F
 GCOV = /usr/bin/gcov
-GENHTML = 
-GENISOIMAGE = 
+GENHTML =
+GENISOIMAGE =
 GIT = /usr/bin/git
-GPROF_CXXFLAGS = 
-GPROF_LDFLAGS = 
+GPROF_CXXFLAGS =
+GPROF_LDFLAGS =
 GREP = /bin/grep
 HARDENED_CPPFLAGS =  -U_FORTIFY_SOURCE -D_FORTIFY_SOURCE=2
 HARDENED_CXXFLAGS =  -fstack-reuse=none -Wstack-protector -fstack-protector-all
 HARDENED_LDFLAGS =  -Wl,-z,relro -Wl,-z,now -pie
 HAVE_CXX11 = 1
 HEXDUMP = /usr/bin/hexdump
-IMAGEMAGICK_CONVERT = 
+IMAGEMAGICK_CONVERT =
 INSTALL = /usr/bin/install -c
-INSTALLNAMETOOL = 
+INSTALLNAMETOOL =
 INSTALL_DATA = ${INSTALL} -m 644
 INSTALL_PROGRAM = ${INSTALL}
 INSTALL_SCRIPT = ${INSTALL}
 INSTALL_STRIP_PROGRAM = $(install_sh) -c -s
-LCOV = 
-LCOV_OPTS = 
+LCOV =
+LCOV_OPTS =
 LD = /usr/bin/ld -m elf_x86_64
-LDFLAGS = 
+LDFLAGS =
 LEVELDB_CPPFLAGS =  $(am__append_20)
 LEVELDB_TARGET_FLAGS = -DOS_LINUX
 LIBLEVELDB =  $(am__append_18)
 LIBMEMENV =  $(am__append_19)
-LIBOBJS = 
-LIBS = 
+LIBOBJS =
+LIBS =
 LIBTOOL = $(SHELL) $(top_builddir)/libtool
-LIBTOOL_APP_LDFLAGS = 
-LIPO = 
+LIBTOOL_APP_LDFLAGS =
+LIPO =
 LN_S = ln -s
-LRELEASE = 
-LTLIBOBJS = 
-LT_SYS_LIBRARY_PATH = 
-LUPDATE = 
-MAINT = 
-MAKEINFO = ${SHELL} /home/ale/Escritorio/AWork/btesting/build-aux/missing makeinfo
-MAKENSIS = 
+LRELEASE =
+LTLIBOBJS =
+LT_SYS_LIBRARY_PATH =
+LUPDATE =
+MAINT =
+MAKEINFO = ${SHELL} /home/ale/Escritorio/AWork/bnome/build-aux/missing makeinfo
+MAKENSIS =
 MANIFEST_TOOL = :
-MINIUPNPC_CPPFLAGS = 
+MINIUPNPC_CPPFLAGS =
 MINIUPNPC_LIBS = -lminiupnpc
 MKDIR_P = /bin/mkdir -p
-MOC = 
+MOC =
 MOC_DEFS = -DHAVE_CONFIG_H -I$(srcdir)
 NM = /usr/bin/nm -B
-NMEDIT = 
+NMEDIT =
 NOWARN_CXXFLAGS =  -Wno-unused-parameter -Wno-implicit-fallthrough
 OBJCOPY = /usr/bin/objcopy
 OBJCXX = g++ -std=c++11
 OBJCXXDEPMODE = depmode=gcc3
-OBJCXXFLAGS = 
+OBJCXXFLAGS =
 OBJDUMP = objdump
 OBJEXT = o
 OMNICORE_VERSION_BUILD = 0
 OMNICORE_VERSION_MAJOR = 0
 OMNICORE_VERSION_MINOR = 7
 OMNICORE_VERSION_PATCH = 0
-OTOOL = 
-OTOOL64 = 
+OTOOL =
+OTOOL64 =
 PACKAGE = omnicore
 PACKAGE_BUGREPORT = https://github.com/OmniLayer/omnicore/issues
 PACKAGE_NAME = Omni Core
@@ -2707,105 +2712,105 @@ PATH_SEPARATOR = :
 PIC_FLAGS = -fPIC
 PIE_FLAGS = -fPIE
 PKG_CONFIG = /usr/bin/pkg-config
-PKG_CONFIG_LIBDIR = 
-PKG_CONFIG_PATH = 
-PROTOBUF_CFLAGS = 
-PROTOBUF_LIBS = 
-PROTOC = 
+PKG_CONFIG_LIBDIR =
+PKG_CONFIG_PATH =
+PROTOBUF_CFLAGS =
+PROTOBUF_LIBS =
+PROTOC =
 PTHREAD_CC = gcc
 PTHREAD_CFLAGS = -pthread
-PTHREAD_LIBS = 
+PTHREAD_LIBS =
 PYTHON = /usr/bin/python3.6
-PYTHONPATH = 
-QR_CFLAGS = 
-QR_LIBS = 
-QT5_CFLAGS = 
-QT5_LIBS = 
-QTACCESSIBILITY_CFLAGS = 
-QTACCESSIBILITY_LIBS = 
-QTCGL_CFLAGS = 
-QTCGL_LIBS = 
-QTCLIPBOARD_CFLAGS = 
-QTCLIPBOARD_LIBS = 
-QTDEVICEDISCOVERY_CFLAGS = 
-QTDEVICEDISCOVERY_LIBS = 
-QTEVENTDISPATCHER_CFLAGS = 
-QTEVENTDISPATCHER_LIBS = 
-QTFB_CFLAGS = 
-QTFB_LIBS = 
-QTFONTDATABASE_CFLAGS = 
-QTFONTDATABASE_LIBS = 
-QTGRAPHICS_CFLAGS = 
-QTGRAPHICS_LIBS = 
-QTPLATFORM_CFLAGS = 
-QTPLATFORM_LIBS = 
-QTTHEME_CFLAGS = 
-QTTHEME_LIBS = 
-QTXCBQPA_CFLAGS = 
-QTXCBQPA_LIBS = 
-QT_DBUS_CFLAGS = 
-QT_DBUS_INCLUDES = 
-QT_DBUS_LIBS = 
-QT_INCLUDES = 
-QT_LDFLAGS = 
-QT_LIBS = 
-QT_PIE_FLAGS = 
+PYTHONPATH =
+QR_CFLAGS =
+QR_LIBS =
+QT5_CFLAGS =
+QT5_LIBS =
+QTACCESSIBILITY_CFLAGS =
+QTACCESSIBILITY_LIBS =
+QTCGL_CFLAGS =
+QTCGL_LIBS =
+QTCLIPBOARD_CFLAGS =
+QTCLIPBOARD_LIBS =
+QTDEVICEDISCOVERY_CFLAGS =
+QTDEVICEDISCOVERY_LIBS =
+QTEVENTDISPATCHER_CFLAGS =
+QTEVENTDISPATCHER_LIBS =
+QTFB_CFLAGS =
+QTFB_LIBS =
+QTFONTDATABASE_CFLAGS =
+QTFONTDATABASE_LIBS =
+QTGRAPHICS_CFLAGS =
+QTGRAPHICS_LIBS =
+QTPLATFORM_CFLAGS =
+QTPLATFORM_LIBS =
+QTTHEME_CFLAGS =
+QTTHEME_LIBS =
+QTXCBQPA_CFLAGS =
+QTXCBQPA_LIBS =
+QT_DBUS_CFLAGS =
+QT_DBUS_INCLUDES =
+QT_DBUS_LIBS =
+QT_INCLUDES =
+QT_LDFLAGS =
+QT_LIBS =
+QT_PIE_FLAGS =
 QT_SELECT = qt5
-QT_TEST_CFLAGS = 
-QT_TEST_INCLUDES = 
-QT_TEST_LIBS = 
-QT_TRANSLATION_DIR = 
+QT_TEST_CFLAGS =
+QT_TEST_INCLUDES =
+QT_TEST_LIBS =
+QT_TRANSLATION_DIR =
 RANLIB = /usr/bin/ranlib
-RAPIDCHECK_LIBS = 
-RCC = 
+RAPIDCHECK_LIBS =
+RCC =
 READELF = /usr/bin/readelf
-RELDFLAGS = 
-RSVG_CONVERT = 
-SANITIZER_CXXFLAGS = 
-SANITIZER_LDFLAGS = 
+RELDFLAGS =
+RSVG_CONVERT =
+SANITIZER_CXXFLAGS =
+SANITIZER_LDFLAGS =
 SED = /bin/sed
-SET_MAKE = 
+SET_MAKE =
 SHANI_CXXFLAGS = -msse4 -msha
 SHELL = /bin/bash
 SSE41_CXXFLAGS = -msse4.1
 SSE42_CXXFLAGS = -msse4.2
-SSL_CFLAGS = 
+SSL_CFLAGS =
 SSL_LIBS = -lssl
 STRIP = /usr/bin/strip
 TESTDEFS =  -DBOOST_TEST_DYN_LINK
-TIFFCP = 
-UIC = 
+TIFFCP =
+UIC =
 UNIVALUE_CFLAGS = -I$(srcdir)/univalue/include
 UNIVALUE_LIBS = univalue/libunivalue.la
-USE_QRCODE = 
-USE_UPNP = 
+USE_QRCODE =
+USE_UPNP =
 VERSION = 0.7.0
 WARN_CXXFLAGS =  -Wall -Wextra -Wformat -Wvla -Wformat-security -Wredundant-decls
-WINDOWS_BITS = 
-WINDRES = 
-X11XCB_CFLAGS = 
-X11XCB_LIBS = 
+WINDOWS_BITS =
+WINDRES =
+X11XCB_CFLAGS =
+X11XCB_LIBS =
 XGETTEXT = /usr/bin/xgettext
-ZMQ_CFLAGS = 
+ZMQ_CFLAGS =
 ZMQ_LIBS = -lzmq
-abs_builddir = /home/ale/Escritorio/AWork/btesting/src
-abs_srcdir = /home/ale/Escritorio/AWork/btesting/src
-abs_top_builddir = /home/ale/Escritorio/AWork/btesting
-abs_top_srcdir = /home/ale/Escritorio/AWork/btesting
+abs_builddir = /home/ale/Escritorio/AWork/bnome/src
+abs_srcdir = /home/ale/Escritorio/AWork/bnome/src
+abs_top_builddir = /home/ale/Escritorio/AWork/bnome
+abs_top_srcdir = /home/ale/Escritorio/AWork/bnome
 ac_ct_AR = ar
 ac_ct_CC = gcc
 ac_ct_CXX = g++
-ac_ct_DUMPBIN = 
-ac_ct_OBJCXX = 
+ac_ct_DUMPBIN =
+ac_ct_OBJCXX =
 am__include = include
 am__leading_dot = .
-am__quote = 
+am__quote =
 am__tar = $${TAR-tar} chof - "$$tardir"
 am__untar = $${TAR-tar} xf -
-ax_pthread_config = 
+ax_pthread_config =
 bindir = ${exec_prefix}/bin
 build = x86_64-pc-linux-gnu
-build_alias = 
+build_alias =
 build_cpu = x86_64
 build_os = linux-gnu
 build_vendor = pc
@@ -2816,14 +2821,14 @@ docdir = ${datarootdir}/doc/${PACKAGE_TARNAME}
 dvidir = ${docdir}
 exec_prefix = ${prefix}
 host = x86_64-pc-linux-gnu
-host_alias = 
+host_alias =
 host_cpu = x86_64
 host_os = linux-gnu
 host_vendor = pc
 htmldir = ${docdir}
 includedir = ${prefix}/include
 infodir = ${datarootdir}/info
-install_sh = ${SHELL} /home/ale/Escritorio/AWork/btesting/build-aux/install-sh
+install_sh = ${SHELL} /home/ale/Escritorio/AWork/bnome/build-aux/install-sh
 libdir = ${exec_prefix}/lib
 libexecdir = ${exec_prefix}/libexec
 localedir = ${datarootdir}/locale
@@ -2841,7 +2846,7 @@ sharedstatedir = ${prefix}/com
 srcdir = .
 subdirs =  src/univalue src/secp256k1
 sysconfdir = ${prefix}/etc
-target_alias = 
+target_alias =
 top_build_prefix = ../
 top_builddir = ..
 top_srcdir = ..
@@ -2882,7 +2887,7 @@ LIBBITCOIN_CRYPTO_SSE41 = crypto/libbitcoin_crypto_sse41.a
 LIBBITCOIN_CRYPTO_AVX2 = crypto/libbitcoin_crypto_avx2.a
 LIBBITCOIN_CRYPTO_SHANI = crypto/libbitcoin_crypto_shani.a
 lib_LTLIBRARIES = $(LIBBITCOINCONSENSUS)
-BENCHMARKS = 
+BENCHMARKS =
 # bitcoin core #
 BITCOIN_CORE_H = \
   arith_uint256.h \
@@ -3032,7 +3037,7 @@ libbitcoin_server_a_SOURCES = addrdb.cpp addrman.cpp banman.cpp \
 	timedata.cpp torcontrol.cpp txdb.cpp txmempool.cpp \
 	ui_interface.cpp validation.cpp validationinterface.cpp \
 	versionbits.cpp $(BITCOIN_CORE_H) $(am__append_8) \
-	$(OMNICORE_CPP) $(OMNICORE_H)
+	$(TRADELAYER_CPP) $(TRADELAYER_H)
 libbitcoin_zmq_a_CPPFLAGS = $(BITCOIN_INCLUDES) $(ZMQ_CFLAGS)
 libbitcoin_zmq_a_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
 libbitcoin_zmq_a_SOURCES = \
@@ -3255,7 +3260,7 @@ CLEANFILES = $(EXTRA_LIBRARIES) *.gcda *.gcno compat/*.gcda \
 	support/*.gcno univalue/*.gcda univalue/*.gcno wallet/*.gcda \
 	wallet/*.gcno wallet/test/*.gcda wallet/test/*.gcno zmq/*.gcda \
 	zmq/*.gcno obj/build.h $(am__append_35) $(am__append_39) \
-	$(am__append_51) $(am__append_60) $(CLEAN_OMNICORE) \
+	$(am__append_51) $(am__append_60) $(CLEAN_TRADELAYER) \
 	$(am__append_61)
 EXTRA_DIST = $(CTAES_DIST)
 LIBLEVELDB_INT = leveldb/libleveldb.a
@@ -3411,7 +3416,7 @@ JSON_TEST_FILES = \
   test/data/tx_invalid.json \
   test/data/tx_valid.json
 
-RAW_TEST_FILES = 
+RAW_TEST_FILES =
 GENERATED_TEST_FILES = $(JSON_TEST_FILES:.json=.json.h) $(RAW_TEST_FILES:.raw=.raw.h)
 BITCOIN_TEST_SUITE = test/test_bitcoin_main.cpp \
 	test/test_bitcoin.h test/test_bitcoin.cpp \
@@ -3476,8 +3481,8 @@ BITCOIN_TESTS = test/arith_uint256_tests.cpp \
 	test/uint256_tests.cpp test/util_tests.cpp \
 	test/validation_block_tests.cpp \
 	test/versionbits_tests.cpp $(am__append_29) \
-	$(am__append_31) $(OMNICORE_TEST_CPP) \
-	$(OMNICORE_TEST_H)
+	$(am__append_31) $(TRADELAYER_TEST_CPP) \
+	$(TRADELAYER_TEST_H)
 test_test_omnicore_SOURCES = $(BITCOIN_TEST_SUITE) $(BITCOIN_TESTS) $(JSON_TEST_FILES) $(RAW_TEST_FILES)
 test_test_omnicore_CPPFLAGS = $(AM_CPPFLAGS) $(BITCOIN_INCLUDES) $(TESTDEFS) $(EVENT_CFLAGS)
 test_test_omnicore_LDADD = $(am__append_33) \
@@ -4109,11 +4114,11 @@ CLEAN_BITCOIN_BENCH = bench/*.gcda bench/*.gcno $(GENERATED_BENCH_FILES)
 #QT_QRC = qt/bitcoin.qrc
 #QT_QRC_LOCALE_CPP = qt/qrc_bitcoin_locale.cpp
 #QT_QRC_LOCALE = qt/bitcoin_locale.qrc
-#PROTOBUF_CC = 
+#PROTOBUF_CC =
 ##PROTOBUF_CC = qt/paymentrequest.pb.cc
-#PROTOBUF_H = 
+#PROTOBUF_H =
 ##PROTOBUF_H = qt/paymentrequest.pb.h
-#PROTOBUF_PROTO = 
+#PROTOBUF_PROTO =
 ##PROTOBUF_PROTO = qt/paymentrequest.proto
 #BITCOIN_QT_H = \
 #  qt/addressbookpage.h \
@@ -4426,142 +4431,142 @@ CLEAN_BITCOIN_BENCH = bench/*.gcda bench/*.gcno $(GENERATED_BENCH_FILES)
 #qt_test_test_omnicore_qt_LDFLAGS = $(RELDFLAGS) $(AM_LDFLAGS) $(QT_LDFLAGS) $(LIBTOOL_APP_LDFLAGS)
 #qt_test_test_omnicore_qt_CXXFLAGS = $(AM_CXXFLAGS) $(QT_PIE_FLAGS)
 #CLEAN_BITCOIN_QT_TEST = $(TEST_QT_MOC_CPP) qt/test/*.gcda qt/test/*.gcno
-OMNICORE_H = \
-  omnicore/activation.h \
-  omnicore/consensushash.h \
-  omnicore/convert.h \
-  omnicore/createpayload.h \
-  omnicore/createtx.h \
-  omnicore/dbbase.h \
-  omnicore/dbfees.h \
-  omnicore/dbspinfo.h \
-  omnicore/dbstolist.h \
-  omnicore/dbtradelist.h \
-  omnicore/dbtransaction.h \
-  omnicore/dbtxlist.h \
-  omnicore/dex.h \
-  omnicore/encoding.h \
-  omnicore/errors.h \
-  omnicore/log.h \
-  omnicore/mdex.h \
-  omnicore/notifications.h \
-  omnicore/omnicore.h \
-  omnicore/operators_algo_clearing.h \
-  omnicore/parse_string.h \
-  omnicore/parsing.h \
-  omnicore/pending.h \
-  omnicore/persistence.h \
-  omnicore/rpc.h \
-  omnicore/rpcmbstring.h \
-  omnicore/rpcrequirements.h \
-  omnicore/rpctxobject.h \
-  omnicore/rpcvalues.h \
-  omnicore/rules.h \
-  omnicore/script.h \
-  omnicore/seedblocks.h \
-  omnicore/sp.h \
-  omnicore/sto.h \
-  omnicore/tally.h \
-  omnicore/tx.h \
-  omnicore/uint256_extensions.h \
-  omnicore/utilsbitcoin.h \
-  omnicore/utilsui.h \
-  omnicore/version.h \
-  omnicore/walletcache.h \
-  omnicore/walletfetchtxs.h \
-  omnicore/wallettxbuilder.h \
-  omnicore/tradelayer_matrices.h\
-  omnicore/externfns.h\
-  omnicore/walletutils.h
+TRADELAYER_H = \
+  tradelayer/activation.h \
+  tradelayer/consensushash.h \
+  tradelayer/convert.h \
+  tradelayer/createpayload.h \
+  tradelayer/createtx.h \
+  tradelayer/dbbase.h \
+  tradelayer/dbfees.h \
+  tradelayer/dbspinfo.h \
+  tradelayer/dbstolist.h \
+  tradelayer/dbtradelist.h \
+  tradelayer/dbtransaction.h \
+  tradelayer/dbtxlist.h \
+  tradelayer/dex.h \
+  tradelayer/encoding.h \
+  tradelayer/errors.h \
+  tradelayer/log.h \
+  tradelayer/mdex.h \
+  tradelayer/notifications.h \
+  tradelayer/tradelayer.h \
+  tradelayer/operators_algo_clearing.h \
+  tradelayer/parse_string.h \
+  tradelayer/parsing.h \
+  tradelayer/pending.h \
+  tradelayer/persistence.h \
+  tradelayer/rpc.h \
+  tradelayer/rpcmbstring.h \
+  tradelayer/rpcrequirements.h \
+  tradelayer/rpctxobject.h \
+  tradelayer/rpcvalues.h \
+  tradelayer/rules.h \
+  tradelayer/script.h \
+  tradelayer/seedblocks.h \
+  tradelayer/sp.h \
+  tradelayer/sto.h \
+  tradelayer/tally.h \
+  tradelayer/tx.h \
+  tradelayer/uint256_extensions.h \
+  tradelayer/utilsbitcoin.h \
+  tradelayer/utilsui.h \
+  tradelayer/version.h \
+  tradelayer/walletcache.h \
+  tradelayer/walletfetchtxs.h \
+  tradelayer/wallettxbuilder.h \
+  tradelayer/tradelayer_matrices.h\
+  tradelayer/externfns.h\
+  tradelayer/walletutils.h
 
-OMNICORE_CPP = \
-  omnicore/activation.cpp \
-  omnicore/consensushash.cpp \
-  omnicore/convert.cpp \
-  omnicore/createpayload.cpp \
-  omnicore/createtx.cpp \
-  omnicore/dbbase.cpp \
-  omnicore/dbfees.cpp \
-  omnicore/dbspinfo.cpp \
-  omnicore/dbstolist.cpp \
-  omnicore/dbtradelist.cpp \
-  omnicore/dbtransaction.cpp \
-  omnicore/dbtxlist.cpp \
-  omnicore/dex.cpp \
-  omnicore/encoding.cpp \
-  omnicore/log.cpp \
-  omnicore/mdex.cpp \
-  omnicore/notifications.cpp \
-  omnicore/omnicore.cpp \
-  omnicore/operators_algo_clearing.cpp \
-  omnicore/parse_string.cpp \
-  omnicore/parsing.cpp \
-  omnicore/pending.cpp \
-  omnicore/persistence.cpp \
-  omnicore/rpc.cpp \
-  omnicore/rpcmbstring.cpp \
-  omnicore/rpcpayload.cpp \
-  omnicore/rpcrawtx.cpp \
-  omnicore/rpcrequirements.cpp \
-  omnicore/rpctx.cpp \
-  omnicore/rpctxobject.cpp \
-  omnicore/rpcvalues.cpp \
-  omnicore/rules.cpp \
-  omnicore/script.cpp \
-  omnicore/seedblocks.cpp \
-  omnicore/sp.cpp \
-  omnicore/sto.cpp \
-  omnicore/tally.cpp \
-  omnicore/tx.cpp \
-  omnicore/utilsbitcoin.cpp \
-  omnicore/utilsui.cpp \
-  omnicore/version.cpp \
-  omnicore/walletcache.cpp \
-  omnicore/walletfetchtxs.cpp \
-  omnicore/wallettxbuilder.cpp \
-  omnicore/globals.cpp\
-  omnicore/externfns.cpp\
-  omnicore/walletutils.cpp
+TRADELAYER_CPP = \
+  tradelayer/activation.cpp \
+  tradelayer/consensushash.cpp \
+  tradelayer/convert.cpp \
+  tradelayer/createpayload.cpp \
+  tradelayer/createtx.cpp \
+  tradelayer/dbbase.cpp \
+  tradelayer/dbfees.cpp \
+  tradelayer/dbspinfo.cpp \
+  tradelayer/dbstolist.cpp \
+  tradelayer/dbtradelist.cpp \
+  tradelayer/dbtransaction.cpp \
+  tradelayer/dbtxlist.cpp \
+  tradelayer/dex.cpp \
+  tradelayer/encoding.cpp \
+  tradelayer/log.cpp \
+  tradelayer/mdex.cpp \
+  tradelayer/notifications.cpp \
+  tradelayer/tradelayer.cpp \
+  tradelayer/operators_algo_clearing.cpp \
+  tradelayer/parse_string.cpp \
+  tradelayer/parsing.cpp \
+  tradelayer/pending.cpp \
+  tradelayer/persistence.cpp \
+  tradelayer/rpc.cpp \
+  tradelayer/rpcmbstring.cpp \
+  tradelayer/rpcpayload.cpp \
+  tradelayer/rpcrawtx.cpp \
+  tradelayer/rpcrequirements.cpp \
+  tradelayer/rpctx.cpp \
+  tradelayer/rpctxobject.cpp \
+  tradelayer/rpcvalues.cpp \
+  tradelayer/rules.cpp \
+  tradelayer/script.cpp \
+  tradelayer/seedblocks.cpp \
+  tradelayer/sp.cpp \
+  tradelayer/sto.cpp \
+  tradelayer/tally.cpp \
+  tradelayer/tx.cpp \
+  tradelayer/utilsbitcoin.cpp \
+  tradelayer/utilsui.cpp \
+  tradelayer/version.cpp \
+  tradelayer/walletcache.cpp \
+  tradelayer/walletfetchtxs.cpp \
+  tradelayer/wallettxbuilder.cpp \
+  tradelayer/globals.cpp\
+  tradelayer/externfns.cpp\
+  tradelayer/walletutils.cpp
 
-CLEAN_OMNICORE = omnicore/*.gcda omnicore/*.gcno
-OMNICORE_TEST_H = \
-  omnicore/test/utils_tx.h
+CLEAN_TRADELAYER = tradelayer/*.gcda tradelayer/*.gcno
+TRADELAYER_TEST_H = \
+  tradelayer/test/utils_tx.h
 
-OMNICORE_TEST_CPP = \
-  omnicore/test/alert_tests.cpp \
-  omnicore/test/change_issuer_tests.cpp \
-  omnicore/test/checkpoint_tests.cpp \
-  omnicore/test/create_payload_tests.cpp \
-  omnicore/test/create_tx_tests.cpp \
-  omnicore/test/crowdsale_participation_tests.cpp \
-  omnicore/test/dex_purchase_tests.cpp \
-  omnicore/test/encoding_b_tests.cpp \
-  omnicore/test/encoding_c_tests.cpp \
-  omnicore/test/exodus_tests.cpp \
-  omnicore/test/lock_tests.cpp \
-  omnicore/test/marker_tests.cpp \
-  omnicore/test/mbstring_tests.cpp \
-  omnicore/test/params_tests.cpp \
-  omnicore/test/obfuscation_tests.cpp \
-  omnicore/test/output_restriction_tests.cpp \
-  omnicore/test/parsing_a_tests.cpp \
-  omnicore/test/parsing_b_tests.cpp \
-  omnicore/test/parsing_c_tests.cpp \
-  omnicore/test/rounduint64_tests.cpp \
-  omnicore/test/rules_txs_tests.cpp \
-  omnicore/test/script_dust_tests.cpp \
-  omnicore/test/script_extraction_tests.cpp \
-  omnicore/test/script_solver_tests.cpp \
-  omnicore/test/sender_bycontribution_tests.cpp \
-  omnicore/test/sender_firstin_tests.cpp \
-  omnicore/test/strtoint64_tests.cpp \
-  omnicore/test/swapbyteorder_tests.cpp \
-  omnicore/test/tally_tests.cpp \
-  omnicore/test/uint256_extensions_tests.cpp \
-  omnicore/test/utils_tx.cpp \
-  omnicore/test/version_tests.cpp
+TRADELAYER_TEST_CPP = \
+  tradelayer/test/alert_tests.cpp \
+  tradelayer/test/change_issuer_tests.cpp \
+  tradelayer/test/checkpoint_tests.cpp \
+  tradelayer/test/create_payload_tests.cpp \
+  tradelayer/test/create_tx_tests.cpp \
+  tradelayer/test/crowdsale_participation_tests.cpp \
+  tradelayer/test/dex_purchase_tests.cpp \
+  tradelayer/test/encoding_b_tests.cpp \
+  tradelayer/test/encoding_c_tests.cpp \
+  tradelayer/test/exodus_tests.cpp \
+  tradelayer/test/lock_tests.cpp \
+  tradelayer/test/marker_tests.cpp \
+  tradelayer/test/mbstring_tests.cpp \
+  tradelayer/test/params_tests.cpp \
+  tradelayer/test/obfuscation_tests.cpp \
+  tradelayer/test/output_restriction_tests.cpp \
+  tradelayer/test/parsing_a_tests.cpp \
+  tradelayer/test/parsing_b_tests.cpp \
+  tradelayer/test/parsing_c_tests.cpp \
+  tradelayer/test/rounduint64_tests.cpp \
+  tradelayer/test/rules_txs_tests.cpp \
+  tradelayer/test/script_dust_tests.cpp \
+  tradelayer/test/script_extraction_tests.cpp \
+  tradelayer/test/script_solver_tests.cpp \
+  tradelayer/test/sender_bycontribution_tests.cpp \
+  tradelayer/test/sender_firstin_tests.cpp \
+  tradelayer/test/strtoint64_tests.cpp \
+  tradelayer/test/swapbyteorder_tests.cpp \
+  tradelayer/test/tally_tests.cpp \
+  tradelayer/test/uint256_extensions_tests.cpp \
+  tradelayer/test/utils_tx.cpp \
+  tradelayer/test/version_tests.cpp
 
-CLEAN_OMNICORE_TEST = omnicore/test/*.gcda omnicore/test/*.gcno
+CLEAN_TRADELAYER_TEST = tradelayer/test/*.gcda tradelayer/test/*.gcno
 all: all-recursive
 
 .SUFFIXES:
@@ -4834,7 +4839,7 @@ rpc/$(DEPDIR)/$(am__dirstamp):
 rpc/libbitcoin_cli_a-client.$(OBJEXT): rpc/$(am__dirstamp) \
 	rpc/$(DEPDIR)/$(am__dirstamp)
 
-libbitcoin_cli.a: $(libbitcoin_cli_a_OBJECTS) $(libbitcoin_cli_a_DEPENDENCIES) $(EXTRA_libbitcoin_cli_a_DEPENDENCIES) 
+libbitcoin_cli.a: $(libbitcoin_cli_a_OBJECTS) $(libbitcoin_cli_a_DEPENDENCIES) $(EXTRA_libbitcoin_cli_a_DEPENDENCIES)
 	$(AM_V_at)-rm -f libbitcoin_cli.a
 	$(AM_V_AR)$(libbitcoin_cli_a_AR) libbitcoin_cli.a $(libbitcoin_cli_a_OBJECTS) $(libbitcoin_cli_a_LIBADD)
 	$(AM_V_at)$(RANLIB) libbitcoin_cli.a
@@ -4861,7 +4866,7 @@ script/libbitcoin_common_a-sign.$(OBJEXT): script/$(am__dirstamp) \
 script/libbitcoin_common_a-standard.$(OBJEXT): script/$(am__dirstamp) \
 	script/$(DEPDIR)/$(am__dirstamp)
 
-libbitcoin_common.a: $(libbitcoin_common_a_OBJECTS) $(libbitcoin_common_a_DEPENDENCIES) $(EXTRA_libbitcoin_common_a_DEPENDENCIES) 
+libbitcoin_common.a: $(libbitcoin_common_a_OBJECTS) $(libbitcoin_common_a_DEPENDENCIES) $(EXTRA_libbitcoin_common_a_DEPENDENCIES)
 	$(AM_V_at)-rm -f libbitcoin_common.a
 	$(AM_V_AR)$(libbitcoin_common_a_AR) libbitcoin_common.a $(libbitcoin_common_a_OBJECTS) $(libbitcoin_common_a_LIBADD)
 	$(AM_V_at)$(RANLIB) libbitcoin_common.a
@@ -4902,7 +4907,7 @@ util/$(DEPDIR)/$(am__dirstamp):
 util/libbitcoin_consensus_a-strencodings.$(OBJEXT):  \
 	util/$(am__dirstamp) util/$(DEPDIR)/$(am__dirstamp)
 
-libbitcoin_consensus.a: $(libbitcoin_consensus_a_OBJECTS) $(libbitcoin_consensus_a_DEPENDENCIES) $(EXTRA_libbitcoin_consensus_a_DEPENDENCIES) 
+libbitcoin_consensus.a: $(libbitcoin_consensus_a_OBJECTS) $(libbitcoin_consensus_a_DEPENDENCIES) $(EXTRA_libbitcoin_consensus_a_DEPENDENCIES)
 	$(AM_V_at)-rm -f libbitcoin_consensus.a
 	$(AM_V_AR)$(libbitcoin_consensus_a_AR) libbitcoin_consensus.a $(libbitcoin_consensus_a_OBJECTS) $(libbitcoin_consensus_a_LIBADD)
 	$(AM_V_at)$(RANLIB) libbitcoin_consensus.a
@@ -4963,108 +4968,155 @@ rpc/libbitcoin_server_a-util.$(OBJEXT): rpc/$(am__dirstamp) \
 	rpc/$(DEPDIR)/$(am__dirstamp)
 script/libbitcoin_server_a-sigcache.$(OBJEXT): script/$(am__dirstamp) \
 	script/$(DEPDIR)/$(am__dirstamp)
-omnicore/$(am__dirstamp):
-	@$(MKDIR_P) omnicore
-	@: > omnicore/$(am__dirstamp)
-omnicore/$(DEPDIR)/$(am__dirstamp):
-	@$(MKDIR_P) omnicore/$(DEPDIR)
-	@: > omnicore/$(DEPDIR)/$(am__dirstamp)
-omnicore/libbitcoin_server_a-activation.$(OBJEXT):  \
-	omnicore/$(am__dirstamp) omnicore/$(DEPDIR)/$(am__dirstamp)
-omnicore/libbitcoin_server_a-consensushash.$(OBJEXT):  \
-	omnicore/$(am__dirstamp) omnicore/$(DEPDIR)/$(am__dirstamp)
-omnicore/libbitcoin_server_a-convert.$(OBJEXT):  \
-	omnicore/$(am__dirstamp) omnicore/$(DEPDIR)/$(am__dirstamp)
-omnicore/libbitcoin_server_a-createpayload.$(OBJEXT):  \
-	omnicore/$(am__dirstamp) omnicore/$(DEPDIR)/$(am__dirstamp)
-omnicore/libbitcoin_server_a-createtx.$(OBJEXT):  \
-	omnicore/$(am__dirstamp) omnicore/$(DEPDIR)/$(am__dirstamp)
-omnicore/libbitcoin_server_a-dbbase.$(OBJEXT):  \
-	omnicore/$(am__dirstamp) omnicore/$(DEPDIR)/$(am__dirstamp)
-omnicore/libbitcoin_server_a-dbfees.$(OBJEXT):  \
-	omnicore/$(am__dirstamp) omnicore/$(DEPDIR)/$(am__dirstamp)
-omnicore/libbitcoin_server_a-dbspinfo.$(OBJEXT):  \
-	omnicore/$(am__dirstamp) omnicore/$(DEPDIR)/$(am__dirstamp)
-omnicore/libbitcoin_server_a-dbstolist.$(OBJEXT):  \
-	omnicore/$(am__dirstamp) omnicore/$(DEPDIR)/$(am__dirstamp)
-omnicore/libbitcoin_server_a-dbtradelist.$(OBJEXT):  \
-	omnicore/$(am__dirstamp) omnicore/$(DEPDIR)/$(am__dirstamp)
-omnicore/libbitcoin_server_a-dbtransaction.$(OBJEXT):  \
-	omnicore/$(am__dirstamp) omnicore/$(DEPDIR)/$(am__dirstamp)
-omnicore/libbitcoin_server_a-dbtxlist.$(OBJEXT):  \
-	omnicore/$(am__dirstamp) omnicore/$(DEPDIR)/$(am__dirstamp)
-omnicore/libbitcoin_server_a-dex.$(OBJEXT): omnicore/$(am__dirstamp) \
-	omnicore/$(DEPDIR)/$(am__dirstamp)
-omnicore/libbitcoin_server_a-encoding.$(OBJEXT):  \
-	omnicore/$(am__dirstamp) omnicore/$(DEPDIR)/$(am__dirstamp)
-omnicore/libbitcoin_server_a-log.$(OBJEXT): omnicore/$(am__dirstamp) \
-	omnicore/$(DEPDIR)/$(am__dirstamp)
-omnicore/libbitcoin_server_a-mdex.$(OBJEXT): omnicore/$(am__dirstamp) \
-	omnicore/$(DEPDIR)/$(am__dirstamp)
-omnicore/libbitcoin_server_a-notifications.$(OBJEXT):  \
-	omnicore/$(am__dirstamp) omnicore/$(DEPDIR)/$(am__dirstamp)
-omnicore/libbitcoin_server_a-omnicore.$(OBJEXT):  \
-	omnicore/$(am__dirstamp) omnicore/$(DEPDIR)/$(am__dirstamp)
-omnicore/libbitcoin_server_a-operators_algo_clearing.$(OBJEXT):  \
-	omnicore/$(am__dirstamp) omnicore/$(DEPDIR)/$(am__dirstamp)
-omnicore/libbitcoin_server_a-parse_string.$(OBJEXT):  \
-	omnicore/$(am__dirstamp) omnicore/$(DEPDIR)/$(am__dirstamp)
-omnicore/libbitcoin_server_a-parsing.$(OBJEXT):  \
-	omnicore/$(am__dirstamp) omnicore/$(DEPDIR)/$(am__dirstamp)
-omnicore/libbitcoin_server_a-pending.$(OBJEXT):  \
-	omnicore/$(am__dirstamp) omnicore/$(DEPDIR)/$(am__dirstamp)
-omnicore/libbitcoin_server_a-persistence.$(OBJEXT):  \
-	omnicore/$(am__dirstamp) omnicore/$(DEPDIR)/$(am__dirstamp)
-omnicore/libbitcoin_server_a-rpc.$(OBJEXT): omnicore/$(am__dirstamp) \
-	omnicore/$(DEPDIR)/$(am__dirstamp)
-omnicore/libbitcoin_server_a-rpcmbstring.$(OBJEXT):  \
-	omnicore/$(am__dirstamp) omnicore/$(DEPDIR)/$(am__dirstamp)
-omnicore/libbitcoin_server_a-rpcpayload.$(OBJEXT):  \
-	omnicore/$(am__dirstamp) omnicore/$(DEPDIR)/$(am__dirstamp)
-omnicore/libbitcoin_server_a-rpcrawtx.$(OBJEXT):  \
-	omnicore/$(am__dirstamp) omnicore/$(DEPDIR)/$(am__dirstamp)
-omnicore/libbitcoin_server_a-rpcrequirements.$(OBJEXT):  \
-	omnicore/$(am__dirstamp) omnicore/$(DEPDIR)/$(am__dirstamp)
-omnicore/libbitcoin_server_a-rpctx.$(OBJEXT):  \
-	omnicore/$(am__dirstamp) omnicore/$(DEPDIR)/$(am__dirstamp)
-omnicore/libbitcoin_server_a-rpctxobject.$(OBJEXT):  \
-	omnicore/$(am__dirstamp) omnicore/$(DEPDIR)/$(am__dirstamp)
-omnicore/libbitcoin_server_a-rpcvalues.$(OBJEXT):  \
-	omnicore/$(am__dirstamp) omnicore/$(DEPDIR)/$(am__dirstamp)
-omnicore/libbitcoin_server_a-rules.$(OBJEXT):  \
-	omnicore/$(am__dirstamp) omnicore/$(DEPDIR)/$(am__dirstamp)
-omnicore/libbitcoin_server_a-script.$(OBJEXT):  \
-	omnicore/$(am__dirstamp) omnicore/$(DEPDIR)/$(am__dirstamp)
-omnicore/libbitcoin_server_a-seedblocks.$(OBJEXT):  \
-	omnicore/$(am__dirstamp) omnicore/$(DEPDIR)/$(am__dirstamp)
-omnicore/libbitcoin_server_a-sp.$(OBJEXT): omnicore/$(am__dirstamp) \
-	omnicore/$(DEPDIR)/$(am__dirstamp)
-omnicore/libbitcoin_server_a-sto.$(OBJEXT): omnicore/$(am__dirstamp) \
-	omnicore/$(DEPDIR)/$(am__dirstamp)
-omnicore/libbitcoin_server_a-tally.$(OBJEXT):  \
-	omnicore/$(am__dirstamp) omnicore/$(DEPDIR)/$(am__dirstamp)
-omnicore/libbitcoin_server_a-tx.$(OBJEXT): omnicore/$(am__dirstamp) \
-	omnicore/$(DEPDIR)/$(am__dirstamp)
-omnicore/libbitcoin_server_a-utilsbitcoin.$(OBJEXT):  \
-	omnicore/$(am__dirstamp) omnicore/$(DEPDIR)/$(am__dirstamp)
-omnicore/libbitcoin_server_a-utilsui.$(OBJEXT):  \
-	omnicore/$(am__dirstamp) omnicore/$(DEPDIR)/$(am__dirstamp)
-omnicore/libbitcoin_server_a-version.$(OBJEXT):  \
-	omnicore/$(am__dirstamp) omnicore/$(DEPDIR)/$(am__dirstamp)
-omnicore/libbitcoin_server_a-walletcache.$(OBJEXT):  \
-	omnicore/$(am__dirstamp) omnicore/$(DEPDIR)/$(am__dirstamp)
-omnicore/libbitcoin_server_a-walletfetchtxs.$(OBJEXT):  \
-	omnicore/$(am__dirstamp) omnicore/$(DEPDIR)/$(am__dirstamp)
-omnicore/libbitcoin_server_a-wallettxbuilder.$(OBJEXT):  \
-	omnicore/$(am__dirstamp) omnicore/$(DEPDIR)/$(am__dirstamp)
-omnicore/libbitcoin_server_a-globals.$(OBJEXT):  \
-	omnicore/$(am__dirstamp) omnicore/$(DEPDIR)/$(am__dirstamp)
-omnicore/libbitcoin_server_a-externfns.$(OBJEXT):  \
-	omnicore/$(am__dirstamp) omnicore/$(DEPDIR)/$(am__dirstamp)
-omnicore/libbitcoin_server_a-walletutils.$(OBJEXT):  \
-	omnicore/$(am__dirstamp) omnicore/$(DEPDIR)/$(am__dirstamp)
+tradelayer/$(am__dirstamp):
+	@$(MKDIR_P) tradelayer
+	@: > tradelayer/$(am__dirstamp)
+tradelayer/$(DEPDIR)/$(am__dirstamp):
+	@$(MKDIR_P) tradelayer/$(DEPDIR)
+	@: > tradelayer/$(DEPDIR)/$(am__dirstamp)
+tradelayer/libbitcoin_server_a-activation.$(OBJEXT):  \
+	tradelayer/$(am__dirstamp) \
+	tradelayer/$(DEPDIR)/$(am__dirstamp)
+tradelayer/libbitcoin_server_a-consensushash.$(OBJEXT):  \
+	tradelayer/$(am__dirstamp) \
+	tradelayer/$(DEPDIR)/$(am__dirstamp)
+tradelayer/libbitcoin_server_a-convert.$(OBJEXT):  \
+	tradelayer/$(am__dirstamp) \
+	tradelayer/$(DEPDIR)/$(am__dirstamp)
+tradelayer/libbitcoin_server_a-createpayload.$(OBJEXT):  \
+	tradelayer/$(am__dirstamp) \
+	tradelayer/$(DEPDIR)/$(am__dirstamp)
+tradelayer/libbitcoin_server_a-createtx.$(OBJEXT):  \
+	tradelayer/$(am__dirstamp) \
+	tradelayer/$(DEPDIR)/$(am__dirstamp)
+tradelayer/libbitcoin_server_a-dbbase.$(OBJEXT):  \
+	tradelayer/$(am__dirstamp) \
+	tradelayer/$(DEPDIR)/$(am__dirstamp)
+tradelayer/libbitcoin_server_a-dbfees.$(OBJEXT):  \
+	tradelayer/$(am__dirstamp) \
+	tradelayer/$(DEPDIR)/$(am__dirstamp)
+tradelayer/libbitcoin_server_a-dbspinfo.$(OBJEXT):  \
+	tradelayer/$(am__dirstamp) \
+	tradelayer/$(DEPDIR)/$(am__dirstamp)
+tradelayer/libbitcoin_server_a-dbstolist.$(OBJEXT):  \
+	tradelayer/$(am__dirstamp) \
+	tradelayer/$(DEPDIR)/$(am__dirstamp)
+tradelayer/libbitcoin_server_a-dbtradelist.$(OBJEXT):  \
+	tradelayer/$(am__dirstamp) \
+	tradelayer/$(DEPDIR)/$(am__dirstamp)
+tradelayer/libbitcoin_server_a-dbtransaction.$(OBJEXT):  \
+	tradelayer/$(am__dirstamp) \
+	tradelayer/$(DEPDIR)/$(am__dirstamp)
+tradelayer/libbitcoin_server_a-dbtxlist.$(OBJEXT):  \
+	tradelayer/$(am__dirstamp) \
+	tradelayer/$(DEPDIR)/$(am__dirstamp)
+tradelayer/libbitcoin_server_a-dex.$(OBJEXT):  \
+	tradelayer/$(am__dirstamp) \
+	tradelayer/$(DEPDIR)/$(am__dirstamp)
+tradelayer/libbitcoin_server_a-encoding.$(OBJEXT):  \
+	tradelayer/$(am__dirstamp) \
+	tradelayer/$(DEPDIR)/$(am__dirstamp)
+tradelayer/libbitcoin_server_a-log.$(OBJEXT):  \
+	tradelayer/$(am__dirstamp) \
+	tradelayer/$(DEPDIR)/$(am__dirstamp)
+tradelayer/libbitcoin_server_a-mdex.$(OBJEXT):  \
+	tradelayer/$(am__dirstamp) \
+	tradelayer/$(DEPDIR)/$(am__dirstamp)
+tradelayer/libbitcoin_server_a-notifications.$(OBJEXT):  \
+	tradelayer/$(am__dirstamp) \
+	tradelayer/$(DEPDIR)/$(am__dirstamp)
+tradelayer/libbitcoin_server_a-tradelayer.$(OBJEXT):  \
+	tradelayer/$(am__dirstamp) \
+	tradelayer/$(DEPDIR)/$(am__dirstamp)
+tradelayer/libbitcoin_server_a-operators_algo_clearing.$(OBJEXT):  \
+	tradelayer/$(am__dirstamp) \
+	tradelayer/$(DEPDIR)/$(am__dirstamp)
+tradelayer/libbitcoin_server_a-parse_string.$(OBJEXT):  \
+	tradelayer/$(am__dirstamp) \
+	tradelayer/$(DEPDIR)/$(am__dirstamp)
+tradelayer/libbitcoin_server_a-parsing.$(OBJEXT):  \
+	tradelayer/$(am__dirstamp) \
+	tradelayer/$(DEPDIR)/$(am__dirstamp)
+tradelayer/libbitcoin_server_a-pending.$(OBJEXT):  \
+	tradelayer/$(am__dirstamp) \
+	tradelayer/$(DEPDIR)/$(am__dirstamp)
+tradelayer/libbitcoin_server_a-persistence.$(OBJEXT):  \
+	tradelayer/$(am__dirstamp) \
+	tradelayer/$(DEPDIR)/$(am__dirstamp)
+tradelayer/libbitcoin_server_a-rpc.$(OBJEXT):  \
+	tradelayer/$(am__dirstamp) \
+	tradelayer/$(DEPDIR)/$(am__dirstamp)
+tradelayer/libbitcoin_server_a-rpcmbstring.$(OBJEXT):  \
+	tradelayer/$(am__dirstamp) \
+	tradelayer/$(DEPDIR)/$(am__dirstamp)
+tradelayer/libbitcoin_server_a-rpcpayload.$(OBJEXT):  \
+	tradelayer/$(am__dirstamp) \
+	tradelayer/$(DEPDIR)/$(am__dirstamp)
+tradelayer/libbitcoin_server_a-rpcrawtx.$(OBJEXT):  \
+	tradelayer/$(am__dirstamp) \
+	tradelayer/$(DEPDIR)/$(am__dirstamp)
+tradelayer/libbitcoin_server_a-rpcrequirements.$(OBJEXT):  \
+	tradelayer/$(am__dirstamp) \
+	tradelayer/$(DEPDIR)/$(am__dirstamp)
+tradelayer/libbitcoin_server_a-rpctx.$(OBJEXT):  \
+	tradelayer/$(am__dirstamp) \
+	tradelayer/$(DEPDIR)/$(am__dirstamp)
+tradelayer/libbitcoin_server_a-rpctxobject.$(OBJEXT):  \
+	tradelayer/$(am__dirstamp) \
+	tradelayer/$(DEPDIR)/$(am__dirstamp)
+tradelayer/libbitcoin_server_a-rpcvalues.$(OBJEXT):  \
+	tradelayer/$(am__dirstamp) \
+	tradelayer/$(DEPDIR)/$(am__dirstamp)
+tradelayer/libbitcoin_server_a-rules.$(OBJEXT):  \
+	tradelayer/$(am__dirstamp) \
+	tradelayer/$(DEPDIR)/$(am__dirstamp)
+tradelayer/libbitcoin_server_a-script.$(OBJEXT):  \
+	tradelayer/$(am__dirstamp) \
+	tradelayer/$(DEPDIR)/$(am__dirstamp)
+tradelayer/libbitcoin_server_a-seedblocks.$(OBJEXT):  \
+	tradelayer/$(am__dirstamp) \
+	tradelayer/$(DEPDIR)/$(am__dirstamp)
+tradelayer/libbitcoin_server_a-sp.$(OBJEXT):  \
+	tradelayer/$(am__dirstamp) \
+	tradelayer/$(DEPDIR)/$(am__dirstamp)
+tradelayer/libbitcoin_server_a-sto.$(OBJEXT):  \
+	tradelayer/$(am__dirstamp) \
+	tradelayer/$(DEPDIR)/$(am__dirstamp)
+tradelayer/libbitcoin_server_a-tally.$(OBJEXT):  \
+	tradelayer/$(am__dirstamp) \
+	tradelayer/$(DEPDIR)/$(am__dirstamp)
+tradelayer/libbitcoin_server_a-tx.$(OBJEXT):  \
+	tradelayer/$(am__dirstamp) \
+	tradelayer/$(DEPDIR)/$(am__dirstamp)
+tradelayer/libbitcoin_server_a-utilsbitcoin.$(OBJEXT):  \
+	tradelayer/$(am__dirstamp) \
+	tradelayer/$(DEPDIR)/$(am__dirstamp)
+tradelayer/libbitcoin_server_a-utilsui.$(OBJEXT):  \
+	tradelayer/$(am__dirstamp) \
+	tradelayer/$(DEPDIR)/$(am__dirstamp)
+tradelayer/libbitcoin_server_a-version.$(OBJEXT):  \
+	tradelayer/$(am__dirstamp) \
+	tradelayer/$(DEPDIR)/$(am__dirstamp)
+tradelayer/libbitcoin_server_a-walletcache.$(OBJEXT):  \
+	tradelayer/$(am__dirstamp) \
+	tradelayer/$(DEPDIR)/$(am__dirstamp)
+tradelayer/libbitcoin_server_a-walletfetchtxs.$(OBJEXT):  \
+	tradelayer/$(am__dirstamp) \
+	tradelayer/$(DEPDIR)/$(am__dirstamp)
+tradelayer/libbitcoin_server_a-wallettxbuilder.$(OBJEXT):  \
+	tradelayer/$(am__dirstamp) \
+	tradelayer/$(DEPDIR)/$(am__dirstamp)
+tradelayer/libbitcoin_server_a-globals.$(OBJEXT):  \
+	tradelayer/$(am__dirstamp) \
+	tradelayer/$(DEPDIR)/$(am__dirstamp)
+tradelayer/libbitcoin_server_a-externfns.$(OBJEXT):  \
+	tradelayer/$(am__dirstamp) \
+	tradelayer/$(DEPDIR)/$(am__dirstamp)
+tradelayer/libbitcoin_server_a-walletutils.$(OBJEXT):  \
+	tradelayer/$(am__dirstamp) \
+	tradelayer/$(DEPDIR)/$(am__dirstamp)
 
-libbitcoin_server.a: $(libbitcoin_server_a_OBJECTS) $(libbitcoin_server_a_DEPENDENCIES) $(EXTRA_libbitcoin_server_a_DEPENDENCIES) 
+libbitcoin_server.a: $(libbitcoin_server_a_OBJECTS) $(libbitcoin_server_a_DEPENDENCIES) $(EXTRA_libbitcoin_server_a_DEPENDENCIES)
 	$(AM_V_at)-rm -f libbitcoin_server.a
 	$(AM_V_AR)$(libbitcoin_server_a_AR) libbitcoin_server.a $(libbitcoin_server_a_OBJECTS) $(libbitcoin_server_a_LIBADD)
 	$(AM_V_at)$(RANLIB) libbitcoin_server.a
@@ -5107,7 +5159,7 @@ util/libbitcoin_util_a-time.$(OBJEXT): util/$(am__dirstamp) \
 compat/libbitcoin_util_a-glibc_compat.$(OBJEXT):  \
 	compat/$(am__dirstamp) compat/$(DEPDIR)/$(am__dirstamp)
 
-libbitcoin_util.a: $(libbitcoin_util_a_OBJECTS) $(libbitcoin_util_a_DEPENDENCIES) $(EXTRA_libbitcoin_util_a_DEPENDENCIES) 
+libbitcoin_util.a: $(libbitcoin_util_a_OBJECTS) $(libbitcoin_util_a_DEPENDENCIES) $(EXTRA_libbitcoin_util_a_DEPENDENCIES)
 	$(AM_V_at)-rm -f libbitcoin_util.a
 	$(AM_V_AR)$(libbitcoin_util_a_AR) libbitcoin_util.a $(libbitcoin_util_a_OBJECTS) $(libbitcoin_util_a_LIBADD)
 	$(AM_V_at)$(RANLIB) libbitcoin_util.a
@@ -5147,14 +5199,14 @@ wallet/libbitcoin_wallet_a-walletutil.$(OBJEXT):  \
 wallet/libbitcoin_wallet_a-coinselection.$(OBJEXT):  \
 	wallet/$(am__dirstamp) wallet/$(DEPDIR)/$(am__dirstamp)
 
-libbitcoin_wallet.a: $(libbitcoin_wallet_a_OBJECTS) $(libbitcoin_wallet_a_DEPENDENCIES) $(EXTRA_libbitcoin_wallet_a_DEPENDENCIES) 
+libbitcoin_wallet.a: $(libbitcoin_wallet_a_OBJECTS) $(libbitcoin_wallet_a_DEPENDENCIES) $(EXTRA_libbitcoin_wallet_a_DEPENDENCIES)
 	$(AM_V_at)-rm -f libbitcoin_wallet.a
 	$(AM_V_AR)$(libbitcoin_wallet_a_AR) libbitcoin_wallet.a $(libbitcoin_wallet_a_OBJECTS) $(libbitcoin_wallet_a_LIBADD)
 	$(AM_V_at)$(RANLIB) libbitcoin_wallet.a
 wallet/libbitcoin_wallet_tool_a-wallettool.$(OBJEXT):  \
 	wallet/$(am__dirstamp) wallet/$(DEPDIR)/$(am__dirstamp)
 
-libbitcoin_wallet_tool.a: $(libbitcoin_wallet_tool_a_OBJECTS) $(libbitcoin_wallet_tool_a_DEPENDENCIES) $(EXTRA_libbitcoin_wallet_tool_a_DEPENDENCIES) 
+libbitcoin_wallet_tool.a: $(libbitcoin_wallet_tool_a_OBJECTS) $(libbitcoin_wallet_tool_a_DEPENDENCIES) $(EXTRA_libbitcoin_wallet_tool_a_DEPENDENCIES)
 	$(AM_V_at)-rm -f libbitcoin_wallet_tool.a
 	$(AM_V_AR)$(libbitcoin_wallet_tool_a_AR) libbitcoin_wallet_tool.a $(libbitcoin_wallet_tool_a_OBJECTS) $(libbitcoin_wallet_tool_a_LIBADD)
 	$(AM_V_at)$(RANLIB) libbitcoin_wallet_tool.a
@@ -5173,7 +5225,7 @@ zmq/libbitcoin_zmq_a-zmqpublishnotifier.$(OBJEXT):  \
 zmq/libbitcoin_zmq_a-zmqrpc.$(OBJEXT): zmq/$(am__dirstamp) \
 	zmq/$(DEPDIR)/$(am__dirstamp)
 
-libbitcoin_zmq.a: $(libbitcoin_zmq_a_OBJECTS) $(libbitcoin_zmq_a_DEPENDENCIES) $(EXTRA_libbitcoin_zmq_a_DEPENDENCIES) 
+libbitcoin_zmq.a: $(libbitcoin_zmq_a_OBJECTS) $(libbitcoin_zmq_a_DEPENDENCIES) $(EXTRA_libbitcoin_zmq_a_DEPENDENCIES)
 	$(AM_V_at)-rm -f libbitcoin_zmq.a
 	$(AM_V_AR)$(libbitcoin_zmq_a_AR) libbitcoin_zmq.a $(libbitcoin_zmq_a_OBJECTS) $(libbitcoin_zmq_a_LIBADD)
 	$(AM_V_at)$(RANLIB) libbitcoin_zmq.a
@@ -5512,7 +5564,7 @@ util/libbitcoinconsensus_la-strencodings.lo: util/$(am__dirstamp) \
 compat/libbitcoinconsensus_la-glibc_compat.lo: compat/$(am__dirstamp) \
 	compat/$(DEPDIR)/$(am__dirstamp)
 
-libbitcoinconsensus.la: $(libbitcoinconsensus_la_OBJECTS) $(libbitcoinconsensus_la_DEPENDENCIES) $(EXTRA_libbitcoinconsensus_la_DEPENDENCIES) 
+libbitcoinconsensus.la: $(libbitcoinconsensus_la_OBJECTS) $(libbitcoinconsensus_la_DEPENDENCIES) $(EXTRA_libbitcoinconsensus_la_DEPENDENCIES)
 	$(AM_V_CXXLD)$(libbitcoinconsensus_la_LINK) $(am_libbitcoinconsensus_la_rpath) $(libbitcoinconsensus_la_OBJECTS) $(libbitcoinconsensus_la_LIBADD) $(LIBS)
 install-binPROGRAMS: $(bin_PROGRAMS)
 	@$(NORMAL_INSTALL)
@@ -5621,19 +5673,19 @@ bench/bench_bitcoin$(EXEEXT): $(bench_bench_bitcoin_OBJECTS) $(bench_bench_bitco
 	@rm -f bench/bench_bitcoin$(EXEEXT)
 	$(AM_V_CXXLD)$(bench_bench_bitcoin_LINK) $(bench_bench_bitcoin_OBJECTS) $(bench_bench_bitcoin_LDADD) $(LIBS)
 
-bitcoin-tx$(EXEEXT): $(bitcoin_tx_OBJECTS) $(bitcoin_tx_DEPENDENCIES) $(EXTRA_bitcoin_tx_DEPENDENCIES) 
+bitcoin-tx$(EXEEXT): $(bitcoin_tx_OBJECTS) $(bitcoin_tx_DEPENDENCIES) $(EXTRA_bitcoin_tx_DEPENDENCIES)
 	@rm -f bitcoin-tx$(EXEEXT)
 	$(AM_V_CXXLD)$(bitcoin_tx_LINK) $(bitcoin_tx_OBJECTS) $(bitcoin_tx_LDADD) $(LIBS)
 
-bitcoin-wallet$(EXEEXT): $(bitcoin_wallet_OBJECTS) $(bitcoin_wallet_DEPENDENCIES) $(EXTRA_bitcoin_wallet_DEPENDENCIES) 
+bitcoin-wallet$(EXEEXT): $(bitcoin_wallet_OBJECTS) $(bitcoin_wallet_DEPENDENCIES) $(EXTRA_bitcoin_wallet_DEPENDENCIES)
 	@rm -f bitcoin-wallet$(EXEEXT)
 	$(AM_V_CXXLD)$(bitcoin_wallet_LINK) $(bitcoin_wallet_OBJECTS) $(bitcoin_wallet_LDADD) $(LIBS)
 
-omnicore-cli$(EXEEXT): $(omnicore_cli_OBJECTS) $(omnicore_cli_DEPENDENCIES) $(EXTRA_omnicore_cli_DEPENDENCIES) 
+omnicore-cli$(EXEEXT): $(omnicore_cli_OBJECTS) $(omnicore_cli_DEPENDENCIES) $(EXTRA_omnicore_cli_DEPENDENCIES)
 	@rm -f omnicore-cli$(EXEEXT)
 	$(AM_V_CXXLD)$(omnicore_cli_LINK) $(omnicore_cli_OBJECTS) $(omnicore_cli_LDADD) $(LIBS)
 
-omnicored$(EXEEXT): $(omnicored_OBJECTS) $(omnicored_DEPENDENCIES) $(EXTRA_omnicored_DEPENDENCIES) 
+omnicored$(EXEEXT): $(omnicored_OBJECTS) $(omnicored_DEPENDENCIES) $(EXTRA_omnicored_DEPENDENCIES)
 	@rm -f omnicored$(EXEEXT)
 	$(AM_V_CXXLD)$(omnicored_LINK) $(omnicored_OBJECTS) $(omnicored_LDADD) $(LIBS)
 qt/qt_omnicore_qt-main.$(OBJEXT): qt/$(am__dirstamp) \
@@ -6055,108 +6107,108 @@ wallet/test/test_test_omnicore-coinselector_tests.$(OBJEXT):  \
 wallet/test/test_test_omnicore-init_tests.$(OBJEXT):  \
 	wallet/test/$(am__dirstamp) \
 	wallet/test/$(DEPDIR)/$(am__dirstamp)
-omnicore/test/$(am__dirstamp):
-	@$(MKDIR_P) omnicore/test
-	@: > omnicore/test/$(am__dirstamp)
-omnicore/test/$(DEPDIR)/$(am__dirstamp):
-	@$(MKDIR_P) omnicore/test/$(DEPDIR)
-	@: > omnicore/test/$(DEPDIR)/$(am__dirstamp)
-omnicore/test/test_test_omnicore-alert_tests.$(OBJEXT):  \
-	omnicore/test/$(am__dirstamp) \
-	omnicore/test/$(DEPDIR)/$(am__dirstamp)
-omnicore/test/test_test_omnicore-change_issuer_tests.$(OBJEXT):  \
-	omnicore/test/$(am__dirstamp) \
-	omnicore/test/$(DEPDIR)/$(am__dirstamp)
-omnicore/test/test_test_omnicore-checkpoint_tests.$(OBJEXT):  \
-	omnicore/test/$(am__dirstamp) \
-	omnicore/test/$(DEPDIR)/$(am__dirstamp)
-omnicore/test/test_test_omnicore-create_payload_tests.$(OBJEXT):  \
-	omnicore/test/$(am__dirstamp) \
-	omnicore/test/$(DEPDIR)/$(am__dirstamp)
-omnicore/test/test_test_omnicore-create_tx_tests.$(OBJEXT):  \
-	omnicore/test/$(am__dirstamp) \
-	omnicore/test/$(DEPDIR)/$(am__dirstamp)
-omnicore/test/test_test_omnicore-crowdsale_participation_tests.$(OBJEXT):  \
-	omnicore/test/$(am__dirstamp) \
-	omnicore/test/$(DEPDIR)/$(am__dirstamp)
-omnicore/test/test_test_omnicore-dex_purchase_tests.$(OBJEXT):  \
-	omnicore/test/$(am__dirstamp) \
-	omnicore/test/$(DEPDIR)/$(am__dirstamp)
-omnicore/test/test_test_omnicore-encoding_b_tests.$(OBJEXT):  \
-	omnicore/test/$(am__dirstamp) \
-	omnicore/test/$(DEPDIR)/$(am__dirstamp)
-omnicore/test/test_test_omnicore-encoding_c_tests.$(OBJEXT):  \
-	omnicore/test/$(am__dirstamp) \
-	omnicore/test/$(DEPDIR)/$(am__dirstamp)
-omnicore/test/test_test_omnicore-exodus_tests.$(OBJEXT):  \
-	omnicore/test/$(am__dirstamp) \
-	omnicore/test/$(DEPDIR)/$(am__dirstamp)
-omnicore/test/test_test_omnicore-lock_tests.$(OBJEXT):  \
-	omnicore/test/$(am__dirstamp) \
-	omnicore/test/$(DEPDIR)/$(am__dirstamp)
-omnicore/test/test_test_omnicore-marker_tests.$(OBJEXT):  \
-	omnicore/test/$(am__dirstamp) \
-	omnicore/test/$(DEPDIR)/$(am__dirstamp)
-omnicore/test/test_test_omnicore-mbstring_tests.$(OBJEXT):  \
-	omnicore/test/$(am__dirstamp) \
-	omnicore/test/$(DEPDIR)/$(am__dirstamp)
-omnicore/test/test_test_omnicore-params_tests.$(OBJEXT):  \
-	omnicore/test/$(am__dirstamp) \
-	omnicore/test/$(DEPDIR)/$(am__dirstamp)
-omnicore/test/test_test_omnicore-obfuscation_tests.$(OBJEXT):  \
-	omnicore/test/$(am__dirstamp) \
-	omnicore/test/$(DEPDIR)/$(am__dirstamp)
-omnicore/test/test_test_omnicore-output_restriction_tests.$(OBJEXT):  \
-	omnicore/test/$(am__dirstamp) \
-	omnicore/test/$(DEPDIR)/$(am__dirstamp)
-omnicore/test/test_test_omnicore-parsing_a_tests.$(OBJEXT):  \
-	omnicore/test/$(am__dirstamp) \
-	omnicore/test/$(DEPDIR)/$(am__dirstamp)
-omnicore/test/test_test_omnicore-parsing_b_tests.$(OBJEXT):  \
-	omnicore/test/$(am__dirstamp) \
-	omnicore/test/$(DEPDIR)/$(am__dirstamp)
-omnicore/test/test_test_omnicore-parsing_c_tests.$(OBJEXT):  \
-	omnicore/test/$(am__dirstamp) \
-	omnicore/test/$(DEPDIR)/$(am__dirstamp)
-omnicore/test/test_test_omnicore-rounduint64_tests.$(OBJEXT):  \
-	omnicore/test/$(am__dirstamp) \
-	omnicore/test/$(DEPDIR)/$(am__dirstamp)
-omnicore/test/test_test_omnicore-rules_txs_tests.$(OBJEXT):  \
-	omnicore/test/$(am__dirstamp) \
-	omnicore/test/$(DEPDIR)/$(am__dirstamp)
-omnicore/test/test_test_omnicore-script_dust_tests.$(OBJEXT):  \
-	omnicore/test/$(am__dirstamp) \
-	omnicore/test/$(DEPDIR)/$(am__dirstamp)
-omnicore/test/test_test_omnicore-script_extraction_tests.$(OBJEXT):  \
-	omnicore/test/$(am__dirstamp) \
-	omnicore/test/$(DEPDIR)/$(am__dirstamp)
-omnicore/test/test_test_omnicore-script_solver_tests.$(OBJEXT):  \
-	omnicore/test/$(am__dirstamp) \
-	omnicore/test/$(DEPDIR)/$(am__dirstamp)
-omnicore/test/test_test_omnicore-sender_bycontribution_tests.$(OBJEXT):  \
-	omnicore/test/$(am__dirstamp) \
-	omnicore/test/$(DEPDIR)/$(am__dirstamp)
-omnicore/test/test_test_omnicore-sender_firstin_tests.$(OBJEXT):  \
-	omnicore/test/$(am__dirstamp) \
-	omnicore/test/$(DEPDIR)/$(am__dirstamp)
-omnicore/test/test_test_omnicore-strtoint64_tests.$(OBJEXT):  \
-	omnicore/test/$(am__dirstamp) \
-	omnicore/test/$(DEPDIR)/$(am__dirstamp)
-omnicore/test/test_test_omnicore-swapbyteorder_tests.$(OBJEXT):  \
-	omnicore/test/$(am__dirstamp) \
-	omnicore/test/$(DEPDIR)/$(am__dirstamp)
-omnicore/test/test_test_omnicore-tally_tests.$(OBJEXT):  \
-	omnicore/test/$(am__dirstamp) \
-	omnicore/test/$(DEPDIR)/$(am__dirstamp)
-omnicore/test/test_test_omnicore-uint256_extensions_tests.$(OBJEXT):  \
-	omnicore/test/$(am__dirstamp) \
-	omnicore/test/$(DEPDIR)/$(am__dirstamp)
-omnicore/test/test_test_omnicore-utils_tx.$(OBJEXT):  \
-	omnicore/test/$(am__dirstamp) \
-	omnicore/test/$(DEPDIR)/$(am__dirstamp)
-omnicore/test/test_test_omnicore-version_tests.$(OBJEXT):  \
-	omnicore/test/$(am__dirstamp) \
-	omnicore/test/$(DEPDIR)/$(am__dirstamp)
+tradelayer/test/$(am__dirstamp):
+	@$(MKDIR_P) tradelayer/test
+	@: > tradelayer/test/$(am__dirstamp)
+tradelayer/test/$(DEPDIR)/$(am__dirstamp):
+	@$(MKDIR_P) tradelayer/test/$(DEPDIR)
+	@: > tradelayer/test/$(DEPDIR)/$(am__dirstamp)
+tradelayer/test/test_test_omnicore-alert_tests.$(OBJEXT):  \
+	tradelayer/test/$(am__dirstamp) \
+	tradelayer/test/$(DEPDIR)/$(am__dirstamp)
+tradelayer/test/test_test_omnicore-change_issuer_tests.$(OBJEXT):  \
+	tradelayer/test/$(am__dirstamp) \
+	tradelayer/test/$(DEPDIR)/$(am__dirstamp)
+tradelayer/test/test_test_omnicore-checkpoint_tests.$(OBJEXT):  \
+	tradelayer/test/$(am__dirstamp) \
+	tradelayer/test/$(DEPDIR)/$(am__dirstamp)
+tradelayer/test/test_test_omnicore-create_payload_tests.$(OBJEXT):  \
+	tradelayer/test/$(am__dirstamp) \
+	tradelayer/test/$(DEPDIR)/$(am__dirstamp)
+tradelayer/test/test_test_omnicore-create_tx_tests.$(OBJEXT):  \
+	tradelayer/test/$(am__dirstamp) \
+	tradelayer/test/$(DEPDIR)/$(am__dirstamp)
+tradelayer/test/test_test_omnicore-crowdsale_participation_tests.$(OBJEXT):  \
+	tradelayer/test/$(am__dirstamp) \
+	tradelayer/test/$(DEPDIR)/$(am__dirstamp)
+tradelayer/test/test_test_omnicore-dex_purchase_tests.$(OBJEXT):  \
+	tradelayer/test/$(am__dirstamp) \
+	tradelayer/test/$(DEPDIR)/$(am__dirstamp)
+tradelayer/test/test_test_omnicore-encoding_b_tests.$(OBJEXT):  \
+	tradelayer/test/$(am__dirstamp) \
+	tradelayer/test/$(DEPDIR)/$(am__dirstamp)
+tradelayer/test/test_test_omnicore-encoding_c_tests.$(OBJEXT):  \
+	tradelayer/test/$(am__dirstamp) \
+	tradelayer/test/$(DEPDIR)/$(am__dirstamp)
+tradelayer/test/test_test_omnicore-exodus_tests.$(OBJEXT):  \
+	tradelayer/test/$(am__dirstamp) \
+	tradelayer/test/$(DEPDIR)/$(am__dirstamp)
+tradelayer/test/test_test_omnicore-lock_tests.$(OBJEXT):  \
+	tradelayer/test/$(am__dirstamp) \
+	tradelayer/test/$(DEPDIR)/$(am__dirstamp)
+tradelayer/test/test_test_omnicore-marker_tests.$(OBJEXT):  \
+	tradelayer/test/$(am__dirstamp) \
+	tradelayer/test/$(DEPDIR)/$(am__dirstamp)
+tradelayer/test/test_test_omnicore-mbstring_tests.$(OBJEXT):  \
+	tradelayer/test/$(am__dirstamp) \
+	tradelayer/test/$(DEPDIR)/$(am__dirstamp)
+tradelayer/test/test_test_omnicore-params_tests.$(OBJEXT):  \
+	tradelayer/test/$(am__dirstamp) \
+	tradelayer/test/$(DEPDIR)/$(am__dirstamp)
+tradelayer/test/test_test_omnicore-obfuscation_tests.$(OBJEXT):  \
+	tradelayer/test/$(am__dirstamp) \
+	tradelayer/test/$(DEPDIR)/$(am__dirstamp)
+tradelayer/test/test_test_omnicore-output_restriction_tests.$(OBJEXT):  \
+	tradelayer/test/$(am__dirstamp) \
+	tradelayer/test/$(DEPDIR)/$(am__dirstamp)
+tradelayer/test/test_test_omnicore-parsing_a_tests.$(OBJEXT):  \
+	tradelayer/test/$(am__dirstamp) \
+	tradelayer/test/$(DEPDIR)/$(am__dirstamp)
+tradelayer/test/test_test_omnicore-parsing_b_tests.$(OBJEXT):  \
+	tradelayer/test/$(am__dirstamp) \
+	tradelayer/test/$(DEPDIR)/$(am__dirstamp)
+tradelayer/test/test_test_omnicore-parsing_c_tests.$(OBJEXT):  \
+	tradelayer/test/$(am__dirstamp) \
+	tradelayer/test/$(DEPDIR)/$(am__dirstamp)
+tradelayer/test/test_test_omnicore-rounduint64_tests.$(OBJEXT):  \
+	tradelayer/test/$(am__dirstamp) \
+	tradelayer/test/$(DEPDIR)/$(am__dirstamp)
+tradelayer/test/test_test_omnicore-rules_txs_tests.$(OBJEXT):  \
+	tradelayer/test/$(am__dirstamp) \
+	tradelayer/test/$(DEPDIR)/$(am__dirstamp)
+tradelayer/test/test_test_omnicore-script_dust_tests.$(OBJEXT):  \
+	tradelayer/test/$(am__dirstamp) \
+	tradelayer/test/$(DEPDIR)/$(am__dirstamp)
+tradelayer/test/test_test_omnicore-script_extraction_tests.$(OBJEXT):  \
+	tradelayer/test/$(am__dirstamp) \
+	tradelayer/test/$(DEPDIR)/$(am__dirstamp)
+tradelayer/test/test_test_omnicore-script_solver_tests.$(OBJEXT):  \
+	tradelayer/test/$(am__dirstamp) \
+	tradelayer/test/$(DEPDIR)/$(am__dirstamp)
+tradelayer/test/test_test_omnicore-sender_bycontribution_tests.$(OBJEXT):  \
+	tradelayer/test/$(am__dirstamp) \
+	tradelayer/test/$(DEPDIR)/$(am__dirstamp)
+tradelayer/test/test_test_omnicore-sender_firstin_tests.$(OBJEXT):  \
+	tradelayer/test/$(am__dirstamp) \
+	tradelayer/test/$(DEPDIR)/$(am__dirstamp)
+tradelayer/test/test_test_omnicore-strtoint64_tests.$(OBJEXT):  \
+	tradelayer/test/$(am__dirstamp) \
+	tradelayer/test/$(DEPDIR)/$(am__dirstamp)
+tradelayer/test/test_test_omnicore-swapbyteorder_tests.$(OBJEXT):  \
+	tradelayer/test/$(am__dirstamp) \
+	tradelayer/test/$(DEPDIR)/$(am__dirstamp)
+tradelayer/test/test_test_omnicore-tally_tests.$(OBJEXT):  \
+	tradelayer/test/$(am__dirstamp) \
+	tradelayer/test/$(DEPDIR)/$(am__dirstamp)
+tradelayer/test/test_test_omnicore-uint256_extensions_tests.$(OBJEXT):  \
+	tradelayer/test/$(am__dirstamp) \
+	tradelayer/test/$(DEPDIR)/$(am__dirstamp)
+tradelayer/test/test_test_omnicore-utils_tx.$(OBJEXT):  \
+	tradelayer/test/$(am__dirstamp) \
+	tradelayer/test/$(DEPDIR)/$(am__dirstamp)
+tradelayer/test/test_test_omnicore-version_tests.$(OBJEXT):  \
+	tradelayer/test/$(am__dirstamp) \
+	tradelayer/test/$(DEPDIR)/$(am__dirstamp)
 
 test/test_omnicore$(EXEEXT): $(test_test_omnicore_OBJECTS) $(test_test_omnicore_DEPENDENCIES) $(EXTRA_test_test_omnicore_DEPENDENCIES) test/$(am__dirstamp)
 	@rm -f test/test_omnicore$(EXEEXT)
@@ -6179,9 +6231,7 @@ mostlyclean-compile:
 	-rm -f leveldb/table/*.$(OBJEXT)
 	-rm -f leveldb/util/*.$(OBJEXT)
 	-rm -f node/*.$(OBJEXT)
-	-rm -f omnicore/*.$(OBJEXT)
 	-rm -f omnicore/res/*.$(OBJEXT)
-	-rm -f omnicore/test/*.$(OBJEXT)
 	-rm -f policy/*.$(OBJEXT)
 	-rm -f primitives/*.$(OBJEXT)
 	-rm -f primitives/*.lo
@@ -6194,6 +6244,8 @@ mostlyclean-compile:
 	-rm -f test/*.$(OBJEXT)
 	-rm -f test/fuzz/*.$(OBJEXT)
 	-rm -f test/gen/*.$(OBJEXT)
+	-rm -f tradelayer/*.$(OBJEXT)
+	-rm -f tradelayer/test/*.$(OBJEXT)
 	-rm -f util/*.$(OBJEXT)
 	-rm -f util/*.lo
 	-rm -f wallet/*.$(OBJEXT)
@@ -6369,85 +6421,6 @@ include leveldb/util/$(DEPDIR)/leveldb_libleveldb_a-logging.Po
 include leveldb/util/$(DEPDIR)/leveldb_libleveldb_a-options.Po
 include leveldb/util/$(DEPDIR)/leveldb_libleveldb_a-status.Po
 include node/$(DEPDIR)/libbitcoin_server_a-transaction.Po
-include omnicore/$(DEPDIR)/libbitcoin_server_a-activation.Po
-include omnicore/$(DEPDIR)/libbitcoin_server_a-consensushash.Po
-include omnicore/$(DEPDIR)/libbitcoin_server_a-convert.Po
-include omnicore/$(DEPDIR)/libbitcoin_server_a-createpayload.Po
-include omnicore/$(DEPDIR)/libbitcoin_server_a-createtx.Po
-include omnicore/$(DEPDIR)/libbitcoin_server_a-dbbase.Po
-include omnicore/$(DEPDIR)/libbitcoin_server_a-dbfees.Po
-include omnicore/$(DEPDIR)/libbitcoin_server_a-dbspinfo.Po
-include omnicore/$(DEPDIR)/libbitcoin_server_a-dbstolist.Po
-include omnicore/$(DEPDIR)/libbitcoin_server_a-dbtradelist.Po
-include omnicore/$(DEPDIR)/libbitcoin_server_a-dbtransaction.Po
-include omnicore/$(DEPDIR)/libbitcoin_server_a-dbtxlist.Po
-include omnicore/$(DEPDIR)/libbitcoin_server_a-dex.Po
-include omnicore/$(DEPDIR)/libbitcoin_server_a-encoding.Po
-include omnicore/$(DEPDIR)/libbitcoin_server_a-externfns.Po
-include omnicore/$(DEPDIR)/libbitcoin_server_a-globals.Po
-include omnicore/$(DEPDIR)/libbitcoin_server_a-log.Po
-include omnicore/$(DEPDIR)/libbitcoin_server_a-mdex.Po
-include omnicore/$(DEPDIR)/libbitcoin_server_a-notifications.Po
-include omnicore/$(DEPDIR)/libbitcoin_server_a-omnicore.Po
-include omnicore/$(DEPDIR)/libbitcoin_server_a-operators_algo_clearing.Po
-include omnicore/$(DEPDIR)/libbitcoin_server_a-parse_string.Po
-include omnicore/$(DEPDIR)/libbitcoin_server_a-parsing.Po
-include omnicore/$(DEPDIR)/libbitcoin_server_a-pending.Po
-include omnicore/$(DEPDIR)/libbitcoin_server_a-persistence.Po
-include omnicore/$(DEPDIR)/libbitcoin_server_a-rpc.Po
-include omnicore/$(DEPDIR)/libbitcoin_server_a-rpcmbstring.Po
-include omnicore/$(DEPDIR)/libbitcoin_server_a-rpcpayload.Po
-include omnicore/$(DEPDIR)/libbitcoin_server_a-rpcrawtx.Po
-include omnicore/$(DEPDIR)/libbitcoin_server_a-rpcrequirements.Po
-include omnicore/$(DEPDIR)/libbitcoin_server_a-rpctx.Po
-include omnicore/$(DEPDIR)/libbitcoin_server_a-rpctxobject.Po
-include omnicore/$(DEPDIR)/libbitcoin_server_a-rpcvalues.Po
-include omnicore/$(DEPDIR)/libbitcoin_server_a-rules.Po
-include omnicore/$(DEPDIR)/libbitcoin_server_a-script.Po
-include omnicore/$(DEPDIR)/libbitcoin_server_a-seedblocks.Po
-include omnicore/$(DEPDIR)/libbitcoin_server_a-sp.Po
-include omnicore/$(DEPDIR)/libbitcoin_server_a-sto.Po
-include omnicore/$(DEPDIR)/libbitcoin_server_a-tally.Po
-include omnicore/$(DEPDIR)/libbitcoin_server_a-tx.Po
-include omnicore/$(DEPDIR)/libbitcoin_server_a-utilsbitcoin.Po
-include omnicore/$(DEPDIR)/libbitcoin_server_a-utilsui.Po
-include omnicore/$(DEPDIR)/libbitcoin_server_a-version.Po
-include omnicore/$(DEPDIR)/libbitcoin_server_a-walletcache.Po
-include omnicore/$(DEPDIR)/libbitcoin_server_a-walletfetchtxs.Po
-include omnicore/$(DEPDIR)/libbitcoin_server_a-wallettxbuilder.Po
-include omnicore/$(DEPDIR)/libbitcoin_server_a-walletutils.Po
-include omnicore/test/$(DEPDIR)/test_test_omnicore-alert_tests.Po
-include omnicore/test/$(DEPDIR)/test_test_omnicore-change_issuer_tests.Po
-include omnicore/test/$(DEPDIR)/test_test_omnicore-checkpoint_tests.Po
-include omnicore/test/$(DEPDIR)/test_test_omnicore-create_payload_tests.Po
-include omnicore/test/$(DEPDIR)/test_test_omnicore-create_tx_tests.Po
-include omnicore/test/$(DEPDIR)/test_test_omnicore-crowdsale_participation_tests.Po
-include omnicore/test/$(DEPDIR)/test_test_omnicore-dex_purchase_tests.Po
-include omnicore/test/$(DEPDIR)/test_test_omnicore-encoding_b_tests.Po
-include omnicore/test/$(DEPDIR)/test_test_omnicore-encoding_c_tests.Po
-include omnicore/test/$(DEPDIR)/test_test_omnicore-exodus_tests.Po
-include omnicore/test/$(DEPDIR)/test_test_omnicore-lock_tests.Po
-include omnicore/test/$(DEPDIR)/test_test_omnicore-marker_tests.Po
-include omnicore/test/$(DEPDIR)/test_test_omnicore-mbstring_tests.Po
-include omnicore/test/$(DEPDIR)/test_test_omnicore-obfuscation_tests.Po
-include omnicore/test/$(DEPDIR)/test_test_omnicore-output_restriction_tests.Po
-include omnicore/test/$(DEPDIR)/test_test_omnicore-params_tests.Po
-include omnicore/test/$(DEPDIR)/test_test_omnicore-parsing_a_tests.Po
-include omnicore/test/$(DEPDIR)/test_test_omnicore-parsing_b_tests.Po
-include omnicore/test/$(DEPDIR)/test_test_omnicore-parsing_c_tests.Po
-include omnicore/test/$(DEPDIR)/test_test_omnicore-rounduint64_tests.Po
-include omnicore/test/$(DEPDIR)/test_test_omnicore-rules_txs_tests.Po
-include omnicore/test/$(DEPDIR)/test_test_omnicore-script_dust_tests.Po
-include omnicore/test/$(DEPDIR)/test_test_omnicore-script_extraction_tests.Po
-include omnicore/test/$(DEPDIR)/test_test_omnicore-script_solver_tests.Po
-include omnicore/test/$(DEPDIR)/test_test_omnicore-sender_bycontribution_tests.Po
-include omnicore/test/$(DEPDIR)/test_test_omnicore-sender_firstin_tests.Po
-include omnicore/test/$(DEPDIR)/test_test_omnicore-strtoint64_tests.Po
-include omnicore/test/$(DEPDIR)/test_test_omnicore-swapbyteorder_tests.Po
-include omnicore/test/$(DEPDIR)/test_test_omnicore-tally_tests.Po
-include omnicore/test/$(DEPDIR)/test_test_omnicore-uint256_extensions_tests.Po
-include omnicore/test/$(DEPDIR)/test_test_omnicore-utils_tx.Po
-include omnicore/test/$(DEPDIR)/test_test_omnicore-version_tests.Po
 include policy/$(DEPDIR)/libbitcoin_common_a-feerate.Po
 include policy/$(DEPDIR)/libbitcoin_server_a-fees.Po
 include policy/$(DEPDIR)/libbitcoin_server_a-policy.Po
@@ -6735,6 +6708,85 @@ include test/fuzz/$(DEPDIR)/test_fuzz_txoutcompressor_deserialize-fuzz.Po
 include test/fuzz/$(DEPDIR)/test_fuzz_txundo_deserialize-deserialize.Po
 include test/fuzz/$(DEPDIR)/test_fuzz_txundo_deserialize-fuzz.Po
 include test/gen/$(DEPDIR)/test_test_omnicore-crypto_gen.Po
+include tradelayer/$(DEPDIR)/libbitcoin_server_a-activation.Po
+include tradelayer/$(DEPDIR)/libbitcoin_server_a-consensushash.Po
+include tradelayer/$(DEPDIR)/libbitcoin_server_a-convert.Po
+include tradelayer/$(DEPDIR)/libbitcoin_server_a-createpayload.Po
+include tradelayer/$(DEPDIR)/libbitcoin_server_a-createtx.Po
+include tradelayer/$(DEPDIR)/libbitcoin_server_a-dbbase.Po
+include tradelayer/$(DEPDIR)/libbitcoin_server_a-dbfees.Po
+include tradelayer/$(DEPDIR)/libbitcoin_server_a-dbspinfo.Po
+include tradelayer/$(DEPDIR)/libbitcoin_server_a-dbstolist.Po
+include tradelayer/$(DEPDIR)/libbitcoin_server_a-dbtradelist.Po
+include tradelayer/$(DEPDIR)/libbitcoin_server_a-dbtransaction.Po
+include tradelayer/$(DEPDIR)/libbitcoin_server_a-dbtxlist.Po
+include tradelayer/$(DEPDIR)/libbitcoin_server_a-dex.Po
+include tradelayer/$(DEPDIR)/libbitcoin_server_a-encoding.Po
+include tradelayer/$(DEPDIR)/libbitcoin_server_a-externfns.Po
+include tradelayer/$(DEPDIR)/libbitcoin_server_a-globals.Po
+include tradelayer/$(DEPDIR)/libbitcoin_server_a-log.Po
+include tradelayer/$(DEPDIR)/libbitcoin_server_a-mdex.Po
+include tradelayer/$(DEPDIR)/libbitcoin_server_a-notifications.Po
+include tradelayer/$(DEPDIR)/libbitcoin_server_a-operators_algo_clearing.Po
+include tradelayer/$(DEPDIR)/libbitcoin_server_a-parse_string.Po
+include tradelayer/$(DEPDIR)/libbitcoin_server_a-parsing.Po
+include tradelayer/$(DEPDIR)/libbitcoin_server_a-pending.Po
+include tradelayer/$(DEPDIR)/libbitcoin_server_a-persistence.Po
+include tradelayer/$(DEPDIR)/libbitcoin_server_a-rpc.Po
+include tradelayer/$(DEPDIR)/libbitcoin_server_a-rpcmbstring.Po
+include tradelayer/$(DEPDIR)/libbitcoin_server_a-rpcpayload.Po
+include tradelayer/$(DEPDIR)/libbitcoin_server_a-rpcrawtx.Po
+include tradelayer/$(DEPDIR)/libbitcoin_server_a-rpcrequirements.Po
+include tradelayer/$(DEPDIR)/libbitcoin_server_a-rpctx.Po
+include tradelayer/$(DEPDIR)/libbitcoin_server_a-rpctxobject.Po
+include tradelayer/$(DEPDIR)/libbitcoin_server_a-rpcvalues.Po
+include tradelayer/$(DEPDIR)/libbitcoin_server_a-rules.Po
+include tradelayer/$(DEPDIR)/libbitcoin_server_a-script.Po
+include tradelayer/$(DEPDIR)/libbitcoin_server_a-seedblocks.Po
+include tradelayer/$(DEPDIR)/libbitcoin_server_a-sp.Po
+include tradelayer/$(DEPDIR)/libbitcoin_server_a-sto.Po
+include tradelayer/$(DEPDIR)/libbitcoin_server_a-tally.Po
+include tradelayer/$(DEPDIR)/libbitcoin_server_a-tradelayer.Po
+include tradelayer/$(DEPDIR)/libbitcoin_server_a-tx.Po
+include tradelayer/$(DEPDIR)/libbitcoin_server_a-utilsbitcoin.Po
+include tradelayer/$(DEPDIR)/libbitcoin_server_a-utilsui.Po
+include tradelayer/$(DEPDIR)/libbitcoin_server_a-version.Po
+include tradelayer/$(DEPDIR)/libbitcoin_server_a-walletcache.Po
+include tradelayer/$(DEPDIR)/libbitcoin_server_a-walletfetchtxs.Po
+include tradelayer/$(DEPDIR)/libbitcoin_server_a-wallettxbuilder.Po
+include tradelayer/$(DEPDIR)/libbitcoin_server_a-walletutils.Po
+include tradelayer/test/$(DEPDIR)/test_test_omnicore-alert_tests.Po
+include tradelayer/test/$(DEPDIR)/test_test_omnicore-change_issuer_tests.Po
+include tradelayer/test/$(DEPDIR)/test_test_omnicore-checkpoint_tests.Po
+include tradelayer/test/$(DEPDIR)/test_test_omnicore-create_payload_tests.Po
+include tradelayer/test/$(DEPDIR)/test_test_omnicore-create_tx_tests.Po
+include tradelayer/test/$(DEPDIR)/test_test_omnicore-crowdsale_participation_tests.Po
+include tradelayer/test/$(DEPDIR)/test_test_omnicore-dex_purchase_tests.Po
+include tradelayer/test/$(DEPDIR)/test_test_omnicore-encoding_b_tests.Po
+include tradelayer/test/$(DEPDIR)/test_test_omnicore-encoding_c_tests.Po
+include tradelayer/test/$(DEPDIR)/test_test_omnicore-exodus_tests.Po
+include tradelayer/test/$(DEPDIR)/test_test_omnicore-lock_tests.Po
+include tradelayer/test/$(DEPDIR)/test_test_omnicore-marker_tests.Po
+include tradelayer/test/$(DEPDIR)/test_test_omnicore-mbstring_tests.Po
+include tradelayer/test/$(DEPDIR)/test_test_omnicore-obfuscation_tests.Po
+include tradelayer/test/$(DEPDIR)/test_test_omnicore-output_restriction_tests.Po
+include tradelayer/test/$(DEPDIR)/test_test_omnicore-params_tests.Po
+include tradelayer/test/$(DEPDIR)/test_test_omnicore-parsing_a_tests.Po
+include tradelayer/test/$(DEPDIR)/test_test_omnicore-parsing_b_tests.Po
+include tradelayer/test/$(DEPDIR)/test_test_omnicore-parsing_c_tests.Po
+include tradelayer/test/$(DEPDIR)/test_test_omnicore-rounduint64_tests.Po
+include tradelayer/test/$(DEPDIR)/test_test_omnicore-rules_txs_tests.Po
+include tradelayer/test/$(DEPDIR)/test_test_omnicore-script_dust_tests.Po
+include tradelayer/test/$(DEPDIR)/test_test_omnicore-script_extraction_tests.Po
+include tradelayer/test/$(DEPDIR)/test_test_omnicore-script_solver_tests.Po
+include tradelayer/test/$(DEPDIR)/test_test_omnicore-sender_bycontribution_tests.Po
+include tradelayer/test/$(DEPDIR)/test_test_omnicore-sender_firstin_tests.Po
+include tradelayer/test/$(DEPDIR)/test_test_omnicore-strtoint64_tests.Po
+include tradelayer/test/$(DEPDIR)/test_test_omnicore-swapbyteorder_tests.Po
+include tradelayer/test/$(DEPDIR)/test_test_omnicore-tally_tests.Po
+include tradelayer/test/$(DEPDIR)/test_test_omnicore-uint256_extensions_tests.Po
+include tradelayer/test/$(DEPDIR)/test_test_omnicore-utils_tx.Po
+include tradelayer/test/$(DEPDIR)/test_test_omnicore-version_tests.Po
 include util/$(DEPDIR)/libbitcoin_consensus_a-strencodings.Po
 include util/$(DEPDIR)/libbitcoin_util_a-bip32.Po
 include util/$(DEPDIR)/libbitcoin_util_a-bytevectorhash.Po
@@ -8741,663 +8793,663 @@ libbitcoin_server_a-dummywallet.obj: dummywallet.cpp
 #	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) \
 #	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_server_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_server_a_CXXFLAGS) $(CXXFLAGS) -c -o libbitcoin_server_a-dummywallet.obj `if test -f 'dummywallet.cpp'; then $(CYGPATH_W) 'dummywallet.cpp'; else $(CYGPATH_W) '$(srcdir)/dummywallet.cpp'; fi`
 
-omnicore/libbitcoin_server_a-activation.o: omnicore/activation.cpp
-	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_server_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_server_a_CXXFLAGS) $(CXXFLAGS) -MT omnicore/libbitcoin_server_a-activation.o -MD -MP -MF omnicore/$(DEPDIR)/libbitcoin_server_a-activation.Tpo -c -o omnicore/libbitcoin_server_a-activation.o `test -f 'omnicore/activation.cpp' || echo '$(srcdir)/'`omnicore/activation.cpp
-	$(AM_V_at)$(am__mv) omnicore/$(DEPDIR)/libbitcoin_server_a-activation.Tpo omnicore/$(DEPDIR)/libbitcoin_server_a-activation.Po
-#	$(AM_V_CXX)source='omnicore/activation.cpp' object='omnicore/libbitcoin_server_a-activation.o' libtool=no \
+tradelayer/libbitcoin_server_a-activation.o: tradelayer/activation.cpp
+	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_server_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_server_a_CXXFLAGS) $(CXXFLAGS) -MT tradelayer/libbitcoin_server_a-activation.o -MD -MP -MF tradelayer/$(DEPDIR)/libbitcoin_server_a-activation.Tpo -c -o tradelayer/libbitcoin_server_a-activation.o `test -f 'tradelayer/activation.cpp' || echo '$(srcdir)/'`tradelayer/activation.cpp
+	$(AM_V_at)$(am__mv) tradelayer/$(DEPDIR)/libbitcoin_server_a-activation.Tpo tradelayer/$(DEPDIR)/libbitcoin_server_a-activation.Po
+#	$(AM_V_CXX)source='tradelayer/activation.cpp' object='tradelayer/libbitcoin_server_a-activation.o' libtool=no \
 #	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) \
-#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_server_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_server_a_CXXFLAGS) $(CXXFLAGS) -c -o omnicore/libbitcoin_server_a-activation.o `test -f 'omnicore/activation.cpp' || echo '$(srcdir)/'`omnicore/activation.cpp
+#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_server_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_server_a_CXXFLAGS) $(CXXFLAGS) -c -o tradelayer/libbitcoin_server_a-activation.o `test -f 'tradelayer/activation.cpp' || echo '$(srcdir)/'`tradelayer/activation.cpp
 
-omnicore/libbitcoin_server_a-activation.obj: omnicore/activation.cpp
-	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_server_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_server_a_CXXFLAGS) $(CXXFLAGS) -MT omnicore/libbitcoin_server_a-activation.obj -MD -MP -MF omnicore/$(DEPDIR)/libbitcoin_server_a-activation.Tpo -c -o omnicore/libbitcoin_server_a-activation.obj `if test -f 'omnicore/activation.cpp'; then $(CYGPATH_W) 'omnicore/activation.cpp'; else $(CYGPATH_W) '$(srcdir)/omnicore/activation.cpp'; fi`
-	$(AM_V_at)$(am__mv) omnicore/$(DEPDIR)/libbitcoin_server_a-activation.Tpo omnicore/$(DEPDIR)/libbitcoin_server_a-activation.Po
-#	$(AM_V_CXX)source='omnicore/activation.cpp' object='omnicore/libbitcoin_server_a-activation.obj' libtool=no \
+tradelayer/libbitcoin_server_a-activation.obj: tradelayer/activation.cpp
+	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_server_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_server_a_CXXFLAGS) $(CXXFLAGS) -MT tradelayer/libbitcoin_server_a-activation.obj -MD -MP -MF tradelayer/$(DEPDIR)/libbitcoin_server_a-activation.Tpo -c -o tradelayer/libbitcoin_server_a-activation.obj `if test -f 'tradelayer/activation.cpp'; then $(CYGPATH_W) 'tradelayer/activation.cpp'; else $(CYGPATH_W) '$(srcdir)/tradelayer/activation.cpp'; fi`
+	$(AM_V_at)$(am__mv) tradelayer/$(DEPDIR)/libbitcoin_server_a-activation.Tpo tradelayer/$(DEPDIR)/libbitcoin_server_a-activation.Po
+#	$(AM_V_CXX)source='tradelayer/activation.cpp' object='tradelayer/libbitcoin_server_a-activation.obj' libtool=no \
 #	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) \
-#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_server_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_server_a_CXXFLAGS) $(CXXFLAGS) -c -o omnicore/libbitcoin_server_a-activation.obj `if test -f 'omnicore/activation.cpp'; then $(CYGPATH_W) 'omnicore/activation.cpp'; else $(CYGPATH_W) '$(srcdir)/omnicore/activation.cpp'; fi`
+#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_server_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_server_a_CXXFLAGS) $(CXXFLAGS) -c -o tradelayer/libbitcoin_server_a-activation.obj `if test -f 'tradelayer/activation.cpp'; then $(CYGPATH_W) 'tradelayer/activation.cpp'; else $(CYGPATH_W) '$(srcdir)/tradelayer/activation.cpp'; fi`
 
-omnicore/libbitcoin_server_a-consensushash.o: omnicore/consensushash.cpp
-	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_server_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_server_a_CXXFLAGS) $(CXXFLAGS) -MT omnicore/libbitcoin_server_a-consensushash.o -MD -MP -MF omnicore/$(DEPDIR)/libbitcoin_server_a-consensushash.Tpo -c -o omnicore/libbitcoin_server_a-consensushash.o `test -f 'omnicore/consensushash.cpp' || echo '$(srcdir)/'`omnicore/consensushash.cpp
-	$(AM_V_at)$(am__mv) omnicore/$(DEPDIR)/libbitcoin_server_a-consensushash.Tpo omnicore/$(DEPDIR)/libbitcoin_server_a-consensushash.Po
-#	$(AM_V_CXX)source='omnicore/consensushash.cpp' object='omnicore/libbitcoin_server_a-consensushash.o' libtool=no \
+tradelayer/libbitcoin_server_a-consensushash.o: tradelayer/consensushash.cpp
+	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_server_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_server_a_CXXFLAGS) $(CXXFLAGS) -MT tradelayer/libbitcoin_server_a-consensushash.o -MD -MP -MF tradelayer/$(DEPDIR)/libbitcoin_server_a-consensushash.Tpo -c -o tradelayer/libbitcoin_server_a-consensushash.o `test -f 'tradelayer/consensushash.cpp' || echo '$(srcdir)/'`tradelayer/consensushash.cpp
+	$(AM_V_at)$(am__mv) tradelayer/$(DEPDIR)/libbitcoin_server_a-consensushash.Tpo tradelayer/$(DEPDIR)/libbitcoin_server_a-consensushash.Po
+#	$(AM_V_CXX)source='tradelayer/consensushash.cpp' object='tradelayer/libbitcoin_server_a-consensushash.o' libtool=no \
 #	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) \
-#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_server_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_server_a_CXXFLAGS) $(CXXFLAGS) -c -o omnicore/libbitcoin_server_a-consensushash.o `test -f 'omnicore/consensushash.cpp' || echo '$(srcdir)/'`omnicore/consensushash.cpp
+#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_server_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_server_a_CXXFLAGS) $(CXXFLAGS) -c -o tradelayer/libbitcoin_server_a-consensushash.o `test -f 'tradelayer/consensushash.cpp' || echo '$(srcdir)/'`tradelayer/consensushash.cpp
 
-omnicore/libbitcoin_server_a-consensushash.obj: omnicore/consensushash.cpp
-	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_server_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_server_a_CXXFLAGS) $(CXXFLAGS) -MT omnicore/libbitcoin_server_a-consensushash.obj -MD -MP -MF omnicore/$(DEPDIR)/libbitcoin_server_a-consensushash.Tpo -c -o omnicore/libbitcoin_server_a-consensushash.obj `if test -f 'omnicore/consensushash.cpp'; then $(CYGPATH_W) 'omnicore/consensushash.cpp'; else $(CYGPATH_W) '$(srcdir)/omnicore/consensushash.cpp'; fi`
-	$(AM_V_at)$(am__mv) omnicore/$(DEPDIR)/libbitcoin_server_a-consensushash.Tpo omnicore/$(DEPDIR)/libbitcoin_server_a-consensushash.Po
-#	$(AM_V_CXX)source='omnicore/consensushash.cpp' object='omnicore/libbitcoin_server_a-consensushash.obj' libtool=no \
+tradelayer/libbitcoin_server_a-consensushash.obj: tradelayer/consensushash.cpp
+	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_server_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_server_a_CXXFLAGS) $(CXXFLAGS) -MT tradelayer/libbitcoin_server_a-consensushash.obj -MD -MP -MF tradelayer/$(DEPDIR)/libbitcoin_server_a-consensushash.Tpo -c -o tradelayer/libbitcoin_server_a-consensushash.obj `if test -f 'tradelayer/consensushash.cpp'; then $(CYGPATH_W) 'tradelayer/consensushash.cpp'; else $(CYGPATH_W) '$(srcdir)/tradelayer/consensushash.cpp'; fi`
+	$(AM_V_at)$(am__mv) tradelayer/$(DEPDIR)/libbitcoin_server_a-consensushash.Tpo tradelayer/$(DEPDIR)/libbitcoin_server_a-consensushash.Po
+#	$(AM_V_CXX)source='tradelayer/consensushash.cpp' object='tradelayer/libbitcoin_server_a-consensushash.obj' libtool=no \
 #	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) \
-#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_server_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_server_a_CXXFLAGS) $(CXXFLAGS) -c -o omnicore/libbitcoin_server_a-consensushash.obj `if test -f 'omnicore/consensushash.cpp'; then $(CYGPATH_W) 'omnicore/consensushash.cpp'; else $(CYGPATH_W) '$(srcdir)/omnicore/consensushash.cpp'; fi`
+#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_server_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_server_a_CXXFLAGS) $(CXXFLAGS) -c -o tradelayer/libbitcoin_server_a-consensushash.obj `if test -f 'tradelayer/consensushash.cpp'; then $(CYGPATH_W) 'tradelayer/consensushash.cpp'; else $(CYGPATH_W) '$(srcdir)/tradelayer/consensushash.cpp'; fi`
 
-omnicore/libbitcoin_server_a-convert.o: omnicore/convert.cpp
-	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_server_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_server_a_CXXFLAGS) $(CXXFLAGS) -MT omnicore/libbitcoin_server_a-convert.o -MD -MP -MF omnicore/$(DEPDIR)/libbitcoin_server_a-convert.Tpo -c -o omnicore/libbitcoin_server_a-convert.o `test -f 'omnicore/convert.cpp' || echo '$(srcdir)/'`omnicore/convert.cpp
-	$(AM_V_at)$(am__mv) omnicore/$(DEPDIR)/libbitcoin_server_a-convert.Tpo omnicore/$(DEPDIR)/libbitcoin_server_a-convert.Po
-#	$(AM_V_CXX)source='omnicore/convert.cpp' object='omnicore/libbitcoin_server_a-convert.o' libtool=no \
+tradelayer/libbitcoin_server_a-convert.o: tradelayer/convert.cpp
+	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_server_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_server_a_CXXFLAGS) $(CXXFLAGS) -MT tradelayer/libbitcoin_server_a-convert.o -MD -MP -MF tradelayer/$(DEPDIR)/libbitcoin_server_a-convert.Tpo -c -o tradelayer/libbitcoin_server_a-convert.o `test -f 'tradelayer/convert.cpp' || echo '$(srcdir)/'`tradelayer/convert.cpp
+	$(AM_V_at)$(am__mv) tradelayer/$(DEPDIR)/libbitcoin_server_a-convert.Tpo tradelayer/$(DEPDIR)/libbitcoin_server_a-convert.Po
+#	$(AM_V_CXX)source='tradelayer/convert.cpp' object='tradelayer/libbitcoin_server_a-convert.o' libtool=no \
 #	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) \
-#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_server_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_server_a_CXXFLAGS) $(CXXFLAGS) -c -o omnicore/libbitcoin_server_a-convert.o `test -f 'omnicore/convert.cpp' || echo '$(srcdir)/'`omnicore/convert.cpp
+#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_server_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_server_a_CXXFLAGS) $(CXXFLAGS) -c -o tradelayer/libbitcoin_server_a-convert.o `test -f 'tradelayer/convert.cpp' || echo '$(srcdir)/'`tradelayer/convert.cpp
 
-omnicore/libbitcoin_server_a-convert.obj: omnicore/convert.cpp
-	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_server_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_server_a_CXXFLAGS) $(CXXFLAGS) -MT omnicore/libbitcoin_server_a-convert.obj -MD -MP -MF omnicore/$(DEPDIR)/libbitcoin_server_a-convert.Tpo -c -o omnicore/libbitcoin_server_a-convert.obj `if test -f 'omnicore/convert.cpp'; then $(CYGPATH_W) 'omnicore/convert.cpp'; else $(CYGPATH_W) '$(srcdir)/omnicore/convert.cpp'; fi`
-	$(AM_V_at)$(am__mv) omnicore/$(DEPDIR)/libbitcoin_server_a-convert.Tpo omnicore/$(DEPDIR)/libbitcoin_server_a-convert.Po
-#	$(AM_V_CXX)source='omnicore/convert.cpp' object='omnicore/libbitcoin_server_a-convert.obj' libtool=no \
+tradelayer/libbitcoin_server_a-convert.obj: tradelayer/convert.cpp
+	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_server_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_server_a_CXXFLAGS) $(CXXFLAGS) -MT tradelayer/libbitcoin_server_a-convert.obj -MD -MP -MF tradelayer/$(DEPDIR)/libbitcoin_server_a-convert.Tpo -c -o tradelayer/libbitcoin_server_a-convert.obj `if test -f 'tradelayer/convert.cpp'; then $(CYGPATH_W) 'tradelayer/convert.cpp'; else $(CYGPATH_W) '$(srcdir)/tradelayer/convert.cpp'; fi`
+	$(AM_V_at)$(am__mv) tradelayer/$(DEPDIR)/libbitcoin_server_a-convert.Tpo tradelayer/$(DEPDIR)/libbitcoin_server_a-convert.Po
+#	$(AM_V_CXX)source='tradelayer/convert.cpp' object='tradelayer/libbitcoin_server_a-convert.obj' libtool=no \
 #	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) \
-#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_server_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_server_a_CXXFLAGS) $(CXXFLAGS) -c -o omnicore/libbitcoin_server_a-convert.obj `if test -f 'omnicore/convert.cpp'; then $(CYGPATH_W) 'omnicore/convert.cpp'; else $(CYGPATH_W) '$(srcdir)/omnicore/convert.cpp'; fi`
+#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_server_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_server_a_CXXFLAGS) $(CXXFLAGS) -c -o tradelayer/libbitcoin_server_a-convert.obj `if test -f 'tradelayer/convert.cpp'; then $(CYGPATH_W) 'tradelayer/convert.cpp'; else $(CYGPATH_W) '$(srcdir)/tradelayer/convert.cpp'; fi`
 
-omnicore/libbitcoin_server_a-createpayload.o: omnicore/createpayload.cpp
-	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_server_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_server_a_CXXFLAGS) $(CXXFLAGS) -MT omnicore/libbitcoin_server_a-createpayload.o -MD -MP -MF omnicore/$(DEPDIR)/libbitcoin_server_a-createpayload.Tpo -c -o omnicore/libbitcoin_server_a-createpayload.o `test -f 'omnicore/createpayload.cpp' || echo '$(srcdir)/'`omnicore/createpayload.cpp
-	$(AM_V_at)$(am__mv) omnicore/$(DEPDIR)/libbitcoin_server_a-createpayload.Tpo omnicore/$(DEPDIR)/libbitcoin_server_a-createpayload.Po
-#	$(AM_V_CXX)source='omnicore/createpayload.cpp' object='omnicore/libbitcoin_server_a-createpayload.o' libtool=no \
+tradelayer/libbitcoin_server_a-createpayload.o: tradelayer/createpayload.cpp
+	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_server_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_server_a_CXXFLAGS) $(CXXFLAGS) -MT tradelayer/libbitcoin_server_a-createpayload.o -MD -MP -MF tradelayer/$(DEPDIR)/libbitcoin_server_a-createpayload.Tpo -c -o tradelayer/libbitcoin_server_a-createpayload.o `test -f 'tradelayer/createpayload.cpp' || echo '$(srcdir)/'`tradelayer/createpayload.cpp
+	$(AM_V_at)$(am__mv) tradelayer/$(DEPDIR)/libbitcoin_server_a-createpayload.Tpo tradelayer/$(DEPDIR)/libbitcoin_server_a-createpayload.Po
+#	$(AM_V_CXX)source='tradelayer/createpayload.cpp' object='tradelayer/libbitcoin_server_a-createpayload.o' libtool=no \
 #	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) \
-#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_server_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_server_a_CXXFLAGS) $(CXXFLAGS) -c -o omnicore/libbitcoin_server_a-createpayload.o `test -f 'omnicore/createpayload.cpp' || echo '$(srcdir)/'`omnicore/createpayload.cpp
+#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_server_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_server_a_CXXFLAGS) $(CXXFLAGS) -c -o tradelayer/libbitcoin_server_a-createpayload.o `test -f 'tradelayer/createpayload.cpp' || echo '$(srcdir)/'`tradelayer/createpayload.cpp
 
-omnicore/libbitcoin_server_a-createpayload.obj: omnicore/createpayload.cpp
-	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_server_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_server_a_CXXFLAGS) $(CXXFLAGS) -MT omnicore/libbitcoin_server_a-createpayload.obj -MD -MP -MF omnicore/$(DEPDIR)/libbitcoin_server_a-createpayload.Tpo -c -o omnicore/libbitcoin_server_a-createpayload.obj `if test -f 'omnicore/createpayload.cpp'; then $(CYGPATH_W) 'omnicore/createpayload.cpp'; else $(CYGPATH_W) '$(srcdir)/omnicore/createpayload.cpp'; fi`
-	$(AM_V_at)$(am__mv) omnicore/$(DEPDIR)/libbitcoin_server_a-createpayload.Tpo omnicore/$(DEPDIR)/libbitcoin_server_a-createpayload.Po
-#	$(AM_V_CXX)source='omnicore/createpayload.cpp' object='omnicore/libbitcoin_server_a-createpayload.obj' libtool=no \
+tradelayer/libbitcoin_server_a-createpayload.obj: tradelayer/createpayload.cpp
+	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_server_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_server_a_CXXFLAGS) $(CXXFLAGS) -MT tradelayer/libbitcoin_server_a-createpayload.obj -MD -MP -MF tradelayer/$(DEPDIR)/libbitcoin_server_a-createpayload.Tpo -c -o tradelayer/libbitcoin_server_a-createpayload.obj `if test -f 'tradelayer/createpayload.cpp'; then $(CYGPATH_W) 'tradelayer/createpayload.cpp'; else $(CYGPATH_W) '$(srcdir)/tradelayer/createpayload.cpp'; fi`
+	$(AM_V_at)$(am__mv) tradelayer/$(DEPDIR)/libbitcoin_server_a-createpayload.Tpo tradelayer/$(DEPDIR)/libbitcoin_server_a-createpayload.Po
+#	$(AM_V_CXX)source='tradelayer/createpayload.cpp' object='tradelayer/libbitcoin_server_a-createpayload.obj' libtool=no \
 #	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) \
-#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_server_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_server_a_CXXFLAGS) $(CXXFLAGS) -c -o omnicore/libbitcoin_server_a-createpayload.obj `if test -f 'omnicore/createpayload.cpp'; then $(CYGPATH_W) 'omnicore/createpayload.cpp'; else $(CYGPATH_W) '$(srcdir)/omnicore/createpayload.cpp'; fi`
+#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_server_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_server_a_CXXFLAGS) $(CXXFLAGS) -c -o tradelayer/libbitcoin_server_a-createpayload.obj `if test -f 'tradelayer/createpayload.cpp'; then $(CYGPATH_W) 'tradelayer/createpayload.cpp'; else $(CYGPATH_W) '$(srcdir)/tradelayer/createpayload.cpp'; fi`
 
-omnicore/libbitcoin_server_a-createtx.o: omnicore/createtx.cpp
-	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_server_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_server_a_CXXFLAGS) $(CXXFLAGS) -MT omnicore/libbitcoin_server_a-createtx.o -MD -MP -MF omnicore/$(DEPDIR)/libbitcoin_server_a-createtx.Tpo -c -o omnicore/libbitcoin_server_a-createtx.o `test -f 'omnicore/createtx.cpp' || echo '$(srcdir)/'`omnicore/createtx.cpp
-	$(AM_V_at)$(am__mv) omnicore/$(DEPDIR)/libbitcoin_server_a-createtx.Tpo omnicore/$(DEPDIR)/libbitcoin_server_a-createtx.Po
-#	$(AM_V_CXX)source='omnicore/createtx.cpp' object='omnicore/libbitcoin_server_a-createtx.o' libtool=no \
+tradelayer/libbitcoin_server_a-createtx.o: tradelayer/createtx.cpp
+	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_server_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_server_a_CXXFLAGS) $(CXXFLAGS) -MT tradelayer/libbitcoin_server_a-createtx.o -MD -MP -MF tradelayer/$(DEPDIR)/libbitcoin_server_a-createtx.Tpo -c -o tradelayer/libbitcoin_server_a-createtx.o `test -f 'tradelayer/createtx.cpp' || echo '$(srcdir)/'`tradelayer/createtx.cpp
+	$(AM_V_at)$(am__mv) tradelayer/$(DEPDIR)/libbitcoin_server_a-createtx.Tpo tradelayer/$(DEPDIR)/libbitcoin_server_a-createtx.Po
+#	$(AM_V_CXX)source='tradelayer/createtx.cpp' object='tradelayer/libbitcoin_server_a-createtx.o' libtool=no \
 #	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) \
-#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_server_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_server_a_CXXFLAGS) $(CXXFLAGS) -c -o omnicore/libbitcoin_server_a-createtx.o `test -f 'omnicore/createtx.cpp' || echo '$(srcdir)/'`omnicore/createtx.cpp
+#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_server_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_server_a_CXXFLAGS) $(CXXFLAGS) -c -o tradelayer/libbitcoin_server_a-createtx.o `test -f 'tradelayer/createtx.cpp' || echo '$(srcdir)/'`tradelayer/createtx.cpp
 
-omnicore/libbitcoin_server_a-createtx.obj: omnicore/createtx.cpp
-	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_server_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_server_a_CXXFLAGS) $(CXXFLAGS) -MT omnicore/libbitcoin_server_a-createtx.obj -MD -MP -MF omnicore/$(DEPDIR)/libbitcoin_server_a-createtx.Tpo -c -o omnicore/libbitcoin_server_a-createtx.obj `if test -f 'omnicore/createtx.cpp'; then $(CYGPATH_W) 'omnicore/createtx.cpp'; else $(CYGPATH_W) '$(srcdir)/omnicore/createtx.cpp'; fi`
-	$(AM_V_at)$(am__mv) omnicore/$(DEPDIR)/libbitcoin_server_a-createtx.Tpo omnicore/$(DEPDIR)/libbitcoin_server_a-createtx.Po
-#	$(AM_V_CXX)source='omnicore/createtx.cpp' object='omnicore/libbitcoin_server_a-createtx.obj' libtool=no \
+tradelayer/libbitcoin_server_a-createtx.obj: tradelayer/createtx.cpp
+	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_server_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_server_a_CXXFLAGS) $(CXXFLAGS) -MT tradelayer/libbitcoin_server_a-createtx.obj -MD -MP -MF tradelayer/$(DEPDIR)/libbitcoin_server_a-createtx.Tpo -c -o tradelayer/libbitcoin_server_a-createtx.obj `if test -f 'tradelayer/createtx.cpp'; then $(CYGPATH_W) 'tradelayer/createtx.cpp'; else $(CYGPATH_W) '$(srcdir)/tradelayer/createtx.cpp'; fi`
+	$(AM_V_at)$(am__mv) tradelayer/$(DEPDIR)/libbitcoin_server_a-createtx.Tpo tradelayer/$(DEPDIR)/libbitcoin_server_a-createtx.Po
+#	$(AM_V_CXX)source='tradelayer/createtx.cpp' object='tradelayer/libbitcoin_server_a-createtx.obj' libtool=no \
 #	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) \
-#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_server_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_server_a_CXXFLAGS) $(CXXFLAGS) -c -o omnicore/libbitcoin_server_a-createtx.obj `if test -f 'omnicore/createtx.cpp'; then $(CYGPATH_W) 'omnicore/createtx.cpp'; else $(CYGPATH_W) '$(srcdir)/omnicore/createtx.cpp'; fi`
+#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_server_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_server_a_CXXFLAGS) $(CXXFLAGS) -c -o tradelayer/libbitcoin_server_a-createtx.obj `if test -f 'tradelayer/createtx.cpp'; then $(CYGPATH_W) 'tradelayer/createtx.cpp'; else $(CYGPATH_W) '$(srcdir)/tradelayer/createtx.cpp'; fi`
 
-omnicore/libbitcoin_server_a-dbbase.o: omnicore/dbbase.cpp
-	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_server_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_server_a_CXXFLAGS) $(CXXFLAGS) -MT omnicore/libbitcoin_server_a-dbbase.o -MD -MP -MF omnicore/$(DEPDIR)/libbitcoin_server_a-dbbase.Tpo -c -o omnicore/libbitcoin_server_a-dbbase.o `test -f 'omnicore/dbbase.cpp' || echo '$(srcdir)/'`omnicore/dbbase.cpp
-	$(AM_V_at)$(am__mv) omnicore/$(DEPDIR)/libbitcoin_server_a-dbbase.Tpo omnicore/$(DEPDIR)/libbitcoin_server_a-dbbase.Po
-#	$(AM_V_CXX)source='omnicore/dbbase.cpp' object='omnicore/libbitcoin_server_a-dbbase.o' libtool=no \
+tradelayer/libbitcoin_server_a-dbbase.o: tradelayer/dbbase.cpp
+	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_server_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_server_a_CXXFLAGS) $(CXXFLAGS) -MT tradelayer/libbitcoin_server_a-dbbase.o -MD -MP -MF tradelayer/$(DEPDIR)/libbitcoin_server_a-dbbase.Tpo -c -o tradelayer/libbitcoin_server_a-dbbase.o `test -f 'tradelayer/dbbase.cpp' || echo '$(srcdir)/'`tradelayer/dbbase.cpp
+	$(AM_V_at)$(am__mv) tradelayer/$(DEPDIR)/libbitcoin_server_a-dbbase.Tpo tradelayer/$(DEPDIR)/libbitcoin_server_a-dbbase.Po
+#	$(AM_V_CXX)source='tradelayer/dbbase.cpp' object='tradelayer/libbitcoin_server_a-dbbase.o' libtool=no \
 #	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) \
-#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_server_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_server_a_CXXFLAGS) $(CXXFLAGS) -c -o omnicore/libbitcoin_server_a-dbbase.o `test -f 'omnicore/dbbase.cpp' || echo '$(srcdir)/'`omnicore/dbbase.cpp
+#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_server_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_server_a_CXXFLAGS) $(CXXFLAGS) -c -o tradelayer/libbitcoin_server_a-dbbase.o `test -f 'tradelayer/dbbase.cpp' || echo '$(srcdir)/'`tradelayer/dbbase.cpp
 
-omnicore/libbitcoin_server_a-dbbase.obj: omnicore/dbbase.cpp
-	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_server_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_server_a_CXXFLAGS) $(CXXFLAGS) -MT omnicore/libbitcoin_server_a-dbbase.obj -MD -MP -MF omnicore/$(DEPDIR)/libbitcoin_server_a-dbbase.Tpo -c -o omnicore/libbitcoin_server_a-dbbase.obj `if test -f 'omnicore/dbbase.cpp'; then $(CYGPATH_W) 'omnicore/dbbase.cpp'; else $(CYGPATH_W) '$(srcdir)/omnicore/dbbase.cpp'; fi`
-	$(AM_V_at)$(am__mv) omnicore/$(DEPDIR)/libbitcoin_server_a-dbbase.Tpo omnicore/$(DEPDIR)/libbitcoin_server_a-dbbase.Po
-#	$(AM_V_CXX)source='omnicore/dbbase.cpp' object='omnicore/libbitcoin_server_a-dbbase.obj' libtool=no \
+tradelayer/libbitcoin_server_a-dbbase.obj: tradelayer/dbbase.cpp
+	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_server_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_server_a_CXXFLAGS) $(CXXFLAGS) -MT tradelayer/libbitcoin_server_a-dbbase.obj -MD -MP -MF tradelayer/$(DEPDIR)/libbitcoin_server_a-dbbase.Tpo -c -o tradelayer/libbitcoin_server_a-dbbase.obj `if test -f 'tradelayer/dbbase.cpp'; then $(CYGPATH_W) 'tradelayer/dbbase.cpp'; else $(CYGPATH_W) '$(srcdir)/tradelayer/dbbase.cpp'; fi`
+	$(AM_V_at)$(am__mv) tradelayer/$(DEPDIR)/libbitcoin_server_a-dbbase.Tpo tradelayer/$(DEPDIR)/libbitcoin_server_a-dbbase.Po
+#	$(AM_V_CXX)source='tradelayer/dbbase.cpp' object='tradelayer/libbitcoin_server_a-dbbase.obj' libtool=no \
 #	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) \
-#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_server_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_server_a_CXXFLAGS) $(CXXFLAGS) -c -o omnicore/libbitcoin_server_a-dbbase.obj `if test -f 'omnicore/dbbase.cpp'; then $(CYGPATH_W) 'omnicore/dbbase.cpp'; else $(CYGPATH_W) '$(srcdir)/omnicore/dbbase.cpp'; fi`
+#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_server_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_server_a_CXXFLAGS) $(CXXFLAGS) -c -o tradelayer/libbitcoin_server_a-dbbase.obj `if test -f 'tradelayer/dbbase.cpp'; then $(CYGPATH_W) 'tradelayer/dbbase.cpp'; else $(CYGPATH_W) '$(srcdir)/tradelayer/dbbase.cpp'; fi`
 
-omnicore/libbitcoin_server_a-dbfees.o: omnicore/dbfees.cpp
-	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_server_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_server_a_CXXFLAGS) $(CXXFLAGS) -MT omnicore/libbitcoin_server_a-dbfees.o -MD -MP -MF omnicore/$(DEPDIR)/libbitcoin_server_a-dbfees.Tpo -c -o omnicore/libbitcoin_server_a-dbfees.o `test -f 'omnicore/dbfees.cpp' || echo '$(srcdir)/'`omnicore/dbfees.cpp
-	$(AM_V_at)$(am__mv) omnicore/$(DEPDIR)/libbitcoin_server_a-dbfees.Tpo omnicore/$(DEPDIR)/libbitcoin_server_a-dbfees.Po
-#	$(AM_V_CXX)source='omnicore/dbfees.cpp' object='omnicore/libbitcoin_server_a-dbfees.o' libtool=no \
+tradelayer/libbitcoin_server_a-dbfees.o: tradelayer/dbfees.cpp
+	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_server_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_server_a_CXXFLAGS) $(CXXFLAGS) -MT tradelayer/libbitcoin_server_a-dbfees.o -MD -MP -MF tradelayer/$(DEPDIR)/libbitcoin_server_a-dbfees.Tpo -c -o tradelayer/libbitcoin_server_a-dbfees.o `test -f 'tradelayer/dbfees.cpp' || echo '$(srcdir)/'`tradelayer/dbfees.cpp
+	$(AM_V_at)$(am__mv) tradelayer/$(DEPDIR)/libbitcoin_server_a-dbfees.Tpo tradelayer/$(DEPDIR)/libbitcoin_server_a-dbfees.Po
+#	$(AM_V_CXX)source='tradelayer/dbfees.cpp' object='tradelayer/libbitcoin_server_a-dbfees.o' libtool=no \
 #	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) \
-#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_server_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_server_a_CXXFLAGS) $(CXXFLAGS) -c -o omnicore/libbitcoin_server_a-dbfees.o `test -f 'omnicore/dbfees.cpp' || echo '$(srcdir)/'`omnicore/dbfees.cpp
+#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_server_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_server_a_CXXFLAGS) $(CXXFLAGS) -c -o tradelayer/libbitcoin_server_a-dbfees.o `test -f 'tradelayer/dbfees.cpp' || echo '$(srcdir)/'`tradelayer/dbfees.cpp
 
-omnicore/libbitcoin_server_a-dbfees.obj: omnicore/dbfees.cpp
-	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_server_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_server_a_CXXFLAGS) $(CXXFLAGS) -MT omnicore/libbitcoin_server_a-dbfees.obj -MD -MP -MF omnicore/$(DEPDIR)/libbitcoin_server_a-dbfees.Tpo -c -o omnicore/libbitcoin_server_a-dbfees.obj `if test -f 'omnicore/dbfees.cpp'; then $(CYGPATH_W) 'omnicore/dbfees.cpp'; else $(CYGPATH_W) '$(srcdir)/omnicore/dbfees.cpp'; fi`
-	$(AM_V_at)$(am__mv) omnicore/$(DEPDIR)/libbitcoin_server_a-dbfees.Tpo omnicore/$(DEPDIR)/libbitcoin_server_a-dbfees.Po
-#	$(AM_V_CXX)source='omnicore/dbfees.cpp' object='omnicore/libbitcoin_server_a-dbfees.obj' libtool=no \
+tradelayer/libbitcoin_server_a-dbfees.obj: tradelayer/dbfees.cpp
+	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_server_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_server_a_CXXFLAGS) $(CXXFLAGS) -MT tradelayer/libbitcoin_server_a-dbfees.obj -MD -MP -MF tradelayer/$(DEPDIR)/libbitcoin_server_a-dbfees.Tpo -c -o tradelayer/libbitcoin_server_a-dbfees.obj `if test -f 'tradelayer/dbfees.cpp'; then $(CYGPATH_W) 'tradelayer/dbfees.cpp'; else $(CYGPATH_W) '$(srcdir)/tradelayer/dbfees.cpp'; fi`
+	$(AM_V_at)$(am__mv) tradelayer/$(DEPDIR)/libbitcoin_server_a-dbfees.Tpo tradelayer/$(DEPDIR)/libbitcoin_server_a-dbfees.Po
+#	$(AM_V_CXX)source='tradelayer/dbfees.cpp' object='tradelayer/libbitcoin_server_a-dbfees.obj' libtool=no \
 #	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) \
-#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_server_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_server_a_CXXFLAGS) $(CXXFLAGS) -c -o omnicore/libbitcoin_server_a-dbfees.obj `if test -f 'omnicore/dbfees.cpp'; then $(CYGPATH_W) 'omnicore/dbfees.cpp'; else $(CYGPATH_W) '$(srcdir)/omnicore/dbfees.cpp'; fi`
+#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_server_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_server_a_CXXFLAGS) $(CXXFLAGS) -c -o tradelayer/libbitcoin_server_a-dbfees.obj `if test -f 'tradelayer/dbfees.cpp'; then $(CYGPATH_W) 'tradelayer/dbfees.cpp'; else $(CYGPATH_W) '$(srcdir)/tradelayer/dbfees.cpp'; fi`
 
-omnicore/libbitcoin_server_a-dbspinfo.o: omnicore/dbspinfo.cpp
-	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_server_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_server_a_CXXFLAGS) $(CXXFLAGS) -MT omnicore/libbitcoin_server_a-dbspinfo.o -MD -MP -MF omnicore/$(DEPDIR)/libbitcoin_server_a-dbspinfo.Tpo -c -o omnicore/libbitcoin_server_a-dbspinfo.o `test -f 'omnicore/dbspinfo.cpp' || echo '$(srcdir)/'`omnicore/dbspinfo.cpp
-	$(AM_V_at)$(am__mv) omnicore/$(DEPDIR)/libbitcoin_server_a-dbspinfo.Tpo omnicore/$(DEPDIR)/libbitcoin_server_a-dbspinfo.Po
-#	$(AM_V_CXX)source='omnicore/dbspinfo.cpp' object='omnicore/libbitcoin_server_a-dbspinfo.o' libtool=no \
+tradelayer/libbitcoin_server_a-dbspinfo.o: tradelayer/dbspinfo.cpp
+	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_server_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_server_a_CXXFLAGS) $(CXXFLAGS) -MT tradelayer/libbitcoin_server_a-dbspinfo.o -MD -MP -MF tradelayer/$(DEPDIR)/libbitcoin_server_a-dbspinfo.Tpo -c -o tradelayer/libbitcoin_server_a-dbspinfo.o `test -f 'tradelayer/dbspinfo.cpp' || echo '$(srcdir)/'`tradelayer/dbspinfo.cpp
+	$(AM_V_at)$(am__mv) tradelayer/$(DEPDIR)/libbitcoin_server_a-dbspinfo.Tpo tradelayer/$(DEPDIR)/libbitcoin_server_a-dbspinfo.Po
+#	$(AM_V_CXX)source='tradelayer/dbspinfo.cpp' object='tradelayer/libbitcoin_server_a-dbspinfo.o' libtool=no \
 #	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) \
-#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_server_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_server_a_CXXFLAGS) $(CXXFLAGS) -c -o omnicore/libbitcoin_server_a-dbspinfo.o `test -f 'omnicore/dbspinfo.cpp' || echo '$(srcdir)/'`omnicore/dbspinfo.cpp
+#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_server_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_server_a_CXXFLAGS) $(CXXFLAGS) -c -o tradelayer/libbitcoin_server_a-dbspinfo.o `test -f 'tradelayer/dbspinfo.cpp' || echo '$(srcdir)/'`tradelayer/dbspinfo.cpp
 
-omnicore/libbitcoin_server_a-dbspinfo.obj: omnicore/dbspinfo.cpp
-	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_server_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_server_a_CXXFLAGS) $(CXXFLAGS) -MT omnicore/libbitcoin_server_a-dbspinfo.obj -MD -MP -MF omnicore/$(DEPDIR)/libbitcoin_server_a-dbspinfo.Tpo -c -o omnicore/libbitcoin_server_a-dbspinfo.obj `if test -f 'omnicore/dbspinfo.cpp'; then $(CYGPATH_W) 'omnicore/dbspinfo.cpp'; else $(CYGPATH_W) '$(srcdir)/omnicore/dbspinfo.cpp'; fi`
-	$(AM_V_at)$(am__mv) omnicore/$(DEPDIR)/libbitcoin_server_a-dbspinfo.Tpo omnicore/$(DEPDIR)/libbitcoin_server_a-dbspinfo.Po
-#	$(AM_V_CXX)source='omnicore/dbspinfo.cpp' object='omnicore/libbitcoin_server_a-dbspinfo.obj' libtool=no \
+tradelayer/libbitcoin_server_a-dbspinfo.obj: tradelayer/dbspinfo.cpp
+	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_server_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_server_a_CXXFLAGS) $(CXXFLAGS) -MT tradelayer/libbitcoin_server_a-dbspinfo.obj -MD -MP -MF tradelayer/$(DEPDIR)/libbitcoin_server_a-dbspinfo.Tpo -c -o tradelayer/libbitcoin_server_a-dbspinfo.obj `if test -f 'tradelayer/dbspinfo.cpp'; then $(CYGPATH_W) 'tradelayer/dbspinfo.cpp'; else $(CYGPATH_W) '$(srcdir)/tradelayer/dbspinfo.cpp'; fi`
+	$(AM_V_at)$(am__mv) tradelayer/$(DEPDIR)/libbitcoin_server_a-dbspinfo.Tpo tradelayer/$(DEPDIR)/libbitcoin_server_a-dbspinfo.Po
+#	$(AM_V_CXX)source='tradelayer/dbspinfo.cpp' object='tradelayer/libbitcoin_server_a-dbspinfo.obj' libtool=no \
 #	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) \
-#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_server_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_server_a_CXXFLAGS) $(CXXFLAGS) -c -o omnicore/libbitcoin_server_a-dbspinfo.obj `if test -f 'omnicore/dbspinfo.cpp'; then $(CYGPATH_W) 'omnicore/dbspinfo.cpp'; else $(CYGPATH_W) '$(srcdir)/omnicore/dbspinfo.cpp'; fi`
+#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_server_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_server_a_CXXFLAGS) $(CXXFLAGS) -c -o tradelayer/libbitcoin_server_a-dbspinfo.obj `if test -f 'tradelayer/dbspinfo.cpp'; then $(CYGPATH_W) 'tradelayer/dbspinfo.cpp'; else $(CYGPATH_W) '$(srcdir)/tradelayer/dbspinfo.cpp'; fi`
 
-omnicore/libbitcoin_server_a-dbstolist.o: omnicore/dbstolist.cpp
-	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_server_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_server_a_CXXFLAGS) $(CXXFLAGS) -MT omnicore/libbitcoin_server_a-dbstolist.o -MD -MP -MF omnicore/$(DEPDIR)/libbitcoin_server_a-dbstolist.Tpo -c -o omnicore/libbitcoin_server_a-dbstolist.o `test -f 'omnicore/dbstolist.cpp' || echo '$(srcdir)/'`omnicore/dbstolist.cpp
-	$(AM_V_at)$(am__mv) omnicore/$(DEPDIR)/libbitcoin_server_a-dbstolist.Tpo omnicore/$(DEPDIR)/libbitcoin_server_a-dbstolist.Po
-#	$(AM_V_CXX)source='omnicore/dbstolist.cpp' object='omnicore/libbitcoin_server_a-dbstolist.o' libtool=no \
+tradelayer/libbitcoin_server_a-dbstolist.o: tradelayer/dbstolist.cpp
+	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_server_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_server_a_CXXFLAGS) $(CXXFLAGS) -MT tradelayer/libbitcoin_server_a-dbstolist.o -MD -MP -MF tradelayer/$(DEPDIR)/libbitcoin_server_a-dbstolist.Tpo -c -o tradelayer/libbitcoin_server_a-dbstolist.o `test -f 'tradelayer/dbstolist.cpp' || echo '$(srcdir)/'`tradelayer/dbstolist.cpp
+	$(AM_V_at)$(am__mv) tradelayer/$(DEPDIR)/libbitcoin_server_a-dbstolist.Tpo tradelayer/$(DEPDIR)/libbitcoin_server_a-dbstolist.Po
+#	$(AM_V_CXX)source='tradelayer/dbstolist.cpp' object='tradelayer/libbitcoin_server_a-dbstolist.o' libtool=no \
 #	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) \
-#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_server_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_server_a_CXXFLAGS) $(CXXFLAGS) -c -o omnicore/libbitcoin_server_a-dbstolist.o `test -f 'omnicore/dbstolist.cpp' || echo '$(srcdir)/'`omnicore/dbstolist.cpp
+#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_server_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_server_a_CXXFLAGS) $(CXXFLAGS) -c -o tradelayer/libbitcoin_server_a-dbstolist.o `test -f 'tradelayer/dbstolist.cpp' || echo '$(srcdir)/'`tradelayer/dbstolist.cpp
 
-omnicore/libbitcoin_server_a-dbstolist.obj: omnicore/dbstolist.cpp
-	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_server_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_server_a_CXXFLAGS) $(CXXFLAGS) -MT omnicore/libbitcoin_server_a-dbstolist.obj -MD -MP -MF omnicore/$(DEPDIR)/libbitcoin_server_a-dbstolist.Tpo -c -o omnicore/libbitcoin_server_a-dbstolist.obj `if test -f 'omnicore/dbstolist.cpp'; then $(CYGPATH_W) 'omnicore/dbstolist.cpp'; else $(CYGPATH_W) '$(srcdir)/omnicore/dbstolist.cpp'; fi`
-	$(AM_V_at)$(am__mv) omnicore/$(DEPDIR)/libbitcoin_server_a-dbstolist.Tpo omnicore/$(DEPDIR)/libbitcoin_server_a-dbstolist.Po
-#	$(AM_V_CXX)source='omnicore/dbstolist.cpp' object='omnicore/libbitcoin_server_a-dbstolist.obj' libtool=no \
+tradelayer/libbitcoin_server_a-dbstolist.obj: tradelayer/dbstolist.cpp
+	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_server_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_server_a_CXXFLAGS) $(CXXFLAGS) -MT tradelayer/libbitcoin_server_a-dbstolist.obj -MD -MP -MF tradelayer/$(DEPDIR)/libbitcoin_server_a-dbstolist.Tpo -c -o tradelayer/libbitcoin_server_a-dbstolist.obj `if test -f 'tradelayer/dbstolist.cpp'; then $(CYGPATH_W) 'tradelayer/dbstolist.cpp'; else $(CYGPATH_W) '$(srcdir)/tradelayer/dbstolist.cpp'; fi`
+	$(AM_V_at)$(am__mv) tradelayer/$(DEPDIR)/libbitcoin_server_a-dbstolist.Tpo tradelayer/$(DEPDIR)/libbitcoin_server_a-dbstolist.Po
+#	$(AM_V_CXX)source='tradelayer/dbstolist.cpp' object='tradelayer/libbitcoin_server_a-dbstolist.obj' libtool=no \
 #	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) \
-#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_server_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_server_a_CXXFLAGS) $(CXXFLAGS) -c -o omnicore/libbitcoin_server_a-dbstolist.obj `if test -f 'omnicore/dbstolist.cpp'; then $(CYGPATH_W) 'omnicore/dbstolist.cpp'; else $(CYGPATH_W) '$(srcdir)/omnicore/dbstolist.cpp'; fi`
+#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_server_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_server_a_CXXFLAGS) $(CXXFLAGS) -c -o tradelayer/libbitcoin_server_a-dbstolist.obj `if test -f 'tradelayer/dbstolist.cpp'; then $(CYGPATH_W) 'tradelayer/dbstolist.cpp'; else $(CYGPATH_W) '$(srcdir)/tradelayer/dbstolist.cpp'; fi`
 
-omnicore/libbitcoin_server_a-dbtradelist.o: omnicore/dbtradelist.cpp
-	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_server_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_server_a_CXXFLAGS) $(CXXFLAGS) -MT omnicore/libbitcoin_server_a-dbtradelist.o -MD -MP -MF omnicore/$(DEPDIR)/libbitcoin_server_a-dbtradelist.Tpo -c -o omnicore/libbitcoin_server_a-dbtradelist.o `test -f 'omnicore/dbtradelist.cpp' || echo '$(srcdir)/'`omnicore/dbtradelist.cpp
-	$(AM_V_at)$(am__mv) omnicore/$(DEPDIR)/libbitcoin_server_a-dbtradelist.Tpo omnicore/$(DEPDIR)/libbitcoin_server_a-dbtradelist.Po
-#	$(AM_V_CXX)source='omnicore/dbtradelist.cpp' object='omnicore/libbitcoin_server_a-dbtradelist.o' libtool=no \
+tradelayer/libbitcoin_server_a-dbtradelist.o: tradelayer/dbtradelist.cpp
+	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_server_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_server_a_CXXFLAGS) $(CXXFLAGS) -MT tradelayer/libbitcoin_server_a-dbtradelist.o -MD -MP -MF tradelayer/$(DEPDIR)/libbitcoin_server_a-dbtradelist.Tpo -c -o tradelayer/libbitcoin_server_a-dbtradelist.o `test -f 'tradelayer/dbtradelist.cpp' || echo '$(srcdir)/'`tradelayer/dbtradelist.cpp
+	$(AM_V_at)$(am__mv) tradelayer/$(DEPDIR)/libbitcoin_server_a-dbtradelist.Tpo tradelayer/$(DEPDIR)/libbitcoin_server_a-dbtradelist.Po
+#	$(AM_V_CXX)source='tradelayer/dbtradelist.cpp' object='tradelayer/libbitcoin_server_a-dbtradelist.o' libtool=no \
 #	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) \
-#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_server_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_server_a_CXXFLAGS) $(CXXFLAGS) -c -o omnicore/libbitcoin_server_a-dbtradelist.o `test -f 'omnicore/dbtradelist.cpp' || echo '$(srcdir)/'`omnicore/dbtradelist.cpp
+#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_server_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_server_a_CXXFLAGS) $(CXXFLAGS) -c -o tradelayer/libbitcoin_server_a-dbtradelist.o `test -f 'tradelayer/dbtradelist.cpp' || echo '$(srcdir)/'`tradelayer/dbtradelist.cpp
 
-omnicore/libbitcoin_server_a-dbtradelist.obj: omnicore/dbtradelist.cpp
-	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_server_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_server_a_CXXFLAGS) $(CXXFLAGS) -MT omnicore/libbitcoin_server_a-dbtradelist.obj -MD -MP -MF omnicore/$(DEPDIR)/libbitcoin_server_a-dbtradelist.Tpo -c -o omnicore/libbitcoin_server_a-dbtradelist.obj `if test -f 'omnicore/dbtradelist.cpp'; then $(CYGPATH_W) 'omnicore/dbtradelist.cpp'; else $(CYGPATH_W) '$(srcdir)/omnicore/dbtradelist.cpp'; fi`
-	$(AM_V_at)$(am__mv) omnicore/$(DEPDIR)/libbitcoin_server_a-dbtradelist.Tpo omnicore/$(DEPDIR)/libbitcoin_server_a-dbtradelist.Po
-#	$(AM_V_CXX)source='omnicore/dbtradelist.cpp' object='omnicore/libbitcoin_server_a-dbtradelist.obj' libtool=no \
+tradelayer/libbitcoin_server_a-dbtradelist.obj: tradelayer/dbtradelist.cpp
+	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_server_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_server_a_CXXFLAGS) $(CXXFLAGS) -MT tradelayer/libbitcoin_server_a-dbtradelist.obj -MD -MP -MF tradelayer/$(DEPDIR)/libbitcoin_server_a-dbtradelist.Tpo -c -o tradelayer/libbitcoin_server_a-dbtradelist.obj `if test -f 'tradelayer/dbtradelist.cpp'; then $(CYGPATH_W) 'tradelayer/dbtradelist.cpp'; else $(CYGPATH_W) '$(srcdir)/tradelayer/dbtradelist.cpp'; fi`
+	$(AM_V_at)$(am__mv) tradelayer/$(DEPDIR)/libbitcoin_server_a-dbtradelist.Tpo tradelayer/$(DEPDIR)/libbitcoin_server_a-dbtradelist.Po
+#	$(AM_V_CXX)source='tradelayer/dbtradelist.cpp' object='tradelayer/libbitcoin_server_a-dbtradelist.obj' libtool=no \
 #	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) \
-#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_server_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_server_a_CXXFLAGS) $(CXXFLAGS) -c -o omnicore/libbitcoin_server_a-dbtradelist.obj `if test -f 'omnicore/dbtradelist.cpp'; then $(CYGPATH_W) 'omnicore/dbtradelist.cpp'; else $(CYGPATH_W) '$(srcdir)/omnicore/dbtradelist.cpp'; fi`
+#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_server_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_server_a_CXXFLAGS) $(CXXFLAGS) -c -o tradelayer/libbitcoin_server_a-dbtradelist.obj `if test -f 'tradelayer/dbtradelist.cpp'; then $(CYGPATH_W) 'tradelayer/dbtradelist.cpp'; else $(CYGPATH_W) '$(srcdir)/tradelayer/dbtradelist.cpp'; fi`
 
-omnicore/libbitcoin_server_a-dbtransaction.o: omnicore/dbtransaction.cpp
-	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_server_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_server_a_CXXFLAGS) $(CXXFLAGS) -MT omnicore/libbitcoin_server_a-dbtransaction.o -MD -MP -MF omnicore/$(DEPDIR)/libbitcoin_server_a-dbtransaction.Tpo -c -o omnicore/libbitcoin_server_a-dbtransaction.o `test -f 'omnicore/dbtransaction.cpp' || echo '$(srcdir)/'`omnicore/dbtransaction.cpp
-	$(AM_V_at)$(am__mv) omnicore/$(DEPDIR)/libbitcoin_server_a-dbtransaction.Tpo omnicore/$(DEPDIR)/libbitcoin_server_a-dbtransaction.Po
-#	$(AM_V_CXX)source='omnicore/dbtransaction.cpp' object='omnicore/libbitcoin_server_a-dbtransaction.o' libtool=no \
+tradelayer/libbitcoin_server_a-dbtransaction.o: tradelayer/dbtransaction.cpp
+	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_server_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_server_a_CXXFLAGS) $(CXXFLAGS) -MT tradelayer/libbitcoin_server_a-dbtransaction.o -MD -MP -MF tradelayer/$(DEPDIR)/libbitcoin_server_a-dbtransaction.Tpo -c -o tradelayer/libbitcoin_server_a-dbtransaction.o `test -f 'tradelayer/dbtransaction.cpp' || echo '$(srcdir)/'`tradelayer/dbtransaction.cpp
+	$(AM_V_at)$(am__mv) tradelayer/$(DEPDIR)/libbitcoin_server_a-dbtransaction.Tpo tradelayer/$(DEPDIR)/libbitcoin_server_a-dbtransaction.Po
+#	$(AM_V_CXX)source='tradelayer/dbtransaction.cpp' object='tradelayer/libbitcoin_server_a-dbtransaction.o' libtool=no \
 #	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) \
-#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_server_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_server_a_CXXFLAGS) $(CXXFLAGS) -c -o omnicore/libbitcoin_server_a-dbtransaction.o `test -f 'omnicore/dbtransaction.cpp' || echo '$(srcdir)/'`omnicore/dbtransaction.cpp
+#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_server_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_server_a_CXXFLAGS) $(CXXFLAGS) -c -o tradelayer/libbitcoin_server_a-dbtransaction.o `test -f 'tradelayer/dbtransaction.cpp' || echo '$(srcdir)/'`tradelayer/dbtransaction.cpp
 
-omnicore/libbitcoin_server_a-dbtransaction.obj: omnicore/dbtransaction.cpp
-	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_server_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_server_a_CXXFLAGS) $(CXXFLAGS) -MT omnicore/libbitcoin_server_a-dbtransaction.obj -MD -MP -MF omnicore/$(DEPDIR)/libbitcoin_server_a-dbtransaction.Tpo -c -o omnicore/libbitcoin_server_a-dbtransaction.obj `if test -f 'omnicore/dbtransaction.cpp'; then $(CYGPATH_W) 'omnicore/dbtransaction.cpp'; else $(CYGPATH_W) '$(srcdir)/omnicore/dbtransaction.cpp'; fi`
-	$(AM_V_at)$(am__mv) omnicore/$(DEPDIR)/libbitcoin_server_a-dbtransaction.Tpo omnicore/$(DEPDIR)/libbitcoin_server_a-dbtransaction.Po
-#	$(AM_V_CXX)source='omnicore/dbtransaction.cpp' object='omnicore/libbitcoin_server_a-dbtransaction.obj' libtool=no \
+tradelayer/libbitcoin_server_a-dbtransaction.obj: tradelayer/dbtransaction.cpp
+	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_server_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_server_a_CXXFLAGS) $(CXXFLAGS) -MT tradelayer/libbitcoin_server_a-dbtransaction.obj -MD -MP -MF tradelayer/$(DEPDIR)/libbitcoin_server_a-dbtransaction.Tpo -c -o tradelayer/libbitcoin_server_a-dbtransaction.obj `if test -f 'tradelayer/dbtransaction.cpp'; then $(CYGPATH_W) 'tradelayer/dbtransaction.cpp'; else $(CYGPATH_W) '$(srcdir)/tradelayer/dbtransaction.cpp'; fi`
+	$(AM_V_at)$(am__mv) tradelayer/$(DEPDIR)/libbitcoin_server_a-dbtransaction.Tpo tradelayer/$(DEPDIR)/libbitcoin_server_a-dbtransaction.Po
+#	$(AM_V_CXX)source='tradelayer/dbtransaction.cpp' object='tradelayer/libbitcoin_server_a-dbtransaction.obj' libtool=no \
 #	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) \
-#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_server_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_server_a_CXXFLAGS) $(CXXFLAGS) -c -o omnicore/libbitcoin_server_a-dbtransaction.obj `if test -f 'omnicore/dbtransaction.cpp'; then $(CYGPATH_W) 'omnicore/dbtransaction.cpp'; else $(CYGPATH_W) '$(srcdir)/omnicore/dbtransaction.cpp'; fi`
+#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_server_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_server_a_CXXFLAGS) $(CXXFLAGS) -c -o tradelayer/libbitcoin_server_a-dbtransaction.obj `if test -f 'tradelayer/dbtransaction.cpp'; then $(CYGPATH_W) 'tradelayer/dbtransaction.cpp'; else $(CYGPATH_W) '$(srcdir)/tradelayer/dbtransaction.cpp'; fi`
 
-omnicore/libbitcoin_server_a-dbtxlist.o: omnicore/dbtxlist.cpp
-	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_server_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_server_a_CXXFLAGS) $(CXXFLAGS) -MT omnicore/libbitcoin_server_a-dbtxlist.o -MD -MP -MF omnicore/$(DEPDIR)/libbitcoin_server_a-dbtxlist.Tpo -c -o omnicore/libbitcoin_server_a-dbtxlist.o `test -f 'omnicore/dbtxlist.cpp' || echo '$(srcdir)/'`omnicore/dbtxlist.cpp
-	$(AM_V_at)$(am__mv) omnicore/$(DEPDIR)/libbitcoin_server_a-dbtxlist.Tpo omnicore/$(DEPDIR)/libbitcoin_server_a-dbtxlist.Po
-#	$(AM_V_CXX)source='omnicore/dbtxlist.cpp' object='omnicore/libbitcoin_server_a-dbtxlist.o' libtool=no \
+tradelayer/libbitcoin_server_a-dbtxlist.o: tradelayer/dbtxlist.cpp
+	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_server_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_server_a_CXXFLAGS) $(CXXFLAGS) -MT tradelayer/libbitcoin_server_a-dbtxlist.o -MD -MP -MF tradelayer/$(DEPDIR)/libbitcoin_server_a-dbtxlist.Tpo -c -o tradelayer/libbitcoin_server_a-dbtxlist.o `test -f 'tradelayer/dbtxlist.cpp' || echo '$(srcdir)/'`tradelayer/dbtxlist.cpp
+	$(AM_V_at)$(am__mv) tradelayer/$(DEPDIR)/libbitcoin_server_a-dbtxlist.Tpo tradelayer/$(DEPDIR)/libbitcoin_server_a-dbtxlist.Po
+#	$(AM_V_CXX)source='tradelayer/dbtxlist.cpp' object='tradelayer/libbitcoin_server_a-dbtxlist.o' libtool=no \
 #	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) \
-#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_server_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_server_a_CXXFLAGS) $(CXXFLAGS) -c -o omnicore/libbitcoin_server_a-dbtxlist.o `test -f 'omnicore/dbtxlist.cpp' || echo '$(srcdir)/'`omnicore/dbtxlist.cpp
+#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_server_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_server_a_CXXFLAGS) $(CXXFLAGS) -c -o tradelayer/libbitcoin_server_a-dbtxlist.o `test -f 'tradelayer/dbtxlist.cpp' || echo '$(srcdir)/'`tradelayer/dbtxlist.cpp
 
-omnicore/libbitcoin_server_a-dbtxlist.obj: omnicore/dbtxlist.cpp
-	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_server_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_server_a_CXXFLAGS) $(CXXFLAGS) -MT omnicore/libbitcoin_server_a-dbtxlist.obj -MD -MP -MF omnicore/$(DEPDIR)/libbitcoin_server_a-dbtxlist.Tpo -c -o omnicore/libbitcoin_server_a-dbtxlist.obj `if test -f 'omnicore/dbtxlist.cpp'; then $(CYGPATH_W) 'omnicore/dbtxlist.cpp'; else $(CYGPATH_W) '$(srcdir)/omnicore/dbtxlist.cpp'; fi`
-	$(AM_V_at)$(am__mv) omnicore/$(DEPDIR)/libbitcoin_server_a-dbtxlist.Tpo omnicore/$(DEPDIR)/libbitcoin_server_a-dbtxlist.Po
-#	$(AM_V_CXX)source='omnicore/dbtxlist.cpp' object='omnicore/libbitcoin_server_a-dbtxlist.obj' libtool=no \
+tradelayer/libbitcoin_server_a-dbtxlist.obj: tradelayer/dbtxlist.cpp
+	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_server_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_server_a_CXXFLAGS) $(CXXFLAGS) -MT tradelayer/libbitcoin_server_a-dbtxlist.obj -MD -MP -MF tradelayer/$(DEPDIR)/libbitcoin_server_a-dbtxlist.Tpo -c -o tradelayer/libbitcoin_server_a-dbtxlist.obj `if test -f 'tradelayer/dbtxlist.cpp'; then $(CYGPATH_W) 'tradelayer/dbtxlist.cpp'; else $(CYGPATH_W) '$(srcdir)/tradelayer/dbtxlist.cpp'; fi`
+	$(AM_V_at)$(am__mv) tradelayer/$(DEPDIR)/libbitcoin_server_a-dbtxlist.Tpo tradelayer/$(DEPDIR)/libbitcoin_server_a-dbtxlist.Po
+#	$(AM_V_CXX)source='tradelayer/dbtxlist.cpp' object='tradelayer/libbitcoin_server_a-dbtxlist.obj' libtool=no \
 #	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) \
-#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_server_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_server_a_CXXFLAGS) $(CXXFLAGS) -c -o omnicore/libbitcoin_server_a-dbtxlist.obj `if test -f 'omnicore/dbtxlist.cpp'; then $(CYGPATH_W) 'omnicore/dbtxlist.cpp'; else $(CYGPATH_W) '$(srcdir)/omnicore/dbtxlist.cpp'; fi`
+#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_server_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_server_a_CXXFLAGS) $(CXXFLAGS) -c -o tradelayer/libbitcoin_server_a-dbtxlist.obj `if test -f 'tradelayer/dbtxlist.cpp'; then $(CYGPATH_W) 'tradelayer/dbtxlist.cpp'; else $(CYGPATH_W) '$(srcdir)/tradelayer/dbtxlist.cpp'; fi`
 
-omnicore/libbitcoin_server_a-dex.o: omnicore/dex.cpp
-	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_server_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_server_a_CXXFLAGS) $(CXXFLAGS) -MT omnicore/libbitcoin_server_a-dex.o -MD -MP -MF omnicore/$(DEPDIR)/libbitcoin_server_a-dex.Tpo -c -o omnicore/libbitcoin_server_a-dex.o `test -f 'omnicore/dex.cpp' || echo '$(srcdir)/'`omnicore/dex.cpp
-	$(AM_V_at)$(am__mv) omnicore/$(DEPDIR)/libbitcoin_server_a-dex.Tpo omnicore/$(DEPDIR)/libbitcoin_server_a-dex.Po
-#	$(AM_V_CXX)source='omnicore/dex.cpp' object='omnicore/libbitcoin_server_a-dex.o' libtool=no \
+tradelayer/libbitcoin_server_a-dex.o: tradelayer/dex.cpp
+	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_server_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_server_a_CXXFLAGS) $(CXXFLAGS) -MT tradelayer/libbitcoin_server_a-dex.o -MD -MP -MF tradelayer/$(DEPDIR)/libbitcoin_server_a-dex.Tpo -c -o tradelayer/libbitcoin_server_a-dex.o `test -f 'tradelayer/dex.cpp' || echo '$(srcdir)/'`tradelayer/dex.cpp
+	$(AM_V_at)$(am__mv) tradelayer/$(DEPDIR)/libbitcoin_server_a-dex.Tpo tradelayer/$(DEPDIR)/libbitcoin_server_a-dex.Po
+#	$(AM_V_CXX)source='tradelayer/dex.cpp' object='tradelayer/libbitcoin_server_a-dex.o' libtool=no \
 #	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) \
-#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_server_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_server_a_CXXFLAGS) $(CXXFLAGS) -c -o omnicore/libbitcoin_server_a-dex.o `test -f 'omnicore/dex.cpp' || echo '$(srcdir)/'`omnicore/dex.cpp
+#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_server_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_server_a_CXXFLAGS) $(CXXFLAGS) -c -o tradelayer/libbitcoin_server_a-dex.o `test -f 'tradelayer/dex.cpp' || echo '$(srcdir)/'`tradelayer/dex.cpp
 
-omnicore/libbitcoin_server_a-dex.obj: omnicore/dex.cpp
-	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_server_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_server_a_CXXFLAGS) $(CXXFLAGS) -MT omnicore/libbitcoin_server_a-dex.obj -MD -MP -MF omnicore/$(DEPDIR)/libbitcoin_server_a-dex.Tpo -c -o omnicore/libbitcoin_server_a-dex.obj `if test -f 'omnicore/dex.cpp'; then $(CYGPATH_W) 'omnicore/dex.cpp'; else $(CYGPATH_W) '$(srcdir)/omnicore/dex.cpp'; fi`
-	$(AM_V_at)$(am__mv) omnicore/$(DEPDIR)/libbitcoin_server_a-dex.Tpo omnicore/$(DEPDIR)/libbitcoin_server_a-dex.Po
-#	$(AM_V_CXX)source='omnicore/dex.cpp' object='omnicore/libbitcoin_server_a-dex.obj' libtool=no \
+tradelayer/libbitcoin_server_a-dex.obj: tradelayer/dex.cpp
+	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_server_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_server_a_CXXFLAGS) $(CXXFLAGS) -MT tradelayer/libbitcoin_server_a-dex.obj -MD -MP -MF tradelayer/$(DEPDIR)/libbitcoin_server_a-dex.Tpo -c -o tradelayer/libbitcoin_server_a-dex.obj `if test -f 'tradelayer/dex.cpp'; then $(CYGPATH_W) 'tradelayer/dex.cpp'; else $(CYGPATH_W) '$(srcdir)/tradelayer/dex.cpp'; fi`
+	$(AM_V_at)$(am__mv) tradelayer/$(DEPDIR)/libbitcoin_server_a-dex.Tpo tradelayer/$(DEPDIR)/libbitcoin_server_a-dex.Po
+#	$(AM_V_CXX)source='tradelayer/dex.cpp' object='tradelayer/libbitcoin_server_a-dex.obj' libtool=no \
 #	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) \
-#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_server_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_server_a_CXXFLAGS) $(CXXFLAGS) -c -o omnicore/libbitcoin_server_a-dex.obj `if test -f 'omnicore/dex.cpp'; then $(CYGPATH_W) 'omnicore/dex.cpp'; else $(CYGPATH_W) '$(srcdir)/omnicore/dex.cpp'; fi`
+#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_server_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_server_a_CXXFLAGS) $(CXXFLAGS) -c -o tradelayer/libbitcoin_server_a-dex.obj `if test -f 'tradelayer/dex.cpp'; then $(CYGPATH_W) 'tradelayer/dex.cpp'; else $(CYGPATH_W) '$(srcdir)/tradelayer/dex.cpp'; fi`
 
-omnicore/libbitcoin_server_a-encoding.o: omnicore/encoding.cpp
-	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_server_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_server_a_CXXFLAGS) $(CXXFLAGS) -MT omnicore/libbitcoin_server_a-encoding.o -MD -MP -MF omnicore/$(DEPDIR)/libbitcoin_server_a-encoding.Tpo -c -o omnicore/libbitcoin_server_a-encoding.o `test -f 'omnicore/encoding.cpp' || echo '$(srcdir)/'`omnicore/encoding.cpp
-	$(AM_V_at)$(am__mv) omnicore/$(DEPDIR)/libbitcoin_server_a-encoding.Tpo omnicore/$(DEPDIR)/libbitcoin_server_a-encoding.Po
-#	$(AM_V_CXX)source='omnicore/encoding.cpp' object='omnicore/libbitcoin_server_a-encoding.o' libtool=no \
+tradelayer/libbitcoin_server_a-encoding.o: tradelayer/encoding.cpp
+	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_server_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_server_a_CXXFLAGS) $(CXXFLAGS) -MT tradelayer/libbitcoin_server_a-encoding.o -MD -MP -MF tradelayer/$(DEPDIR)/libbitcoin_server_a-encoding.Tpo -c -o tradelayer/libbitcoin_server_a-encoding.o `test -f 'tradelayer/encoding.cpp' || echo '$(srcdir)/'`tradelayer/encoding.cpp
+	$(AM_V_at)$(am__mv) tradelayer/$(DEPDIR)/libbitcoin_server_a-encoding.Tpo tradelayer/$(DEPDIR)/libbitcoin_server_a-encoding.Po
+#	$(AM_V_CXX)source='tradelayer/encoding.cpp' object='tradelayer/libbitcoin_server_a-encoding.o' libtool=no \
 #	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) \
-#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_server_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_server_a_CXXFLAGS) $(CXXFLAGS) -c -o omnicore/libbitcoin_server_a-encoding.o `test -f 'omnicore/encoding.cpp' || echo '$(srcdir)/'`omnicore/encoding.cpp
+#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_server_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_server_a_CXXFLAGS) $(CXXFLAGS) -c -o tradelayer/libbitcoin_server_a-encoding.o `test -f 'tradelayer/encoding.cpp' || echo '$(srcdir)/'`tradelayer/encoding.cpp
 
-omnicore/libbitcoin_server_a-encoding.obj: omnicore/encoding.cpp
-	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_server_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_server_a_CXXFLAGS) $(CXXFLAGS) -MT omnicore/libbitcoin_server_a-encoding.obj -MD -MP -MF omnicore/$(DEPDIR)/libbitcoin_server_a-encoding.Tpo -c -o omnicore/libbitcoin_server_a-encoding.obj `if test -f 'omnicore/encoding.cpp'; then $(CYGPATH_W) 'omnicore/encoding.cpp'; else $(CYGPATH_W) '$(srcdir)/omnicore/encoding.cpp'; fi`
-	$(AM_V_at)$(am__mv) omnicore/$(DEPDIR)/libbitcoin_server_a-encoding.Tpo omnicore/$(DEPDIR)/libbitcoin_server_a-encoding.Po
-#	$(AM_V_CXX)source='omnicore/encoding.cpp' object='omnicore/libbitcoin_server_a-encoding.obj' libtool=no \
+tradelayer/libbitcoin_server_a-encoding.obj: tradelayer/encoding.cpp
+	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_server_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_server_a_CXXFLAGS) $(CXXFLAGS) -MT tradelayer/libbitcoin_server_a-encoding.obj -MD -MP -MF tradelayer/$(DEPDIR)/libbitcoin_server_a-encoding.Tpo -c -o tradelayer/libbitcoin_server_a-encoding.obj `if test -f 'tradelayer/encoding.cpp'; then $(CYGPATH_W) 'tradelayer/encoding.cpp'; else $(CYGPATH_W) '$(srcdir)/tradelayer/encoding.cpp'; fi`
+	$(AM_V_at)$(am__mv) tradelayer/$(DEPDIR)/libbitcoin_server_a-encoding.Tpo tradelayer/$(DEPDIR)/libbitcoin_server_a-encoding.Po
+#	$(AM_V_CXX)source='tradelayer/encoding.cpp' object='tradelayer/libbitcoin_server_a-encoding.obj' libtool=no \
 #	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) \
-#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_server_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_server_a_CXXFLAGS) $(CXXFLAGS) -c -o omnicore/libbitcoin_server_a-encoding.obj `if test -f 'omnicore/encoding.cpp'; then $(CYGPATH_W) 'omnicore/encoding.cpp'; else $(CYGPATH_W) '$(srcdir)/omnicore/encoding.cpp'; fi`
+#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_server_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_server_a_CXXFLAGS) $(CXXFLAGS) -c -o tradelayer/libbitcoin_server_a-encoding.obj `if test -f 'tradelayer/encoding.cpp'; then $(CYGPATH_W) 'tradelayer/encoding.cpp'; else $(CYGPATH_W) '$(srcdir)/tradelayer/encoding.cpp'; fi`
 
-omnicore/libbitcoin_server_a-log.o: omnicore/log.cpp
-	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_server_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_server_a_CXXFLAGS) $(CXXFLAGS) -MT omnicore/libbitcoin_server_a-log.o -MD -MP -MF omnicore/$(DEPDIR)/libbitcoin_server_a-log.Tpo -c -o omnicore/libbitcoin_server_a-log.o `test -f 'omnicore/log.cpp' || echo '$(srcdir)/'`omnicore/log.cpp
-	$(AM_V_at)$(am__mv) omnicore/$(DEPDIR)/libbitcoin_server_a-log.Tpo omnicore/$(DEPDIR)/libbitcoin_server_a-log.Po
-#	$(AM_V_CXX)source='omnicore/log.cpp' object='omnicore/libbitcoin_server_a-log.o' libtool=no \
+tradelayer/libbitcoin_server_a-log.o: tradelayer/log.cpp
+	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_server_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_server_a_CXXFLAGS) $(CXXFLAGS) -MT tradelayer/libbitcoin_server_a-log.o -MD -MP -MF tradelayer/$(DEPDIR)/libbitcoin_server_a-log.Tpo -c -o tradelayer/libbitcoin_server_a-log.o `test -f 'tradelayer/log.cpp' || echo '$(srcdir)/'`tradelayer/log.cpp
+	$(AM_V_at)$(am__mv) tradelayer/$(DEPDIR)/libbitcoin_server_a-log.Tpo tradelayer/$(DEPDIR)/libbitcoin_server_a-log.Po
+#	$(AM_V_CXX)source='tradelayer/log.cpp' object='tradelayer/libbitcoin_server_a-log.o' libtool=no \
 #	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) \
-#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_server_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_server_a_CXXFLAGS) $(CXXFLAGS) -c -o omnicore/libbitcoin_server_a-log.o `test -f 'omnicore/log.cpp' || echo '$(srcdir)/'`omnicore/log.cpp
+#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_server_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_server_a_CXXFLAGS) $(CXXFLAGS) -c -o tradelayer/libbitcoin_server_a-log.o `test -f 'tradelayer/log.cpp' || echo '$(srcdir)/'`tradelayer/log.cpp
 
-omnicore/libbitcoin_server_a-log.obj: omnicore/log.cpp
-	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_server_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_server_a_CXXFLAGS) $(CXXFLAGS) -MT omnicore/libbitcoin_server_a-log.obj -MD -MP -MF omnicore/$(DEPDIR)/libbitcoin_server_a-log.Tpo -c -o omnicore/libbitcoin_server_a-log.obj `if test -f 'omnicore/log.cpp'; then $(CYGPATH_W) 'omnicore/log.cpp'; else $(CYGPATH_W) '$(srcdir)/omnicore/log.cpp'; fi`
-	$(AM_V_at)$(am__mv) omnicore/$(DEPDIR)/libbitcoin_server_a-log.Tpo omnicore/$(DEPDIR)/libbitcoin_server_a-log.Po
-#	$(AM_V_CXX)source='omnicore/log.cpp' object='omnicore/libbitcoin_server_a-log.obj' libtool=no \
+tradelayer/libbitcoin_server_a-log.obj: tradelayer/log.cpp
+	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_server_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_server_a_CXXFLAGS) $(CXXFLAGS) -MT tradelayer/libbitcoin_server_a-log.obj -MD -MP -MF tradelayer/$(DEPDIR)/libbitcoin_server_a-log.Tpo -c -o tradelayer/libbitcoin_server_a-log.obj `if test -f 'tradelayer/log.cpp'; then $(CYGPATH_W) 'tradelayer/log.cpp'; else $(CYGPATH_W) '$(srcdir)/tradelayer/log.cpp'; fi`
+	$(AM_V_at)$(am__mv) tradelayer/$(DEPDIR)/libbitcoin_server_a-log.Tpo tradelayer/$(DEPDIR)/libbitcoin_server_a-log.Po
+#	$(AM_V_CXX)source='tradelayer/log.cpp' object='tradelayer/libbitcoin_server_a-log.obj' libtool=no \
 #	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) \
-#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_server_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_server_a_CXXFLAGS) $(CXXFLAGS) -c -o omnicore/libbitcoin_server_a-log.obj `if test -f 'omnicore/log.cpp'; then $(CYGPATH_W) 'omnicore/log.cpp'; else $(CYGPATH_W) '$(srcdir)/omnicore/log.cpp'; fi`
+#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_server_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_server_a_CXXFLAGS) $(CXXFLAGS) -c -o tradelayer/libbitcoin_server_a-log.obj `if test -f 'tradelayer/log.cpp'; then $(CYGPATH_W) 'tradelayer/log.cpp'; else $(CYGPATH_W) '$(srcdir)/tradelayer/log.cpp'; fi`
 
-omnicore/libbitcoin_server_a-mdex.o: omnicore/mdex.cpp
-	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_server_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_server_a_CXXFLAGS) $(CXXFLAGS) -MT omnicore/libbitcoin_server_a-mdex.o -MD -MP -MF omnicore/$(DEPDIR)/libbitcoin_server_a-mdex.Tpo -c -o omnicore/libbitcoin_server_a-mdex.o `test -f 'omnicore/mdex.cpp' || echo '$(srcdir)/'`omnicore/mdex.cpp
-	$(AM_V_at)$(am__mv) omnicore/$(DEPDIR)/libbitcoin_server_a-mdex.Tpo omnicore/$(DEPDIR)/libbitcoin_server_a-mdex.Po
-#	$(AM_V_CXX)source='omnicore/mdex.cpp' object='omnicore/libbitcoin_server_a-mdex.o' libtool=no \
+tradelayer/libbitcoin_server_a-mdex.o: tradelayer/mdex.cpp
+	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_server_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_server_a_CXXFLAGS) $(CXXFLAGS) -MT tradelayer/libbitcoin_server_a-mdex.o -MD -MP -MF tradelayer/$(DEPDIR)/libbitcoin_server_a-mdex.Tpo -c -o tradelayer/libbitcoin_server_a-mdex.o `test -f 'tradelayer/mdex.cpp' || echo '$(srcdir)/'`tradelayer/mdex.cpp
+	$(AM_V_at)$(am__mv) tradelayer/$(DEPDIR)/libbitcoin_server_a-mdex.Tpo tradelayer/$(DEPDIR)/libbitcoin_server_a-mdex.Po
+#	$(AM_V_CXX)source='tradelayer/mdex.cpp' object='tradelayer/libbitcoin_server_a-mdex.o' libtool=no \
 #	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) \
-#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_server_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_server_a_CXXFLAGS) $(CXXFLAGS) -c -o omnicore/libbitcoin_server_a-mdex.o `test -f 'omnicore/mdex.cpp' || echo '$(srcdir)/'`omnicore/mdex.cpp
+#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_server_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_server_a_CXXFLAGS) $(CXXFLAGS) -c -o tradelayer/libbitcoin_server_a-mdex.o `test -f 'tradelayer/mdex.cpp' || echo '$(srcdir)/'`tradelayer/mdex.cpp
 
-omnicore/libbitcoin_server_a-mdex.obj: omnicore/mdex.cpp
-	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_server_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_server_a_CXXFLAGS) $(CXXFLAGS) -MT omnicore/libbitcoin_server_a-mdex.obj -MD -MP -MF omnicore/$(DEPDIR)/libbitcoin_server_a-mdex.Tpo -c -o omnicore/libbitcoin_server_a-mdex.obj `if test -f 'omnicore/mdex.cpp'; then $(CYGPATH_W) 'omnicore/mdex.cpp'; else $(CYGPATH_W) '$(srcdir)/omnicore/mdex.cpp'; fi`
-	$(AM_V_at)$(am__mv) omnicore/$(DEPDIR)/libbitcoin_server_a-mdex.Tpo omnicore/$(DEPDIR)/libbitcoin_server_a-mdex.Po
-#	$(AM_V_CXX)source='omnicore/mdex.cpp' object='omnicore/libbitcoin_server_a-mdex.obj' libtool=no \
+tradelayer/libbitcoin_server_a-mdex.obj: tradelayer/mdex.cpp
+	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_server_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_server_a_CXXFLAGS) $(CXXFLAGS) -MT tradelayer/libbitcoin_server_a-mdex.obj -MD -MP -MF tradelayer/$(DEPDIR)/libbitcoin_server_a-mdex.Tpo -c -o tradelayer/libbitcoin_server_a-mdex.obj `if test -f 'tradelayer/mdex.cpp'; then $(CYGPATH_W) 'tradelayer/mdex.cpp'; else $(CYGPATH_W) '$(srcdir)/tradelayer/mdex.cpp'; fi`
+	$(AM_V_at)$(am__mv) tradelayer/$(DEPDIR)/libbitcoin_server_a-mdex.Tpo tradelayer/$(DEPDIR)/libbitcoin_server_a-mdex.Po
+#	$(AM_V_CXX)source='tradelayer/mdex.cpp' object='tradelayer/libbitcoin_server_a-mdex.obj' libtool=no \
 #	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) \
-#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_server_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_server_a_CXXFLAGS) $(CXXFLAGS) -c -o omnicore/libbitcoin_server_a-mdex.obj `if test -f 'omnicore/mdex.cpp'; then $(CYGPATH_W) 'omnicore/mdex.cpp'; else $(CYGPATH_W) '$(srcdir)/omnicore/mdex.cpp'; fi`
+#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_server_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_server_a_CXXFLAGS) $(CXXFLAGS) -c -o tradelayer/libbitcoin_server_a-mdex.obj `if test -f 'tradelayer/mdex.cpp'; then $(CYGPATH_W) 'tradelayer/mdex.cpp'; else $(CYGPATH_W) '$(srcdir)/tradelayer/mdex.cpp'; fi`
 
-omnicore/libbitcoin_server_a-notifications.o: omnicore/notifications.cpp
-	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_server_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_server_a_CXXFLAGS) $(CXXFLAGS) -MT omnicore/libbitcoin_server_a-notifications.o -MD -MP -MF omnicore/$(DEPDIR)/libbitcoin_server_a-notifications.Tpo -c -o omnicore/libbitcoin_server_a-notifications.o `test -f 'omnicore/notifications.cpp' || echo '$(srcdir)/'`omnicore/notifications.cpp
-	$(AM_V_at)$(am__mv) omnicore/$(DEPDIR)/libbitcoin_server_a-notifications.Tpo omnicore/$(DEPDIR)/libbitcoin_server_a-notifications.Po
-#	$(AM_V_CXX)source='omnicore/notifications.cpp' object='omnicore/libbitcoin_server_a-notifications.o' libtool=no \
+tradelayer/libbitcoin_server_a-notifications.o: tradelayer/notifications.cpp
+	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_server_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_server_a_CXXFLAGS) $(CXXFLAGS) -MT tradelayer/libbitcoin_server_a-notifications.o -MD -MP -MF tradelayer/$(DEPDIR)/libbitcoin_server_a-notifications.Tpo -c -o tradelayer/libbitcoin_server_a-notifications.o `test -f 'tradelayer/notifications.cpp' || echo '$(srcdir)/'`tradelayer/notifications.cpp
+	$(AM_V_at)$(am__mv) tradelayer/$(DEPDIR)/libbitcoin_server_a-notifications.Tpo tradelayer/$(DEPDIR)/libbitcoin_server_a-notifications.Po
+#	$(AM_V_CXX)source='tradelayer/notifications.cpp' object='tradelayer/libbitcoin_server_a-notifications.o' libtool=no \
 #	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) \
-#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_server_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_server_a_CXXFLAGS) $(CXXFLAGS) -c -o omnicore/libbitcoin_server_a-notifications.o `test -f 'omnicore/notifications.cpp' || echo '$(srcdir)/'`omnicore/notifications.cpp
+#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_server_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_server_a_CXXFLAGS) $(CXXFLAGS) -c -o tradelayer/libbitcoin_server_a-notifications.o `test -f 'tradelayer/notifications.cpp' || echo '$(srcdir)/'`tradelayer/notifications.cpp
 
-omnicore/libbitcoin_server_a-notifications.obj: omnicore/notifications.cpp
-	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_server_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_server_a_CXXFLAGS) $(CXXFLAGS) -MT omnicore/libbitcoin_server_a-notifications.obj -MD -MP -MF omnicore/$(DEPDIR)/libbitcoin_server_a-notifications.Tpo -c -o omnicore/libbitcoin_server_a-notifications.obj `if test -f 'omnicore/notifications.cpp'; then $(CYGPATH_W) 'omnicore/notifications.cpp'; else $(CYGPATH_W) '$(srcdir)/omnicore/notifications.cpp'; fi`
-	$(AM_V_at)$(am__mv) omnicore/$(DEPDIR)/libbitcoin_server_a-notifications.Tpo omnicore/$(DEPDIR)/libbitcoin_server_a-notifications.Po
-#	$(AM_V_CXX)source='omnicore/notifications.cpp' object='omnicore/libbitcoin_server_a-notifications.obj' libtool=no \
+tradelayer/libbitcoin_server_a-notifications.obj: tradelayer/notifications.cpp
+	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_server_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_server_a_CXXFLAGS) $(CXXFLAGS) -MT tradelayer/libbitcoin_server_a-notifications.obj -MD -MP -MF tradelayer/$(DEPDIR)/libbitcoin_server_a-notifications.Tpo -c -o tradelayer/libbitcoin_server_a-notifications.obj `if test -f 'tradelayer/notifications.cpp'; then $(CYGPATH_W) 'tradelayer/notifications.cpp'; else $(CYGPATH_W) '$(srcdir)/tradelayer/notifications.cpp'; fi`
+	$(AM_V_at)$(am__mv) tradelayer/$(DEPDIR)/libbitcoin_server_a-notifications.Tpo tradelayer/$(DEPDIR)/libbitcoin_server_a-notifications.Po
+#	$(AM_V_CXX)source='tradelayer/notifications.cpp' object='tradelayer/libbitcoin_server_a-notifications.obj' libtool=no \
 #	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) \
-#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_server_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_server_a_CXXFLAGS) $(CXXFLAGS) -c -o omnicore/libbitcoin_server_a-notifications.obj `if test -f 'omnicore/notifications.cpp'; then $(CYGPATH_W) 'omnicore/notifications.cpp'; else $(CYGPATH_W) '$(srcdir)/omnicore/notifications.cpp'; fi`
+#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_server_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_server_a_CXXFLAGS) $(CXXFLAGS) -c -o tradelayer/libbitcoin_server_a-notifications.obj `if test -f 'tradelayer/notifications.cpp'; then $(CYGPATH_W) 'tradelayer/notifications.cpp'; else $(CYGPATH_W) '$(srcdir)/tradelayer/notifications.cpp'; fi`
 
-omnicore/libbitcoin_server_a-omnicore.o: omnicore/omnicore.cpp
-	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_server_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_server_a_CXXFLAGS) $(CXXFLAGS) -MT omnicore/libbitcoin_server_a-omnicore.o -MD -MP -MF omnicore/$(DEPDIR)/libbitcoin_server_a-omnicore.Tpo -c -o omnicore/libbitcoin_server_a-omnicore.o `test -f 'omnicore/omnicore.cpp' || echo '$(srcdir)/'`omnicore/omnicore.cpp
-	$(AM_V_at)$(am__mv) omnicore/$(DEPDIR)/libbitcoin_server_a-omnicore.Tpo omnicore/$(DEPDIR)/libbitcoin_server_a-omnicore.Po
-#	$(AM_V_CXX)source='omnicore/omnicore.cpp' object='omnicore/libbitcoin_server_a-omnicore.o' libtool=no \
+tradelayer/libbitcoin_server_a-tradelayer.o: tradelayer/tradelayer.cpp
+	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_server_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_server_a_CXXFLAGS) $(CXXFLAGS) -MT tradelayer/libbitcoin_server_a-tradelayer.o -MD -MP -MF tradelayer/$(DEPDIR)/libbitcoin_server_a-tradelayer.Tpo -c -o tradelayer/libbitcoin_server_a-tradelayer.o `test -f 'tradelayer/tradelayer.cpp' || echo '$(srcdir)/'`tradelayer/tradelayer.cpp
+	$(AM_V_at)$(am__mv) tradelayer/$(DEPDIR)/libbitcoin_server_a-tradelayer.Tpo tradelayer/$(DEPDIR)/libbitcoin_server_a-tradelayer.Po
+#	$(AM_V_CXX)source='tradelayer/tradelayer.cpp' object='tradelayer/libbitcoin_server_a-tradelayer.o' libtool=no \
 #	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) \
-#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_server_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_server_a_CXXFLAGS) $(CXXFLAGS) -c -o omnicore/libbitcoin_server_a-omnicore.o `test -f 'omnicore/omnicore.cpp' || echo '$(srcdir)/'`omnicore/omnicore.cpp
+#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_server_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_server_a_CXXFLAGS) $(CXXFLAGS) -c -o tradelayer/libbitcoin_server_a-tradelayer.o `test -f 'tradelayer/tradelayer.cpp' || echo '$(srcdir)/'`tradelayer/tradelayer.cpp
 
-omnicore/libbitcoin_server_a-omnicore.obj: omnicore/omnicore.cpp
-	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_server_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_server_a_CXXFLAGS) $(CXXFLAGS) -MT omnicore/libbitcoin_server_a-omnicore.obj -MD -MP -MF omnicore/$(DEPDIR)/libbitcoin_server_a-omnicore.Tpo -c -o omnicore/libbitcoin_server_a-omnicore.obj `if test -f 'omnicore/omnicore.cpp'; then $(CYGPATH_W) 'omnicore/omnicore.cpp'; else $(CYGPATH_W) '$(srcdir)/omnicore/omnicore.cpp'; fi`
-	$(AM_V_at)$(am__mv) omnicore/$(DEPDIR)/libbitcoin_server_a-omnicore.Tpo omnicore/$(DEPDIR)/libbitcoin_server_a-omnicore.Po
-#	$(AM_V_CXX)source='omnicore/omnicore.cpp' object='omnicore/libbitcoin_server_a-omnicore.obj' libtool=no \
+tradelayer/libbitcoin_server_a-tradelayer.obj: tradelayer/tradelayer.cpp
+	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_server_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_server_a_CXXFLAGS) $(CXXFLAGS) -MT tradelayer/libbitcoin_server_a-tradelayer.obj -MD -MP -MF tradelayer/$(DEPDIR)/libbitcoin_server_a-tradelayer.Tpo -c -o tradelayer/libbitcoin_server_a-tradelayer.obj `if test -f 'tradelayer/tradelayer.cpp'; then $(CYGPATH_W) 'tradelayer/tradelayer.cpp'; else $(CYGPATH_W) '$(srcdir)/tradelayer/tradelayer.cpp'; fi`
+	$(AM_V_at)$(am__mv) tradelayer/$(DEPDIR)/libbitcoin_server_a-tradelayer.Tpo tradelayer/$(DEPDIR)/libbitcoin_server_a-tradelayer.Po
+#	$(AM_V_CXX)source='tradelayer/tradelayer.cpp' object='tradelayer/libbitcoin_server_a-tradelayer.obj' libtool=no \
 #	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) \
-#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_server_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_server_a_CXXFLAGS) $(CXXFLAGS) -c -o omnicore/libbitcoin_server_a-omnicore.obj `if test -f 'omnicore/omnicore.cpp'; then $(CYGPATH_W) 'omnicore/omnicore.cpp'; else $(CYGPATH_W) '$(srcdir)/omnicore/omnicore.cpp'; fi`
+#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_server_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_server_a_CXXFLAGS) $(CXXFLAGS) -c -o tradelayer/libbitcoin_server_a-tradelayer.obj `if test -f 'tradelayer/tradelayer.cpp'; then $(CYGPATH_W) 'tradelayer/tradelayer.cpp'; else $(CYGPATH_W) '$(srcdir)/tradelayer/tradelayer.cpp'; fi`
 
-omnicore/libbitcoin_server_a-operators_algo_clearing.o: omnicore/operators_algo_clearing.cpp
-	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_server_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_server_a_CXXFLAGS) $(CXXFLAGS) -MT omnicore/libbitcoin_server_a-operators_algo_clearing.o -MD -MP -MF omnicore/$(DEPDIR)/libbitcoin_server_a-operators_algo_clearing.Tpo -c -o omnicore/libbitcoin_server_a-operators_algo_clearing.o `test -f 'omnicore/operators_algo_clearing.cpp' || echo '$(srcdir)/'`omnicore/operators_algo_clearing.cpp
-	$(AM_V_at)$(am__mv) omnicore/$(DEPDIR)/libbitcoin_server_a-operators_algo_clearing.Tpo omnicore/$(DEPDIR)/libbitcoin_server_a-operators_algo_clearing.Po
-#	$(AM_V_CXX)source='omnicore/operators_algo_clearing.cpp' object='omnicore/libbitcoin_server_a-operators_algo_clearing.o' libtool=no \
+tradelayer/libbitcoin_server_a-operators_algo_clearing.o: tradelayer/operators_algo_clearing.cpp
+	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_server_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_server_a_CXXFLAGS) $(CXXFLAGS) -MT tradelayer/libbitcoin_server_a-operators_algo_clearing.o -MD -MP -MF tradelayer/$(DEPDIR)/libbitcoin_server_a-operators_algo_clearing.Tpo -c -o tradelayer/libbitcoin_server_a-operators_algo_clearing.o `test -f 'tradelayer/operators_algo_clearing.cpp' || echo '$(srcdir)/'`tradelayer/operators_algo_clearing.cpp
+	$(AM_V_at)$(am__mv) tradelayer/$(DEPDIR)/libbitcoin_server_a-operators_algo_clearing.Tpo tradelayer/$(DEPDIR)/libbitcoin_server_a-operators_algo_clearing.Po
+#	$(AM_V_CXX)source='tradelayer/operators_algo_clearing.cpp' object='tradelayer/libbitcoin_server_a-operators_algo_clearing.o' libtool=no \
 #	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) \
-#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_server_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_server_a_CXXFLAGS) $(CXXFLAGS) -c -o omnicore/libbitcoin_server_a-operators_algo_clearing.o `test -f 'omnicore/operators_algo_clearing.cpp' || echo '$(srcdir)/'`omnicore/operators_algo_clearing.cpp
+#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_server_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_server_a_CXXFLAGS) $(CXXFLAGS) -c -o tradelayer/libbitcoin_server_a-operators_algo_clearing.o `test -f 'tradelayer/operators_algo_clearing.cpp' || echo '$(srcdir)/'`tradelayer/operators_algo_clearing.cpp
 
-omnicore/libbitcoin_server_a-operators_algo_clearing.obj: omnicore/operators_algo_clearing.cpp
-	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_server_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_server_a_CXXFLAGS) $(CXXFLAGS) -MT omnicore/libbitcoin_server_a-operators_algo_clearing.obj -MD -MP -MF omnicore/$(DEPDIR)/libbitcoin_server_a-operators_algo_clearing.Tpo -c -o omnicore/libbitcoin_server_a-operators_algo_clearing.obj `if test -f 'omnicore/operators_algo_clearing.cpp'; then $(CYGPATH_W) 'omnicore/operators_algo_clearing.cpp'; else $(CYGPATH_W) '$(srcdir)/omnicore/operators_algo_clearing.cpp'; fi`
-	$(AM_V_at)$(am__mv) omnicore/$(DEPDIR)/libbitcoin_server_a-operators_algo_clearing.Tpo omnicore/$(DEPDIR)/libbitcoin_server_a-operators_algo_clearing.Po
-#	$(AM_V_CXX)source='omnicore/operators_algo_clearing.cpp' object='omnicore/libbitcoin_server_a-operators_algo_clearing.obj' libtool=no \
+tradelayer/libbitcoin_server_a-operators_algo_clearing.obj: tradelayer/operators_algo_clearing.cpp
+	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_server_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_server_a_CXXFLAGS) $(CXXFLAGS) -MT tradelayer/libbitcoin_server_a-operators_algo_clearing.obj -MD -MP -MF tradelayer/$(DEPDIR)/libbitcoin_server_a-operators_algo_clearing.Tpo -c -o tradelayer/libbitcoin_server_a-operators_algo_clearing.obj `if test -f 'tradelayer/operators_algo_clearing.cpp'; then $(CYGPATH_W) 'tradelayer/operators_algo_clearing.cpp'; else $(CYGPATH_W) '$(srcdir)/tradelayer/operators_algo_clearing.cpp'; fi`
+	$(AM_V_at)$(am__mv) tradelayer/$(DEPDIR)/libbitcoin_server_a-operators_algo_clearing.Tpo tradelayer/$(DEPDIR)/libbitcoin_server_a-operators_algo_clearing.Po
+#	$(AM_V_CXX)source='tradelayer/operators_algo_clearing.cpp' object='tradelayer/libbitcoin_server_a-operators_algo_clearing.obj' libtool=no \
 #	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) \
-#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_server_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_server_a_CXXFLAGS) $(CXXFLAGS) -c -o omnicore/libbitcoin_server_a-operators_algo_clearing.obj `if test -f 'omnicore/operators_algo_clearing.cpp'; then $(CYGPATH_W) 'omnicore/operators_algo_clearing.cpp'; else $(CYGPATH_W) '$(srcdir)/omnicore/operators_algo_clearing.cpp'; fi`
+#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_server_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_server_a_CXXFLAGS) $(CXXFLAGS) -c -o tradelayer/libbitcoin_server_a-operators_algo_clearing.obj `if test -f 'tradelayer/operators_algo_clearing.cpp'; then $(CYGPATH_W) 'tradelayer/operators_algo_clearing.cpp'; else $(CYGPATH_W) '$(srcdir)/tradelayer/operators_algo_clearing.cpp'; fi`
 
-omnicore/libbitcoin_server_a-parse_string.o: omnicore/parse_string.cpp
-	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_server_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_server_a_CXXFLAGS) $(CXXFLAGS) -MT omnicore/libbitcoin_server_a-parse_string.o -MD -MP -MF omnicore/$(DEPDIR)/libbitcoin_server_a-parse_string.Tpo -c -o omnicore/libbitcoin_server_a-parse_string.o `test -f 'omnicore/parse_string.cpp' || echo '$(srcdir)/'`omnicore/parse_string.cpp
-	$(AM_V_at)$(am__mv) omnicore/$(DEPDIR)/libbitcoin_server_a-parse_string.Tpo omnicore/$(DEPDIR)/libbitcoin_server_a-parse_string.Po
-#	$(AM_V_CXX)source='omnicore/parse_string.cpp' object='omnicore/libbitcoin_server_a-parse_string.o' libtool=no \
+tradelayer/libbitcoin_server_a-parse_string.o: tradelayer/parse_string.cpp
+	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_server_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_server_a_CXXFLAGS) $(CXXFLAGS) -MT tradelayer/libbitcoin_server_a-parse_string.o -MD -MP -MF tradelayer/$(DEPDIR)/libbitcoin_server_a-parse_string.Tpo -c -o tradelayer/libbitcoin_server_a-parse_string.o `test -f 'tradelayer/parse_string.cpp' || echo '$(srcdir)/'`tradelayer/parse_string.cpp
+	$(AM_V_at)$(am__mv) tradelayer/$(DEPDIR)/libbitcoin_server_a-parse_string.Tpo tradelayer/$(DEPDIR)/libbitcoin_server_a-parse_string.Po
+#	$(AM_V_CXX)source='tradelayer/parse_string.cpp' object='tradelayer/libbitcoin_server_a-parse_string.o' libtool=no \
 #	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) \
-#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_server_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_server_a_CXXFLAGS) $(CXXFLAGS) -c -o omnicore/libbitcoin_server_a-parse_string.o `test -f 'omnicore/parse_string.cpp' || echo '$(srcdir)/'`omnicore/parse_string.cpp
+#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_server_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_server_a_CXXFLAGS) $(CXXFLAGS) -c -o tradelayer/libbitcoin_server_a-parse_string.o `test -f 'tradelayer/parse_string.cpp' || echo '$(srcdir)/'`tradelayer/parse_string.cpp
 
-omnicore/libbitcoin_server_a-parse_string.obj: omnicore/parse_string.cpp
-	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_server_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_server_a_CXXFLAGS) $(CXXFLAGS) -MT omnicore/libbitcoin_server_a-parse_string.obj -MD -MP -MF omnicore/$(DEPDIR)/libbitcoin_server_a-parse_string.Tpo -c -o omnicore/libbitcoin_server_a-parse_string.obj `if test -f 'omnicore/parse_string.cpp'; then $(CYGPATH_W) 'omnicore/parse_string.cpp'; else $(CYGPATH_W) '$(srcdir)/omnicore/parse_string.cpp'; fi`
-	$(AM_V_at)$(am__mv) omnicore/$(DEPDIR)/libbitcoin_server_a-parse_string.Tpo omnicore/$(DEPDIR)/libbitcoin_server_a-parse_string.Po
-#	$(AM_V_CXX)source='omnicore/parse_string.cpp' object='omnicore/libbitcoin_server_a-parse_string.obj' libtool=no \
+tradelayer/libbitcoin_server_a-parse_string.obj: tradelayer/parse_string.cpp
+	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_server_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_server_a_CXXFLAGS) $(CXXFLAGS) -MT tradelayer/libbitcoin_server_a-parse_string.obj -MD -MP -MF tradelayer/$(DEPDIR)/libbitcoin_server_a-parse_string.Tpo -c -o tradelayer/libbitcoin_server_a-parse_string.obj `if test -f 'tradelayer/parse_string.cpp'; then $(CYGPATH_W) 'tradelayer/parse_string.cpp'; else $(CYGPATH_W) '$(srcdir)/tradelayer/parse_string.cpp'; fi`
+	$(AM_V_at)$(am__mv) tradelayer/$(DEPDIR)/libbitcoin_server_a-parse_string.Tpo tradelayer/$(DEPDIR)/libbitcoin_server_a-parse_string.Po
+#	$(AM_V_CXX)source='tradelayer/parse_string.cpp' object='tradelayer/libbitcoin_server_a-parse_string.obj' libtool=no \
 #	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) \
-#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_server_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_server_a_CXXFLAGS) $(CXXFLAGS) -c -o omnicore/libbitcoin_server_a-parse_string.obj `if test -f 'omnicore/parse_string.cpp'; then $(CYGPATH_W) 'omnicore/parse_string.cpp'; else $(CYGPATH_W) '$(srcdir)/omnicore/parse_string.cpp'; fi`
+#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_server_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_server_a_CXXFLAGS) $(CXXFLAGS) -c -o tradelayer/libbitcoin_server_a-parse_string.obj `if test -f 'tradelayer/parse_string.cpp'; then $(CYGPATH_W) 'tradelayer/parse_string.cpp'; else $(CYGPATH_W) '$(srcdir)/tradelayer/parse_string.cpp'; fi`
 
-omnicore/libbitcoin_server_a-parsing.o: omnicore/parsing.cpp
-	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_server_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_server_a_CXXFLAGS) $(CXXFLAGS) -MT omnicore/libbitcoin_server_a-parsing.o -MD -MP -MF omnicore/$(DEPDIR)/libbitcoin_server_a-parsing.Tpo -c -o omnicore/libbitcoin_server_a-parsing.o `test -f 'omnicore/parsing.cpp' || echo '$(srcdir)/'`omnicore/parsing.cpp
-	$(AM_V_at)$(am__mv) omnicore/$(DEPDIR)/libbitcoin_server_a-parsing.Tpo omnicore/$(DEPDIR)/libbitcoin_server_a-parsing.Po
-#	$(AM_V_CXX)source='omnicore/parsing.cpp' object='omnicore/libbitcoin_server_a-parsing.o' libtool=no \
+tradelayer/libbitcoin_server_a-parsing.o: tradelayer/parsing.cpp
+	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_server_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_server_a_CXXFLAGS) $(CXXFLAGS) -MT tradelayer/libbitcoin_server_a-parsing.o -MD -MP -MF tradelayer/$(DEPDIR)/libbitcoin_server_a-parsing.Tpo -c -o tradelayer/libbitcoin_server_a-parsing.o `test -f 'tradelayer/parsing.cpp' || echo '$(srcdir)/'`tradelayer/parsing.cpp
+	$(AM_V_at)$(am__mv) tradelayer/$(DEPDIR)/libbitcoin_server_a-parsing.Tpo tradelayer/$(DEPDIR)/libbitcoin_server_a-parsing.Po
+#	$(AM_V_CXX)source='tradelayer/parsing.cpp' object='tradelayer/libbitcoin_server_a-parsing.o' libtool=no \
 #	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) \
-#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_server_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_server_a_CXXFLAGS) $(CXXFLAGS) -c -o omnicore/libbitcoin_server_a-parsing.o `test -f 'omnicore/parsing.cpp' || echo '$(srcdir)/'`omnicore/parsing.cpp
+#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_server_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_server_a_CXXFLAGS) $(CXXFLAGS) -c -o tradelayer/libbitcoin_server_a-parsing.o `test -f 'tradelayer/parsing.cpp' || echo '$(srcdir)/'`tradelayer/parsing.cpp
 
-omnicore/libbitcoin_server_a-parsing.obj: omnicore/parsing.cpp
-	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_server_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_server_a_CXXFLAGS) $(CXXFLAGS) -MT omnicore/libbitcoin_server_a-parsing.obj -MD -MP -MF omnicore/$(DEPDIR)/libbitcoin_server_a-parsing.Tpo -c -o omnicore/libbitcoin_server_a-parsing.obj `if test -f 'omnicore/parsing.cpp'; then $(CYGPATH_W) 'omnicore/parsing.cpp'; else $(CYGPATH_W) '$(srcdir)/omnicore/parsing.cpp'; fi`
-	$(AM_V_at)$(am__mv) omnicore/$(DEPDIR)/libbitcoin_server_a-parsing.Tpo omnicore/$(DEPDIR)/libbitcoin_server_a-parsing.Po
-#	$(AM_V_CXX)source='omnicore/parsing.cpp' object='omnicore/libbitcoin_server_a-parsing.obj' libtool=no \
+tradelayer/libbitcoin_server_a-parsing.obj: tradelayer/parsing.cpp
+	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_server_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_server_a_CXXFLAGS) $(CXXFLAGS) -MT tradelayer/libbitcoin_server_a-parsing.obj -MD -MP -MF tradelayer/$(DEPDIR)/libbitcoin_server_a-parsing.Tpo -c -o tradelayer/libbitcoin_server_a-parsing.obj `if test -f 'tradelayer/parsing.cpp'; then $(CYGPATH_W) 'tradelayer/parsing.cpp'; else $(CYGPATH_W) '$(srcdir)/tradelayer/parsing.cpp'; fi`
+	$(AM_V_at)$(am__mv) tradelayer/$(DEPDIR)/libbitcoin_server_a-parsing.Tpo tradelayer/$(DEPDIR)/libbitcoin_server_a-parsing.Po
+#	$(AM_V_CXX)source='tradelayer/parsing.cpp' object='tradelayer/libbitcoin_server_a-parsing.obj' libtool=no \
 #	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) \
-#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_server_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_server_a_CXXFLAGS) $(CXXFLAGS) -c -o omnicore/libbitcoin_server_a-parsing.obj `if test -f 'omnicore/parsing.cpp'; then $(CYGPATH_W) 'omnicore/parsing.cpp'; else $(CYGPATH_W) '$(srcdir)/omnicore/parsing.cpp'; fi`
+#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_server_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_server_a_CXXFLAGS) $(CXXFLAGS) -c -o tradelayer/libbitcoin_server_a-parsing.obj `if test -f 'tradelayer/parsing.cpp'; then $(CYGPATH_W) 'tradelayer/parsing.cpp'; else $(CYGPATH_W) '$(srcdir)/tradelayer/parsing.cpp'; fi`
 
-omnicore/libbitcoin_server_a-pending.o: omnicore/pending.cpp
-	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_server_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_server_a_CXXFLAGS) $(CXXFLAGS) -MT omnicore/libbitcoin_server_a-pending.o -MD -MP -MF omnicore/$(DEPDIR)/libbitcoin_server_a-pending.Tpo -c -o omnicore/libbitcoin_server_a-pending.o `test -f 'omnicore/pending.cpp' || echo '$(srcdir)/'`omnicore/pending.cpp
-	$(AM_V_at)$(am__mv) omnicore/$(DEPDIR)/libbitcoin_server_a-pending.Tpo omnicore/$(DEPDIR)/libbitcoin_server_a-pending.Po
-#	$(AM_V_CXX)source='omnicore/pending.cpp' object='omnicore/libbitcoin_server_a-pending.o' libtool=no \
+tradelayer/libbitcoin_server_a-pending.o: tradelayer/pending.cpp
+	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_server_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_server_a_CXXFLAGS) $(CXXFLAGS) -MT tradelayer/libbitcoin_server_a-pending.o -MD -MP -MF tradelayer/$(DEPDIR)/libbitcoin_server_a-pending.Tpo -c -o tradelayer/libbitcoin_server_a-pending.o `test -f 'tradelayer/pending.cpp' || echo '$(srcdir)/'`tradelayer/pending.cpp
+	$(AM_V_at)$(am__mv) tradelayer/$(DEPDIR)/libbitcoin_server_a-pending.Tpo tradelayer/$(DEPDIR)/libbitcoin_server_a-pending.Po
+#	$(AM_V_CXX)source='tradelayer/pending.cpp' object='tradelayer/libbitcoin_server_a-pending.o' libtool=no \
 #	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) \
-#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_server_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_server_a_CXXFLAGS) $(CXXFLAGS) -c -o omnicore/libbitcoin_server_a-pending.o `test -f 'omnicore/pending.cpp' || echo '$(srcdir)/'`omnicore/pending.cpp
+#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_server_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_server_a_CXXFLAGS) $(CXXFLAGS) -c -o tradelayer/libbitcoin_server_a-pending.o `test -f 'tradelayer/pending.cpp' || echo '$(srcdir)/'`tradelayer/pending.cpp
 
-omnicore/libbitcoin_server_a-pending.obj: omnicore/pending.cpp
-	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_server_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_server_a_CXXFLAGS) $(CXXFLAGS) -MT omnicore/libbitcoin_server_a-pending.obj -MD -MP -MF omnicore/$(DEPDIR)/libbitcoin_server_a-pending.Tpo -c -o omnicore/libbitcoin_server_a-pending.obj `if test -f 'omnicore/pending.cpp'; then $(CYGPATH_W) 'omnicore/pending.cpp'; else $(CYGPATH_W) '$(srcdir)/omnicore/pending.cpp'; fi`
-	$(AM_V_at)$(am__mv) omnicore/$(DEPDIR)/libbitcoin_server_a-pending.Tpo omnicore/$(DEPDIR)/libbitcoin_server_a-pending.Po
-#	$(AM_V_CXX)source='omnicore/pending.cpp' object='omnicore/libbitcoin_server_a-pending.obj' libtool=no \
+tradelayer/libbitcoin_server_a-pending.obj: tradelayer/pending.cpp
+	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_server_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_server_a_CXXFLAGS) $(CXXFLAGS) -MT tradelayer/libbitcoin_server_a-pending.obj -MD -MP -MF tradelayer/$(DEPDIR)/libbitcoin_server_a-pending.Tpo -c -o tradelayer/libbitcoin_server_a-pending.obj `if test -f 'tradelayer/pending.cpp'; then $(CYGPATH_W) 'tradelayer/pending.cpp'; else $(CYGPATH_W) '$(srcdir)/tradelayer/pending.cpp'; fi`
+	$(AM_V_at)$(am__mv) tradelayer/$(DEPDIR)/libbitcoin_server_a-pending.Tpo tradelayer/$(DEPDIR)/libbitcoin_server_a-pending.Po
+#	$(AM_V_CXX)source='tradelayer/pending.cpp' object='tradelayer/libbitcoin_server_a-pending.obj' libtool=no \
 #	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) \
-#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_server_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_server_a_CXXFLAGS) $(CXXFLAGS) -c -o omnicore/libbitcoin_server_a-pending.obj `if test -f 'omnicore/pending.cpp'; then $(CYGPATH_W) 'omnicore/pending.cpp'; else $(CYGPATH_W) '$(srcdir)/omnicore/pending.cpp'; fi`
+#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_server_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_server_a_CXXFLAGS) $(CXXFLAGS) -c -o tradelayer/libbitcoin_server_a-pending.obj `if test -f 'tradelayer/pending.cpp'; then $(CYGPATH_W) 'tradelayer/pending.cpp'; else $(CYGPATH_W) '$(srcdir)/tradelayer/pending.cpp'; fi`
 
-omnicore/libbitcoin_server_a-persistence.o: omnicore/persistence.cpp
-	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_server_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_server_a_CXXFLAGS) $(CXXFLAGS) -MT omnicore/libbitcoin_server_a-persistence.o -MD -MP -MF omnicore/$(DEPDIR)/libbitcoin_server_a-persistence.Tpo -c -o omnicore/libbitcoin_server_a-persistence.o `test -f 'omnicore/persistence.cpp' || echo '$(srcdir)/'`omnicore/persistence.cpp
-	$(AM_V_at)$(am__mv) omnicore/$(DEPDIR)/libbitcoin_server_a-persistence.Tpo omnicore/$(DEPDIR)/libbitcoin_server_a-persistence.Po
-#	$(AM_V_CXX)source='omnicore/persistence.cpp' object='omnicore/libbitcoin_server_a-persistence.o' libtool=no \
+tradelayer/libbitcoin_server_a-persistence.o: tradelayer/persistence.cpp
+	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_server_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_server_a_CXXFLAGS) $(CXXFLAGS) -MT tradelayer/libbitcoin_server_a-persistence.o -MD -MP -MF tradelayer/$(DEPDIR)/libbitcoin_server_a-persistence.Tpo -c -o tradelayer/libbitcoin_server_a-persistence.o `test -f 'tradelayer/persistence.cpp' || echo '$(srcdir)/'`tradelayer/persistence.cpp
+	$(AM_V_at)$(am__mv) tradelayer/$(DEPDIR)/libbitcoin_server_a-persistence.Tpo tradelayer/$(DEPDIR)/libbitcoin_server_a-persistence.Po
+#	$(AM_V_CXX)source='tradelayer/persistence.cpp' object='tradelayer/libbitcoin_server_a-persistence.o' libtool=no \
 #	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) \
-#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_server_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_server_a_CXXFLAGS) $(CXXFLAGS) -c -o omnicore/libbitcoin_server_a-persistence.o `test -f 'omnicore/persistence.cpp' || echo '$(srcdir)/'`omnicore/persistence.cpp
+#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_server_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_server_a_CXXFLAGS) $(CXXFLAGS) -c -o tradelayer/libbitcoin_server_a-persistence.o `test -f 'tradelayer/persistence.cpp' || echo '$(srcdir)/'`tradelayer/persistence.cpp
 
-omnicore/libbitcoin_server_a-persistence.obj: omnicore/persistence.cpp
-	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_server_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_server_a_CXXFLAGS) $(CXXFLAGS) -MT omnicore/libbitcoin_server_a-persistence.obj -MD -MP -MF omnicore/$(DEPDIR)/libbitcoin_server_a-persistence.Tpo -c -o omnicore/libbitcoin_server_a-persistence.obj `if test -f 'omnicore/persistence.cpp'; then $(CYGPATH_W) 'omnicore/persistence.cpp'; else $(CYGPATH_W) '$(srcdir)/omnicore/persistence.cpp'; fi`
-	$(AM_V_at)$(am__mv) omnicore/$(DEPDIR)/libbitcoin_server_a-persistence.Tpo omnicore/$(DEPDIR)/libbitcoin_server_a-persistence.Po
-#	$(AM_V_CXX)source='omnicore/persistence.cpp' object='omnicore/libbitcoin_server_a-persistence.obj' libtool=no \
+tradelayer/libbitcoin_server_a-persistence.obj: tradelayer/persistence.cpp
+	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_server_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_server_a_CXXFLAGS) $(CXXFLAGS) -MT tradelayer/libbitcoin_server_a-persistence.obj -MD -MP -MF tradelayer/$(DEPDIR)/libbitcoin_server_a-persistence.Tpo -c -o tradelayer/libbitcoin_server_a-persistence.obj `if test -f 'tradelayer/persistence.cpp'; then $(CYGPATH_W) 'tradelayer/persistence.cpp'; else $(CYGPATH_W) '$(srcdir)/tradelayer/persistence.cpp'; fi`
+	$(AM_V_at)$(am__mv) tradelayer/$(DEPDIR)/libbitcoin_server_a-persistence.Tpo tradelayer/$(DEPDIR)/libbitcoin_server_a-persistence.Po
+#	$(AM_V_CXX)source='tradelayer/persistence.cpp' object='tradelayer/libbitcoin_server_a-persistence.obj' libtool=no \
 #	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) \
-#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_server_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_server_a_CXXFLAGS) $(CXXFLAGS) -c -o omnicore/libbitcoin_server_a-persistence.obj `if test -f 'omnicore/persistence.cpp'; then $(CYGPATH_W) 'omnicore/persistence.cpp'; else $(CYGPATH_W) '$(srcdir)/omnicore/persistence.cpp'; fi`
+#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_server_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_server_a_CXXFLAGS) $(CXXFLAGS) -c -o tradelayer/libbitcoin_server_a-persistence.obj `if test -f 'tradelayer/persistence.cpp'; then $(CYGPATH_W) 'tradelayer/persistence.cpp'; else $(CYGPATH_W) '$(srcdir)/tradelayer/persistence.cpp'; fi`
 
-omnicore/libbitcoin_server_a-rpc.o: omnicore/rpc.cpp
-	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_server_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_server_a_CXXFLAGS) $(CXXFLAGS) -MT omnicore/libbitcoin_server_a-rpc.o -MD -MP -MF omnicore/$(DEPDIR)/libbitcoin_server_a-rpc.Tpo -c -o omnicore/libbitcoin_server_a-rpc.o `test -f 'omnicore/rpc.cpp' || echo '$(srcdir)/'`omnicore/rpc.cpp
-	$(AM_V_at)$(am__mv) omnicore/$(DEPDIR)/libbitcoin_server_a-rpc.Tpo omnicore/$(DEPDIR)/libbitcoin_server_a-rpc.Po
-#	$(AM_V_CXX)source='omnicore/rpc.cpp' object='omnicore/libbitcoin_server_a-rpc.o' libtool=no \
+tradelayer/libbitcoin_server_a-rpc.o: tradelayer/rpc.cpp
+	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_server_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_server_a_CXXFLAGS) $(CXXFLAGS) -MT tradelayer/libbitcoin_server_a-rpc.o -MD -MP -MF tradelayer/$(DEPDIR)/libbitcoin_server_a-rpc.Tpo -c -o tradelayer/libbitcoin_server_a-rpc.o `test -f 'tradelayer/rpc.cpp' || echo '$(srcdir)/'`tradelayer/rpc.cpp
+	$(AM_V_at)$(am__mv) tradelayer/$(DEPDIR)/libbitcoin_server_a-rpc.Tpo tradelayer/$(DEPDIR)/libbitcoin_server_a-rpc.Po
+#	$(AM_V_CXX)source='tradelayer/rpc.cpp' object='tradelayer/libbitcoin_server_a-rpc.o' libtool=no \
 #	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) \
-#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_server_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_server_a_CXXFLAGS) $(CXXFLAGS) -c -o omnicore/libbitcoin_server_a-rpc.o `test -f 'omnicore/rpc.cpp' || echo '$(srcdir)/'`omnicore/rpc.cpp
+#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_server_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_server_a_CXXFLAGS) $(CXXFLAGS) -c -o tradelayer/libbitcoin_server_a-rpc.o `test -f 'tradelayer/rpc.cpp' || echo '$(srcdir)/'`tradelayer/rpc.cpp
 
-omnicore/libbitcoin_server_a-rpc.obj: omnicore/rpc.cpp
-	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_server_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_server_a_CXXFLAGS) $(CXXFLAGS) -MT omnicore/libbitcoin_server_a-rpc.obj -MD -MP -MF omnicore/$(DEPDIR)/libbitcoin_server_a-rpc.Tpo -c -o omnicore/libbitcoin_server_a-rpc.obj `if test -f 'omnicore/rpc.cpp'; then $(CYGPATH_W) 'omnicore/rpc.cpp'; else $(CYGPATH_W) '$(srcdir)/omnicore/rpc.cpp'; fi`
-	$(AM_V_at)$(am__mv) omnicore/$(DEPDIR)/libbitcoin_server_a-rpc.Tpo omnicore/$(DEPDIR)/libbitcoin_server_a-rpc.Po
-#	$(AM_V_CXX)source='omnicore/rpc.cpp' object='omnicore/libbitcoin_server_a-rpc.obj' libtool=no \
+tradelayer/libbitcoin_server_a-rpc.obj: tradelayer/rpc.cpp
+	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_server_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_server_a_CXXFLAGS) $(CXXFLAGS) -MT tradelayer/libbitcoin_server_a-rpc.obj -MD -MP -MF tradelayer/$(DEPDIR)/libbitcoin_server_a-rpc.Tpo -c -o tradelayer/libbitcoin_server_a-rpc.obj `if test -f 'tradelayer/rpc.cpp'; then $(CYGPATH_W) 'tradelayer/rpc.cpp'; else $(CYGPATH_W) '$(srcdir)/tradelayer/rpc.cpp'; fi`
+	$(AM_V_at)$(am__mv) tradelayer/$(DEPDIR)/libbitcoin_server_a-rpc.Tpo tradelayer/$(DEPDIR)/libbitcoin_server_a-rpc.Po
+#	$(AM_V_CXX)source='tradelayer/rpc.cpp' object='tradelayer/libbitcoin_server_a-rpc.obj' libtool=no \
 #	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) \
-#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_server_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_server_a_CXXFLAGS) $(CXXFLAGS) -c -o omnicore/libbitcoin_server_a-rpc.obj `if test -f 'omnicore/rpc.cpp'; then $(CYGPATH_W) 'omnicore/rpc.cpp'; else $(CYGPATH_W) '$(srcdir)/omnicore/rpc.cpp'; fi`
+#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_server_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_server_a_CXXFLAGS) $(CXXFLAGS) -c -o tradelayer/libbitcoin_server_a-rpc.obj `if test -f 'tradelayer/rpc.cpp'; then $(CYGPATH_W) 'tradelayer/rpc.cpp'; else $(CYGPATH_W) '$(srcdir)/tradelayer/rpc.cpp'; fi`
 
-omnicore/libbitcoin_server_a-rpcmbstring.o: omnicore/rpcmbstring.cpp
-	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_server_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_server_a_CXXFLAGS) $(CXXFLAGS) -MT omnicore/libbitcoin_server_a-rpcmbstring.o -MD -MP -MF omnicore/$(DEPDIR)/libbitcoin_server_a-rpcmbstring.Tpo -c -o omnicore/libbitcoin_server_a-rpcmbstring.o `test -f 'omnicore/rpcmbstring.cpp' || echo '$(srcdir)/'`omnicore/rpcmbstring.cpp
-	$(AM_V_at)$(am__mv) omnicore/$(DEPDIR)/libbitcoin_server_a-rpcmbstring.Tpo omnicore/$(DEPDIR)/libbitcoin_server_a-rpcmbstring.Po
-#	$(AM_V_CXX)source='omnicore/rpcmbstring.cpp' object='omnicore/libbitcoin_server_a-rpcmbstring.o' libtool=no \
+tradelayer/libbitcoin_server_a-rpcmbstring.o: tradelayer/rpcmbstring.cpp
+	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_server_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_server_a_CXXFLAGS) $(CXXFLAGS) -MT tradelayer/libbitcoin_server_a-rpcmbstring.o -MD -MP -MF tradelayer/$(DEPDIR)/libbitcoin_server_a-rpcmbstring.Tpo -c -o tradelayer/libbitcoin_server_a-rpcmbstring.o `test -f 'tradelayer/rpcmbstring.cpp' || echo '$(srcdir)/'`tradelayer/rpcmbstring.cpp
+	$(AM_V_at)$(am__mv) tradelayer/$(DEPDIR)/libbitcoin_server_a-rpcmbstring.Tpo tradelayer/$(DEPDIR)/libbitcoin_server_a-rpcmbstring.Po
+#	$(AM_V_CXX)source='tradelayer/rpcmbstring.cpp' object='tradelayer/libbitcoin_server_a-rpcmbstring.o' libtool=no \
 #	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) \
-#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_server_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_server_a_CXXFLAGS) $(CXXFLAGS) -c -o omnicore/libbitcoin_server_a-rpcmbstring.o `test -f 'omnicore/rpcmbstring.cpp' || echo '$(srcdir)/'`omnicore/rpcmbstring.cpp
+#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_server_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_server_a_CXXFLAGS) $(CXXFLAGS) -c -o tradelayer/libbitcoin_server_a-rpcmbstring.o `test -f 'tradelayer/rpcmbstring.cpp' || echo '$(srcdir)/'`tradelayer/rpcmbstring.cpp
 
-omnicore/libbitcoin_server_a-rpcmbstring.obj: omnicore/rpcmbstring.cpp
-	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_server_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_server_a_CXXFLAGS) $(CXXFLAGS) -MT omnicore/libbitcoin_server_a-rpcmbstring.obj -MD -MP -MF omnicore/$(DEPDIR)/libbitcoin_server_a-rpcmbstring.Tpo -c -o omnicore/libbitcoin_server_a-rpcmbstring.obj `if test -f 'omnicore/rpcmbstring.cpp'; then $(CYGPATH_W) 'omnicore/rpcmbstring.cpp'; else $(CYGPATH_W) '$(srcdir)/omnicore/rpcmbstring.cpp'; fi`
-	$(AM_V_at)$(am__mv) omnicore/$(DEPDIR)/libbitcoin_server_a-rpcmbstring.Tpo omnicore/$(DEPDIR)/libbitcoin_server_a-rpcmbstring.Po
-#	$(AM_V_CXX)source='omnicore/rpcmbstring.cpp' object='omnicore/libbitcoin_server_a-rpcmbstring.obj' libtool=no \
+tradelayer/libbitcoin_server_a-rpcmbstring.obj: tradelayer/rpcmbstring.cpp
+	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_server_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_server_a_CXXFLAGS) $(CXXFLAGS) -MT tradelayer/libbitcoin_server_a-rpcmbstring.obj -MD -MP -MF tradelayer/$(DEPDIR)/libbitcoin_server_a-rpcmbstring.Tpo -c -o tradelayer/libbitcoin_server_a-rpcmbstring.obj `if test -f 'tradelayer/rpcmbstring.cpp'; then $(CYGPATH_W) 'tradelayer/rpcmbstring.cpp'; else $(CYGPATH_W) '$(srcdir)/tradelayer/rpcmbstring.cpp'; fi`
+	$(AM_V_at)$(am__mv) tradelayer/$(DEPDIR)/libbitcoin_server_a-rpcmbstring.Tpo tradelayer/$(DEPDIR)/libbitcoin_server_a-rpcmbstring.Po
+#	$(AM_V_CXX)source='tradelayer/rpcmbstring.cpp' object='tradelayer/libbitcoin_server_a-rpcmbstring.obj' libtool=no \
 #	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) \
-#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_server_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_server_a_CXXFLAGS) $(CXXFLAGS) -c -o omnicore/libbitcoin_server_a-rpcmbstring.obj `if test -f 'omnicore/rpcmbstring.cpp'; then $(CYGPATH_W) 'omnicore/rpcmbstring.cpp'; else $(CYGPATH_W) '$(srcdir)/omnicore/rpcmbstring.cpp'; fi`
+#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_server_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_server_a_CXXFLAGS) $(CXXFLAGS) -c -o tradelayer/libbitcoin_server_a-rpcmbstring.obj `if test -f 'tradelayer/rpcmbstring.cpp'; then $(CYGPATH_W) 'tradelayer/rpcmbstring.cpp'; else $(CYGPATH_W) '$(srcdir)/tradelayer/rpcmbstring.cpp'; fi`
 
-omnicore/libbitcoin_server_a-rpcpayload.o: omnicore/rpcpayload.cpp
-	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_server_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_server_a_CXXFLAGS) $(CXXFLAGS) -MT omnicore/libbitcoin_server_a-rpcpayload.o -MD -MP -MF omnicore/$(DEPDIR)/libbitcoin_server_a-rpcpayload.Tpo -c -o omnicore/libbitcoin_server_a-rpcpayload.o `test -f 'omnicore/rpcpayload.cpp' || echo '$(srcdir)/'`omnicore/rpcpayload.cpp
-	$(AM_V_at)$(am__mv) omnicore/$(DEPDIR)/libbitcoin_server_a-rpcpayload.Tpo omnicore/$(DEPDIR)/libbitcoin_server_a-rpcpayload.Po
-#	$(AM_V_CXX)source='omnicore/rpcpayload.cpp' object='omnicore/libbitcoin_server_a-rpcpayload.o' libtool=no \
+tradelayer/libbitcoin_server_a-rpcpayload.o: tradelayer/rpcpayload.cpp
+	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_server_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_server_a_CXXFLAGS) $(CXXFLAGS) -MT tradelayer/libbitcoin_server_a-rpcpayload.o -MD -MP -MF tradelayer/$(DEPDIR)/libbitcoin_server_a-rpcpayload.Tpo -c -o tradelayer/libbitcoin_server_a-rpcpayload.o `test -f 'tradelayer/rpcpayload.cpp' || echo '$(srcdir)/'`tradelayer/rpcpayload.cpp
+	$(AM_V_at)$(am__mv) tradelayer/$(DEPDIR)/libbitcoin_server_a-rpcpayload.Tpo tradelayer/$(DEPDIR)/libbitcoin_server_a-rpcpayload.Po
+#	$(AM_V_CXX)source='tradelayer/rpcpayload.cpp' object='tradelayer/libbitcoin_server_a-rpcpayload.o' libtool=no \
 #	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) \
-#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_server_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_server_a_CXXFLAGS) $(CXXFLAGS) -c -o omnicore/libbitcoin_server_a-rpcpayload.o `test -f 'omnicore/rpcpayload.cpp' || echo '$(srcdir)/'`omnicore/rpcpayload.cpp
+#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_server_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_server_a_CXXFLAGS) $(CXXFLAGS) -c -o tradelayer/libbitcoin_server_a-rpcpayload.o `test -f 'tradelayer/rpcpayload.cpp' || echo '$(srcdir)/'`tradelayer/rpcpayload.cpp
 
-omnicore/libbitcoin_server_a-rpcpayload.obj: omnicore/rpcpayload.cpp
-	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_server_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_server_a_CXXFLAGS) $(CXXFLAGS) -MT omnicore/libbitcoin_server_a-rpcpayload.obj -MD -MP -MF omnicore/$(DEPDIR)/libbitcoin_server_a-rpcpayload.Tpo -c -o omnicore/libbitcoin_server_a-rpcpayload.obj `if test -f 'omnicore/rpcpayload.cpp'; then $(CYGPATH_W) 'omnicore/rpcpayload.cpp'; else $(CYGPATH_W) '$(srcdir)/omnicore/rpcpayload.cpp'; fi`
-	$(AM_V_at)$(am__mv) omnicore/$(DEPDIR)/libbitcoin_server_a-rpcpayload.Tpo omnicore/$(DEPDIR)/libbitcoin_server_a-rpcpayload.Po
-#	$(AM_V_CXX)source='omnicore/rpcpayload.cpp' object='omnicore/libbitcoin_server_a-rpcpayload.obj' libtool=no \
+tradelayer/libbitcoin_server_a-rpcpayload.obj: tradelayer/rpcpayload.cpp
+	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_server_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_server_a_CXXFLAGS) $(CXXFLAGS) -MT tradelayer/libbitcoin_server_a-rpcpayload.obj -MD -MP -MF tradelayer/$(DEPDIR)/libbitcoin_server_a-rpcpayload.Tpo -c -o tradelayer/libbitcoin_server_a-rpcpayload.obj `if test -f 'tradelayer/rpcpayload.cpp'; then $(CYGPATH_W) 'tradelayer/rpcpayload.cpp'; else $(CYGPATH_W) '$(srcdir)/tradelayer/rpcpayload.cpp'; fi`
+	$(AM_V_at)$(am__mv) tradelayer/$(DEPDIR)/libbitcoin_server_a-rpcpayload.Tpo tradelayer/$(DEPDIR)/libbitcoin_server_a-rpcpayload.Po
+#	$(AM_V_CXX)source='tradelayer/rpcpayload.cpp' object='tradelayer/libbitcoin_server_a-rpcpayload.obj' libtool=no \
 #	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) \
-#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_server_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_server_a_CXXFLAGS) $(CXXFLAGS) -c -o omnicore/libbitcoin_server_a-rpcpayload.obj `if test -f 'omnicore/rpcpayload.cpp'; then $(CYGPATH_W) 'omnicore/rpcpayload.cpp'; else $(CYGPATH_W) '$(srcdir)/omnicore/rpcpayload.cpp'; fi`
+#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_server_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_server_a_CXXFLAGS) $(CXXFLAGS) -c -o tradelayer/libbitcoin_server_a-rpcpayload.obj `if test -f 'tradelayer/rpcpayload.cpp'; then $(CYGPATH_W) 'tradelayer/rpcpayload.cpp'; else $(CYGPATH_W) '$(srcdir)/tradelayer/rpcpayload.cpp'; fi`
 
-omnicore/libbitcoin_server_a-rpcrawtx.o: omnicore/rpcrawtx.cpp
-	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_server_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_server_a_CXXFLAGS) $(CXXFLAGS) -MT omnicore/libbitcoin_server_a-rpcrawtx.o -MD -MP -MF omnicore/$(DEPDIR)/libbitcoin_server_a-rpcrawtx.Tpo -c -o omnicore/libbitcoin_server_a-rpcrawtx.o `test -f 'omnicore/rpcrawtx.cpp' || echo '$(srcdir)/'`omnicore/rpcrawtx.cpp
-	$(AM_V_at)$(am__mv) omnicore/$(DEPDIR)/libbitcoin_server_a-rpcrawtx.Tpo omnicore/$(DEPDIR)/libbitcoin_server_a-rpcrawtx.Po
-#	$(AM_V_CXX)source='omnicore/rpcrawtx.cpp' object='omnicore/libbitcoin_server_a-rpcrawtx.o' libtool=no \
+tradelayer/libbitcoin_server_a-rpcrawtx.o: tradelayer/rpcrawtx.cpp
+	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_server_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_server_a_CXXFLAGS) $(CXXFLAGS) -MT tradelayer/libbitcoin_server_a-rpcrawtx.o -MD -MP -MF tradelayer/$(DEPDIR)/libbitcoin_server_a-rpcrawtx.Tpo -c -o tradelayer/libbitcoin_server_a-rpcrawtx.o `test -f 'tradelayer/rpcrawtx.cpp' || echo '$(srcdir)/'`tradelayer/rpcrawtx.cpp
+	$(AM_V_at)$(am__mv) tradelayer/$(DEPDIR)/libbitcoin_server_a-rpcrawtx.Tpo tradelayer/$(DEPDIR)/libbitcoin_server_a-rpcrawtx.Po
+#	$(AM_V_CXX)source='tradelayer/rpcrawtx.cpp' object='tradelayer/libbitcoin_server_a-rpcrawtx.o' libtool=no \
 #	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) \
-#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_server_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_server_a_CXXFLAGS) $(CXXFLAGS) -c -o omnicore/libbitcoin_server_a-rpcrawtx.o `test -f 'omnicore/rpcrawtx.cpp' || echo '$(srcdir)/'`omnicore/rpcrawtx.cpp
+#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_server_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_server_a_CXXFLAGS) $(CXXFLAGS) -c -o tradelayer/libbitcoin_server_a-rpcrawtx.o `test -f 'tradelayer/rpcrawtx.cpp' || echo '$(srcdir)/'`tradelayer/rpcrawtx.cpp
 
-omnicore/libbitcoin_server_a-rpcrawtx.obj: omnicore/rpcrawtx.cpp
-	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_server_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_server_a_CXXFLAGS) $(CXXFLAGS) -MT omnicore/libbitcoin_server_a-rpcrawtx.obj -MD -MP -MF omnicore/$(DEPDIR)/libbitcoin_server_a-rpcrawtx.Tpo -c -o omnicore/libbitcoin_server_a-rpcrawtx.obj `if test -f 'omnicore/rpcrawtx.cpp'; then $(CYGPATH_W) 'omnicore/rpcrawtx.cpp'; else $(CYGPATH_W) '$(srcdir)/omnicore/rpcrawtx.cpp'; fi`
-	$(AM_V_at)$(am__mv) omnicore/$(DEPDIR)/libbitcoin_server_a-rpcrawtx.Tpo omnicore/$(DEPDIR)/libbitcoin_server_a-rpcrawtx.Po
-#	$(AM_V_CXX)source='omnicore/rpcrawtx.cpp' object='omnicore/libbitcoin_server_a-rpcrawtx.obj' libtool=no \
+tradelayer/libbitcoin_server_a-rpcrawtx.obj: tradelayer/rpcrawtx.cpp
+	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_server_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_server_a_CXXFLAGS) $(CXXFLAGS) -MT tradelayer/libbitcoin_server_a-rpcrawtx.obj -MD -MP -MF tradelayer/$(DEPDIR)/libbitcoin_server_a-rpcrawtx.Tpo -c -o tradelayer/libbitcoin_server_a-rpcrawtx.obj `if test -f 'tradelayer/rpcrawtx.cpp'; then $(CYGPATH_W) 'tradelayer/rpcrawtx.cpp'; else $(CYGPATH_W) '$(srcdir)/tradelayer/rpcrawtx.cpp'; fi`
+	$(AM_V_at)$(am__mv) tradelayer/$(DEPDIR)/libbitcoin_server_a-rpcrawtx.Tpo tradelayer/$(DEPDIR)/libbitcoin_server_a-rpcrawtx.Po
+#	$(AM_V_CXX)source='tradelayer/rpcrawtx.cpp' object='tradelayer/libbitcoin_server_a-rpcrawtx.obj' libtool=no \
 #	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) \
-#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_server_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_server_a_CXXFLAGS) $(CXXFLAGS) -c -o omnicore/libbitcoin_server_a-rpcrawtx.obj `if test -f 'omnicore/rpcrawtx.cpp'; then $(CYGPATH_W) 'omnicore/rpcrawtx.cpp'; else $(CYGPATH_W) '$(srcdir)/omnicore/rpcrawtx.cpp'; fi`
+#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_server_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_server_a_CXXFLAGS) $(CXXFLAGS) -c -o tradelayer/libbitcoin_server_a-rpcrawtx.obj `if test -f 'tradelayer/rpcrawtx.cpp'; then $(CYGPATH_W) 'tradelayer/rpcrawtx.cpp'; else $(CYGPATH_W) '$(srcdir)/tradelayer/rpcrawtx.cpp'; fi`
 
-omnicore/libbitcoin_server_a-rpcrequirements.o: omnicore/rpcrequirements.cpp
-	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_server_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_server_a_CXXFLAGS) $(CXXFLAGS) -MT omnicore/libbitcoin_server_a-rpcrequirements.o -MD -MP -MF omnicore/$(DEPDIR)/libbitcoin_server_a-rpcrequirements.Tpo -c -o omnicore/libbitcoin_server_a-rpcrequirements.o `test -f 'omnicore/rpcrequirements.cpp' || echo '$(srcdir)/'`omnicore/rpcrequirements.cpp
-	$(AM_V_at)$(am__mv) omnicore/$(DEPDIR)/libbitcoin_server_a-rpcrequirements.Tpo omnicore/$(DEPDIR)/libbitcoin_server_a-rpcrequirements.Po
-#	$(AM_V_CXX)source='omnicore/rpcrequirements.cpp' object='omnicore/libbitcoin_server_a-rpcrequirements.o' libtool=no \
+tradelayer/libbitcoin_server_a-rpcrequirements.o: tradelayer/rpcrequirements.cpp
+	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_server_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_server_a_CXXFLAGS) $(CXXFLAGS) -MT tradelayer/libbitcoin_server_a-rpcrequirements.o -MD -MP -MF tradelayer/$(DEPDIR)/libbitcoin_server_a-rpcrequirements.Tpo -c -o tradelayer/libbitcoin_server_a-rpcrequirements.o `test -f 'tradelayer/rpcrequirements.cpp' || echo '$(srcdir)/'`tradelayer/rpcrequirements.cpp
+	$(AM_V_at)$(am__mv) tradelayer/$(DEPDIR)/libbitcoin_server_a-rpcrequirements.Tpo tradelayer/$(DEPDIR)/libbitcoin_server_a-rpcrequirements.Po
+#	$(AM_V_CXX)source='tradelayer/rpcrequirements.cpp' object='tradelayer/libbitcoin_server_a-rpcrequirements.o' libtool=no \
 #	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) \
-#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_server_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_server_a_CXXFLAGS) $(CXXFLAGS) -c -o omnicore/libbitcoin_server_a-rpcrequirements.o `test -f 'omnicore/rpcrequirements.cpp' || echo '$(srcdir)/'`omnicore/rpcrequirements.cpp
+#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_server_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_server_a_CXXFLAGS) $(CXXFLAGS) -c -o tradelayer/libbitcoin_server_a-rpcrequirements.o `test -f 'tradelayer/rpcrequirements.cpp' || echo '$(srcdir)/'`tradelayer/rpcrequirements.cpp
 
-omnicore/libbitcoin_server_a-rpcrequirements.obj: omnicore/rpcrequirements.cpp
-	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_server_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_server_a_CXXFLAGS) $(CXXFLAGS) -MT omnicore/libbitcoin_server_a-rpcrequirements.obj -MD -MP -MF omnicore/$(DEPDIR)/libbitcoin_server_a-rpcrequirements.Tpo -c -o omnicore/libbitcoin_server_a-rpcrequirements.obj `if test -f 'omnicore/rpcrequirements.cpp'; then $(CYGPATH_W) 'omnicore/rpcrequirements.cpp'; else $(CYGPATH_W) '$(srcdir)/omnicore/rpcrequirements.cpp'; fi`
-	$(AM_V_at)$(am__mv) omnicore/$(DEPDIR)/libbitcoin_server_a-rpcrequirements.Tpo omnicore/$(DEPDIR)/libbitcoin_server_a-rpcrequirements.Po
-#	$(AM_V_CXX)source='omnicore/rpcrequirements.cpp' object='omnicore/libbitcoin_server_a-rpcrequirements.obj' libtool=no \
+tradelayer/libbitcoin_server_a-rpcrequirements.obj: tradelayer/rpcrequirements.cpp
+	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_server_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_server_a_CXXFLAGS) $(CXXFLAGS) -MT tradelayer/libbitcoin_server_a-rpcrequirements.obj -MD -MP -MF tradelayer/$(DEPDIR)/libbitcoin_server_a-rpcrequirements.Tpo -c -o tradelayer/libbitcoin_server_a-rpcrequirements.obj `if test -f 'tradelayer/rpcrequirements.cpp'; then $(CYGPATH_W) 'tradelayer/rpcrequirements.cpp'; else $(CYGPATH_W) '$(srcdir)/tradelayer/rpcrequirements.cpp'; fi`
+	$(AM_V_at)$(am__mv) tradelayer/$(DEPDIR)/libbitcoin_server_a-rpcrequirements.Tpo tradelayer/$(DEPDIR)/libbitcoin_server_a-rpcrequirements.Po
+#	$(AM_V_CXX)source='tradelayer/rpcrequirements.cpp' object='tradelayer/libbitcoin_server_a-rpcrequirements.obj' libtool=no \
 #	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) \
-#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_server_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_server_a_CXXFLAGS) $(CXXFLAGS) -c -o omnicore/libbitcoin_server_a-rpcrequirements.obj `if test -f 'omnicore/rpcrequirements.cpp'; then $(CYGPATH_W) 'omnicore/rpcrequirements.cpp'; else $(CYGPATH_W) '$(srcdir)/omnicore/rpcrequirements.cpp'; fi`
+#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_server_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_server_a_CXXFLAGS) $(CXXFLAGS) -c -o tradelayer/libbitcoin_server_a-rpcrequirements.obj `if test -f 'tradelayer/rpcrequirements.cpp'; then $(CYGPATH_W) 'tradelayer/rpcrequirements.cpp'; else $(CYGPATH_W) '$(srcdir)/tradelayer/rpcrequirements.cpp'; fi`
 
-omnicore/libbitcoin_server_a-rpctx.o: omnicore/rpctx.cpp
-	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_server_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_server_a_CXXFLAGS) $(CXXFLAGS) -MT omnicore/libbitcoin_server_a-rpctx.o -MD -MP -MF omnicore/$(DEPDIR)/libbitcoin_server_a-rpctx.Tpo -c -o omnicore/libbitcoin_server_a-rpctx.o `test -f 'omnicore/rpctx.cpp' || echo '$(srcdir)/'`omnicore/rpctx.cpp
-	$(AM_V_at)$(am__mv) omnicore/$(DEPDIR)/libbitcoin_server_a-rpctx.Tpo omnicore/$(DEPDIR)/libbitcoin_server_a-rpctx.Po
-#	$(AM_V_CXX)source='omnicore/rpctx.cpp' object='omnicore/libbitcoin_server_a-rpctx.o' libtool=no \
+tradelayer/libbitcoin_server_a-rpctx.o: tradelayer/rpctx.cpp
+	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_server_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_server_a_CXXFLAGS) $(CXXFLAGS) -MT tradelayer/libbitcoin_server_a-rpctx.o -MD -MP -MF tradelayer/$(DEPDIR)/libbitcoin_server_a-rpctx.Tpo -c -o tradelayer/libbitcoin_server_a-rpctx.o `test -f 'tradelayer/rpctx.cpp' || echo '$(srcdir)/'`tradelayer/rpctx.cpp
+	$(AM_V_at)$(am__mv) tradelayer/$(DEPDIR)/libbitcoin_server_a-rpctx.Tpo tradelayer/$(DEPDIR)/libbitcoin_server_a-rpctx.Po
+#	$(AM_V_CXX)source='tradelayer/rpctx.cpp' object='tradelayer/libbitcoin_server_a-rpctx.o' libtool=no \
 #	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) \
-#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_server_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_server_a_CXXFLAGS) $(CXXFLAGS) -c -o omnicore/libbitcoin_server_a-rpctx.o `test -f 'omnicore/rpctx.cpp' || echo '$(srcdir)/'`omnicore/rpctx.cpp
+#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_server_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_server_a_CXXFLAGS) $(CXXFLAGS) -c -o tradelayer/libbitcoin_server_a-rpctx.o `test -f 'tradelayer/rpctx.cpp' || echo '$(srcdir)/'`tradelayer/rpctx.cpp
 
-omnicore/libbitcoin_server_a-rpctx.obj: omnicore/rpctx.cpp
-	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_server_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_server_a_CXXFLAGS) $(CXXFLAGS) -MT omnicore/libbitcoin_server_a-rpctx.obj -MD -MP -MF omnicore/$(DEPDIR)/libbitcoin_server_a-rpctx.Tpo -c -o omnicore/libbitcoin_server_a-rpctx.obj `if test -f 'omnicore/rpctx.cpp'; then $(CYGPATH_W) 'omnicore/rpctx.cpp'; else $(CYGPATH_W) '$(srcdir)/omnicore/rpctx.cpp'; fi`
-	$(AM_V_at)$(am__mv) omnicore/$(DEPDIR)/libbitcoin_server_a-rpctx.Tpo omnicore/$(DEPDIR)/libbitcoin_server_a-rpctx.Po
-#	$(AM_V_CXX)source='omnicore/rpctx.cpp' object='omnicore/libbitcoin_server_a-rpctx.obj' libtool=no \
+tradelayer/libbitcoin_server_a-rpctx.obj: tradelayer/rpctx.cpp
+	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_server_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_server_a_CXXFLAGS) $(CXXFLAGS) -MT tradelayer/libbitcoin_server_a-rpctx.obj -MD -MP -MF tradelayer/$(DEPDIR)/libbitcoin_server_a-rpctx.Tpo -c -o tradelayer/libbitcoin_server_a-rpctx.obj `if test -f 'tradelayer/rpctx.cpp'; then $(CYGPATH_W) 'tradelayer/rpctx.cpp'; else $(CYGPATH_W) '$(srcdir)/tradelayer/rpctx.cpp'; fi`
+	$(AM_V_at)$(am__mv) tradelayer/$(DEPDIR)/libbitcoin_server_a-rpctx.Tpo tradelayer/$(DEPDIR)/libbitcoin_server_a-rpctx.Po
+#	$(AM_V_CXX)source='tradelayer/rpctx.cpp' object='tradelayer/libbitcoin_server_a-rpctx.obj' libtool=no \
 #	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) \
-#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_server_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_server_a_CXXFLAGS) $(CXXFLAGS) -c -o omnicore/libbitcoin_server_a-rpctx.obj `if test -f 'omnicore/rpctx.cpp'; then $(CYGPATH_W) 'omnicore/rpctx.cpp'; else $(CYGPATH_W) '$(srcdir)/omnicore/rpctx.cpp'; fi`
+#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_server_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_server_a_CXXFLAGS) $(CXXFLAGS) -c -o tradelayer/libbitcoin_server_a-rpctx.obj `if test -f 'tradelayer/rpctx.cpp'; then $(CYGPATH_W) 'tradelayer/rpctx.cpp'; else $(CYGPATH_W) '$(srcdir)/tradelayer/rpctx.cpp'; fi`
 
-omnicore/libbitcoin_server_a-rpctxobject.o: omnicore/rpctxobject.cpp
-	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_server_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_server_a_CXXFLAGS) $(CXXFLAGS) -MT omnicore/libbitcoin_server_a-rpctxobject.o -MD -MP -MF omnicore/$(DEPDIR)/libbitcoin_server_a-rpctxobject.Tpo -c -o omnicore/libbitcoin_server_a-rpctxobject.o `test -f 'omnicore/rpctxobject.cpp' || echo '$(srcdir)/'`omnicore/rpctxobject.cpp
-	$(AM_V_at)$(am__mv) omnicore/$(DEPDIR)/libbitcoin_server_a-rpctxobject.Tpo omnicore/$(DEPDIR)/libbitcoin_server_a-rpctxobject.Po
-#	$(AM_V_CXX)source='omnicore/rpctxobject.cpp' object='omnicore/libbitcoin_server_a-rpctxobject.o' libtool=no \
+tradelayer/libbitcoin_server_a-rpctxobject.o: tradelayer/rpctxobject.cpp
+	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_server_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_server_a_CXXFLAGS) $(CXXFLAGS) -MT tradelayer/libbitcoin_server_a-rpctxobject.o -MD -MP -MF tradelayer/$(DEPDIR)/libbitcoin_server_a-rpctxobject.Tpo -c -o tradelayer/libbitcoin_server_a-rpctxobject.o `test -f 'tradelayer/rpctxobject.cpp' || echo '$(srcdir)/'`tradelayer/rpctxobject.cpp
+	$(AM_V_at)$(am__mv) tradelayer/$(DEPDIR)/libbitcoin_server_a-rpctxobject.Tpo tradelayer/$(DEPDIR)/libbitcoin_server_a-rpctxobject.Po
+#	$(AM_V_CXX)source='tradelayer/rpctxobject.cpp' object='tradelayer/libbitcoin_server_a-rpctxobject.o' libtool=no \
 #	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) \
-#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_server_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_server_a_CXXFLAGS) $(CXXFLAGS) -c -o omnicore/libbitcoin_server_a-rpctxobject.o `test -f 'omnicore/rpctxobject.cpp' || echo '$(srcdir)/'`omnicore/rpctxobject.cpp
+#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_server_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_server_a_CXXFLAGS) $(CXXFLAGS) -c -o tradelayer/libbitcoin_server_a-rpctxobject.o `test -f 'tradelayer/rpctxobject.cpp' || echo '$(srcdir)/'`tradelayer/rpctxobject.cpp
 
-omnicore/libbitcoin_server_a-rpctxobject.obj: omnicore/rpctxobject.cpp
-	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_server_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_server_a_CXXFLAGS) $(CXXFLAGS) -MT omnicore/libbitcoin_server_a-rpctxobject.obj -MD -MP -MF omnicore/$(DEPDIR)/libbitcoin_server_a-rpctxobject.Tpo -c -o omnicore/libbitcoin_server_a-rpctxobject.obj `if test -f 'omnicore/rpctxobject.cpp'; then $(CYGPATH_W) 'omnicore/rpctxobject.cpp'; else $(CYGPATH_W) '$(srcdir)/omnicore/rpctxobject.cpp'; fi`
-	$(AM_V_at)$(am__mv) omnicore/$(DEPDIR)/libbitcoin_server_a-rpctxobject.Tpo omnicore/$(DEPDIR)/libbitcoin_server_a-rpctxobject.Po
-#	$(AM_V_CXX)source='omnicore/rpctxobject.cpp' object='omnicore/libbitcoin_server_a-rpctxobject.obj' libtool=no \
+tradelayer/libbitcoin_server_a-rpctxobject.obj: tradelayer/rpctxobject.cpp
+	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_server_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_server_a_CXXFLAGS) $(CXXFLAGS) -MT tradelayer/libbitcoin_server_a-rpctxobject.obj -MD -MP -MF tradelayer/$(DEPDIR)/libbitcoin_server_a-rpctxobject.Tpo -c -o tradelayer/libbitcoin_server_a-rpctxobject.obj `if test -f 'tradelayer/rpctxobject.cpp'; then $(CYGPATH_W) 'tradelayer/rpctxobject.cpp'; else $(CYGPATH_W) '$(srcdir)/tradelayer/rpctxobject.cpp'; fi`
+	$(AM_V_at)$(am__mv) tradelayer/$(DEPDIR)/libbitcoin_server_a-rpctxobject.Tpo tradelayer/$(DEPDIR)/libbitcoin_server_a-rpctxobject.Po
+#	$(AM_V_CXX)source='tradelayer/rpctxobject.cpp' object='tradelayer/libbitcoin_server_a-rpctxobject.obj' libtool=no \
 #	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) \
-#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_server_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_server_a_CXXFLAGS) $(CXXFLAGS) -c -o omnicore/libbitcoin_server_a-rpctxobject.obj `if test -f 'omnicore/rpctxobject.cpp'; then $(CYGPATH_W) 'omnicore/rpctxobject.cpp'; else $(CYGPATH_W) '$(srcdir)/omnicore/rpctxobject.cpp'; fi`
+#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_server_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_server_a_CXXFLAGS) $(CXXFLAGS) -c -o tradelayer/libbitcoin_server_a-rpctxobject.obj `if test -f 'tradelayer/rpctxobject.cpp'; then $(CYGPATH_W) 'tradelayer/rpctxobject.cpp'; else $(CYGPATH_W) '$(srcdir)/tradelayer/rpctxobject.cpp'; fi`
 
-omnicore/libbitcoin_server_a-rpcvalues.o: omnicore/rpcvalues.cpp
-	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_server_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_server_a_CXXFLAGS) $(CXXFLAGS) -MT omnicore/libbitcoin_server_a-rpcvalues.o -MD -MP -MF omnicore/$(DEPDIR)/libbitcoin_server_a-rpcvalues.Tpo -c -o omnicore/libbitcoin_server_a-rpcvalues.o `test -f 'omnicore/rpcvalues.cpp' || echo '$(srcdir)/'`omnicore/rpcvalues.cpp
-	$(AM_V_at)$(am__mv) omnicore/$(DEPDIR)/libbitcoin_server_a-rpcvalues.Tpo omnicore/$(DEPDIR)/libbitcoin_server_a-rpcvalues.Po
-#	$(AM_V_CXX)source='omnicore/rpcvalues.cpp' object='omnicore/libbitcoin_server_a-rpcvalues.o' libtool=no \
+tradelayer/libbitcoin_server_a-rpcvalues.o: tradelayer/rpcvalues.cpp
+	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_server_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_server_a_CXXFLAGS) $(CXXFLAGS) -MT tradelayer/libbitcoin_server_a-rpcvalues.o -MD -MP -MF tradelayer/$(DEPDIR)/libbitcoin_server_a-rpcvalues.Tpo -c -o tradelayer/libbitcoin_server_a-rpcvalues.o `test -f 'tradelayer/rpcvalues.cpp' || echo '$(srcdir)/'`tradelayer/rpcvalues.cpp
+	$(AM_V_at)$(am__mv) tradelayer/$(DEPDIR)/libbitcoin_server_a-rpcvalues.Tpo tradelayer/$(DEPDIR)/libbitcoin_server_a-rpcvalues.Po
+#	$(AM_V_CXX)source='tradelayer/rpcvalues.cpp' object='tradelayer/libbitcoin_server_a-rpcvalues.o' libtool=no \
 #	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) \
-#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_server_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_server_a_CXXFLAGS) $(CXXFLAGS) -c -o omnicore/libbitcoin_server_a-rpcvalues.o `test -f 'omnicore/rpcvalues.cpp' || echo '$(srcdir)/'`omnicore/rpcvalues.cpp
+#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_server_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_server_a_CXXFLAGS) $(CXXFLAGS) -c -o tradelayer/libbitcoin_server_a-rpcvalues.o `test -f 'tradelayer/rpcvalues.cpp' || echo '$(srcdir)/'`tradelayer/rpcvalues.cpp
 
-omnicore/libbitcoin_server_a-rpcvalues.obj: omnicore/rpcvalues.cpp
-	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_server_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_server_a_CXXFLAGS) $(CXXFLAGS) -MT omnicore/libbitcoin_server_a-rpcvalues.obj -MD -MP -MF omnicore/$(DEPDIR)/libbitcoin_server_a-rpcvalues.Tpo -c -o omnicore/libbitcoin_server_a-rpcvalues.obj `if test -f 'omnicore/rpcvalues.cpp'; then $(CYGPATH_W) 'omnicore/rpcvalues.cpp'; else $(CYGPATH_W) '$(srcdir)/omnicore/rpcvalues.cpp'; fi`
-	$(AM_V_at)$(am__mv) omnicore/$(DEPDIR)/libbitcoin_server_a-rpcvalues.Tpo omnicore/$(DEPDIR)/libbitcoin_server_a-rpcvalues.Po
-#	$(AM_V_CXX)source='omnicore/rpcvalues.cpp' object='omnicore/libbitcoin_server_a-rpcvalues.obj' libtool=no \
+tradelayer/libbitcoin_server_a-rpcvalues.obj: tradelayer/rpcvalues.cpp
+	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_server_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_server_a_CXXFLAGS) $(CXXFLAGS) -MT tradelayer/libbitcoin_server_a-rpcvalues.obj -MD -MP -MF tradelayer/$(DEPDIR)/libbitcoin_server_a-rpcvalues.Tpo -c -o tradelayer/libbitcoin_server_a-rpcvalues.obj `if test -f 'tradelayer/rpcvalues.cpp'; then $(CYGPATH_W) 'tradelayer/rpcvalues.cpp'; else $(CYGPATH_W) '$(srcdir)/tradelayer/rpcvalues.cpp'; fi`
+	$(AM_V_at)$(am__mv) tradelayer/$(DEPDIR)/libbitcoin_server_a-rpcvalues.Tpo tradelayer/$(DEPDIR)/libbitcoin_server_a-rpcvalues.Po
+#	$(AM_V_CXX)source='tradelayer/rpcvalues.cpp' object='tradelayer/libbitcoin_server_a-rpcvalues.obj' libtool=no \
 #	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) \
-#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_server_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_server_a_CXXFLAGS) $(CXXFLAGS) -c -o omnicore/libbitcoin_server_a-rpcvalues.obj `if test -f 'omnicore/rpcvalues.cpp'; then $(CYGPATH_W) 'omnicore/rpcvalues.cpp'; else $(CYGPATH_W) '$(srcdir)/omnicore/rpcvalues.cpp'; fi`
+#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_server_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_server_a_CXXFLAGS) $(CXXFLAGS) -c -o tradelayer/libbitcoin_server_a-rpcvalues.obj `if test -f 'tradelayer/rpcvalues.cpp'; then $(CYGPATH_W) 'tradelayer/rpcvalues.cpp'; else $(CYGPATH_W) '$(srcdir)/tradelayer/rpcvalues.cpp'; fi`
 
-omnicore/libbitcoin_server_a-rules.o: omnicore/rules.cpp
-	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_server_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_server_a_CXXFLAGS) $(CXXFLAGS) -MT omnicore/libbitcoin_server_a-rules.o -MD -MP -MF omnicore/$(DEPDIR)/libbitcoin_server_a-rules.Tpo -c -o omnicore/libbitcoin_server_a-rules.o `test -f 'omnicore/rules.cpp' || echo '$(srcdir)/'`omnicore/rules.cpp
-	$(AM_V_at)$(am__mv) omnicore/$(DEPDIR)/libbitcoin_server_a-rules.Tpo omnicore/$(DEPDIR)/libbitcoin_server_a-rules.Po
-#	$(AM_V_CXX)source='omnicore/rules.cpp' object='omnicore/libbitcoin_server_a-rules.o' libtool=no \
+tradelayer/libbitcoin_server_a-rules.o: tradelayer/rules.cpp
+	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_server_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_server_a_CXXFLAGS) $(CXXFLAGS) -MT tradelayer/libbitcoin_server_a-rules.o -MD -MP -MF tradelayer/$(DEPDIR)/libbitcoin_server_a-rules.Tpo -c -o tradelayer/libbitcoin_server_a-rules.o `test -f 'tradelayer/rules.cpp' || echo '$(srcdir)/'`tradelayer/rules.cpp
+	$(AM_V_at)$(am__mv) tradelayer/$(DEPDIR)/libbitcoin_server_a-rules.Tpo tradelayer/$(DEPDIR)/libbitcoin_server_a-rules.Po
+#	$(AM_V_CXX)source='tradelayer/rules.cpp' object='tradelayer/libbitcoin_server_a-rules.o' libtool=no \
 #	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) \
-#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_server_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_server_a_CXXFLAGS) $(CXXFLAGS) -c -o omnicore/libbitcoin_server_a-rules.o `test -f 'omnicore/rules.cpp' || echo '$(srcdir)/'`omnicore/rules.cpp
+#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_server_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_server_a_CXXFLAGS) $(CXXFLAGS) -c -o tradelayer/libbitcoin_server_a-rules.o `test -f 'tradelayer/rules.cpp' || echo '$(srcdir)/'`tradelayer/rules.cpp
 
-omnicore/libbitcoin_server_a-rules.obj: omnicore/rules.cpp
-	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_server_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_server_a_CXXFLAGS) $(CXXFLAGS) -MT omnicore/libbitcoin_server_a-rules.obj -MD -MP -MF omnicore/$(DEPDIR)/libbitcoin_server_a-rules.Tpo -c -o omnicore/libbitcoin_server_a-rules.obj `if test -f 'omnicore/rules.cpp'; then $(CYGPATH_W) 'omnicore/rules.cpp'; else $(CYGPATH_W) '$(srcdir)/omnicore/rules.cpp'; fi`
-	$(AM_V_at)$(am__mv) omnicore/$(DEPDIR)/libbitcoin_server_a-rules.Tpo omnicore/$(DEPDIR)/libbitcoin_server_a-rules.Po
-#	$(AM_V_CXX)source='omnicore/rules.cpp' object='omnicore/libbitcoin_server_a-rules.obj' libtool=no \
+tradelayer/libbitcoin_server_a-rules.obj: tradelayer/rules.cpp
+	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_server_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_server_a_CXXFLAGS) $(CXXFLAGS) -MT tradelayer/libbitcoin_server_a-rules.obj -MD -MP -MF tradelayer/$(DEPDIR)/libbitcoin_server_a-rules.Tpo -c -o tradelayer/libbitcoin_server_a-rules.obj `if test -f 'tradelayer/rules.cpp'; then $(CYGPATH_W) 'tradelayer/rules.cpp'; else $(CYGPATH_W) '$(srcdir)/tradelayer/rules.cpp'; fi`
+	$(AM_V_at)$(am__mv) tradelayer/$(DEPDIR)/libbitcoin_server_a-rules.Tpo tradelayer/$(DEPDIR)/libbitcoin_server_a-rules.Po
+#	$(AM_V_CXX)source='tradelayer/rules.cpp' object='tradelayer/libbitcoin_server_a-rules.obj' libtool=no \
 #	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) \
-#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_server_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_server_a_CXXFLAGS) $(CXXFLAGS) -c -o omnicore/libbitcoin_server_a-rules.obj `if test -f 'omnicore/rules.cpp'; then $(CYGPATH_W) 'omnicore/rules.cpp'; else $(CYGPATH_W) '$(srcdir)/omnicore/rules.cpp'; fi`
+#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_server_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_server_a_CXXFLAGS) $(CXXFLAGS) -c -o tradelayer/libbitcoin_server_a-rules.obj `if test -f 'tradelayer/rules.cpp'; then $(CYGPATH_W) 'tradelayer/rules.cpp'; else $(CYGPATH_W) '$(srcdir)/tradelayer/rules.cpp'; fi`
 
-omnicore/libbitcoin_server_a-script.o: omnicore/script.cpp
-	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_server_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_server_a_CXXFLAGS) $(CXXFLAGS) -MT omnicore/libbitcoin_server_a-script.o -MD -MP -MF omnicore/$(DEPDIR)/libbitcoin_server_a-script.Tpo -c -o omnicore/libbitcoin_server_a-script.o `test -f 'omnicore/script.cpp' || echo '$(srcdir)/'`omnicore/script.cpp
-	$(AM_V_at)$(am__mv) omnicore/$(DEPDIR)/libbitcoin_server_a-script.Tpo omnicore/$(DEPDIR)/libbitcoin_server_a-script.Po
-#	$(AM_V_CXX)source='omnicore/script.cpp' object='omnicore/libbitcoin_server_a-script.o' libtool=no \
+tradelayer/libbitcoin_server_a-script.o: tradelayer/script.cpp
+	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_server_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_server_a_CXXFLAGS) $(CXXFLAGS) -MT tradelayer/libbitcoin_server_a-script.o -MD -MP -MF tradelayer/$(DEPDIR)/libbitcoin_server_a-script.Tpo -c -o tradelayer/libbitcoin_server_a-script.o `test -f 'tradelayer/script.cpp' || echo '$(srcdir)/'`tradelayer/script.cpp
+	$(AM_V_at)$(am__mv) tradelayer/$(DEPDIR)/libbitcoin_server_a-script.Tpo tradelayer/$(DEPDIR)/libbitcoin_server_a-script.Po
+#	$(AM_V_CXX)source='tradelayer/script.cpp' object='tradelayer/libbitcoin_server_a-script.o' libtool=no \
 #	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) \
-#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_server_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_server_a_CXXFLAGS) $(CXXFLAGS) -c -o omnicore/libbitcoin_server_a-script.o `test -f 'omnicore/script.cpp' || echo '$(srcdir)/'`omnicore/script.cpp
+#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_server_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_server_a_CXXFLAGS) $(CXXFLAGS) -c -o tradelayer/libbitcoin_server_a-script.o `test -f 'tradelayer/script.cpp' || echo '$(srcdir)/'`tradelayer/script.cpp
 
-omnicore/libbitcoin_server_a-script.obj: omnicore/script.cpp
-	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_server_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_server_a_CXXFLAGS) $(CXXFLAGS) -MT omnicore/libbitcoin_server_a-script.obj -MD -MP -MF omnicore/$(DEPDIR)/libbitcoin_server_a-script.Tpo -c -o omnicore/libbitcoin_server_a-script.obj `if test -f 'omnicore/script.cpp'; then $(CYGPATH_W) 'omnicore/script.cpp'; else $(CYGPATH_W) '$(srcdir)/omnicore/script.cpp'; fi`
-	$(AM_V_at)$(am__mv) omnicore/$(DEPDIR)/libbitcoin_server_a-script.Tpo omnicore/$(DEPDIR)/libbitcoin_server_a-script.Po
-#	$(AM_V_CXX)source='omnicore/script.cpp' object='omnicore/libbitcoin_server_a-script.obj' libtool=no \
+tradelayer/libbitcoin_server_a-script.obj: tradelayer/script.cpp
+	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_server_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_server_a_CXXFLAGS) $(CXXFLAGS) -MT tradelayer/libbitcoin_server_a-script.obj -MD -MP -MF tradelayer/$(DEPDIR)/libbitcoin_server_a-script.Tpo -c -o tradelayer/libbitcoin_server_a-script.obj `if test -f 'tradelayer/script.cpp'; then $(CYGPATH_W) 'tradelayer/script.cpp'; else $(CYGPATH_W) '$(srcdir)/tradelayer/script.cpp'; fi`
+	$(AM_V_at)$(am__mv) tradelayer/$(DEPDIR)/libbitcoin_server_a-script.Tpo tradelayer/$(DEPDIR)/libbitcoin_server_a-script.Po
+#	$(AM_V_CXX)source='tradelayer/script.cpp' object='tradelayer/libbitcoin_server_a-script.obj' libtool=no \
 #	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) \
-#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_server_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_server_a_CXXFLAGS) $(CXXFLAGS) -c -o omnicore/libbitcoin_server_a-script.obj `if test -f 'omnicore/script.cpp'; then $(CYGPATH_W) 'omnicore/script.cpp'; else $(CYGPATH_W) '$(srcdir)/omnicore/script.cpp'; fi`
+#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_server_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_server_a_CXXFLAGS) $(CXXFLAGS) -c -o tradelayer/libbitcoin_server_a-script.obj `if test -f 'tradelayer/script.cpp'; then $(CYGPATH_W) 'tradelayer/script.cpp'; else $(CYGPATH_W) '$(srcdir)/tradelayer/script.cpp'; fi`
 
-omnicore/libbitcoin_server_a-seedblocks.o: omnicore/seedblocks.cpp
-	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_server_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_server_a_CXXFLAGS) $(CXXFLAGS) -MT omnicore/libbitcoin_server_a-seedblocks.o -MD -MP -MF omnicore/$(DEPDIR)/libbitcoin_server_a-seedblocks.Tpo -c -o omnicore/libbitcoin_server_a-seedblocks.o `test -f 'omnicore/seedblocks.cpp' || echo '$(srcdir)/'`omnicore/seedblocks.cpp
-	$(AM_V_at)$(am__mv) omnicore/$(DEPDIR)/libbitcoin_server_a-seedblocks.Tpo omnicore/$(DEPDIR)/libbitcoin_server_a-seedblocks.Po
-#	$(AM_V_CXX)source='omnicore/seedblocks.cpp' object='omnicore/libbitcoin_server_a-seedblocks.o' libtool=no \
+tradelayer/libbitcoin_server_a-seedblocks.o: tradelayer/seedblocks.cpp
+	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_server_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_server_a_CXXFLAGS) $(CXXFLAGS) -MT tradelayer/libbitcoin_server_a-seedblocks.o -MD -MP -MF tradelayer/$(DEPDIR)/libbitcoin_server_a-seedblocks.Tpo -c -o tradelayer/libbitcoin_server_a-seedblocks.o `test -f 'tradelayer/seedblocks.cpp' || echo '$(srcdir)/'`tradelayer/seedblocks.cpp
+	$(AM_V_at)$(am__mv) tradelayer/$(DEPDIR)/libbitcoin_server_a-seedblocks.Tpo tradelayer/$(DEPDIR)/libbitcoin_server_a-seedblocks.Po
+#	$(AM_V_CXX)source='tradelayer/seedblocks.cpp' object='tradelayer/libbitcoin_server_a-seedblocks.o' libtool=no \
 #	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) \
-#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_server_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_server_a_CXXFLAGS) $(CXXFLAGS) -c -o omnicore/libbitcoin_server_a-seedblocks.o `test -f 'omnicore/seedblocks.cpp' || echo '$(srcdir)/'`omnicore/seedblocks.cpp
+#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_server_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_server_a_CXXFLAGS) $(CXXFLAGS) -c -o tradelayer/libbitcoin_server_a-seedblocks.o `test -f 'tradelayer/seedblocks.cpp' || echo '$(srcdir)/'`tradelayer/seedblocks.cpp
 
-omnicore/libbitcoin_server_a-seedblocks.obj: omnicore/seedblocks.cpp
-	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_server_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_server_a_CXXFLAGS) $(CXXFLAGS) -MT omnicore/libbitcoin_server_a-seedblocks.obj -MD -MP -MF omnicore/$(DEPDIR)/libbitcoin_server_a-seedblocks.Tpo -c -o omnicore/libbitcoin_server_a-seedblocks.obj `if test -f 'omnicore/seedblocks.cpp'; then $(CYGPATH_W) 'omnicore/seedblocks.cpp'; else $(CYGPATH_W) '$(srcdir)/omnicore/seedblocks.cpp'; fi`
-	$(AM_V_at)$(am__mv) omnicore/$(DEPDIR)/libbitcoin_server_a-seedblocks.Tpo omnicore/$(DEPDIR)/libbitcoin_server_a-seedblocks.Po
-#	$(AM_V_CXX)source='omnicore/seedblocks.cpp' object='omnicore/libbitcoin_server_a-seedblocks.obj' libtool=no \
+tradelayer/libbitcoin_server_a-seedblocks.obj: tradelayer/seedblocks.cpp
+	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_server_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_server_a_CXXFLAGS) $(CXXFLAGS) -MT tradelayer/libbitcoin_server_a-seedblocks.obj -MD -MP -MF tradelayer/$(DEPDIR)/libbitcoin_server_a-seedblocks.Tpo -c -o tradelayer/libbitcoin_server_a-seedblocks.obj `if test -f 'tradelayer/seedblocks.cpp'; then $(CYGPATH_W) 'tradelayer/seedblocks.cpp'; else $(CYGPATH_W) '$(srcdir)/tradelayer/seedblocks.cpp'; fi`
+	$(AM_V_at)$(am__mv) tradelayer/$(DEPDIR)/libbitcoin_server_a-seedblocks.Tpo tradelayer/$(DEPDIR)/libbitcoin_server_a-seedblocks.Po
+#	$(AM_V_CXX)source='tradelayer/seedblocks.cpp' object='tradelayer/libbitcoin_server_a-seedblocks.obj' libtool=no \
 #	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) \
-#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_server_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_server_a_CXXFLAGS) $(CXXFLAGS) -c -o omnicore/libbitcoin_server_a-seedblocks.obj `if test -f 'omnicore/seedblocks.cpp'; then $(CYGPATH_W) 'omnicore/seedblocks.cpp'; else $(CYGPATH_W) '$(srcdir)/omnicore/seedblocks.cpp'; fi`
+#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_server_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_server_a_CXXFLAGS) $(CXXFLAGS) -c -o tradelayer/libbitcoin_server_a-seedblocks.obj `if test -f 'tradelayer/seedblocks.cpp'; then $(CYGPATH_W) 'tradelayer/seedblocks.cpp'; else $(CYGPATH_W) '$(srcdir)/tradelayer/seedblocks.cpp'; fi`
 
-omnicore/libbitcoin_server_a-sp.o: omnicore/sp.cpp
-	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_server_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_server_a_CXXFLAGS) $(CXXFLAGS) -MT omnicore/libbitcoin_server_a-sp.o -MD -MP -MF omnicore/$(DEPDIR)/libbitcoin_server_a-sp.Tpo -c -o omnicore/libbitcoin_server_a-sp.o `test -f 'omnicore/sp.cpp' || echo '$(srcdir)/'`omnicore/sp.cpp
-	$(AM_V_at)$(am__mv) omnicore/$(DEPDIR)/libbitcoin_server_a-sp.Tpo omnicore/$(DEPDIR)/libbitcoin_server_a-sp.Po
-#	$(AM_V_CXX)source='omnicore/sp.cpp' object='omnicore/libbitcoin_server_a-sp.o' libtool=no \
+tradelayer/libbitcoin_server_a-sp.o: tradelayer/sp.cpp
+	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_server_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_server_a_CXXFLAGS) $(CXXFLAGS) -MT tradelayer/libbitcoin_server_a-sp.o -MD -MP -MF tradelayer/$(DEPDIR)/libbitcoin_server_a-sp.Tpo -c -o tradelayer/libbitcoin_server_a-sp.o `test -f 'tradelayer/sp.cpp' || echo '$(srcdir)/'`tradelayer/sp.cpp
+	$(AM_V_at)$(am__mv) tradelayer/$(DEPDIR)/libbitcoin_server_a-sp.Tpo tradelayer/$(DEPDIR)/libbitcoin_server_a-sp.Po
+#	$(AM_V_CXX)source='tradelayer/sp.cpp' object='tradelayer/libbitcoin_server_a-sp.o' libtool=no \
 #	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) \
-#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_server_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_server_a_CXXFLAGS) $(CXXFLAGS) -c -o omnicore/libbitcoin_server_a-sp.o `test -f 'omnicore/sp.cpp' || echo '$(srcdir)/'`omnicore/sp.cpp
+#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_server_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_server_a_CXXFLAGS) $(CXXFLAGS) -c -o tradelayer/libbitcoin_server_a-sp.o `test -f 'tradelayer/sp.cpp' || echo '$(srcdir)/'`tradelayer/sp.cpp
 
-omnicore/libbitcoin_server_a-sp.obj: omnicore/sp.cpp
-	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_server_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_server_a_CXXFLAGS) $(CXXFLAGS) -MT omnicore/libbitcoin_server_a-sp.obj -MD -MP -MF omnicore/$(DEPDIR)/libbitcoin_server_a-sp.Tpo -c -o omnicore/libbitcoin_server_a-sp.obj `if test -f 'omnicore/sp.cpp'; then $(CYGPATH_W) 'omnicore/sp.cpp'; else $(CYGPATH_W) '$(srcdir)/omnicore/sp.cpp'; fi`
-	$(AM_V_at)$(am__mv) omnicore/$(DEPDIR)/libbitcoin_server_a-sp.Tpo omnicore/$(DEPDIR)/libbitcoin_server_a-sp.Po
-#	$(AM_V_CXX)source='omnicore/sp.cpp' object='omnicore/libbitcoin_server_a-sp.obj' libtool=no \
+tradelayer/libbitcoin_server_a-sp.obj: tradelayer/sp.cpp
+	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_server_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_server_a_CXXFLAGS) $(CXXFLAGS) -MT tradelayer/libbitcoin_server_a-sp.obj -MD -MP -MF tradelayer/$(DEPDIR)/libbitcoin_server_a-sp.Tpo -c -o tradelayer/libbitcoin_server_a-sp.obj `if test -f 'tradelayer/sp.cpp'; then $(CYGPATH_W) 'tradelayer/sp.cpp'; else $(CYGPATH_W) '$(srcdir)/tradelayer/sp.cpp'; fi`
+	$(AM_V_at)$(am__mv) tradelayer/$(DEPDIR)/libbitcoin_server_a-sp.Tpo tradelayer/$(DEPDIR)/libbitcoin_server_a-sp.Po
+#	$(AM_V_CXX)source='tradelayer/sp.cpp' object='tradelayer/libbitcoin_server_a-sp.obj' libtool=no \
 #	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) \
-#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_server_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_server_a_CXXFLAGS) $(CXXFLAGS) -c -o omnicore/libbitcoin_server_a-sp.obj `if test -f 'omnicore/sp.cpp'; then $(CYGPATH_W) 'omnicore/sp.cpp'; else $(CYGPATH_W) '$(srcdir)/omnicore/sp.cpp'; fi`
+#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_server_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_server_a_CXXFLAGS) $(CXXFLAGS) -c -o tradelayer/libbitcoin_server_a-sp.obj `if test -f 'tradelayer/sp.cpp'; then $(CYGPATH_W) 'tradelayer/sp.cpp'; else $(CYGPATH_W) '$(srcdir)/tradelayer/sp.cpp'; fi`
 
-omnicore/libbitcoin_server_a-sto.o: omnicore/sto.cpp
-	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_server_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_server_a_CXXFLAGS) $(CXXFLAGS) -MT omnicore/libbitcoin_server_a-sto.o -MD -MP -MF omnicore/$(DEPDIR)/libbitcoin_server_a-sto.Tpo -c -o omnicore/libbitcoin_server_a-sto.o `test -f 'omnicore/sto.cpp' || echo '$(srcdir)/'`omnicore/sto.cpp
-	$(AM_V_at)$(am__mv) omnicore/$(DEPDIR)/libbitcoin_server_a-sto.Tpo omnicore/$(DEPDIR)/libbitcoin_server_a-sto.Po
-#	$(AM_V_CXX)source='omnicore/sto.cpp' object='omnicore/libbitcoin_server_a-sto.o' libtool=no \
+tradelayer/libbitcoin_server_a-sto.o: tradelayer/sto.cpp
+	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_server_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_server_a_CXXFLAGS) $(CXXFLAGS) -MT tradelayer/libbitcoin_server_a-sto.o -MD -MP -MF tradelayer/$(DEPDIR)/libbitcoin_server_a-sto.Tpo -c -o tradelayer/libbitcoin_server_a-sto.o `test -f 'tradelayer/sto.cpp' || echo '$(srcdir)/'`tradelayer/sto.cpp
+	$(AM_V_at)$(am__mv) tradelayer/$(DEPDIR)/libbitcoin_server_a-sto.Tpo tradelayer/$(DEPDIR)/libbitcoin_server_a-sto.Po
+#	$(AM_V_CXX)source='tradelayer/sto.cpp' object='tradelayer/libbitcoin_server_a-sto.o' libtool=no \
 #	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) \
-#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_server_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_server_a_CXXFLAGS) $(CXXFLAGS) -c -o omnicore/libbitcoin_server_a-sto.o `test -f 'omnicore/sto.cpp' || echo '$(srcdir)/'`omnicore/sto.cpp
+#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_server_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_server_a_CXXFLAGS) $(CXXFLAGS) -c -o tradelayer/libbitcoin_server_a-sto.o `test -f 'tradelayer/sto.cpp' || echo '$(srcdir)/'`tradelayer/sto.cpp
 
-omnicore/libbitcoin_server_a-sto.obj: omnicore/sto.cpp
-	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_server_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_server_a_CXXFLAGS) $(CXXFLAGS) -MT omnicore/libbitcoin_server_a-sto.obj -MD -MP -MF omnicore/$(DEPDIR)/libbitcoin_server_a-sto.Tpo -c -o omnicore/libbitcoin_server_a-sto.obj `if test -f 'omnicore/sto.cpp'; then $(CYGPATH_W) 'omnicore/sto.cpp'; else $(CYGPATH_W) '$(srcdir)/omnicore/sto.cpp'; fi`
-	$(AM_V_at)$(am__mv) omnicore/$(DEPDIR)/libbitcoin_server_a-sto.Tpo omnicore/$(DEPDIR)/libbitcoin_server_a-sto.Po
-#	$(AM_V_CXX)source='omnicore/sto.cpp' object='omnicore/libbitcoin_server_a-sto.obj' libtool=no \
+tradelayer/libbitcoin_server_a-sto.obj: tradelayer/sto.cpp
+	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_server_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_server_a_CXXFLAGS) $(CXXFLAGS) -MT tradelayer/libbitcoin_server_a-sto.obj -MD -MP -MF tradelayer/$(DEPDIR)/libbitcoin_server_a-sto.Tpo -c -o tradelayer/libbitcoin_server_a-sto.obj `if test -f 'tradelayer/sto.cpp'; then $(CYGPATH_W) 'tradelayer/sto.cpp'; else $(CYGPATH_W) '$(srcdir)/tradelayer/sto.cpp'; fi`
+	$(AM_V_at)$(am__mv) tradelayer/$(DEPDIR)/libbitcoin_server_a-sto.Tpo tradelayer/$(DEPDIR)/libbitcoin_server_a-sto.Po
+#	$(AM_V_CXX)source='tradelayer/sto.cpp' object='tradelayer/libbitcoin_server_a-sto.obj' libtool=no \
 #	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) \
-#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_server_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_server_a_CXXFLAGS) $(CXXFLAGS) -c -o omnicore/libbitcoin_server_a-sto.obj `if test -f 'omnicore/sto.cpp'; then $(CYGPATH_W) 'omnicore/sto.cpp'; else $(CYGPATH_W) '$(srcdir)/omnicore/sto.cpp'; fi`
+#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_server_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_server_a_CXXFLAGS) $(CXXFLAGS) -c -o tradelayer/libbitcoin_server_a-sto.obj `if test -f 'tradelayer/sto.cpp'; then $(CYGPATH_W) 'tradelayer/sto.cpp'; else $(CYGPATH_W) '$(srcdir)/tradelayer/sto.cpp'; fi`
 
-omnicore/libbitcoin_server_a-tally.o: omnicore/tally.cpp
-	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_server_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_server_a_CXXFLAGS) $(CXXFLAGS) -MT omnicore/libbitcoin_server_a-tally.o -MD -MP -MF omnicore/$(DEPDIR)/libbitcoin_server_a-tally.Tpo -c -o omnicore/libbitcoin_server_a-tally.o `test -f 'omnicore/tally.cpp' || echo '$(srcdir)/'`omnicore/tally.cpp
-	$(AM_V_at)$(am__mv) omnicore/$(DEPDIR)/libbitcoin_server_a-tally.Tpo omnicore/$(DEPDIR)/libbitcoin_server_a-tally.Po
-#	$(AM_V_CXX)source='omnicore/tally.cpp' object='omnicore/libbitcoin_server_a-tally.o' libtool=no \
+tradelayer/libbitcoin_server_a-tally.o: tradelayer/tally.cpp
+	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_server_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_server_a_CXXFLAGS) $(CXXFLAGS) -MT tradelayer/libbitcoin_server_a-tally.o -MD -MP -MF tradelayer/$(DEPDIR)/libbitcoin_server_a-tally.Tpo -c -o tradelayer/libbitcoin_server_a-tally.o `test -f 'tradelayer/tally.cpp' || echo '$(srcdir)/'`tradelayer/tally.cpp
+	$(AM_V_at)$(am__mv) tradelayer/$(DEPDIR)/libbitcoin_server_a-tally.Tpo tradelayer/$(DEPDIR)/libbitcoin_server_a-tally.Po
+#	$(AM_V_CXX)source='tradelayer/tally.cpp' object='tradelayer/libbitcoin_server_a-tally.o' libtool=no \
 #	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) \
-#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_server_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_server_a_CXXFLAGS) $(CXXFLAGS) -c -o omnicore/libbitcoin_server_a-tally.o `test -f 'omnicore/tally.cpp' || echo '$(srcdir)/'`omnicore/tally.cpp
+#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_server_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_server_a_CXXFLAGS) $(CXXFLAGS) -c -o tradelayer/libbitcoin_server_a-tally.o `test -f 'tradelayer/tally.cpp' || echo '$(srcdir)/'`tradelayer/tally.cpp
 
-omnicore/libbitcoin_server_a-tally.obj: omnicore/tally.cpp
-	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_server_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_server_a_CXXFLAGS) $(CXXFLAGS) -MT omnicore/libbitcoin_server_a-tally.obj -MD -MP -MF omnicore/$(DEPDIR)/libbitcoin_server_a-tally.Tpo -c -o omnicore/libbitcoin_server_a-tally.obj `if test -f 'omnicore/tally.cpp'; then $(CYGPATH_W) 'omnicore/tally.cpp'; else $(CYGPATH_W) '$(srcdir)/omnicore/tally.cpp'; fi`
-	$(AM_V_at)$(am__mv) omnicore/$(DEPDIR)/libbitcoin_server_a-tally.Tpo omnicore/$(DEPDIR)/libbitcoin_server_a-tally.Po
-#	$(AM_V_CXX)source='omnicore/tally.cpp' object='omnicore/libbitcoin_server_a-tally.obj' libtool=no \
+tradelayer/libbitcoin_server_a-tally.obj: tradelayer/tally.cpp
+	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_server_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_server_a_CXXFLAGS) $(CXXFLAGS) -MT tradelayer/libbitcoin_server_a-tally.obj -MD -MP -MF tradelayer/$(DEPDIR)/libbitcoin_server_a-tally.Tpo -c -o tradelayer/libbitcoin_server_a-tally.obj `if test -f 'tradelayer/tally.cpp'; then $(CYGPATH_W) 'tradelayer/tally.cpp'; else $(CYGPATH_W) '$(srcdir)/tradelayer/tally.cpp'; fi`
+	$(AM_V_at)$(am__mv) tradelayer/$(DEPDIR)/libbitcoin_server_a-tally.Tpo tradelayer/$(DEPDIR)/libbitcoin_server_a-tally.Po
+#	$(AM_V_CXX)source='tradelayer/tally.cpp' object='tradelayer/libbitcoin_server_a-tally.obj' libtool=no \
 #	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) \
-#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_server_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_server_a_CXXFLAGS) $(CXXFLAGS) -c -o omnicore/libbitcoin_server_a-tally.obj `if test -f 'omnicore/tally.cpp'; then $(CYGPATH_W) 'omnicore/tally.cpp'; else $(CYGPATH_W) '$(srcdir)/omnicore/tally.cpp'; fi`
+#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_server_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_server_a_CXXFLAGS) $(CXXFLAGS) -c -o tradelayer/libbitcoin_server_a-tally.obj `if test -f 'tradelayer/tally.cpp'; then $(CYGPATH_W) 'tradelayer/tally.cpp'; else $(CYGPATH_W) '$(srcdir)/tradelayer/tally.cpp'; fi`
 
-omnicore/libbitcoin_server_a-tx.o: omnicore/tx.cpp
-	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_server_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_server_a_CXXFLAGS) $(CXXFLAGS) -MT omnicore/libbitcoin_server_a-tx.o -MD -MP -MF omnicore/$(DEPDIR)/libbitcoin_server_a-tx.Tpo -c -o omnicore/libbitcoin_server_a-tx.o `test -f 'omnicore/tx.cpp' || echo '$(srcdir)/'`omnicore/tx.cpp
-	$(AM_V_at)$(am__mv) omnicore/$(DEPDIR)/libbitcoin_server_a-tx.Tpo omnicore/$(DEPDIR)/libbitcoin_server_a-tx.Po
-#	$(AM_V_CXX)source='omnicore/tx.cpp' object='omnicore/libbitcoin_server_a-tx.o' libtool=no \
+tradelayer/libbitcoin_server_a-tx.o: tradelayer/tx.cpp
+	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_server_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_server_a_CXXFLAGS) $(CXXFLAGS) -MT tradelayer/libbitcoin_server_a-tx.o -MD -MP -MF tradelayer/$(DEPDIR)/libbitcoin_server_a-tx.Tpo -c -o tradelayer/libbitcoin_server_a-tx.o `test -f 'tradelayer/tx.cpp' || echo '$(srcdir)/'`tradelayer/tx.cpp
+	$(AM_V_at)$(am__mv) tradelayer/$(DEPDIR)/libbitcoin_server_a-tx.Tpo tradelayer/$(DEPDIR)/libbitcoin_server_a-tx.Po
+#	$(AM_V_CXX)source='tradelayer/tx.cpp' object='tradelayer/libbitcoin_server_a-tx.o' libtool=no \
 #	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) \
-#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_server_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_server_a_CXXFLAGS) $(CXXFLAGS) -c -o omnicore/libbitcoin_server_a-tx.o `test -f 'omnicore/tx.cpp' || echo '$(srcdir)/'`omnicore/tx.cpp
+#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_server_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_server_a_CXXFLAGS) $(CXXFLAGS) -c -o tradelayer/libbitcoin_server_a-tx.o `test -f 'tradelayer/tx.cpp' || echo '$(srcdir)/'`tradelayer/tx.cpp
 
-omnicore/libbitcoin_server_a-tx.obj: omnicore/tx.cpp
-	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_server_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_server_a_CXXFLAGS) $(CXXFLAGS) -MT omnicore/libbitcoin_server_a-tx.obj -MD -MP -MF omnicore/$(DEPDIR)/libbitcoin_server_a-tx.Tpo -c -o omnicore/libbitcoin_server_a-tx.obj `if test -f 'omnicore/tx.cpp'; then $(CYGPATH_W) 'omnicore/tx.cpp'; else $(CYGPATH_W) '$(srcdir)/omnicore/tx.cpp'; fi`
-	$(AM_V_at)$(am__mv) omnicore/$(DEPDIR)/libbitcoin_server_a-tx.Tpo omnicore/$(DEPDIR)/libbitcoin_server_a-tx.Po
-#	$(AM_V_CXX)source='omnicore/tx.cpp' object='omnicore/libbitcoin_server_a-tx.obj' libtool=no \
+tradelayer/libbitcoin_server_a-tx.obj: tradelayer/tx.cpp
+	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_server_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_server_a_CXXFLAGS) $(CXXFLAGS) -MT tradelayer/libbitcoin_server_a-tx.obj -MD -MP -MF tradelayer/$(DEPDIR)/libbitcoin_server_a-tx.Tpo -c -o tradelayer/libbitcoin_server_a-tx.obj `if test -f 'tradelayer/tx.cpp'; then $(CYGPATH_W) 'tradelayer/tx.cpp'; else $(CYGPATH_W) '$(srcdir)/tradelayer/tx.cpp'; fi`
+	$(AM_V_at)$(am__mv) tradelayer/$(DEPDIR)/libbitcoin_server_a-tx.Tpo tradelayer/$(DEPDIR)/libbitcoin_server_a-tx.Po
+#	$(AM_V_CXX)source='tradelayer/tx.cpp' object='tradelayer/libbitcoin_server_a-tx.obj' libtool=no \
 #	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) \
-#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_server_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_server_a_CXXFLAGS) $(CXXFLAGS) -c -o omnicore/libbitcoin_server_a-tx.obj `if test -f 'omnicore/tx.cpp'; then $(CYGPATH_W) 'omnicore/tx.cpp'; else $(CYGPATH_W) '$(srcdir)/omnicore/tx.cpp'; fi`
+#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_server_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_server_a_CXXFLAGS) $(CXXFLAGS) -c -o tradelayer/libbitcoin_server_a-tx.obj `if test -f 'tradelayer/tx.cpp'; then $(CYGPATH_W) 'tradelayer/tx.cpp'; else $(CYGPATH_W) '$(srcdir)/tradelayer/tx.cpp'; fi`
 
-omnicore/libbitcoin_server_a-utilsbitcoin.o: omnicore/utilsbitcoin.cpp
-	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_server_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_server_a_CXXFLAGS) $(CXXFLAGS) -MT omnicore/libbitcoin_server_a-utilsbitcoin.o -MD -MP -MF omnicore/$(DEPDIR)/libbitcoin_server_a-utilsbitcoin.Tpo -c -o omnicore/libbitcoin_server_a-utilsbitcoin.o `test -f 'omnicore/utilsbitcoin.cpp' || echo '$(srcdir)/'`omnicore/utilsbitcoin.cpp
-	$(AM_V_at)$(am__mv) omnicore/$(DEPDIR)/libbitcoin_server_a-utilsbitcoin.Tpo omnicore/$(DEPDIR)/libbitcoin_server_a-utilsbitcoin.Po
-#	$(AM_V_CXX)source='omnicore/utilsbitcoin.cpp' object='omnicore/libbitcoin_server_a-utilsbitcoin.o' libtool=no \
+tradelayer/libbitcoin_server_a-utilsbitcoin.o: tradelayer/utilsbitcoin.cpp
+	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_server_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_server_a_CXXFLAGS) $(CXXFLAGS) -MT tradelayer/libbitcoin_server_a-utilsbitcoin.o -MD -MP -MF tradelayer/$(DEPDIR)/libbitcoin_server_a-utilsbitcoin.Tpo -c -o tradelayer/libbitcoin_server_a-utilsbitcoin.o `test -f 'tradelayer/utilsbitcoin.cpp' || echo '$(srcdir)/'`tradelayer/utilsbitcoin.cpp
+	$(AM_V_at)$(am__mv) tradelayer/$(DEPDIR)/libbitcoin_server_a-utilsbitcoin.Tpo tradelayer/$(DEPDIR)/libbitcoin_server_a-utilsbitcoin.Po
+#	$(AM_V_CXX)source='tradelayer/utilsbitcoin.cpp' object='tradelayer/libbitcoin_server_a-utilsbitcoin.o' libtool=no \
 #	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) \
-#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_server_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_server_a_CXXFLAGS) $(CXXFLAGS) -c -o omnicore/libbitcoin_server_a-utilsbitcoin.o `test -f 'omnicore/utilsbitcoin.cpp' || echo '$(srcdir)/'`omnicore/utilsbitcoin.cpp
+#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_server_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_server_a_CXXFLAGS) $(CXXFLAGS) -c -o tradelayer/libbitcoin_server_a-utilsbitcoin.o `test -f 'tradelayer/utilsbitcoin.cpp' || echo '$(srcdir)/'`tradelayer/utilsbitcoin.cpp
 
-omnicore/libbitcoin_server_a-utilsbitcoin.obj: omnicore/utilsbitcoin.cpp
-	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_server_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_server_a_CXXFLAGS) $(CXXFLAGS) -MT omnicore/libbitcoin_server_a-utilsbitcoin.obj -MD -MP -MF omnicore/$(DEPDIR)/libbitcoin_server_a-utilsbitcoin.Tpo -c -o omnicore/libbitcoin_server_a-utilsbitcoin.obj `if test -f 'omnicore/utilsbitcoin.cpp'; then $(CYGPATH_W) 'omnicore/utilsbitcoin.cpp'; else $(CYGPATH_W) '$(srcdir)/omnicore/utilsbitcoin.cpp'; fi`
-	$(AM_V_at)$(am__mv) omnicore/$(DEPDIR)/libbitcoin_server_a-utilsbitcoin.Tpo omnicore/$(DEPDIR)/libbitcoin_server_a-utilsbitcoin.Po
-#	$(AM_V_CXX)source='omnicore/utilsbitcoin.cpp' object='omnicore/libbitcoin_server_a-utilsbitcoin.obj' libtool=no \
+tradelayer/libbitcoin_server_a-utilsbitcoin.obj: tradelayer/utilsbitcoin.cpp
+	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_server_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_server_a_CXXFLAGS) $(CXXFLAGS) -MT tradelayer/libbitcoin_server_a-utilsbitcoin.obj -MD -MP -MF tradelayer/$(DEPDIR)/libbitcoin_server_a-utilsbitcoin.Tpo -c -o tradelayer/libbitcoin_server_a-utilsbitcoin.obj `if test -f 'tradelayer/utilsbitcoin.cpp'; then $(CYGPATH_W) 'tradelayer/utilsbitcoin.cpp'; else $(CYGPATH_W) '$(srcdir)/tradelayer/utilsbitcoin.cpp'; fi`
+	$(AM_V_at)$(am__mv) tradelayer/$(DEPDIR)/libbitcoin_server_a-utilsbitcoin.Tpo tradelayer/$(DEPDIR)/libbitcoin_server_a-utilsbitcoin.Po
+#	$(AM_V_CXX)source='tradelayer/utilsbitcoin.cpp' object='tradelayer/libbitcoin_server_a-utilsbitcoin.obj' libtool=no \
 #	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) \
-#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_server_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_server_a_CXXFLAGS) $(CXXFLAGS) -c -o omnicore/libbitcoin_server_a-utilsbitcoin.obj `if test -f 'omnicore/utilsbitcoin.cpp'; then $(CYGPATH_W) 'omnicore/utilsbitcoin.cpp'; else $(CYGPATH_W) '$(srcdir)/omnicore/utilsbitcoin.cpp'; fi`
+#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_server_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_server_a_CXXFLAGS) $(CXXFLAGS) -c -o tradelayer/libbitcoin_server_a-utilsbitcoin.obj `if test -f 'tradelayer/utilsbitcoin.cpp'; then $(CYGPATH_W) 'tradelayer/utilsbitcoin.cpp'; else $(CYGPATH_W) '$(srcdir)/tradelayer/utilsbitcoin.cpp'; fi`
 
-omnicore/libbitcoin_server_a-utilsui.o: omnicore/utilsui.cpp
-	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_server_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_server_a_CXXFLAGS) $(CXXFLAGS) -MT omnicore/libbitcoin_server_a-utilsui.o -MD -MP -MF omnicore/$(DEPDIR)/libbitcoin_server_a-utilsui.Tpo -c -o omnicore/libbitcoin_server_a-utilsui.o `test -f 'omnicore/utilsui.cpp' || echo '$(srcdir)/'`omnicore/utilsui.cpp
-	$(AM_V_at)$(am__mv) omnicore/$(DEPDIR)/libbitcoin_server_a-utilsui.Tpo omnicore/$(DEPDIR)/libbitcoin_server_a-utilsui.Po
-#	$(AM_V_CXX)source='omnicore/utilsui.cpp' object='omnicore/libbitcoin_server_a-utilsui.o' libtool=no \
+tradelayer/libbitcoin_server_a-utilsui.o: tradelayer/utilsui.cpp
+	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_server_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_server_a_CXXFLAGS) $(CXXFLAGS) -MT tradelayer/libbitcoin_server_a-utilsui.o -MD -MP -MF tradelayer/$(DEPDIR)/libbitcoin_server_a-utilsui.Tpo -c -o tradelayer/libbitcoin_server_a-utilsui.o `test -f 'tradelayer/utilsui.cpp' || echo '$(srcdir)/'`tradelayer/utilsui.cpp
+	$(AM_V_at)$(am__mv) tradelayer/$(DEPDIR)/libbitcoin_server_a-utilsui.Tpo tradelayer/$(DEPDIR)/libbitcoin_server_a-utilsui.Po
+#	$(AM_V_CXX)source='tradelayer/utilsui.cpp' object='tradelayer/libbitcoin_server_a-utilsui.o' libtool=no \
 #	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) \
-#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_server_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_server_a_CXXFLAGS) $(CXXFLAGS) -c -o omnicore/libbitcoin_server_a-utilsui.o `test -f 'omnicore/utilsui.cpp' || echo '$(srcdir)/'`omnicore/utilsui.cpp
+#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_server_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_server_a_CXXFLAGS) $(CXXFLAGS) -c -o tradelayer/libbitcoin_server_a-utilsui.o `test -f 'tradelayer/utilsui.cpp' || echo '$(srcdir)/'`tradelayer/utilsui.cpp
 
-omnicore/libbitcoin_server_a-utilsui.obj: omnicore/utilsui.cpp
-	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_server_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_server_a_CXXFLAGS) $(CXXFLAGS) -MT omnicore/libbitcoin_server_a-utilsui.obj -MD -MP -MF omnicore/$(DEPDIR)/libbitcoin_server_a-utilsui.Tpo -c -o omnicore/libbitcoin_server_a-utilsui.obj `if test -f 'omnicore/utilsui.cpp'; then $(CYGPATH_W) 'omnicore/utilsui.cpp'; else $(CYGPATH_W) '$(srcdir)/omnicore/utilsui.cpp'; fi`
-	$(AM_V_at)$(am__mv) omnicore/$(DEPDIR)/libbitcoin_server_a-utilsui.Tpo omnicore/$(DEPDIR)/libbitcoin_server_a-utilsui.Po
-#	$(AM_V_CXX)source='omnicore/utilsui.cpp' object='omnicore/libbitcoin_server_a-utilsui.obj' libtool=no \
+tradelayer/libbitcoin_server_a-utilsui.obj: tradelayer/utilsui.cpp
+	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_server_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_server_a_CXXFLAGS) $(CXXFLAGS) -MT tradelayer/libbitcoin_server_a-utilsui.obj -MD -MP -MF tradelayer/$(DEPDIR)/libbitcoin_server_a-utilsui.Tpo -c -o tradelayer/libbitcoin_server_a-utilsui.obj `if test -f 'tradelayer/utilsui.cpp'; then $(CYGPATH_W) 'tradelayer/utilsui.cpp'; else $(CYGPATH_W) '$(srcdir)/tradelayer/utilsui.cpp'; fi`
+	$(AM_V_at)$(am__mv) tradelayer/$(DEPDIR)/libbitcoin_server_a-utilsui.Tpo tradelayer/$(DEPDIR)/libbitcoin_server_a-utilsui.Po
+#	$(AM_V_CXX)source='tradelayer/utilsui.cpp' object='tradelayer/libbitcoin_server_a-utilsui.obj' libtool=no \
 #	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) \
-#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_server_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_server_a_CXXFLAGS) $(CXXFLAGS) -c -o omnicore/libbitcoin_server_a-utilsui.obj `if test -f 'omnicore/utilsui.cpp'; then $(CYGPATH_W) 'omnicore/utilsui.cpp'; else $(CYGPATH_W) '$(srcdir)/omnicore/utilsui.cpp'; fi`
+#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_server_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_server_a_CXXFLAGS) $(CXXFLAGS) -c -o tradelayer/libbitcoin_server_a-utilsui.obj `if test -f 'tradelayer/utilsui.cpp'; then $(CYGPATH_W) 'tradelayer/utilsui.cpp'; else $(CYGPATH_W) '$(srcdir)/tradelayer/utilsui.cpp'; fi`
 
-omnicore/libbitcoin_server_a-version.o: omnicore/version.cpp
-	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_server_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_server_a_CXXFLAGS) $(CXXFLAGS) -MT omnicore/libbitcoin_server_a-version.o -MD -MP -MF omnicore/$(DEPDIR)/libbitcoin_server_a-version.Tpo -c -o omnicore/libbitcoin_server_a-version.o `test -f 'omnicore/version.cpp' || echo '$(srcdir)/'`omnicore/version.cpp
-	$(AM_V_at)$(am__mv) omnicore/$(DEPDIR)/libbitcoin_server_a-version.Tpo omnicore/$(DEPDIR)/libbitcoin_server_a-version.Po
-#	$(AM_V_CXX)source='omnicore/version.cpp' object='omnicore/libbitcoin_server_a-version.o' libtool=no \
+tradelayer/libbitcoin_server_a-version.o: tradelayer/version.cpp
+	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_server_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_server_a_CXXFLAGS) $(CXXFLAGS) -MT tradelayer/libbitcoin_server_a-version.o -MD -MP -MF tradelayer/$(DEPDIR)/libbitcoin_server_a-version.Tpo -c -o tradelayer/libbitcoin_server_a-version.o `test -f 'tradelayer/version.cpp' || echo '$(srcdir)/'`tradelayer/version.cpp
+	$(AM_V_at)$(am__mv) tradelayer/$(DEPDIR)/libbitcoin_server_a-version.Tpo tradelayer/$(DEPDIR)/libbitcoin_server_a-version.Po
+#	$(AM_V_CXX)source='tradelayer/version.cpp' object='tradelayer/libbitcoin_server_a-version.o' libtool=no \
 #	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) \
-#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_server_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_server_a_CXXFLAGS) $(CXXFLAGS) -c -o omnicore/libbitcoin_server_a-version.o `test -f 'omnicore/version.cpp' || echo '$(srcdir)/'`omnicore/version.cpp
+#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_server_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_server_a_CXXFLAGS) $(CXXFLAGS) -c -o tradelayer/libbitcoin_server_a-version.o `test -f 'tradelayer/version.cpp' || echo '$(srcdir)/'`tradelayer/version.cpp
 
-omnicore/libbitcoin_server_a-version.obj: omnicore/version.cpp
-	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_server_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_server_a_CXXFLAGS) $(CXXFLAGS) -MT omnicore/libbitcoin_server_a-version.obj -MD -MP -MF omnicore/$(DEPDIR)/libbitcoin_server_a-version.Tpo -c -o omnicore/libbitcoin_server_a-version.obj `if test -f 'omnicore/version.cpp'; then $(CYGPATH_W) 'omnicore/version.cpp'; else $(CYGPATH_W) '$(srcdir)/omnicore/version.cpp'; fi`
-	$(AM_V_at)$(am__mv) omnicore/$(DEPDIR)/libbitcoin_server_a-version.Tpo omnicore/$(DEPDIR)/libbitcoin_server_a-version.Po
-#	$(AM_V_CXX)source='omnicore/version.cpp' object='omnicore/libbitcoin_server_a-version.obj' libtool=no \
+tradelayer/libbitcoin_server_a-version.obj: tradelayer/version.cpp
+	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_server_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_server_a_CXXFLAGS) $(CXXFLAGS) -MT tradelayer/libbitcoin_server_a-version.obj -MD -MP -MF tradelayer/$(DEPDIR)/libbitcoin_server_a-version.Tpo -c -o tradelayer/libbitcoin_server_a-version.obj `if test -f 'tradelayer/version.cpp'; then $(CYGPATH_W) 'tradelayer/version.cpp'; else $(CYGPATH_W) '$(srcdir)/tradelayer/version.cpp'; fi`
+	$(AM_V_at)$(am__mv) tradelayer/$(DEPDIR)/libbitcoin_server_a-version.Tpo tradelayer/$(DEPDIR)/libbitcoin_server_a-version.Po
+#	$(AM_V_CXX)source='tradelayer/version.cpp' object='tradelayer/libbitcoin_server_a-version.obj' libtool=no \
 #	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) \
-#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_server_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_server_a_CXXFLAGS) $(CXXFLAGS) -c -o omnicore/libbitcoin_server_a-version.obj `if test -f 'omnicore/version.cpp'; then $(CYGPATH_W) 'omnicore/version.cpp'; else $(CYGPATH_W) '$(srcdir)/omnicore/version.cpp'; fi`
+#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_server_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_server_a_CXXFLAGS) $(CXXFLAGS) -c -o tradelayer/libbitcoin_server_a-version.obj `if test -f 'tradelayer/version.cpp'; then $(CYGPATH_W) 'tradelayer/version.cpp'; else $(CYGPATH_W) '$(srcdir)/tradelayer/version.cpp'; fi`
 
-omnicore/libbitcoin_server_a-walletcache.o: omnicore/walletcache.cpp
-	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_server_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_server_a_CXXFLAGS) $(CXXFLAGS) -MT omnicore/libbitcoin_server_a-walletcache.o -MD -MP -MF omnicore/$(DEPDIR)/libbitcoin_server_a-walletcache.Tpo -c -o omnicore/libbitcoin_server_a-walletcache.o `test -f 'omnicore/walletcache.cpp' || echo '$(srcdir)/'`omnicore/walletcache.cpp
-	$(AM_V_at)$(am__mv) omnicore/$(DEPDIR)/libbitcoin_server_a-walletcache.Tpo omnicore/$(DEPDIR)/libbitcoin_server_a-walletcache.Po
-#	$(AM_V_CXX)source='omnicore/walletcache.cpp' object='omnicore/libbitcoin_server_a-walletcache.o' libtool=no \
+tradelayer/libbitcoin_server_a-walletcache.o: tradelayer/walletcache.cpp
+	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_server_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_server_a_CXXFLAGS) $(CXXFLAGS) -MT tradelayer/libbitcoin_server_a-walletcache.o -MD -MP -MF tradelayer/$(DEPDIR)/libbitcoin_server_a-walletcache.Tpo -c -o tradelayer/libbitcoin_server_a-walletcache.o `test -f 'tradelayer/walletcache.cpp' || echo '$(srcdir)/'`tradelayer/walletcache.cpp
+	$(AM_V_at)$(am__mv) tradelayer/$(DEPDIR)/libbitcoin_server_a-walletcache.Tpo tradelayer/$(DEPDIR)/libbitcoin_server_a-walletcache.Po
+#	$(AM_V_CXX)source='tradelayer/walletcache.cpp' object='tradelayer/libbitcoin_server_a-walletcache.o' libtool=no \
 #	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) \
-#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_server_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_server_a_CXXFLAGS) $(CXXFLAGS) -c -o omnicore/libbitcoin_server_a-walletcache.o `test -f 'omnicore/walletcache.cpp' || echo '$(srcdir)/'`omnicore/walletcache.cpp
+#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_server_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_server_a_CXXFLAGS) $(CXXFLAGS) -c -o tradelayer/libbitcoin_server_a-walletcache.o `test -f 'tradelayer/walletcache.cpp' || echo '$(srcdir)/'`tradelayer/walletcache.cpp
 
-omnicore/libbitcoin_server_a-walletcache.obj: omnicore/walletcache.cpp
-	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_server_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_server_a_CXXFLAGS) $(CXXFLAGS) -MT omnicore/libbitcoin_server_a-walletcache.obj -MD -MP -MF omnicore/$(DEPDIR)/libbitcoin_server_a-walletcache.Tpo -c -o omnicore/libbitcoin_server_a-walletcache.obj `if test -f 'omnicore/walletcache.cpp'; then $(CYGPATH_W) 'omnicore/walletcache.cpp'; else $(CYGPATH_W) '$(srcdir)/omnicore/walletcache.cpp'; fi`
-	$(AM_V_at)$(am__mv) omnicore/$(DEPDIR)/libbitcoin_server_a-walletcache.Tpo omnicore/$(DEPDIR)/libbitcoin_server_a-walletcache.Po
-#	$(AM_V_CXX)source='omnicore/walletcache.cpp' object='omnicore/libbitcoin_server_a-walletcache.obj' libtool=no \
+tradelayer/libbitcoin_server_a-walletcache.obj: tradelayer/walletcache.cpp
+	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_server_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_server_a_CXXFLAGS) $(CXXFLAGS) -MT tradelayer/libbitcoin_server_a-walletcache.obj -MD -MP -MF tradelayer/$(DEPDIR)/libbitcoin_server_a-walletcache.Tpo -c -o tradelayer/libbitcoin_server_a-walletcache.obj `if test -f 'tradelayer/walletcache.cpp'; then $(CYGPATH_W) 'tradelayer/walletcache.cpp'; else $(CYGPATH_W) '$(srcdir)/tradelayer/walletcache.cpp'; fi`
+	$(AM_V_at)$(am__mv) tradelayer/$(DEPDIR)/libbitcoin_server_a-walletcache.Tpo tradelayer/$(DEPDIR)/libbitcoin_server_a-walletcache.Po
+#	$(AM_V_CXX)source='tradelayer/walletcache.cpp' object='tradelayer/libbitcoin_server_a-walletcache.obj' libtool=no \
 #	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) \
-#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_server_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_server_a_CXXFLAGS) $(CXXFLAGS) -c -o omnicore/libbitcoin_server_a-walletcache.obj `if test -f 'omnicore/walletcache.cpp'; then $(CYGPATH_W) 'omnicore/walletcache.cpp'; else $(CYGPATH_W) '$(srcdir)/omnicore/walletcache.cpp'; fi`
+#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_server_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_server_a_CXXFLAGS) $(CXXFLAGS) -c -o tradelayer/libbitcoin_server_a-walletcache.obj `if test -f 'tradelayer/walletcache.cpp'; then $(CYGPATH_W) 'tradelayer/walletcache.cpp'; else $(CYGPATH_W) '$(srcdir)/tradelayer/walletcache.cpp'; fi`
 
-omnicore/libbitcoin_server_a-walletfetchtxs.o: omnicore/walletfetchtxs.cpp
-	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_server_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_server_a_CXXFLAGS) $(CXXFLAGS) -MT omnicore/libbitcoin_server_a-walletfetchtxs.o -MD -MP -MF omnicore/$(DEPDIR)/libbitcoin_server_a-walletfetchtxs.Tpo -c -o omnicore/libbitcoin_server_a-walletfetchtxs.o `test -f 'omnicore/walletfetchtxs.cpp' || echo '$(srcdir)/'`omnicore/walletfetchtxs.cpp
-	$(AM_V_at)$(am__mv) omnicore/$(DEPDIR)/libbitcoin_server_a-walletfetchtxs.Tpo omnicore/$(DEPDIR)/libbitcoin_server_a-walletfetchtxs.Po
-#	$(AM_V_CXX)source='omnicore/walletfetchtxs.cpp' object='omnicore/libbitcoin_server_a-walletfetchtxs.o' libtool=no \
+tradelayer/libbitcoin_server_a-walletfetchtxs.o: tradelayer/walletfetchtxs.cpp
+	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_server_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_server_a_CXXFLAGS) $(CXXFLAGS) -MT tradelayer/libbitcoin_server_a-walletfetchtxs.o -MD -MP -MF tradelayer/$(DEPDIR)/libbitcoin_server_a-walletfetchtxs.Tpo -c -o tradelayer/libbitcoin_server_a-walletfetchtxs.o `test -f 'tradelayer/walletfetchtxs.cpp' || echo '$(srcdir)/'`tradelayer/walletfetchtxs.cpp
+	$(AM_V_at)$(am__mv) tradelayer/$(DEPDIR)/libbitcoin_server_a-walletfetchtxs.Tpo tradelayer/$(DEPDIR)/libbitcoin_server_a-walletfetchtxs.Po
+#	$(AM_V_CXX)source='tradelayer/walletfetchtxs.cpp' object='tradelayer/libbitcoin_server_a-walletfetchtxs.o' libtool=no \
 #	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) \
-#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_server_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_server_a_CXXFLAGS) $(CXXFLAGS) -c -o omnicore/libbitcoin_server_a-walletfetchtxs.o `test -f 'omnicore/walletfetchtxs.cpp' || echo '$(srcdir)/'`omnicore/walletfetchtxs.cpp
+#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_server_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_server_a_CXXFLAGS) $(CXXFLAGS) -c -o tradelayer/libbitcoin_server_a-walletfetchtxs.o `test -f 'tradelayer/walletfetchtxs.cpp' || echo '$(srcdir)/'`tradelayer/walletfetchtxs.cpp
 
-omnicore/libbitcoin_server_a-walletfetchtxs.obj: omnicore/walletfetchtxs.cpp
-	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_server_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_server_a_CXXFLAGS) $(CXXFLAGS) -MT omnicore/libbitcoin_server_a-walletfetchtxs.obj -MD -MP -MF omnicore/$(DEPDIR)/libbitcoin_server_a-walletfetchtxs.Tpo -c -o omnicore/libbitcoin_server_a-walletfetchtxs.obj `if test -f 'omnicore/walletfetchtxs.cpp'; then $(CYGPATH_W) 'omnicore/walletfetchtxs.cpp'; else $(CYGPATH_W) '$(srcdir)/omnicore/walletfetchtxs.cpp'; fi`
-	$(AM_V_at)$(am__mv) omnicore/$(DEPDIR)/libbitcoin_server_a-walletfetchtxs.Tpo omnicore/$(DEPDIR)/libbitcoin_server_a-walletfetchtxs.Po
-#	$(AM_V_CXX)source='omnicore/walletfetchtxs.cpp' object='omnicore/libbitcoin_server_a-walletfetchtxs.obj' libtool=no \
+tradelayer/libbitcoin_server_a-walletfetchtxs.obj: tradelayer/walletfetchtxs.cpp
+	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_server_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_server_a_CXXFLAGS) $(CXXFLAGS) -MT tradelayer/libbitcoin_server_a-walletfetchtxs.obj -MD -MP -MF tradelayer/$(DEPDIR)/libbitcoin_server_a-walletfetchtxs.Tpo -c -o tradelayer/libbitcoin_server_a-walletfetchtxs.obj `if test -f 'tradelayer/walletfetchtxs.cpp'; then $(CYGPATH_W) 'tradelayer/walletfetchtxs.cpp'; else $(CYGPATH_W) '$(srcdir)/tradelayer/walletfetchtxs.cpp'; fi`
+	$(AM_V_at)$(am__mv) tradelayer/$(DEPDIR)/libbitcoin_server_a-walletfetchtxs.Tpo tradelayer/$(DEPDIR)/libbitcoin_server_a-walletfetchtxs.Po
+#	$(AM_V_CXX)source='tradelayer/walletfetchtxs.cpp' object='tradelayer/libbitcoin_server_a-walletfetchtxs.obj' libtool=no \
 #	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) \
-#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_server_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_server_a_CXXFLAGS) $(CXXFLAGS) -c -o omnicore/libbitcoin_server_a-walletfetchtxs.obj `if test -f 'omnicore/walletfetchtxs.cpp'; then $(CYGPATH_W) 'omnicore/walletfetchtxs.cpp'; else $(CYGPATH_W) '$(srcdir)/omnicore/walletfetchtxs.cpp'; fi`
+#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_server_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_server_a_CXXFLAGS) $(CXXFLAGS) -c -o tradelayer/libbitcoin_server_a-walletfetchtxs.obj `if test -f 'tradelayer/walletfetchtxs.cpp'; then $(CYGPATH_W) 'tradelayer/walletfetchtxs.cpp'; else $(CYGPATH_W) '$(srcdir)/tradelayer/walletfetchtxs.cpp'; fi`
 
-omnicore/libbitcoin_server_a-wallettxbuilder.o: omnicore/wallettxbuilder.cpp
-	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_server_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_server_a_CXXFLAGS) $(CXXFLAGS) -MT omnicore/libbitcoin_server_a-wallettxbuilder.o -MD -MP -MF omnicore/$(DEPDIR)/libbitcoin_server_a-wallettxbuilder.Tpo -c -o omnicore/libbitcoin_server_a-wallettxbuilder.o `test -f 'omnicore/wallettxbuilder.cpp' || echo '$(srcdir)/'`omnicore/wallettxbuilder.cpp
-	$(AM_V_at)$(am__mv) omnicore/$(DEPDIR)/libbitcoin_server_a-wallettxbuilder.Tpo omnicore/$(DEPDIR)/libbitcoin_server_a-wallettxbuilder.Po
-#	$(AM_V_CXX)source='omnicore/wallettxbuilder.cpp' object='omnicore/libbitcoin_server_a-wallettxbuilder.o' libtool=no \
+tradelayer/libbitcoin_server_a-wallettxbuilder.o: tradelayer/wallettxbuilder.cpp
+	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_server_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_server_a_CXXFLAGS) $(CXXFLAGS) -MT tradelayer/libbitcoin_server_a-wallettxbuilder.o -MD -MP -MF tradelayer/$(DEPDIR)/libbitcoin_server_a-wallettxbuilder.Tpo -c -o tradelayer/libbitcoin_server_a-wallettxbuilder.o `test -f 'tradelayer/wallettxbuilder.cpp' || echo '$(srcdir)/'`tradelayer/wallettxbuilder.cpp
+	$(AM_V_at)$(am__mv) tradelayer/$(DEPDIR)/libbitcoin_server_a-wallettxbuilder.Tpo tradelayer/$(DEPDIR)/libbitcoin_server_a-wallettxbuilder.Po
+#	$(AM_V_CXX)source='tradelayer/wallettxbuilder.cpp' object='tradelayer/libbitcoin_server_a-wallettxbuilder.o' libtool=no \
 #	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) \
-#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_server_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_server_a_CXXFLAGS) $(CXXFLAGS) -c -o omnicore/libbitcoin_server_a-wallettxbuilder.o `test -f 'omnicore/wallettxbuilder.cpp' || echo '$(srcdir)/'`omnicore/wallettxbuilder.cpp
+#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_server_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_server_a_CXXFLAGS) $(CXXFLAGS) -c -o tradelayer/libbitcoin_server_a-wallettxbuilder.o `test -f 'tradelayer/wallettxbuilder.cpp' || echo '$(srcdir)/'`tradelayer/wallettxbuilder.cpp
 
-omnicore/libbitcoin_server_a-wallettxbuilder.obj: omnicore/wallettxbuilder.cpp
-	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_server_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_server_a_CXXFLAGS) $(CXXFLAGS) -MT omnicore/libbitcoin_server_a-wallettxbuilder.obj -MD -MP -MF omnicore/$(DEPDIR)/libbitcoin_server_a-wallettxbuilder.Tpo -c -o omnicore/libbitcoin_server_a-wallettxbuilder.obj `if test -f 'omnicore/wallettxbuilder.cpp'; then $(CYGPATH_W) 'omnicore/wallettxbuilder.cpp'; else $(CYGPATH_W) '$(srcdir)/omnicore/wallettxbuilder.cpp'; fi`
-	$(AM_V_at)$(am__mv) omnicore/$(DEPDIR)/libbitcoin_server_a-wallettxbuilder.Tpo omnicore/$(DEPDIR)/libbitcoin_server_a-wallettxbuilder.Po
-#	$(AM_V_CXX)source='omnicore/wallettxbuilder.cpp' object='omnicore/libbitcoin_server_a-wallettxbuilder.obj' libtool=no \
+tradelayer/libbitcoin_server_a-wallettxbuilder.obj: tradelayer/wallettxbuilder.cpp
+	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_server_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_server_a_CXXFLAGS) $(CXXFLAGS) -MT tradelayer/libbitcoin_server_a-wallettxbuilder.obj -MD -MP -MF tradelayer/$(DEPDIR)/libbitcoin_server_a-wallettxbuilder.Tpo -c -o tradelayer/libbitcoin_server_a-wallettxbuilder.obj `if test -f 'tradelayer/wallettxbuilder.cpp'; then $(CYGPATH_W) 'tradelayer/wallettxbuilder.cpp'; else $(CYGPATH_W) '$(srcdir)/tradelayer/wallettxbuilder.cpp'; fi`
+	$(AM_V_at)$(am__mv) tradelayer/$(DEPDIR)/libbitcoin_server_a-wallettxbuilder.Tpo tradelayer/$(DEPDIR)/libbitcoin_server_a-wallettxbuilder.Po
+#	$(AM_V_CXX)source='tradelayer/wallettxbuilder.cpp' object='tradelayer/libbitcoin_server_a-wallettxbuilder.obj' libtool=no \
 #	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) \
-#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_server_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_server_a_CXXFLAGS) $(CXXFLAGS) -c -o omnicore/libbitcoin_server_a-wallettxbuilder.obj `if test -f 'omnicore/wallettxbuilder.cpp'; then $(CYGPATH_W) 'omnicore/wallettxbuilder.cpp'; else $(CYGPATH_W) '$(srcdir)/omnicore/wallettxbuilder.cpp'; fi`
+#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_server_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_server_a_CXXFLAGS) $(CXXFLAGS) -c -o tradelayer/libbitcoin_server_a-wallettxbuilder.obj `if test -f 'tradelayer/wallettxbuilder.cpp'; then $(CYGPATH_W) 'tradelayer/wallettxbuilder.cpp'; else $(CYGPATH_W) '$(srcdir)/tradelayer/wallettxbuilder.cpp'; fi`
 
-omnicore/libbitcoin_server_a-globals.o: omnicore/globals.cpp
-	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_server_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_server_a_CXXFLAGS) $(CXXFLAGS) -MT omnicore/libbitcoin_server_a-globals.o -MD -MP -MF omnicore/$(DEPDIR)/libbitcoin_server_a-globals.Tpo -c -o omnicore/libbitcoin_server_a-globals.o `test -f 'omnicore/globals.cpp' || echo '$(srcdir)/'`omnicore/globals.cpp
-	$(AM_V_at)$(am__mv) omnicore/$(DEPDIR)/libbitcoin_server_a-globals.Tpo omnicore/$(DEPDIR)/libbitcoin_server_a-globals.Po
-#	$(AM_V_CXX)source='omnicore/globals.cpp' object='omnicore/libbitcoin_server_a-globals.o' libtool=no \
+tradelayer/libbitcoin_server_a-globals.o: tradelayer/globals.cpp
+	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_server_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_server_a_CXXFLAGS) $(CXXFLAGS) -MT tradelayer/libbitcoin_server_a-globals.o -MD -MP -MF tradelayer/$(DEPDIR)/libbitcoin_server_a-globals.Tpo -c -o tradelayer/libbitcoin_server_a-globals.o `test -f 'tradelayer/globals.cpp' || echo '$(srcdir)/'`tradelayer/globals.cpp
+	$(AM_V_at)$(am__mv) tradelayer/$(DEPDIR)/libbitcoin_server_a-globals.Tpo tradelayer/$(DEPDIR)/libbitcoin_server_a-globals.Po
+#	$(AM_V_CXX)source='tradelayer/globals.cpp' object='tradelayer/libbitcoin_server_a-globals.o' libtool=no \
 #	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) \
-#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_server_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_server_a_CXXFLAGS) $(CXXFLAGS) -c -o omnicore/libbitcoin_server_a-globals.o `test -f 'omnicore/globals.cpp' || echo '$(srcdir)/'`omnicore/globals.cpp
+#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_server_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_server_a_CXXFLAGS) $(CXXFLAGS) -c -o tradelayer/libbitcoin_server_a-globals.o `test -f 'tradelayer/globals.cpp' || echo '$(srcdir)/'`tradelayer/globals.cpp
 
-omnicore/libbitcoin_server_a-globals.obj: omnicore/globals.cpp
-	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_server_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_server_a_CXXFLAGS) $(CXXFLAGS) -MT omnicore/libbitcoin_server_a-globals.obj -MD -MP -MF omnicore/$(DEPDIR)/libbitcoin_server_a-globals.Tpo -c -o omnicore/libbitcoin_server_a-globals.obj `if test -f 'omnicore/globals.cpp'; then $(CYGPATH_W) 'omnicore/globals.cpp'; else $(CYGPATH_W) '$(srcdir)/omnicore/globals.cpp'; fi`
-	$(AM_V_at)$(am__mv) omnicore/$(DEPDIR)/libbitcoin_server_a-globals.Tpo omnicore/$(DEPDIR)/libbitcoin_server_a-globals.Po
-#	$(AM_V_CXX)source='omnicore/globals.cpp' object='omnicore/libbitcoin_server_a-globals.obj' libtool=no \
+tradelayer/libbitcoin_server_a-globals.obj: tradelayer/globals.cpp
+	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_server_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_server_a_CXXFLAGS) $(CXXFLAGS) -MT tradelayer/libbitcoin_server_a-globals.obj -MD -MP -MF tradelayer/$(DEPDIR)/libbitcoin_server_a-globals.Tpo -c -o tradelayer/libbitcoin_server_a-globals.obj `if test -f 'tradelayer/globals.cpp'; then $(CYGPATH_W) 'tradelayer/globals.cpp'; else $(CYGPATH_W) '$(srcdir)/tradelayer/globals.cpp'; fi`
+	$(AM_V_at)$(am__mv) tradelayer/$(DEPDIR)/libbitcoin_server_a-globals.Tpo tradelayer/$(DEPDIR)/libbitcoin_server_a-globals.Po
+#	$(AM_V_CXX)source='tradelayer/globals.cpp' object='tradelayer/libbitcoin_server_a-globals.obj' libtool=no \
 #	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) \
-#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_server_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_server_a_CXXFLAGS) $(CXXFLAGS) -c -o omnicore/libbitcoin_server_a-globals.obj `if test -f 'omnicore/globals.cpp'; then $(CYGPATH_W) 'omnicore/globals.cpp'; else $(CYGPATH_W) '$(srcdir)/omnicore/globals.cpp'; fi`
+#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_server_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_server_a_CXXFLAGS) $(CXXFLAGS) -c -o tradelayer/libbitcoin_server_a-globals.obj `if test -f 'tradelayer/globals.cpp'; then $(CYGPATH_W) 'tradelayer/globals.cpp'; else $(CYGPATH_W) '$(srcdir)/tradelayer/globals.cpp'; fi`
 
-omnicore/libbitcoin_server_a-externfns.o: omnicore/externfns.cpp
-	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_server_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_server_a_CXXFLAGS) $(CXXFLAGS) -MT omnicore/libbitcoin_server_a-externfns.o -MD -MP -MF omnicore/$(DEPDIR)/libbitcoin_server_a-externfns.Tpo -c -o omnicore/libbitcoin_server_a-externfns.o `test -f 'omnicore/externfns.cpp' || echo '$(srcdir)/'`omnicore/externfns.cpp
-	$(AM_V_at)$(am__mv) omnicore/$(DEPDIR)/libbitcoin_server_a-externfns.Tpo omnicore/$(DEPDIR)/libbitcoin_server_a-externfns.Po
-#	$(AM_V_CXX)source='omnicore/externfns.cpp' object='omnicore/libbitcoin_server_a-externfns.o' libtool=no \
+tradelayer/libbitcoin_server_a-externfns.o: tradelayer/externfns.cpp
+	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_server_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_server_a_CXXFLAGS) $(CXXFLAGS) -MT tradelayer/libbitcoin_server_a-externfns.o -MD -MP -MF tradelayer/$(DEPDIR)/libbitcoin_server_a-externfns.Tpo -c -o tradelayer/libbitcoin_server_a-externfns.o `test -f 'tradelayer/externfns.cpp' || echo '$(srcdir)/'`tradelayer/externfns.cpp
+	$(AM_V_at)$(am__mv) tradelayer/$(DEPDIR)/libbitcoin_server_a-externfns.Tpo tradelayer/$(DEPDIR)/libbitcoin_server_a-externfns.Po
+#	$(AM_V_CXX)source='tradelayer/externfns.cpp' object='tradelayer/libbitcoin_server_a-externfns.o' libtool=no \
 #	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) \
-#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_server_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_server_a_CXXFLAGS) $(CXXFLAGS) -c -o omnicore/libbitcoin_server_a-externfns.o `test -f 'omnicore/externfns.cpp' || echo '$(srcdir)/'`omnicore/externfns.cpp
+#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_server_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_server_a_CXXFLAGS) $(CXXFLAGS) -c -o tradelayer/libbitcoin_server_a-externfns.o `test -f 'tradelayer/externfns.cpp' || echo '$(srcdir)/'`tradelayer/externfns.cpp
 
-omnicore/libbitcoin_server_a-externfns.obj: omnicore/externfns.cpp
-	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_server_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_server_a_CXXFLAGS) $(CXXFLAGS) -MT omnicore/libbitcoin_server_a-externfns.obj -MD -MP -MF omnicore/$(DEPDIR)/libbitcoin_server_a-externfns.Tpo -c -o omnicore/libbitcoin_server_a-externfns.obj `if test -f 'omnicore/externfns.cpp'; then $(CYGPATH_W) 'omnicore/externfns.cpp'; else $(CYGPATH_W) '$(srcdir)/omnicore/externfns.cpp'; fi`
-	$(AM_V_at)$(am__mv) omnicore/$(DEPDIR)/libbitcoin_server_a-externfns.Tpo omnicore/$(DEPDIR)/libbitcoin_server_a-externfns.Po
-#	$(AM_V_CXX)source='omnicore/externfns.cpp' object='omnicore/libbitcoin_server_a-externfns.obj' libtool=no \
+tradelayer/libbitcoin_server_a-externfns.obj: tradelayer/externfns.cpp
+	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_server_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_server_a_CXXFLAGS) $(CXXFLAGS) -MT tradelayer/libbitcoin_server_a-externfns.obj -MD -MP -MF tradelayer/$(DEPDIR)/libbitcoin_server_a-externfns.Tpo -c -o tradelayer/libbitcoin_server_a-externfns.obj `if test -f 'tradelayer/externfns.cpp'; then $(CYGPATH_W) 'tradelayer/externfns.cpp'; else $(CYGPATH_W) '$(srcdir)/tradelayer/externfns.cpp'; fi`
+	$(AM_V_at)$(am__mv) tradelayer/$(DEPDIR)/libbitcoin_server_a-externfns.Tpo tradelayer/$(DEPDIR)/libbitcoin_server_a-externfns.Po
+#	$(AM_V_CXX)source='tradelayer/externfns.cpp' object='tradelayer/libbitcoin_server_a-externfns.obj' libtool=no \
 #	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) \
-#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_server_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_server_a_CXXFLAGS) $(CXXFLAGS) -c -o omnicore/libbitcoin_server_a-externfns.obj `if test -f 'omnicore/externfns.cpp'; then $(CYGPATH_W) 'omnicore/externfns.cpp'; else $(CYGPATH_W) '$(srcdir)/omnicore/externfns.cpp'; fi`
+#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_server_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_server_a_CXXFLAGS) $(CXXFLAGS) -c -o tradelayer/libbitcoin_server_a-externfns.obj `if test -f 'tradelayer/externfns.cpp'; then $(CYGPATH_W) 'tradelayer/externfns.cpp'; else $(CYGPATH_W) '$(srcdir)/tradelayer/externfns.cpp'; fi`
 
-omnicore/libbitcoin_server_a-walletutils.o: omnicore/walletutils.cpp
-	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_server_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_server_a_CXXFLAGS) $(CXXFLAGS) -MT omnicore/libbitcoin_server_a-walletutils.o -MD -MP -MF omnicore/$(DEPDIR)/libbitcoin_server_a-walletutils.Tpo -c -o omnicore/libbitcoin_server_a-walletutils.o `test -f 'omnicore/walletutils.cpp' || echo '$(srcdir)/'`omnicore/walletutils.cpp
-	$(AM_V_at)$(am__mv) omnicore/$(DEPDIR)/libbitcoin_server_a-walletutils.Tpo omnicore/$(DEPDIR)/libbitcoin_server_a-walletutils.Po
-#	$(AM_V_CXX)source='omnicore/walletutils.cpp' object='omnicore/libbitcoin_server_a-walletutils.o' libtool=no \
+tradelayer/libbitcoin_server_a-walletutils.o: tradelayer/walletutils.cpp
+	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_server_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_server_a_CXXFLAGS) $(CXXFLAGS) -MT tradelayer/libbitcoin_server_a-walletutils.o -MD -MP -MF tradelayer/$(DEPDIR)/libbitcoin_server_a-walletutils.Tpo -c -o tradelayer/libbitcoin_server_a-walletutils.o `test -f 'tradelayer/walletutils.cpp' || echo '$(srcdir)/'`tradelayer/walletutils.cpp
+	$(AM_V_at)$(am__mv) tradelayer/$(DEPDIR)/libbitcoin_server_a-walletutils.Tpo tradelayer/$(DEPDIR)/libbitcoin_server_a-walletutils.Po
+#	$(AM_V_CXX)source='tradelayer/walletutils.cpp' object='tradelayer/libbitcoin_server_a-walletutils.o' libtool=no \
 #	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) \
-#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_server_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_server_a_CXXFLAGS) $(CXXFLAGS) -c -o omnicore/libbitcoin_server_a-walletutils.o `test -f 'omnicore/walletutils.cpp' || echo '$(srcdir)/'`omnicore/walletutils.cpp
+#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_server_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_server_a_CXXFLAGS) $(CXXFLAGS) -c -o tradelayer/libbitcoin_server_a-walletutils.o `test -f 'tradelayer/walletutils.cpp' || echo '$(srcdir)/'`tradelayer/walletutils.cpp
 
-omnicore/libbitcoin_server_a-walletutils.obj: omnicore/walletutils.cpp
-	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_server_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_server_a_CXXFLAGS) $(CXXFLAGS) -MT omnicore/libbitcoin_server_a-walletutils.obj -MD -MP -MF omnicore/$(DEPDIR)/libbitcoin_server_a-walletutils.Tpo -c -o omnicore/libbitcoin_server_a-walletutils.obj `if test -f 'omnicore/walletutils.cpp'; then $(CYGPATH_W) 'omnicore/walletutils.cpp'; else $(CYGPATH_W) '$(srcdir)/omnicore/walletutils.cpp'; fi`
-	$(AM_V_at)$(am__mv) omnicore/$(DEPDIR)/libbitcoin_server_a-walletutils.Tpo omnicore/$(DEPDIR)/libbitcoin_server_a-walletutils.Po
-#	$(AM_V_CXX)source='omnicore/walletutils.cpp' object='omnicore/libbitcoin_server_a-walletutils.obj' libtool=no \
+tradelayer/libbitcoin_server_a-walletutils.obj: tradelayer/walletutils.cpp
+	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_server_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_server_a_CXXFLAGS) $(CXXFLAGS) -MT tradelayer/libbitcoin_server_a-walletutils.obj -MD -MP -MF tradelayer/$(DEPDIR)/libbitcoin_server_a-walletutils.Tpo -c -o tradelayer/libbitcoin_server_a-walletutils.obj `if test -f 'tradelayer/walletutils.cpp'; then $(CYGPATH_W) 'tradelayer/walletutils.cpp'; else $(CYGPATH_W) '$(srcdir)/tradelayer/walletutils.cpp'; fi`
+	$(AM_V_at)$(am__mv) tradelayer/$(DEPDIR)/libbitcoin_server_a-walletutils.Tpo tradelayer/$(DEPDIR)/libbitcoin_server_a-walletutils.Po
+#	$(AM_V_CXX)source='tradelayer/walletutils.cpp' object='tradelayer/libbitcoin_server_a-walletutils.obj' libtool=no \
 #	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) \
-#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_server_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_server_a_CXXFLAGS) $(CXXFLAGS) -c -o omnicore/libbitcoin_server_a-walletutils.obj `if test -f 'omnicore/walletutils.cpp'; then $(CYGPATH_W) 'omnicore/walletutils.cpp'; else $(CYGPATH_W) '$(srcdir)/omnicore/walletutils.cpp'; fi`
+#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_server_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_server_a_CXXFLAGS) $(CXXFLAGS) -c -o tradelayer/libbitcoin_server_a-walletutils.obj `if test -f 'tradelayer/walletutils.cpp'; then $(CYGPATH_W) 'tradelayer/walletutils.cpp'; else $(CYGPATH_W) '$(srcdir)/tradelayer/walletutils.cpp'; fi`
 
 support/libbitcoin_util_a-lockedpool.o: support/lockedpool.cpp
 	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_util_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_util_a_CXXFLAGS) $(CXXFLAGS) -MT support/libbitcoin_util_a-lockedpool.o -MD -MP -MF support/$(DEPDIR)/libbitcoin_util_a-lockedpool.Tpo -c -o support/libbitcoin_util_a-lockedpool.o `test -f 'support/lockedpool.cpp' || echo '$(srcdir)/'`support/lockedpool.cpp
@@ -14082,453 +14134,453 @@ wallet/test/test_test_omnicore-init_tests.obj: wallet/test/init_tests.cpp
 #	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) \
 #	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(test_test_omnicore_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o wallet/test/test_test_omnicore-init_tests.obj `if test -f 'wallet/test/init_tests.cpp'; then $(CYGPATH_W) 'wallet/test/init_tests.cpp'; else $(CYGPATH_W) '$(srcdir)/wallet/test/init_tests.cpp'; fi`
 
-omnicore/test/test_test_omnicore-alert_tests.o: omnicore/test/alert_tests.cpp
-	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(test_test_omnicore_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT omnicore/test/test_test_omnicore-alert_tests.o -MD -MP -MF omnicore/test/$(DEPDIR)/test_test_omnicore-alert_tests.Tpo -c -o omnicore/test/test_test_omnicore-alert_tests.o `test -f 'omnicore/test/alert_tests.cpp' || echo '$(srcdir)/'`omnicore/test/alert_tests.cpp
-	$(AM_V_at)$(am__mv) omnicore/test/$(DEPDIR)/test_test_omnicore-alert_tests.Tpo omnicore/test/$(DEPDIR)/test_test_omnicore-alert_tests.Po
-#	$(AM_V_CXX)source='omnicore/test/alert_tests.cpp' object='omnicore/test/test_test_omnicore-alert_tests.o' libtool=no \
+tradelayer/test/test_test_omnicore-alert_tests.o: tradelayer/test/alert_tests.cpp
+	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(test_test_omnicore_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT tradelayer/test/test_test_omnicore-alert_tests.o -MD -MP -MF tradelayer/test/$(DEPDIR)/test_test_omnicore-alert_tests.Tpo -c -o tradelayer/test/test_test_omnicore-alert_tests.o `test -f 'tradelayer/test/alert_tests.cpp' || echo '$(srcdir)/'`tradelayer/test/alert_tests.cpp
+	$(AM_V_at)$(am__mv) tradelayer/test/$(DEPDIR)/test_test_omnicore-alert_tests.Tpo tradelayer/test/$(DEPDIR)/test_test_omnicore-alert_tests.Po
+#	$(AM_V_CXX)source='tradelayer/test/alert_tests.cpp' object='tradelayer/test/test_test_omnicore-alert_tests.o' libtool=no \
 #	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) \
-#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(test_test_omnicore_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o omnicore/test/test_test_omnicore-alert_tests.o `test -f 'omnicore/test/alert_tests.cpp' || echo '$(srcdir)/'`omnicore/test/alert_tests.cpp
+#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(test_test_omnicore_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o tradelayer/test/test_test_omnicore-alert_tests.o `test -f 'tradelayer/test/alert_tests.cpp' || echo '$(srcdir)/'`tradelayer/test/alert_tests.cpp
 
-omnicore/test/test_test_omnicore-alert_tests.obj: omnicore/test/alert_tests.cpp
-	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(test_test_omnicore_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT omnicore/test/test_test_omnicore-alert_tests.obj -MD -MP -MF omnicore/test/$(DEPDIR)/test_test_omnicore-alert_tests.Tpo -c -o omnicore/test/test_test_omnicore-alert_tests.obj `if test -f 'omnicore/test/alert_tests.cpp'; then $(CYGPATH_W) 'omnicore/test/alert_tests.cpp'; else $(CYGPATH_W) '$(srcdir)/omnicore/test/alert_tests.cpp'; fi`
-	$(AM_V_at)$(am__mv) omnicore/test/$(DEPDIR)/test_test_omnicore-alert_tests.Tpo omnicore/test/$(DEPDIR)/test_test_omnicore-alert_tests.Po
-#	$(AM_V_CXX)source='omnicore/test/alert_tests.cpp' object='omnicore/test/test_test_omnicore-alert_tests.obj' libtool=no \
+tradelayer/test/test_test_omnicore-alert_tests.obj: tradelayer/test/alert_tests.cpp
+	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(test_test_omnicore_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT tradelayer/test/test_test_omnicore-alert_tests.obj -MD -MP -MF tradelayer/test/$(DEPDIR)/test_test_omnicore-alert_tests.Tpo -c -o tradelayer/test/test_test_omnicore-alert_tests.obj `if test -f 'tradelayer/test/alert_tests.cpp'; then $(CYGPATH_W) 'tradelayer/test/alert_tests.cpp'; else $(CYGPATH_W) '$(srcdir)/tradelayer/test/alert_tests.cpp'; fi`
+	$(AM_V_at)$(am__mv) tradelayer/test/$(DEPDIR)/test_test_omnicore-alert_tests.Tpo tradelayer/test/$(DEPDIR)/test_test_omnicore-alert_tests.Po
+#	$(AM_V_CXX)source='tradelayer/test/alert_tests.cpp' object='tradelayer/test/test_test_omnicore-alert_tests.obj' libtool=no \
 #	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) \
-#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(test_test_omnicore_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o omnicore/test/test_test_omnicore-alert_tests.obj `if test -f 'omnicore/test/alert_tests.cpp'; then $(CYGPATH_W) 'omnicore/test/alert_tests.cpp'; else $(CYGPATH_W) '$(srcdir)/omnicore/test/alert_tests.cpp'; fi`
+#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(test_test_omnicore_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o tradelayer/test/test_test_omnicore-alert_tests.obj `if test -f 'tradelayer/test/alert_tests.cpp'; then $(CYGPATH_W) 'tradelayer/test/alert_tests.cpp'; else $(CYGPATH_W) '$(srcdir)/tradelayer/test/alert_tests.cpp'; fi`
 
-omnicore/test/test_test_omnicore-change_issuer_tests.o: omnicore/test/change_issuer_tests.cpp
-	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(test_test_omnicore_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT omnicore/test/test_test_omnicore-change_issuer_tests.o -MD -MP -MF omnicore/test/$(DEPDIR)/test_test_omnicore-change_issuer_tests.Tpo -c -o omnicore/test/test_test_omnicore-change_issuer_tests.o `test -f 'omnicore/test/change_issuer_tests.cpp' || echo '$(srcdir)/'`omnicore/test/change_issuer_tests.cpp
-	$(AM_V_at)$(am__mv) omnicore/test/$(DEPDIR)/test_test_omnicore-change_issuer_tests.Tpo omnicore/test/$(DEPDIR)/test_test_omnicore-change_issuer_tests.Po
-#	$(AM_V_CXX)source='omnicore/test/change_issuer_tests.cpp' object='omnicore/test/test_test_omnicore-change_issuer_tests.o' libtool=no \
+tradelayer/test/test_test_omnicore-change_issuer_tests.o: tradelayer/test/change_issuer_tests.cpp
+	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(test_test_omnicore_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT tradelayer/test/test_test_omnicore-change_issuer_tests.o -MD -MP -MF tradelayer/test/$(DEPDIR)/test_test_omnicore-change_issuer_tests.Tpo -c -o tradelayer/test/test_test_omnicore-change_issuer_tests.o `test -f 'tradelayer/test/change_issuer_tests.cpp' || echo '$(srcdir)/'`tradelayer/test/change_issuer_tests.cpp
+	$(AM_V_at)$(am__mv) tradelayer/test/$(DEPDIR)/test_test_omnicore-change_issuer_tests.Tpo tradelayer/test/$(DEPDIR)/test_test_omnicore-change_issuer_tests.Po
+#	$(AM_V_CXX)source='tradelayer/test/change_issuer_tests.cpp' object='tradelayer/test/test_test_omnicore-change_issuer_tests.o' libtool=no \
 #	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) \
-#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(test_test_omnicore_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o omnicore/test/test_test_omnicore-change_issuer_tests.o `test -f 'omnicore/test/change_issuer_tests.cpp' || echo '$(srcdir)/'`omnicore/test/change_issuer_tests.cpp
+#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(test_test_omnicore_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o tradelayer/test/test_test_omnicore-change_issuer_tests.o `test -f 'tradelayer/test/change_issuer_tests.cpp' || echo '$(srcdir)/'`tradelayer/test/change_issuer_tests.cpp
 
-omnicore/test/test_test_omnicore-change_issuer_tests.obj: omnicore/test/change_issuer_tests.cpp
-	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(test_test_omnicore_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT omnicore/test/test_test_omnicore-change_issuer_tests.obj -MD -MP -MF omnicore/test/$(DEPDIR)/test_test_omnicore-change_issuer_tests.Tpo -c -o omnicore/test/test_test_omnicore-change_issuer_tests.obj `if test -f 'omnicore/test/change_issuer_tests.cpp'; then $(CYGPATH_W) 'omnicore/test/change_issuer_tests.cpp'; else $(CYGPATH_W) '$(srcdir)/omnicore/test/change_issuer_tests.cpp'; fi`
-	$(AM_V_at)$(am__mv) omnicore/test/$(DEPDIR)/test_test_omnicore-change_issuer_tests.Tpo omnicore/test/$(DEPDIR)/test_test_omnicore-change_issuer_tests.Po
-#	$(AM_V_CXX)source='omnicore/test/change_issuer_tests.cpp' object='omnicore/test/test_test_omnicore-change_issuer_tests.obj' libtool=no \
+tradelayer/test/test_test_omnicore-change_issuer_tests.obj: tradelayer/test/change_issuer_tests.cpp
+	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(test_test_omnicore_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT tradelayer/test/test_test_omnicore-change_issuer_tests.obj -MD -MP -MF tradelayer/test/$(DEPDIR)/test_test_omnicore-change_issuer_tests.Tpo -c -o tradelayer/test/test_test_omnicore-change_issuer_tests.obj `if test -f 'tradelayer/test/change_issuer_tests.cpp'; then $(CYGPATH_W) 'tradelayer/test/change_issuer_tests.cpp'; else $(CYGPATH_W) '$(srcdir)/tradelayer/test/change_issuer_tests.cpp'; fi`
+	$(AM_V_at)$(am__mv) tradelayer/test/$(DEPDIR)/test_test_omnicore-change_issuer_tests.Tpo tradelayer/test/$(DEPDIR)/test_test_omnicore-change_issuer_tests.Po
+#	$(AM_V_CXX)source='tradelayer/test/change_issuer_tests.cpp' object='tradelayer/test/test_test_omnicore-change_issuer_tests.obj' libtool=no \
 #	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) \
-#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(test_test_omnicore_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o omnicore/test/test_test_omnicore-change_issuer_tests.obj `if test -f 'omnicore/test/change_issuer_tests.cpp'; then $(CYGPATH_W) 'omnicore/test/change_issuer_tests.cpp'; else $(CYGPATH_W) '$(srcdir)/omnicore/test/change_issuer_tests.cpp'; fi`
+#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(test_test_omnicore_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o tradelayer/test/test_test_omnicore-change_issuer_tests.obj `if test -f 'tradelayer/test/change_issuer_tests.cpp'; then $(CYGPATH_W) 'tradelayer/test/change_issuer_tests.cpp'; else $(CYGPATH_W) '$(srcdir)/tradelayer/test/change_issuer_tests.cpp'; fi`
 
-omnicore/test/test_test_omnicore-checkpoint_tests.o: omnicore/test/checkpoint_tests.cpp
-	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(test_test_omnicore_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT omnicore/test/test_test_omnicore-checkpoint_tests.o -MD -MP -MF omnicore/test/$(DEPDIR)/test_test_omnicore-checkpoint_tests.Tpo -c -o omnicore/test/test_test_omnicore-checkpoint_tests.o `test -f 'omnicore/test/checkpoint_tests.cpp' || echo '$(srcdir)/'`omnicore/test/checkpoint_tests.cpp
-	$(AM_V_at)$(am__mv) omnicore/test/$(DEPDIR)/test_test_omnicore-checkpoint_tests.Tpo omnicore/test/$(DEPDIR)/test_test_omnicore-checkpoint_tests.Po
-#	$(AM_V_CXX)source='omnicore/test/checkpoint_tests.cpp' object='omnicore/test/test_test_omnicore-checkpoint_tests.o' libtool=no \
+tradelayer/test/test_test_omnicore-checkpoint_tests.o: tradelayer/test/checkpoint_tests.cpp
+	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(test_test_omnicore_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT tradelayer/test/test_test_omnicore-checkpoint_tests.o -MD -MP -MF tradelayer/test/$(DEPDIR)/test_test_omnicore-checkpoint_tests.Tpo -c -o tradelayer/test/test_test_omnicore-checkpoint_tests.o `test -f 'tradelayer/test/checkpoint_tests.cpp' || echo '$(srcdir)/'`tradelayer/test/checkpoint_tests.cpp
+	$(AM_V_at)$(am__mv) tradelayer/test/$(DEPDIR)/test_test_omnicore-checkpoint_tests.Tpo tradelayer/test/$(DEPDIR)/test_test_omnicore-checkpoint_tests.Po
+#	$(AM_V_CXX)source='tradelayer/test/checkpoint_tests.cpp' object='tradelayer/test/test_test_omnicore-checkpoint_tests.o' libtool=no \
 #	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) \
-#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(test_test_omnicore_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o omnicore/test/test_test_omnicore-checkpoint_tests.o `test -f 'omnicore/test/checkpoint_tests.cpp' || echo '$(srcdir)/'`omnicore/test/checkpoint_tests.cpp
+#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(test_test_omnicore_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o tradelayer/test/test_test_omnicore-checkpoint_tests.o `test -f 'tradelayer/test/checkpoint_tests.cpp' || echo '$(srcdir)/'`tradelayer/test/checkpoint_tests.cpp
 
-omnicore/test/test_test_omnicore-checkpoint_tests.obj: omnicore/test/checkpoint_tests.cpp
-	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(test_test_omnicore_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT omnicore/test/test_test_omnicore-checkpoint_tests.obj -MD -MP -MF omnicore/test/$(DEPDIR)/test_test_omnicore-checkpoint_tests.Tpo -c -o omnicore/test/test_test_omnicore-checkpoint_tests.obj `if test -f 'omnicore/test/checkpoint_tests.cpp'; then $(CYGPATH_W) 'omnicore/test/checkpoint_tests.cpp'; else $(CYGPATH_W) '$(srcdir)/omnicore/test/checkpoint_tests.cpp'; fi`
-	$(AM_V_at)$(am__mv) omnicore/test/$(DEPDIR)/test_test_omnicore-checkpoint_tests.Tpo omnicore/test/$(DEPDIR)/test_test_omnicore-checkpoint_tests.Po
-#	$(AM_V_CXX)source='omnicore/test/checkpoint_tests.cpp' object='omnicore/test/test_test_omnicore-checkpoint_tests.obj' libtool=no \
+tradelayer/test/test_test_omnicore-checkpoint_tests.obj: tradelayer/test/checkpoint_tests.cpp
+	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(test_test_omnicore_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT tradelayer/test/test_test_omnicore-checkpoint_tests.obj -MD -MP -MF tradelayer/test/$(DEPDIR)/test_test_omnicore-checkpoint_tests.Tpo -c -o tradelayer/test/test_test_omnicore-checkpoint_tests.obj `if test -f 'tradelayer/test/checkpoint_tests.cpp'; then $(CYGPATH_W) 'tradelayer/test/checkpoint_tests.cpp'; else $(CYGPATH_W) '$(srcdir)/tradelayer/test/checkpoint_tests.cpp'; fi`
+	$(AM_V_at)$(am__mv) tradelayer/test/$(DEPDIR)/test_test_omnicore-checkpoint_tests.Tpo tradelayer/test/$(DEPDIR)/test_test_omnicore-checkpoint_tests.Po
+#	$(AM_V_CXX)source='tradelayer/test/checkpoint_tests.cpp' object='tradelayer/test/test_test_omnicore-checkpoint_tests.obj' libtool=no \
 #	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) \
-#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(test_test_omnicore_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o omnicore/test/test_test_omnicore-checkpoint_tests.obj `if test -f 'omnicore/test/checkpoint_tests.cpp'; then $(CYGPATH_W) 'omnicore/test/checkpoint_tests.cpp'; else $(CYGPATH_W) '$(srcdir)/omnicore/test/checkpoint_tests.cpp'; fi`
+#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(test_test_omnicore_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o tradelayer/test/test_test_omnicore-checkpoint_tests.obj `if test -f 'tradelayer/test/checkpoint_tests.cpp'; then $(CYGPATH_W) 'tradelayer/test/checkpoint_tests.cpp'; else $(CYGPATH_W) '$(srcdir)/tradelayer/test/checkpoint_tests.cpp'; fi`
 
-omnicore/test/test_test_omnicore-create_payload_tests.o: omnicore/test/create_payload_tests.cpp
-	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(test_test_omnicore_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT omnicore/test/test_test_omnicore-create_payload_tests.o -MD -MP -MF omnicore/test/$(DEPDIR)/test_test_omnicore-create_payload_tests.Tpo -c -o omnicore/test/test_test_omnicore-create_payload_tests.o `test -f 'omnicore/test/create_payload_tests.cpp' || echo '$(srcdir)/'`omnicore/test/create_payload_tests.cpp
-	$(AM_V_at)$(am__mv) omnicore/test/$(DEPDIR)/test_test_omnicore-create_payload_tests.Tpo omnicore/test/$(DEPDIR)/test_test_omnicore-create_payload_tests.Po
-#	$(AM_V_CXX)source='omnicore/test/create_payload_tests.cpp' object='omnicore/test/test_test_omnicore-create_payload_tests.o' libtool=no \
+tradelayer/test/test_test_omnicore-create_payload_tests.o: tradelayer/test/create_payload_tests.cpp
+	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(test_test_omnicore_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT tradelayer/test/test_test_omnicore-create_payload_tests.o -MD -MP -MF tradelayer/test/$(DEPDIR)/test_test_omnicore-create_payload_tests.Tpo -c -o tradelayer/test/test_test_omnicore-create_payload_tests.o `test -f 'tradelayer/test/create_payload_tests.cpp' || echo '$(srcdir)/'`tradelayer/test/create_payload_tests.cpp
+	$(AM_V_at)$(am__mv) tradelayer/test/$(DEPDIR)/test_test_omnicore-create_payload_tests.Tpo tradelayer/test/$(DEPDIR)/test_test_omnicore-create_payload_tests.Po
+#	$(AM_V_CXX)source='tradelayer/test/create_payload_tests.cpp' object='tradelayer/test/test_test_omnicore-create_payload_tests.o' libtool=no \
 #	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) \
-#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(test_test_omnicore_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o omnicore/test/test_test_omnicore-create_payload_tests.o `test -f 'omnicore/test/create_payload_tests.cpp' || echo '$(srcdir)/'`omnicore/test/create_payload_tests.cpp
+#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(test_test_omnicore_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o tradelayer/test/test_test_omnicore-create_payload_tests.o `test -f 'tradelayer/test/create_payload_tests.cpp' || echo '$(srcdir)/'`tradelayer/test/create_payload_tests.cpp
 
-omnicore/test/test_test_omnicore-create_payload_tests.obj: omnicore/test/create_payload_tests.cpp
-	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(test_test_omnicore_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT omnicore/test/test_test_omnicore-create_payload_tests.obj -MD -MP -MF omnicore/test/$(DEPDIR)/test_test_omnicore-create_payload_tests.Tpo -c -o omnicore/test/test_test_omnicore-create_payload_tests.obj `if test -f 'omnicore/test/create_payload_tests.cpp'; then $(CYGPATH_W) 'omnicore/test/create_payload_tests.cpp'; else $(CYGPATH_W) '$(srcdir)/omnicore/test/create_payload_tests.cpp'; fi`
-	$(AM_V_at)$(am__mv) omnicore/test/$(DEPDIR)/test_test_omnicore-create_payload_tests.Tpo omnicore/test/$(DEPDIR)/test_test_omnicore-create_payload_tests.Po
-#	$(AM_V_CXX)source='omnicore/test/create_payload_tests.cpp' object='omnicore/test/test_test_omnicore-create_payload_tests.obj' libtool=no \
+tradelayer/test/test_test_omnicore-create_payload_tests.obj: tradelayer/test/create_payload_tests.cpp
+	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(test_test_omnicore_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT tradelayer/test/test_test_omnicore-create_payload_tests.obj -MD -MP -MF tradelayer/test/$(DEPDIR)/test_test_omnicore-create_payload_tests.Tpo -c -o tradelayer/test/test_test_omnicore-create_payload_tests.obj `if test -f 'tradelayer/test/create_payload_tests.cpp'; then $(CYGPATH_W) 'tradelayer/test/create_payload_tests.cpp'; else $(CYGPATH_W) '$(srcdir)/tradelayer/test/create_payload_tests.cpp'; fi`
+	$(AM_V_at)$(am__mv) tradelayer/test/$(DEPDIR)/test_test_omnicore-create_payload_tests.Tpo tradelayer/test/$(DEPDIR)/test_test_omnicore-create_payload_tests.Po
+#	$(AM_V_CXX)source='tradelayer/test/create_payload_tests.cpp' object='tradelayer/test/test_test_omnicore-create_payload_tests.obj' libtool=no \
 #	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) \
-#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(test_test_omnicore_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o omnicore/test/test_test_omnicore-create_payload_tests.obj `if test -f 'omnicore/test/create_payload_tests.cpp'; then $(CYGPATH_W) 'omnicore/test/create_payload_tests.cpp'; else $(CYGPATH_W) '$(srcdir)/omnicore/test/create_payload_tests.cpp'; fi`
+#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(test_test_omnicore_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o tradelayer/test/test_test_omnicore-create_payload_tests.obj `if test -f 'tradelayer/test/create_payload_tests.cpp'; then $(CYGPATH_W) 'tradelayer/test/create_payload_tests.cpp'; else $(CYGPATH_W) '$(srcdir)/tradelayer/test/create_payload_tests.cpp'; fi`
 
-omnicore/test/test_test_omnicore-create_tx_tests.o: omnicore/test/create_tx_tests.cpp
-	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(test_test_omnicore_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT omnicore/test/test_test_omnicore-create_tx_tests.o -MD -MP -MF omnicore/test/$(DEPDIR)/test_test_omnicore-create_tx_tests.Tpo -c -o omnicore/test/test_test_omnicore-create_tx_tests.o `test -f 'omnicore/test/create_tx_tests.cpp' || echo '$(srcdir)/'`omnicore/test/create_tx_tests.cpp
-	$(AM_V_at)$(am__mv) omnicore/test/$(DEPDIR)/test_test_omnicore-create_tx_tests.Tpo omnicore/test/$(DEPDIR)/test_test_omnicore-create_tx_tests.Po
-#	$(AM_V_CXX)source='omnicore/test/create_tx_tests.cpp' object='omnicore/test/test_test_omnicore-create_tx_tests.o' libtool=no \
+tradelayer/test/test_test_omnicore-create_tx_tests.o: tradelayer/test/create_tx_tests.cpp
+	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(test_test_omnicore_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT tradelayer/test/test_test_omnicore-create_tx_tests.o -MD -MP -MF tradelayer/test/$(DEPDIR)/test_test_omnicore-create_tx_tests.Tpo -c -o tradelayer/test/test_test_omnicore-create_tx_tests.o `test -f 'tradelayer/test/create_tx_tests.cpp' || echo '$(srcdir)/'`tradelayer/test/create_tx_tests.cpp
+	$(AM_V_at)$(am__mv) tradelayer/test/$(DEPDIR)/test_test_omnicore-create_tx_tests.Tpo tradelayer/test/$(DEPDIR)/test_test_omnicore-create_tx_tests.Po
+#	$(AM_V_CXX)source='tradelayer/test/create_tx_tests.cpp' object='tradelayer/test/test_test_omnicore-create_tx_tests.o' libtool=no \
 #	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) \
-#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(test_test_omnicore_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o omnicore/test/test_test_omnicore-create_tx_tests.o `test -f 'omnicore/test/create_tx_tests.cpp' || echo '$(srcdir)/'`omnicore/test/create_tx_tests.cpp
+#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(test_test_omnicore_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o tradelayer/test/test_test_omnicore-create_tx_tests.o `test -f 'tradelayer/test/create_tx_tests.cpp' || echo '$(srcdir)/'`tradelayer/test/create_tx_tests.cpp
 
-omnicore/test/test_test_omnicore-create_tx_tests.obj: omnicore/test/create_tx_tests.cpp
-	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(test_test_omnicore_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT omnicore/test/test_test_omnicore-create_tx_tests.obj -MD -MP -MF omnicore/test/$(DEPDIR)/test_test_omnicore-create_tx_tests.Tpo -c -o omnicore/test/test_test_omnicore-create_tx_tests.obj `if test -f 'omnicore/test/create_tx_tests.cpp'; then $(CYGPATH_W) 'omnicore/test/create_tx_tests.cpp'; else $(CYGPATH_W) '$(srcdir)/omnicore/test/create_tx_tests.cpp'; fi`
-	$(AM_V_at)$(am__mv) omnicore/test/$(DEPDIR)/test_test_omnicore-create_tx_tests.Tpo omnicore/test/$(DEPDIR)/test_test_omnicore-create_tx_tests.Po
-#	$(AM_V_CXX)source='omnicore/test/create_tx_tests.cpp' object='omnicore/test/test_test_omnicore-create_tx_tests.obj' libtool=no \
+tradelayer/test/test_test_omnicore-create_tx_tests.obj: tradelayer/test/create_tx_tests.cpp
+	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(test_test_omnicore_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT tradelayer/test/test_test_omnicore-create_tx_tests.obj -MD -MP -MF tradelayer/test/$(DEPDIR)/test_test_omnicore-create_tx_tests.Tpo -c -o tradelayer/test/test_test_omnicore-create_tx_tests.obj `if test -f 'tradelayer/test/create_tx_tests.cpp'; then $(CYGPATH_W) 'tradelayer/test/create_tx_tests.cpp'; else $(CYGPATH_W) '$(srcdir)/tradelayer/test/create_tx_tests.cpp'; fi`
+	$(AM_V_at)$(am__mv) tradelayer/test/$(DEPDIR)/test_test_omnicore-create_tx_tests.Tpo tradelayer/test/$(DEPDIR)/test_test_omnicore-create_tx_tests.Po
+#	$(AM_V_CXX)source='tradelayer/test/create_tx_tests.cpp' object='tradelayer/test/test_test_omnicore-create_tx_tests.obj' libtool=no \
 #	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) \
-#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(test_test_omnicore_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o omnicore/test/test_test_omnicore-create_tx_tests.obj `if test -f 'omnicore/test/create_tx_tests.cpp'; then $(CYGPATH_W) 'omnicore/test/create_tx_tests.cpp'; else $(CYGPATH_W) '$(srcdir)/omnicore/test/create_tx_tests.cpp'; fi`
+#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(test_test_omnicore_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o tradelayer/test/test_test_omnicore-create_tx_tests.obj `if test -f 'tradelayer/test/create_tx_tests.cpp'; then $(CYGPATH_W) 'tradelayer/test/create_tx_tests.cpp'; else $(CYGPATH_W) '$(srcdir)/tradelayer/test/create_tx_tests.cpp'; fi`
 
-omnicore/test/test_test_omnicore-crowdsale_participation_tests.o: omnicore/test/crowdsale_participation_tests.cpp
-	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(test_test_omnicore_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT omnicore/test/test_test_omnicore-crowdsale_participation_tests.o -MD -MP -MF omnicore/test/$(DEPDIR)/test_test_omnicore-crowdsale_participation_tests.Tpo -c -o omnicore/test/test_test_omnicore-crowdsale_participation_tests.o `test -f 'omnicore/test/crowdsale_participation_tests.cpp' || echo '$(srcdir)/'`omnicore/test/crowdsale_participation_tests.cpp
-	$(AM_V_at)$(am__mv) omnicore/test/$(DEPDIR)/test_test_omnicore-crowdsale_participation_tests.Tpo omnicore/test/$(DEPDIR)/test_test_omnicore-crowdsale_participation_tests.Po
-#	$(AM_V_CXX)source='omnicore/test/crowdsale_participation_tests.cpp' object='omnicore/test/test_test_omnicore-crowdsale_participation_tests.o' libtool=no \
+tradelayer/test/test_test_omnicore-crowdsale_participation_tests.o: tradelayer/test/crowdsale_participation_tests.cpp
+	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(test_test_omnicore_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT tradelayer/test/test_test_omnicore-crowdsale_participation_tests.o -MD -MP -MF tradelayer/test/$(DEPDIR)/test_test_omnicore-crowdsale_participation_tests.Tpo -c -o tradelayer/test/test_test_omnicore-crowdsale_participation_tests.o `test -f 'tradelayer/test/crowdsale_participation_tests.cpp' || echo '$(srcdir)/'`tradelayer/test/crowdsale_participation_tests.cpp
+	$(AM_V_at)$(am__mv) tradelayer/test/$(DEPDIR)/test_test_omnicore-crowdsale_participation_tests.Tpo tradelayer/test/$(DEPDIR)/test_test_omnicore-crowdsale_participation_tests.Po
+#	$(AM_V_CXX)source='tradelayer/test/crowdsale_participation_tests.cpp' object='tradelayer/test/test_test_omnicore-crowdsale_participation_tests.o' libtool=no \
 #	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) \
-#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(test_test_omnicore_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o omnicore/test/test_test_omnicore-crowdsale_participation_tests.o `test -f 'omnicore/test/crowdsale_participation_tests.cpp' || echo '$(srcdir)/'`omnicore/test/crowdsale_participation_tests.cpp
+#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(test_test_omnicore_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o tradelayer/test/test_test_omnicore-crowdsale_participation_tests.o `test -f 'tradelayer/test/crowdsale_participation_tests.cpp' || echo '$(srcdir)/'`tradelayer/test/crowdsale_participation_tests.cpp
 
-omnicore/test/test_test_omnicore-crowdsale_participation_tests.obj: omnicore/test/crowdsale_participation_tests.cpp
-	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(test_test_omnicore_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT omnicore/test/test_test_omnicore-crowdsale_participation_tests.obj -MD -MP -MF omnicore/test/$(DEPDIR)/test_test_omnicore-crowdsale_participation_tests.Tpo -c -o omnicore/test/test_test_omnicore-crowdsale_participation_tests.obj `if test -f 'omnicore/test/crowdsale_participation_tests.cpp'; then $(CYGPATH_W) 'omnicore/test/crowdsale_participation_tests.cpp'; else $(CYGPATH_W) '$(srcdir)/omnicore/test/crowdsale_participation_tests.cpp'; fi`
-	$(AM_V_at)$(am__mv) omnicore/test/$(DEPDIR)/test_test_omnicore-crowdsale_participation_tests.Tpo omnicore/test/$(DEPDIR)/test_test_omnicore-crowdsale_participation_tests.Po
-#	$(AM_V_CXX)source='omnicore/test/crowdsale_participation_tests.cpp' object='omnicore/test/test_test_omnicore-crowdsale_participation_tests.obj' libtool=no \
+tradelayer/test/test_test_omnicore-crowdsale_participation_tests.obj: tradelayer/test/crowdsale_participation_tests.cpp
+	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(test_test_omnicore_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT tradelayer/test/test_test_omnicore-crowdsale_participation_tests.obj -MD -MP -MF tradelayer/test/$(DEPDIR)/test_test_omnicore-crowdsale_participation_tests.Tpo -c -o tradelayer/test/test_test_omnicore-crowdsale_participation_tests.obj `if test -f 'tradelayer/test/crowdsale_participation_tests.cpp'; then $(CYGPATH_W) 'tradelayer/test/crowdsale_participation_tests.cpp'; else $(CYGPATH_W) '$(srcdir)/tradelayer/test/crowdsale_participation_tests.cpp'; fi`
+	$(AM_V_at)$(am__mv) tradelayer/test/$(DEPDIR)/test_test_omnicore-crowdsale_participation_tests.Tpo tradelayer/test/$(DEPDIR)/test_test_omnicore-crowdsale_participation_tests.Po
+#	$(AM_V_CXX)source='tradelayer/test/crowdsale_participation_tests.cpp' object='tradelayer/test/test_test_omnicore-crowdsale_participation_tests.obj' libtool=no \
 #	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) \
-#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(test_test_omnicore_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o omnicore/test/test_test_omnicore-crowdsale_participation_tests.obj `if test -f 'omnicore/test/crowdsale_participation_tests.cpp'; then $(CYGPATH_W) 'omnicore/test/crowdsale_participation_tests.cpp'; else $(CYGPATH_W) '$(srcdir)/omnicore/test/crowdsale_participation_tests.cpp'; fi`
+#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(test_test_omnicore_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o tradelayer/test/test_test_omnicore-crowdsale_participation_tests.obj `if test -f 'tradelayer/test/crowdsale_participation_tests.cpp'; then $(CYGPATH_W) 'tradelayer/test/crowdsale_participation_tests.cpp'; else $(CYGPATH_W) '$(srcdir)/tradelayer/test/crowdsale_participation_tests.cpp'; fi`
 
-omnicore/test/test_test_omnicore-dex_purchase_tests.o: omnicore/test/dex_purchase_tests.cpp
-	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(test_test_omnicore_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT omnicore/test/test_test_omnicore-dex_purchase_tests.o -MD -MP -MF omnicore/test/$(DEPDIR)/test_test_omnicore-dex_purchase_tests.Tpo -c -o omnicore/test/test_test_omnicore-dex_purchase_tests.o `test -f 'omnicore/test/dex_purchase_tests.cpp' || echo '$(srcdir)/'`omnicore/test/dex_purchase_tests.cpp
-	$(AM_V_at)$(am__mv) omnicore/test/$(DEPDIR)/test_test_omnicore-dex_purchase_tests.Tpo omnicore/test/$(DEPDIR)/test_test_omnicore-dex_purchase_tests.Po
-#	$(AM_V_CXX)source='omnicore/test/dex_purchase_tests.cpp' object='omnicore/test/test_test_omnicore-dex_purchase_tests.o' libtool=no \
+tradelayer/test/test_test_omnicore-dex_purchase_tests.o: tradelayer/test/dex_purchase_tests.cpp
+	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(test_test_omnicore_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT tradelayer/test/test_test_omnicore-dex_purchase_tests.o -MD -MP -MF tradelayer/test/$(DEPDIR)/test_test_omnicore-dex_purchase_tests.Tpo -c -o tradelayer/test/test_test_omnicore-dex_purchase_tests.o `test -f 'tradelayer/test/dex_purchase_tests.cpp' || echo '$(srcdir)/'`tradelayer/test/dex_purchase_tests.cpp
+	$(AM_V_at)$(am__mv) tradelayer/test/$(DEPDIR)/test_test_omnicore-dex_purchase_tests.Tpo tradelayer/test/$(DEPDIR)/test_test_omnicore-dex_purchase_tests.Po
+#	$(AM_V_CXX)source='tradelayer/test/dex_purchase_tests.cpp' object='tradelayer/test/test_test_omnicore-dex_purchase_tests.o' libtool=no \
 #	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) \
-#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(test_test_omnicore_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o omnicore/test/test_test_omnicore-dex_purchase_tests.o `test -f 'omnicore/test/dex_purchase_tests.cpp' || echo '$(srcdir)/'`omnicore/test/dex_purchase_tests.cpp
+#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(test_test_omnicore_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o tradelayer/test/test_test_omnicore-dex_purchase_tests.o `test -f 'tradelayer/test/dex_purchase_tests.cpp' || echo '$(srcdir)/'`tradelayer/test/dex_purchase_tests.cpp
 
-omnicore/test/test_test_omnicore-dex_purchase_tests.obj: omnicore/test/dex_purchase_tests.cpp
-	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(test_test_omnicore_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT omnicore/test/test_test_omnicore-dex_purchase_tests.obj -MD -MP -MF omnicore/test/$(DEPDIR)/test_test_omnicore-dex_purchase_tests.Tpo -c -o omnicore/test/test_test_omnicore-dex_purchase_tests.obj `if test -f 'omnicore/test/dex_purchase_tests.cpp'; then $(CYGPATH_W) 'omnicore/test/dex_purchase_tests.cpp'; else $(CYGPATH_W) '$(srcdir)/omnicore/test/dex_purchase_tests.cpp'; fi`
-	$(AM_V_at)$(am__mv) omnicore/test/$(DEPDIR)/test_test_omnicore-dex_purchase_tests.Tpo omnicore/test/$(DEPDIR)/test_test_omnicore-dex_purchase_tests.Po
-#	$(AM_V_CXX)source='omnicore/test/dex_purchase_tests.cpp' object='omnicore/test/test_test_omnicore-dex_purchase_tests.obj' libtool=no \
+tradelayer/test/test_test_omnicore-dex_purchase_tests.obj: tradelayer/test/dex_purchase_tests.cpp
+	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(test_test_omnicore_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT tradelayer/test/test_test_omnicore-dex_purchase_tests.obj -MD -MP -MF tradelayer/test/$(DEPDIR)/test_test_omnicore-dex_purchase_tests.Tpo -c -o tradelayer/test/test_test_omnicore-dex_purchase_tests.obj `if test -f 'tradelayer/test/dex_purchase_tests.cpp'; then $(CYGPATH_W) 'tradelayer/test/dex_purchase_tests.cpp'; else $(CYGPATH_W) '$(srcdir)/tradelayer/test/dex_purchase_tests.cpp'; fi`
+	$(AM_V_at)$(am__mv) tradelayer/test/$(DEPDIR)/test_test_omnicore-dex_purchase_tests.Tpo tradelayer/test/$(DEPDIR)/test_test_omnicore-dex_purchase_tests.Po
+#	$(AM_V_CXX)source='tradelayer/test/dex_purchase_tests.cpp' object='tradelayer/test/test_test_omnicore-dex_purchase_tests.obj' libtool=no \
 #	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) \
-#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(test_test_omnicore_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o omnicore/test/test_test_omnicore-dex_purchase_tests.obj `if test -f 'omnicore/test/dex_purchase_tests.cpp'; then $(CYGPATH_W) 'omnicore/test/dex_purchase_tests.cpp'; else $(CYGPATH_W) '$(srcdir)/omnicore/test/dex_purchase_tests.cpp'; fi`
+#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(test_test_omnicore_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o tradelayer/test/test_test_omnicore-dex_purchase_tests.obj `if test -f 'tradelayer/test/dex_purchase_tests.cpp'; then $(CYGPATH_W) 'tradelayer/test/dex_purchase_tests.cpp'; else $(CYGPATH_W) '$(srcdir)/tradelayer/test/dex_purchase_tests.cpp'; fi`
 
-omnicore/test/test_test_omnicore-encoding_b_tests.o: omnicore/test/encoding_b_tests.cpp
-	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(test_test_omnicore_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT omnicore/test/test_test_omnicore-encoding_b_tests.o -MD -MP -MF omnicore/test/$(DEPDIR)/test_test_omnicore-encoding_b_tests.Tpo -c -o omnicore/test/test_test_omnicore-encoding_b_tests.o `test -f 'omnicore/test/encoding_b_tests.cpp' || echo '$(srcdir)/'`omnicore/test/encoding_b_tests.cpp
-	$(AM_V_at)$(am__mv) omnicore/test/$(DEPDIR)/test_test_omnicore-encoding_b_tests.Tpo omnicore/test/$(DEPDIR)/test_test_omnicore-encoding_b_tests.Po
-#	$(AM_V_CXX)source='omnicore/test/encoding_b_tests.cpp' object='omnicore/test/test_test_omnicore-encoding_b_tests.o' libtool=no \
+tradelayer/test/test_test_omnicore-encoding_b_tests.o: tradelayer/test/encoding_b_tests.cpp
+	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(test_test_omnicore_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT tradelayer/test/test_test_omnicore-encoding_b_tests.o -MD -MP -MF tradelayer/test/$(DEPDIR)/test_test_omnicore-encoding_b_tests.Tpo -c -o tradelayer/test/test_test_omnicore-encoding_b_tests.o `test -f 'tradelayer/test/encoding_b_tests.cpp' || echo '$(srcdir)/'`tradelayer/test/encoding_b_tests.cpp
+	$(AM_V_at)$(am__mv) tradelayer/test/$(DEPDIR)/test_test_omnicore-encoding_b_tests.Tpo tradelayer/test/$(DEPDIR)/test_test_omnicore-encoding_b_tests.Po
+#	$(AM_V_CXX)source='tradelayer/test/encoding_b_tests.cpp' object='tradelayer/test/test_test_omnicore-encoding_b_tests.o' libtool=no \
 #	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) \
-#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(test_test_omnicore_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o omnicore/test/test_test_omnicore-encoding_b_tests.o `test -f 'omnicore/test/encoding_b_tests.cpp' || echo '$(srcdir)/'`omnicore/test/encoding_b_tests.cpp
+#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(test_test_omnicore_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o tradelayer/test/test_test_omnicore-encoding_b_tests.o `test -f 'tradelayer/test/encoding_b_tests.cpp' || echo '$(srcdir)/'`tradelayer/test/encoding_b_tests.cpp
 
-omnicore/test/test_test_omnicore-encoding_b_tests.obj: omnicore/test/encoding_b_tests.cpp
-	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(test_test_omnicore_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT omnicore/test/test_test_omnicore-encoding_b_tests.obj -MD -MP -MF omnicore/test/$(DEPDIR)/test_test_omnicore-encoding_b_tests.Tpo -c -o omnicore/test/test_test_omnicore-encoding_b_tests.obj `if test -f 'omnicore/test/encoding_b_tests.cpp'; then $(CYGPATH_W) 'omnicore/test/encoding_b_tests.cpp'; else $(CYGPATH_W) '$(srcdir)/omnicore/test/encoding_b_tests.cpp'; fi`
-	$(AM_V_at)$(am__mv) omnicore/test/$(DEPDIR)/test_test_omnicore-encoding_b_tests.Tpo omnicore/test/$(DEPDIR)/test_test_omnicore-encoding_b_tests.Po
-#	$(AM_V_CXX)source='omnicore/test/encoding_b_tests.cpp' object='omnicore/test/test_test_omnicore-encoding_b_tests.obj' libtool=no \
+tradelayer/test/test_test_omnicore-encoding_b_tests.obj: tradelayer/test/encoding_b_tests.cpp
+	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(test_test_omnicore_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT tradelayer/test/test_test_omnicore-encoding_b_tests.obj -MD -MP -MF tradelayer/test/$(DEPDIR)/test_test_omnicore-encoding_b_tests.Tpo -c -o tradelayer/test/test_test_omnicore-encoding_b_tests.obj `if test -f 'tradelayer/test/encoding_b_tests.cpp'; then $(CYGPATH_W) 'tradelayer/test/encoding_b_tests.cpp'; else $(CYGPATH_W) '$(srcdir)/tradelayer/test/encoding_b_tests.cpp'; fi`
+	$(AM_V_at)$(am__mv) tradelayer/test/$(DEPDIR)/test_test_omnicore-encoding_b_tests.Tpo tradelayer/test/$(DEPDIR)/test_test_omnicore-encoding_b_tests.Po
+#	$(AM_V_CXX)source='tradelayer/test/encoding_b_tests.cpp' object='tradelayer/test/test_test_omnicore-encoding_b_tests.obj' libtool=no \
 #	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) \
-#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(test_test_omnicore_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o omnicore/test/test_test_omnicore-encoding_b_tests.obj `if test -f 'omnicore/test/encoding_b_tests.cpp'; then $(CYGPATH_W) 'omnicore/test/encoding_b_tests.cpp'; else $(CYGPATH_W) '$(srcdir)/omnicore/test/encoding_b_tests.cpp'; fi`
+#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(test_test_omnicore_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o tradelayer/test/test_test_omnicore-encoding_b_tests.obj `if test -f 'tradelayer/test/encoding_b_tests.cpp'; then $(CYGPATH_W) 'tradelayer/test/encoding_b_tests.cpp'; else $(CYGPATH_W) '$(srcdir)/tradelayer/test/encoding_b_tests.cpp'; fi`
 
-omnicore/test/test_test_omnicore-encoding_c_tests.o: omnicore/test/encoding_c_tests.cpp
-	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(test_test_omnicore_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT omnicore/test/test_test_omnicore-encoding_c_tests.o -MD -MP -MF omnicore/test/$(DEPDIR)/test_test_omnicore-encoding_c_tests.Tpo -c -o omnicore/test/test_test_omnicore-encoding_c_tests.o `test -f 'omnicore/test/encoding_c_tests.cpp' || echo '$(srcdir)/'`omnicore/test/encoding_c_tests.cpp
-	$(AM_V_at)$(am__mv) omnicore/test/$(DEPDIR)/test_test_omnicore-encoding_c_tests.Tpo omnicore/test/$(DEPDIR)/test_test_omnicore-encoding_c_tests.Po
-#	$(AM_V_CXX)source='omnicore/test/encoding_c_tests.cpp' object='omnicore/test/test_test_omnicore-encoding_c_tests.o' libtool=no \
+tradelayer/test/test_test_omnicore-encoding_c_tests.o: tradelayer/test/encoding_c_tests.cpp
+	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(test_test_omnicore_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT tradelayer/test/test_test_omnicore-encoding_c_tests.o -MD -MP -MF tradelayer/test/$(DEPDIR)/test_test_omnicore-encoding_c_tests.Tpo -c -o tradelayer/test/test_test_omnicore-encoding_c_tests.o `test -f 'tradelayer/test/encoding_c_tests.cpp' || echo '$(srcdir)/'`tradelayer/test/encoding_c_tests.cpp
+	$(AM_V_at)$(am__mv) tradelayer/test/$(DEPDIR)/test_test_omnicore-encoding_c_tests.Tpo tradelayer/test/$(DEPDIR)/test_test_omnicore-encoding_c_tests.Po
+#	$(AM_V_CXX)source='tradelayer/test/encoding_c_tests.cpp' object='tradelayer/test/test_test_omnicore-encoding_c_tests.o' libtool=no \
 #	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) \
-#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(test_test_omnicore_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o omnicore/test/test_test_omnicore-encoding_c_tests.o `test -f 'omnicore/test/encoding_c_tests.cpp' || echo '$(srcdir)/'`omnicore/test/encoding_c_tests.cpp
+#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(test_test_omnicore_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o tradelayer/test/test_test_omnicore-encoding_c_tests.o `test -f 'tradelayer/test/encoding_c_tests.cpp' || echo '$(srcdir)/'`tradelayer/test/encoding_c_tests.cpp
 
-omnicore/test/test_test_omnicore-encoding_c_tests.obj: omnicore/test/encoding_c_tests.cpp
-	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(test_test_omnicore_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT omnicore/test/test_test_omnicore-encoding_c_tests.obj -MD -MP -MF omnicore/test/$(DEPDIR)/test_test_omnicore-encoding_c_tests.Tpo -c -o omnicore/test/test_test_omnicore-encoding_c_tests.obj `if test -f 'omnicore/test/encoding_c_tests.cpp'; then $(CYGPATH_W) 'omnicore/test/encoding_c_tests.cpp'; else $(CYGPATH_W) '$(srcdir)/omnicore/test/encoding_c_tests.cpp'; fi`
-	$(AM_V_at)$(am__mv) omnicore/test/$(DEPDIR)/test_test_omnicore-encoding_c_tests.Tpo omnicore/test/$(DEPDIR)/test_test_omnicore-encoding_c_tests.Po
-#	$(AM_V_CXX)source='omnicore/test/encoding_c_tests.cpp' object='omnicore/test/test_test_omnicore-encoding_c_tests.obj' libtool=no \
+tradelayer/test/test_test_omnicore-encoding_c_tests.obj: tradelayer/test/encoding_c_tests.cpp
+	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(test_test_omnicore_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT tradelayer/test/test_test_omnicore-encoding_c_tests.obj -MD -MP -MF tradelayer/test/$(DEPDIR)/test_test_omnicore-encoding_c_tests.Tpo -c -o tradelayer/test/test_test_omnicore-encoding_c_tests.obj `if test -f 'tradelayer/test/encoding_c_tests.cpp'; then $(CYGPATH_W) 'tradelayer/test/encoding_c_tests.cpp'; else $(CYGPATH_W) '$(srcdir)/tradelayer/test/encoding_c_tests.cpp'; fi`
+	$(AM_V_at)$(am__mv) tradelayer/test/$(DEPDIR)/test_test_omnicore-encoding_c_tests.Tpo tradelayer/test/$(DEPDIR)/test_test_omnicore-encoding_c_tests.Po
+#	$(AM_V_CXX)source='tradelayer/test/encoding_c_tests.cpp' object='tradelayer/test/test_test_omnicore-encoding_c_tests.obj' libtool=no \
 #	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) \
-#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(test_test_omnicore_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o omnicore/test/test_test_omnicore-encoding_c_tests.obj `if test -f 'omnicore/test/encoding_c_tests.cpp'; then $(CYGPATH_W) 'omnicore/test/encoding_c_tests.cpp'; else $(CYGPATH_W) '$(srcdir)/omnicore/test/encoding_c_tests.cpp'; fi`
+#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(test_test_omnicore_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o tradelayer/test/test_test_omnicore-encoding_c_tests.obj `if test -f 'tradelayer/test/encoding_c_tests.cpp'; then $(CYGPATH_W) 'tradelayer/test/encoding_c_tests.cpp'; else $(CYGPATH_W) '$(srcdir)/tradelayer/test/encoding_c_tests.cpp'; fi`
 
-omnicore/test/test_test_omnicore-exodus_tests.o: omnicore/test/exodus_tests.cpp
-	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(test_test_omnicore_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT omnicore/test/test_test_omnicore-exodus_tests.o -MD -MP -MF omnicore/test/$(DEPDIR)/test_test_omnicore-exodus_tests.Tpo -c -o omnicore/test/test_test_omnicore-exodus_tests.o `test -f 'omnicore/test/exodus_tests.cpp' || echo '$(srcdir)/'`omnicore/test/exodus_tests.cpp
-	$(AM_V_at)$(am__mv) omnicore/test/$(DEPDIR)/test_test_omnicore-exodus_tests.Tpo omnicore/test/$(DEPDIR)/test_test_omnicore-exodus_tests.Po
-#	$(AM_V_CXX)source='omnicore/test/exodus_tests.cpp' object='omnicore/test/test_test_omnicore-exodus_tests.o' libtool=no \
+tradelayer/test/test_test_omnicore-exodus_tests.o: tradelayer/test/exodus_tests.cpp
+	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(test_test_omnicore_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT tradelayer/test/test_test_omnicore-exodus_tests.o -MD -MP -MF tradelayer/test/$(DEPDIR)/test_test_omnicore-exodus_tests.Tpo -c -o tradelayer/test/test_test_omnicore-exodus_tests.o `test -f 'tradelayer/test/exodus_tests.cpp' || echo '$(srcdir)/'`tradelayer/test/exodus_tests.cpp
+	$(AM_V_at)$(am__mv) tradelayer/test/$(DEPDIR)/test_test_omnicore-exodus_tests.Tpo tradelayer/test/$(DEPDIR)/test_test_omnicore-exodus_tests.Po
+#	$(AM_V_CXX)source='tradelayer/test/exodus_tests.cpp' object='tradelayer/test/test_test_omnicore-exodus_tests.o' libtool=no \
 #	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) \
-#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(test_test_omnicore_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o omnicore/test/test_test_omnicore-exodus_tests.o `test -f 'omnicore/test/exodus_tests.cpp' || echo '$(srcdir)/'`omnicore/test/exodus_tests.cpp
+#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(test_test_omnicore_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o tradelayer/test/test_test_omnicore-exodus_tests.o `test -f 'tradelayer/test/exodus_tests.cpp' || echo '$(srcdir)/'`tradelayer/test/exodus_tests.cpp
 
-omnicore/test/test_test_omnicore-exodus_tests.obj: omnicore/test/exodus_tests.cpp
-	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(test_test_omnicore_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT omnicore/test/test_test_omnicore-exodus_tests.obj -MD -MP -MF omnicore/test/$(DEPDIR)/test_test_omnicore-exodus_tests.Tpo -c -o omnicore/test/test_test_omnicore-exodus_tests.obj `if test -f 'omnicore/test/exodus_tests.cpp'; then $(CYGPATH_W) 'omnicore/test/exodus_tests.cpp'; else $(CYGPATH_W) '$(srcdir)/omnicore/test/exodus_tests.cpp'; fi`
-	$(AM_V_at)$(am__mv) omnicore/test/$(DEPDIR)/test_test_omnicore-exodus_tests.Tpo omnicore/test/$(DEPDIR)/test_test_omnicore-exodus_tests.Po
-#	$(AM_V_CXX)source='omnicore/test/exodus_tests.cpp' object='omnicore/test/test_test_omnicore-exodus_tests.obj' libtool=no \
+tradelayer/test/test_test_omnicore-exodus_tests.obj: tradelayer/test/exodus_tests.cpp
+	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(test_test_omnicore_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT tradelayer/test/test_test_omnicore-exodus_tests.obj -MD -MP -MF tradelayer/test/$(DEPDIR)/test_test_omnicore-exodus_tests.Tpo -c -o tradelayer/test/test_test_omnicore-exodus_tests.obj `if test -f 'tradelayer/test/exodus_tests.cpp'; then $(CYGPATH_W) 'tradelayer/test/exodus_tests.cpp'; else $(CYGPATH_W) '$(srcdir)/tradelayer/test/exodus_tests.cpp'; fi`
+	$(AM_V_at)$(am__mv) tradelayer/test/$(DEPDIR)/test_test_omnicore-exodus_tests.Tpo tradelayer/test/$(DEPDIR)/test_test_omnicore-exodus_tests.Po
+#	$(AM_V_CXX)source='tradelayer/test/exodus_tests.cpp' object='tradelayer/test/test_test_omnicore-exodus_tests.obj' libtool=no \
 #	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) \
-#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(test_test_omnicore_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o omnicore/test/test_test_omnicore-exodus_tests.obj `if test -f 'omnicore/test/exodus_tests.cpp'; then $(CYGPATH_W) 'omnicore/test/exodus_tests.cpp'; else $(CYGPATH_W) '$(srcdir)/omnicore/test/exodus_tests.cpp'; fi`
+#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(test_test_omnicore_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o tradelayer/test/test_test_omnicore-exodus_tests.obj `if test -f 'tradelayer/test/exodus_tests.cpp'; then $(CYGPATH_W) 'tradelayer/test/exodus_tests.cpp'; else $(CYGPATH_W) '$(srcdir)/tradelayer/test/exodus_tests.cpp'; fi`
 
-omnicore/test/test_test_omnicore-lock_tests.o: omnicore/test/lock_tests.cpp
-	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(test_test_omnicore_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT omnicore/test/test_test_omnicore-lock_tests.o -MD -MP -MF omnicore/test/$(DEPDIR)/test_test_omnicore-lock_tests.Tpo -c -o omnicore/test/test_test_omnicore-lock_tests.o `test -f 'omnicore/test/lock_tests.cpp' || echo '$(srcdir)/'`omnicore/test/lock_tests.cpp
-	$(AM_V_at)$(am__mv) omnicore/test/$(DEPDIR)/test_test_omnicore-lock_tests.Tpo omnicore/test/$(DEPDIR)/test_test_omnicore-lock_tests.Po
-#	$(AM_V_CXX)source='omnicore/test/lock_tests.cpp' object='omnicore/test/test_test_omnicore-lock_tests.o' libtool=no \
+tradelayer/test/test_test_omnicore-lock_tests.o: tradelayer/test/lock_tests.cpp
+	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(test_test_omnicore_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT tradelayer/test/test_test_omnicore-lock_tests.o -MD -MP -MF tradelayer/test/$(DEPDIR)/test_test_omnicore-lock_tests.Tpo -c -o tradelayer/test/test_test_omnicore-lock_tests.o `test -f 'tradelayer/test/lock_tests.cpp' || echo '$(srcdir)/'`tradelayer/test/lock_tests.cpp
+	$(AM_V_at)$(am__mv) tradelayer/test/$(DEPDIR)/test_test_omnicore-lock_tests.Tpo tradelayer/test/$(DEPDIR)/test_test_omnicore-lock_tests.Po
+#	$(AM_V_CXX)source='tradelayer/test/lock_tests.cpp' object='tradelayer/test/test_test_omnicore-lock_tests.o' libtool=no \
 #	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) \
-#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(test_test_omnicore_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o omnicore/test/test_test_omnicore-lock_tests.o `test -f 'omnicore/test/lock_tests.cpp' || echo '$(srcdir)/'`omnicore/test/lock_tests.cpp
+#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(test_test_omnicore_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o tradelayer/test/test_test_omnicore-lock_tests.o `test -f 'tradelayer/test/lock_tests.cpp' || echo '$(srcdir)/'`tradelayer/test/lock_tests.cpp
 
-omnicore/test/test_test_omnicore-lock_tests.obj: omnicore/test/lock_tests.cpp
-	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(test_test_omnicore_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT omnicore/test/test_test_omnicore-lock_tests.obj -MD -MP -MF omnicore/test/$(DEPDIR)/test_test_omnicore-lock_tests.Tpo -c -o omnicore/test/test_test_omnicore-lock_tests.obj `if test -f 'omnicore/test/lock_tests.cpp'; then $(CYGPATH_W) 'omnicore/test/lock_tests.cpp'; else $(CYGPATH_W) '$(srcdir)/omnicore/test/lock_tests.cpp'; fi`
-	$(AM_V_at)$(am__mv) omnicore/test/$(DEPDIR)/test_test_omnicore-lock_tests.Tpo omnicore/test/$(DEPDIR)/test_test_omnicore-lock_tests.Po
-#	$(AM_V_CXX)source='omnicore/test/lock_tests.cpp' object='omnicore/test/test_test_omnicore-lock_tests.obj' libtool=no \
+tradelayer/test/test_test_omnicore-lock_tests.obj: tradelayer/test/lock_tests.cpp
+	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(test_test_omnicore_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT tradelayer/test/test_test_omnicore-lock_tests.obj -MD -MP -MF tradelayer/test/$(DEPDIR)/test_test_omnicore-lock_tests.Tpo -c -o tradelayer/test/test_test_omnicore-lock_tests.obj `if test -f 'tradelayer/test/lock_tests.cpp'; then $(CYGPATH_W) 'tradelayer/test/lock_tests.cpp'; else $(CYGPATH_W) '$(srcdir)/tradelayer/test/lock_tests.cpp'; fi`
+	$(AM_V_at)$(am__mv) tradelayer/test/$(DEPDIR)/test_test_omnicore-lock_tests.Tpo tradelayer/test/$(DEPDIR)/test_test_omnicore-lock_tests.Po
+#	$(AM_V_CXX)source='tradelayer/test/lock_tests.cpp' object='tradelayer/test/test_test_omnicore-lock_tests.obj' libtool=no \
 #	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) \
-#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(test_test_omnicore_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o omnicore/test/test_test_omnicore-lock_tests.obj `if test -f 'omnicore/test/lock_tests.cpp'; then $(CYGPATH_W) 'omnicore/test/lock_tests.cpp'; else $(CYGPATH_W) '$(srcdir)/omnicore/test/lock_tests.cpp'; fi`
+#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(test_test_omnicore_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o tradelayer/test/test_test_omnicore-lock_tests.obj `if test -f 'tradelayer/test/lock_tests.cpp'; then $(CYGPATH_W) 'tradelayer/test/lock_tests.cpp'; else $(CYGPATH_W) '$(srcdir)/tradelayer/test/lock_tests.cpp'; fi`
 
-omnicore/test/test_test_omnicore-marker_tests.o: omnicore/test/marker_tests.cpp
-	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(test_test_omnicore_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT omnicore/test/test_test_omnicore-marker_tests.o -MD -MP -MF omnicore/test/$(DEPDIR)/test_test_omnicore-marker_tests.Tpo -c -o omnicore/test/test_test_omnicore-marker_tests.o `test -f 'omnicore/test/marker_tests.cpp' || echo '$(srcdir)/'`omnicore/test/marker_tests.cpp
-	$(AM_V_at)$(am__mv) omnicore/test/$(DEPDIR)/test_test_omnicore-marker_tests.Tpo omnicore/test/$(DEPDIR)/test_test_omnicore-marker_tests.Po
-#	$(AM_V_CXX)source='omnicore/test/marker_tests.cpp' object='omnicore/test/test_test_omnicore-marker_tests.o' libtool=no \
+tradelayer/test/test_test_omnicore-marker_tests.o: tradelayer/test/marker_tests.cpp
+	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(test_test_omnicore_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT tradelayer/test/test_test_omnicore-marker_tests.o -MD -MP -MF tradelayer/test/$(DEPDIR)/test_test_omnicore-marker_tests.Tpo -c -o tradelayer/test/test_test_omnicore-marker_tests.o `test -f 'tradelayer/test/marker_tests.cpp' || echo '$(srcdir)/'`tradelayer/test/marker_tests.cpp
+	$(AM_V_at)$(am__mv) tradelayer/test/$(DEPDIR)/test_test_omnicore-marker_tests.Tpo tradelayer/test/$(DEPDIR)/test_test_omnicore-marker_tests.Po
+#	$(AM_V_CXX)source='tradelayer/test/marker_tests.cpp' object='tradelayer/test/test_test_omnicore-marker_tests.o' libtool=no \
 #	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) \
-#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(test_test_omnicore_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o omnicore/test/test_test_omnicore-marker_tests.o `test -f 'omnicore/test/marker_tests.cpp' || echo '$(srcdir)/'`omnicore/test/marker_tests.cpp
+#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(test_test_omnicore_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o tradelayer/test/test_test_omnicore-marker_tests.o `test -f 'tradelayer/test/marker_tests.cpp' || echo '$(srcdir)/'`tradelayer/test/marker_tests.cpp
 
-omnicore/test/test_test_omnicore-marker_tests.obj: omnicore/test/marker_tests.cpp
-	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(test_test_omnicore_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT omnicore/test/test_test_omnicore-marker_tests.obj -MD -MP -MF omnicore/test/$(DEPDIR)/test_test_omnicore-marker_tests.Tpo -c -o omnicore/test/test_test_omnicore-marker_tests.obj `if test -f 'omnicore/test/marker_tests.cpp'; then $(CYGPATH_W) 'omnicore/test/marker_tests.cpp'; else $(CYGPATH_W) '$(srcdir)/omnicore/test/marker_tests.cpp'; fi`
-	$(AM_V_at)$(am__mv) omnicore/test/$(DEPDIR)/test_test_omnicore-marker_tests.Tpo omnicore/test/$(DEPDIR)/test_test_omnicore-marker_tests.Po
-#	$(AM_V_CXX)source='omnicore/test/marker_tests.cpp' object='omnicore/test/test_test_omnicore-marker_tests.obj' libtool=no \
+tradelayer/test/test_test_omnicore-marker_tests.obj: tradelayer/test/marker_tests.cpp
+	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(test_test_omnicore_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT tradelayer/test/test_test_omnicore-marker_tests.obj -MD -MP -MF tradelayer/test/$(DEPDIR)/test_test_omnicore-marker_tests.Tpo -c -o tradelayer/test/test_test_omnicore-marker_tests.obj `if test -f 'tradelayer/test/marker_tests.cpp'; then $(CYGPATH_W) 'tradelayer/test/marker_tests.cpp'; else $(CYGPATH_W) '$(srcdir)/tradelayer/test/marker_tests.cpp'; fi`
+	$(AM_V_at)$(am__mv) tradelayer/test/$(DEPDIR)/test_test_omnicore-marker_tests.Tpo tradelayer/test/$(DEPDIR)/test_test_omnicore-marker_tests.Po
+#	$(AM_V_CXX)source='tradelayer/test/marker_tests.cpp' object='tradelayer/test/test_test_omnicore-marker_tests.obj' libtool=no \
 #	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) \
-#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(test_test_omnicore_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o omnicore/test/test_test_omnicore-marker_tests.obj `if test -f 'omnicore/test/marker_tests.cpp'; then $(CYGPATH_W) 'omnicore/test/marker_tests.cpp'; else $(CYGPATH_W) '$(srcdir)/omnicore/test/marker_tests.cpp'; fi`
+#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(test_test_omnicore_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o tradelayer/test/test_test_omnicore-marker_tests.obj `if test -f 'tradelayer/test/marker_tests.cpp'; then $(CYGPATH_W) 'tradelayer/test/marker_tests.cpp'; else $(CYGPATH_W) '$(srcdir)/tradelayer/test/marker_tests.cpp'; fi`
 
-omnicore/test/test_test_omnicore-mbstring_tests.o: omnicore/test/mbstring_tests.cpp
-	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(test_test_omnicore_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT omnicore/test/test_test_omnicore-mbstring_tests.o -MD -MP -MF omnicore/test/$(DEPDIR)/test_test_omnicore-mbstring_tests.Tpo -c -o omnicore/test/test_test_omnicore-mbstring_tests.o `test -f 'omnicore/test/mbstring_tests.cpp' || echo '$(srcdir)/'`omnicore/test/mbstring_tests.cpp
-	$(AM_V_at)$(am__mv) omnicore/test/$(DEPDIR)/test_test_omnicore-mbstring_tests.Tpo omnicore/test/$(DEPDIR)/test_test_omnicore-mbstring_tests.Po
-#	$(AM_V_CXX)source='omnicore/test/mbstring_tests.cpp' object='omnicore/test/test_test_omnicore-mbstring_tests.o' libtool=no \
+tradelayer/test/test_test_omnicore-mbstring_tests.o: tradelayer/test/mbstring_tests.cpp
+	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(test_test_omnicore_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT tradelayer/test/test_test_omnicore-mbstring_tests.o -MD -MP -MF tradelayer/test/$(DEPDIR)/test_test_omnicore-mbstring_tests.Tpo -c -o tradelayer/test/test_test_omnicore-mbstring_tests.o `test -f 'tradelayer/test/mbstring_tests.cpp' || echo '$(srcdir)/'`tradelayer/test/mbstring_tests.cpp
+	$(AM_V_at)$(am__mv) tradelayer/test/$(DEPDIR)/test_test_omnicore-mbstring_tests.Tpo tradelayer/test/$(DEPDIR)/test_test_omnicore-mbstring_tests.Po
+#	$(AM_V_CXX)source='tradelayer/test/mbstring_tests.cpp' object='tradelayer/test/test_test_omnicore-mbstring_tests.o' libtool=no \
 #	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) \
-#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(test_test_omnicore_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o omnicore/test/test_test_omnicore-mbstring_tests.o `test -f 'omnicore/test/mbstring_tests.cpp' || echo '$(srcdir)/'`omnicore/test/mbstring_tests.cpp
+#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(test_test_omnicore_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o tradelayer/test/test_test_omnicore-mbstring_tests.o `test -f 'tradelayer/test/mbstring_tests.cpp' || echo '$(srcdir)/'`tradelayer/test/mbstring_tests.cpp
 
-omnicore/test/test_test_omnicore-mbstring_tests.obj: omnicore/test/mbstring_tests.cpp
-	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(test_test_omnicore_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT omnicore/test/test_test_omnicore-mbstring_tests.obj -MD -MP -MF omnicore/test/$(DEPDIR)/test_test_omnicore-mbstring_tests.Tpo -c -o omnicore/test/test_test_omnicore-mbstring_tests.obj `if test -f 'omnicore/test/mbstring_tests.cpp'; then $(CYGPATH_W) 'omnicore/test/mbstring_tests.cpp'; else $(CYGPATH_W) '$(srcdir)/omnicore/test/mbstring_tests.cpp'; fi`
-	$(AM_V_at)$(am__mv) omnicore/test/$(DEPDIR)/test_test_omnicore-mbstring_tests.Tpo omnicore/test/$(DEPDIR)/test_test_omnicore-mbstring_tests.Po
-#	$(AM_V_CXX)source='omnicore/test/mbstring_tests.cpp' object='omnicore/test/test_test_omnicore-mbstring_tests.obj' libtool=no \
+tradelayer/test/test_test_omnicore-mbstring_tests.obj: tradelayer/test/mbstring_tests.cpp
+	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(test_test_omnicore_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT tradelayer/test/test_test_omnicore-mbstring_tests.obj -MD -MP -MF tradelayer/test/$(DEPDIR)/test_test_omnicore-mbstring_tests.Tpo -c -o tradelayer/test/test_test_omnicore-mbstring_tests.obj `if test -f 'tradelayer/test/mbstring_tests.cpp'; then $(CYGPATH_W) 'tradelayer/test/mbstring_tests.cpp'; else $(CYGPATH_W) '$(srcdir)/tradelayer/test/mbstring_tests.cpp'; fi`
+	$(AM_V_at)$(am__mv) tradelayer/test/$(DEPDIR)/test_test_omnicore-mbstring_tests.Tpo tradelayer/test/$(DEPDIR)/test_test_omnicore-mbstring_tests.Po
+#	$(AM_V_CXX)source='tradelayer/test/mbstring_tests.cpp' object='tradelayer/test/test_test_omnicore-mbstring_tests.obj' libtool=no \
 #	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) \
-#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(test_test_omnicore_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o omnicore/test/test_test_omnicore-mbstring_tests.obj `if test -f 'omnicore/test/mbstring_tests.cpp'; then $(CYGPATH_W) 'omnicore/test/mbstring_tests.cpp'; else $(CYGPATH_W) '$(srcdir)/omnicore/test/mbstring_tests.cpp'; fi`
+#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(test_test_omnicore_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o tradelayer/test/test_test_omnicore-mbstring_tests.obj `if test -f 'tradelayer/test/mbstring_tests.cpp'; then $(CYGPATH_W) 'tradelayer/test/mbstring_tests.cpp'; else $(CYGPATH_W) '$(srcdir)/tradelayer/test/mbstring_tests.cpp'; fi`
 
-omnicore/test/test_test_omnicore-params_tests.o: omnicore/test/params_tests.cpp
-	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(test_test_omnicore_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT omnicore/test/test_test_omnicore-params_tests.o -MD -MP -MF omnicore/test/$(DEPDIR)/test_test_omnicore-params_tests.Tpo -c -o omnicore/test/test_test_omnicore-params_tests.o `test -f 'omnicore/test/params_tests.cpp' || echo '$(srcdir)/'`omnicore/test/params_tests.cpp
-	$(AM_V_at)$(am__mv) omnicore/test/$(DEPDIR)/test_test_omnicore-params_tests.Tpo omnicore/test/$(DEPDIR)/test_test_omnicore-params_tests.Po
-#	$(AM_V_CXX)source='omnicore/test/params_tests.cpp' object='omnicore/test/test_test_omnicore-params_tests.o' libtool=no \
+tradelayer/test/test_test_omnicore-params_tests.o: tradelayer/test/params_tests.cpp
+	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(test_test_omnicore_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT tradelayer/test/test_test_omnicore-params_tests.o -MD -MP -MF tradelayer/test/$(DEPDIR)/test_test_omnicore-params_tests.Tpo -c -o tradelayer/test/test_test_omnicore-params_tests.o `test -f 'tradelayer/test/params_tests.cpp' || echo '$(srcdir)/'`tradelayer/test/params_tests.cpp
+	$(AM_V_at)$(am__mv) tradelayer/test/$(DEPDIR)/test_test_omnicore-params_tests.Tpo tradelayer/test/$(DEPDIR)/test_test_omnicore-params_tests.Po
+#	$(AM_V_CXX)source='tradelayer/test/params_tests.cpp' object='tradelayer/test/test_test_omnicore-params_tests.o' libtool=no \
 #	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) \
-#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(test_test_omnicore_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o omnicore/test/test_test_omnicore-params_tests.o `test -f 'omnicore/test/params_tests.cpp' || echo '$(srcdir)/'`omnicore/test/params_tests.cpp
+#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(test_test_omnicore_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o tradelayer/test/test_test_omnicore-params_tests.o `test -f 'tradelayer/test/params_tests.cpp' || echo '$(srcdir)/'`tradelayer/test/params_tests.cpp
 
-omnicore/test/test_test_omnicore-params_tests.obj: omnicore/test/params_tests.cpp
-	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(test_test_omnicore_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT omnicore/test/test_test_omnicore-params_tests.obj -MD -MP -MF omnicore/test/$(DEPDIR)/test_test_omnicore-params_tests.Tpo -c -o omnicore/test/test_test_omnicore-params_tests.obj `if test -f 'omnicore/test/params_tests.cpp'; then $(CYGPATH_W) 'omnicore/test/params_tests.cpp'; else $(CYGPATH_W) '$(srcdir)/omnicore/test/params_tests.cpp'; fi`
-	$(AM_V_at)$(am__mv) omnicore/test/$(DEPDIR)/test_test_omnicore-params_tests.Tpo omnicore/test/$(DEPDIR)/test_test_omnicore-params_tests.Po
-#	$(AM_V_CXX)source='omnicore/test/params_tests.cpp' object='omnicore/test/test_test_omnicore-params_tests.obj' libtool=no \
+tradelayer/test/test_test_omnicore-params_tests.obj: tradelayer/test/params_tests.cpp
+	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(test_test_omnicore_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT tradelayer/test/test_test_omnicore-params_tests.obj -MD -MP -MF tradelayer/test/$(DEPDIR)/test_test_omnicore-params_tests.Tpo -c -o tradelayer/test/test_test_omnicore-params_tests.obj `if test -f 'tradelayer/test/params_tests.cpp'; then $(CYGPATH_W) 'tradelayer/test/params_tests.cpp'; else $(CYGPATH_W) '$(srcdir)/tradelayer/test/params_tests.cpp'; fi`
+	$(AM_V_at)$(am__mv) tradelayer/test/$(DEPDIR)/test_test_omnicore-params_tests.Tpo tradelayer/test/$(DEPDIR)/test_test_omnicore-params_tests.Po
+#	$(AM_V_CXX)source='tradelayer/test/params_tests.cpp' object='tradelayer/test/test_test_omnicore-params_tests.obj' libtool=no \
 #	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) \
-#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(test_test_omnicore_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o omnicore/test/test_test_omnicore-params_tests.obj `if test -f 'omnicore/test/params_tests.cpp'; then $(CYGPATH_W) 'omnicore/test/params_tests.cpp'; else $(CYGPATH_W) '$(srcdir)/omnicore/test/params_tests.cpp'; fi`
+#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(test_test_omnicore_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o tradelayer/test/test_test_omnicore-params_tests.obj `if test -f 'tradelayer/test/params_tests.cpp'; then $(CYGPATH_W) 'tradelayer/test/params_tests.cpp'; else $(CYGPATH_W) '$(srcdir)/tradelayer/test/params_tests.cpp'; fi`
 
-omnicore/test/test_test_omnicore-obfuscation_tests.o: omnicore/test/obfuscation_tests.cpp
-	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(test_test_omnicore_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT omnicore/test/test_test_omnicore-obfuscation_tests.o -MD -MP -MF omnicore/test/$(DEPDIR)/test_test_omnicore-obfuscation_tests.Tpo -c -o omnicore/test/test_test_omnicore-obfuscation_tests.o `test -f 'omnicore/test/obfuscation_tests.cpp' || echo '$(srcdir)/'`omnicore/test/obfuscation_tests.cpp
-	$(AM_V_at)$(am__mv) omnicore/test/$(DEPDIR)/test_test_omnicore-obfuscation_tests.Tpo omnicore/test/$(DEPDIR)/test_test_omnicore-obfuscation_tests.Po
-#	$(AM_V_CXX)source='omnicore/test/obfuscation_tests.cpp' object='omnicore/test/test_test_omnicore-obfuscation_tests.o' libtool=no \
+tradelayer/test/test_test_omnicore-obfuscation_tests.o: tradelayer/test/obfuscation_tests.cpp
+	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(test_test_omnicore_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT tradelayer/test/test_test_omnicore-obfuscation_tests.o -MD -MP -MF tradelayer/test/$(DEPDIR)/test_test_omnicore-obfuscation_tests.Tpo -c -o tradelayer/test/test_test_omnicore-obfuscation_tests.o `test -f 'tradelayer/test/obfuscation_tests.cpp' || echo '$(srcdir)/'`tradelayer/test/obfuscation_tests.cpp
+	$(AM_V_at)$(am__mv) tradelayer/test/$(DEPDIR)/test_test_omnicore-obfuscation_tests.Tpo tradelayer/test/$(DEPDIR)/test_test_omnicore-obfuscation_tests.Po
+#	$(AM_V_CXX)source='tradelayer/test/obfuscation_tests.cpp' object='tradelayer/test/test_test_omnicore-obfuscation_tests.o' libtool=no \
 #	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) \
-#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(test_test_omnicore_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o omnicore/test/test_test_omnicore-obfuscation_tests.o `test -f 'omnicore/test/obfuscation_tests.cpp' || echo '$(srcdir)/'`omnicore/test/obfuscation_tests.cpp
+#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(test_test_omnicore_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o tradelayer/test/test_test_omnicore-obfuscation_tests.o `test -f 'tradelayer/test/obfuscation_tests.cpp' || echo '$(srcdir)/'`tradelayer/test/obfuscation_tests.cpp
 
-omnicore/test/test_test_omnicore-obfuscation_tests.obj: omnicore/test/obfuscation_tests.cpp
-	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(test_test_omnicore_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT omnicore/test/test_test_omnicore-obfuscation_tests.obj -MD -MP -MF omnicore/test/$(DEPDIR)/test_test_omnicore-obfuscation_tests.Tpo -c -o omnicore/test/test_test_omnicore-obfuscation_tests.obj `if test -f 'omnicore/test/obfuscation_tests.cpp'; then $(CYGPATH_W) 'omnicore/test/obfuscation_tests.cpp'; else $(CYGPATH_W) '$(srcdir)/omnicore/test/obfuscation_tests.cpp'; fi`
-	$(AM_V_at)$(am__mv) omnicore/test/$(DEPDIR)/test_test_omnicore-obfuscation_tests.Tpo omnicore/test/$(DEPDIR)/test_test_omnicore-obfuscation_tests.Po
-#	$(AM_V_CXX)source='omnicore/test/obfuscation_tests.cpp' object='omnicore/test/test_test_omnicore-obfuscation_tests.obj' libtool=no \
+tradelayer/test/test_test_omnicore-obfuscation_tests.obj: tradelayer/test/obfuscation_tests.cpp
+	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(test_test_omnicore_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT tradelayer/test/test_test_omnicore-obfuscation_tests.obj -MD -MP -MF tradelayer/test/$(DEPDIR)/test_test_omnicore-obfuscation_tests.Tpo -c -o tradelayer/test/test_test_omnicore-obfuscation_tests.obj `if test -f 'tradelayer/test/obfuscation_tests.cpp'; then $(CYGPATH_W) 'tradelayer/test/obfuscation_tests.cpp'; else $(CYGPATH_W) '$(srcdir)/tradelayer/test/obfuscation_tests.cpp'; fi`
+	$(AM_V_at)$(am__mv) tradelayer/test/$(DEPDIR)/test_test_omnicore-obfuscation_tests.Tpo tradelayer/test/$(DEPDIR)/test_test_omnicore-obfuscation_tests.Po
+#	$(AM_V_CXX)source='tradelayer/test/obfuscation_tests.cpp' object='tradelayer/test/test_test_omnicore-obfuscation_tests.obj' libtool=no \
 #	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) \
-#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(test_test_omnicore_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o omnicore/test/test_test_omnicore-obfuscation_tests.obj `if test -f 'omnicore/test/obfuscation_tests.cpp'; then $(CYGPATH_W) 'omnicore/test/obfuscation_tests.cpp'; else $(CYGPATH_W) '$(srcdir)/omnicore/test/obfuscation_tests.cpp'; fi`
+#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(test_test_omnicore_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o tradelayer/test/test_test_omnicore-obfuscation_tests.obj `if test -f 'tradelayer/test/obfuscation_tests.cpp'; then $(CYGPATH_W) 'tradelayer/test/obfuscation_tests.cpp'; else $(CYGPATH_W) '$(srcdir)/tradelayer/test/obfuscation_tests.cpp'; fi`
 
-omnicore/test/test_test_omnicore-output_restriction_tests.o: omnicore/test/output_restriction_tests.cpp
-	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(test_test_omnicore_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT omnicore/test/test_test_omnicore-output_restriction_tests.o -MD -MP -MF omnicore/test/$(DEPDIR)/test_test_omnicore-output_restriction_tests.Tpo -c -o omnicore/test/test_test_omnicore-output_restriction_tests.o `test -f 'omnicore/test/output_restriction_tests.cpp' || echo '$(srcdir)/'`omnicore/test/output_restriction_tests.cpp
-	$(AM_V_at)$(am__mv) omnicore/test/$(DEPDIR)/test_test_omnicore-output_restriction_tests.Tpo omnicore/test/$(DEPDIR)/test_test_omnicore-output_restriction_tests.Po
-#	$(AM_V_CXX)source='omnicore/test/output_restriction_tests.cpp' object='omnicore/test/test_test_omnicore-output_restriction_tests.o' libtool=no \
+tradelayer/test/test_test_omnicore-output_restriction_tests.o: tradelayer/test/output_restriction_tests.cpp
+	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(test_test_omnicore_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT tradelayer/test/test_test_omnicore-output_restriction_tests.o -MD -MP -MF tradelayer/test/$(DEPDIR)/test_test_omnicore-output_restriction_tests.Tpo -c -o tradelayer/test/test_test_omnicore-output_restriction_tests.o `test -f 'tradelayer/test/output_restriction_tests.cpp' || echo '$(srcdir)/'`tradelayer/test/output_restriction_tests.cpp
+	$(AM_V_at)$(am__mv) tradelayer/test/$(DEPDIR)/test_test_omnicore-output_restriction_tests.Tpo tradelayer/test/$(DEPDIR)/test_test_omnicore-output_restriction_tests.Po
+#	$(AM_V_CXX)source='tradelayer/test/output_restriction_tests.cpp' object='tradelayer/test/test_test_omnicore-output_restriction_tests.o' libtool=no \
 #	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) \
-#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(test_test_omnicore_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o omnicore/test/test_test_omnicore-output_restriction_tests.o `test -f 'omnicore/test/output_restriction_tests.cpp' || echo '$(srcdir)/'`omnicore/test/output_restriction_tests.cpp
+#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(test_test_omnicore_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o tradelayer/test/test_test_omnicore-output_restriction_tests.o `test -f 'tradelayer/test/output_restriction_tests.cpp' || echo '$(srcdir)/'`tradelayer/test/output_restriction_tests.cpp
 
-omnicore/test/test_test_omnicore-output_restriction_tests.obj: omnicore/test/output_restriction_tests.cpp
-	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(test_test_omnicore_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT omnicore/test/test_test_omnicore-output_restriction_tests.obj -MD -MP -MF omnicore/test/$(DEPDIR)/test_test_omnicore-output_restriction_tests.Tpo -c -o omnicore/test/test_test_omnicore-output_restriction_tests.obj `if test -f 'omnicore/test/output_restriction_tests.cpp'; then $(CYGPATH_W) 'omnicore/test/output_restriction_tests.cpp'; else $(CYGPATH_W) '$(srcdir)/omnicore/test/output_restriction_tests.cpp'; fi`
-	$(AM_V_at)$(am__mv) omnicore/test/$(DEPDIR)/test_test_omnicore-output_restriction_tests.Tpo omnicore/test/$(DEPDIR)/test_test_omnicore-output_restriction_tests.Po
-#	$(AM_V_CXX)source='omnicore/test/output_restriction_tests.cpp' object='omnicore/test/test_test_omnicore-output_restriction_tests.obj' libtool=no \
+tradelayer/test/test_test_omnicore-output_restriction_tests.obj: tradelayer/test/output_restriction_tests.cpp
+	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(test_test_omnicore_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT tradelayer/test/test_test_omnicore-output_restriction_tests.obj -MD -MP -MF tradelayer/test/$(DEPDIR)/test_test_omnicore-output_restriction_tests.Tpo -c -o tradelayer/test/test_test_omnicore-output_restriction_tests.obj `if test -f 'tradelayer/test/output_restriction_tests.cpp'; then $(CYGPATH_W) 'tradelayer/test/output_restriction_tests.cpp'; else $(CYGPATH_W) '$(srcdir)/tradelayer/test/output_restriction_tests.cpp'; fi`
+	$(AM_V_at)$(am__mv) tradelayer/test/$(DEPDIR)/test_test_omnicore-output_restriction_tests.Tpo tradelayer/test/$(DEPDIR)/test_test_omnicore-output_restriction_tests.Po
+#	$(AM_V_CXX)source='tradelayer/test/output_restriction_tests.cpp' object='tradelayer/test/test_test_omnicore-output_restriction_tests.obj' libtool=no \
 #	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) \
-#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(test_test_omnicore_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o omnicore/test/test_test_omnicore-output_restriction_tests.obj `if test -f 'omnicore/test/output_restriction_tests.cpp'; then $(CYGPATH_W) 'omnicore/test/output_restriction_tests.cpp'; else $(CYGPATH_W) '$(srcdir)/omnicore/test/output_restriction_tests.cpp'; fi`
+#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(test_test_omnicore_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o tradelayer/test/test_test_omnicore-output_restriction_tests.obj `if test -f 'tradelayer/test/output_restriction_tests.cpp'; then $(CYGPATH_W) 'tradelayer/test/output_restriction_tests.cpp'; else $(CYGPATH_W) '$(srcdir)/tradelayer/test/output_restriction_tests.cpp'; fi`
 
-omnicore/test/test_test_omnicore-parsing_a_tests.o: omnicore/test/parsing_a_tests.cpp
-	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(test_test_omnicore_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT omnicore/test/test_test_omnicore-parsing_a_tests.o -MD -MP -MF omnicore/test/$(DEPDIR)/test_test_omnicore-parsing_a_tests.Tpo -c -o omnicore/test/test_test_omnicore-parsing_a_tests.o `test -f 'omnicore/test/parsing_a_tests.cpp' || echo '$(srcdir)/'`omnicore/test/parsing_a_tests.cpp
-	$(AM_V_at)$(am__mv) omnicore/test/$(DEPDIR)/test_test_omnicore-parsing_a_tests.Tpo omnicore/test/$(DEPDIR)/test_test_omnicore-parsing_a_tests.Po
-#	$(AM_V_CXX)source='omnicore/test/parsing_a_tests.cpp' object='omnicore/test/test_test_omnicore-parsing_a_tests.o' libtool=no \
+tradelayer/test/test_test_omnicore-parsing_a_tests.o: tradelayer/test/parsing_a_tests.cpp
+	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(test_test_omnicore_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT tradelayer/test/test_test_omnicore-parsing_a_tests.o -MD -MP -MF tradelayer/test/$(DEPDIR)/test_test_omnicore-parsing_a_tests.Tpo -c -o tradelayer/test/test_test_omnicore-parsing_a_tests.o `test -f 'tradelayer/test/parsing_a_tests.cpp' || echo '$(srcdir)/'`tradelayer/test/parsing_a_tests.cpp
+	$(AM_V_at)$(am__mv) tradelayer/test/$(DEPDIR)/test_test_omnicore-parsing_a_tests.Tpo tradelayer/test/$(DEPDIR)/test_test_omnicore-parsing_a_tests.Po
+#	$(AM_V_CXX)source='tradelayer/test/parsing_a_tests.cpp' object='tradelayer/test/test_test_omnicore-parsing_a_tests.o' libtool=no \
 #	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) \
-#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(test_test_omnicore_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o omnicore/test/test_test_omnicore-parsing_a_tests.o `test -f 'omnicore/test/parsing_a_tests.cpp' || echo '$(srcdir)/'`omnicore/test/parsing_a_tests.cpp
+#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(test_test_omnicore_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o tradelayer/test/test_test_omnicore-parsing_a_tests.o `test -f 'tradelayer/test/parsing_a_tests.cpp' || echo '$(srcdir)/'`tradelayer/test/parsing_a_tests.cpp
 
-omnicore/test/test_test_omnicore-parsing_a_tests.obj: omnicore/test/parsing_a_tests.cpp
-	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(test_test_omnicore_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT omnicore/test/test_test_omnicore-parsing_a_tests.obj -MD -MP -MF omnicore/test/$(DEPDIR)/test_test_omnicore-parsing_a_tests.Tpo -c -o omnicore/test/test_test_omnicore-parsing_a_tests.obj `if test -f 'omnicore/test/parsing_a_tests.cpp'; then $(CYGPATH_W) 'omnicore/test/parsing_a_tests.cpp'; else $(CYGPATH_W) '$(srcdir)/omnicore/test/parsing_a_tests.cpp'; fi`
-	$(AM_V_at)$(am__mv) omnicore/test/$(DEPDIR)/test_test_omnicore-parsing_a_tests.Tpo omnicore/test/$(DEPDIR)/test_test_omnicore-parsing_a_tests.Po
-#	$(AM_V_CXX)source='omnicore/test/parsing_a_tests.cpp' object='omnicore/test/test_test_omnicore-parsing_a_tests.obj' libtool=no \
+tradelayer/test/test_test_omnicore-parsing_a_tests.obj: tradelayer/test/parsing_a_tests.cpp
+	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(test_test_omnicore_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT tradelayer/test/test_test_omnicore-parsing_a_tests.obj -MD -MP -MF tradelayer/test/$(DEPDIR)/test_test_omnicore-parsing_a_tests.Tpo -c -o tradelayer/test/test_test_omnicore-parsing_a_tests.obj `if test -f 'tradelayer/test/parsing_a_tests.cpp'; then $(CYGPATH_W) 'tradelayer/test/parsing_a_tests.cpp'; else $(CYGPATH_W) '$(srcdir)/tradelayer/test/parsing_a_tests.cpp'; fi`
+	$(AM_V_at)$(am__mv) tradelayer/test/$(DEPDIR)/test_test_omnicore-parsing_a_tests.Tpo tradelayer/test/$(DEPDIR)/test_test_omnicore-parsing_a_tests.Po
+#	$(AM_V_CXX)source='tradelayer/test/parsing_a_tests.cpp' object='tradelayer/test/test_test_omnicore-parsing_a_tests.obj' libtool=no \
 #	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) \
-#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(test_test_omnicore_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o omnicore/test/test_test_omnicore-parsing_a_tests.obj `if test -f 'omnicore/test/parsing_a_tests.cpp'; then $(CYGPATH_W) 'omnicore/test/parsing_a_tests.cpp'; else $(CYGPATH_W) '$(srcdir)/omnicore/test/parsing_a_tests.cpp'; fi`
+#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(test_test_omnicore_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o tradelayer/test/test_test_omnicore-parsing_a_tests.obj `if test -f 'tradelayer/test/parsing_a_tests.cpp'; then $(CYGPATH_W) 'tradelayer/test/parsing_a_tests.cpp'; else $(CYGPATH_W) '$(srcdir)/tradelayer/test/parsing_a_tests.cpp'; fi`
 
-omnicore/test/test_test_omnicore-parsing_b_tests.o: omnicore/test/parsing_b_tests.cpp
-	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(test_test_omnicore_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT omnicore/test/test_test_omnicore-parsing_b_tests.o -MD -MP -MF omnicore/test/$(DEPDIR)/test_test_omnicore-parsing_b_tests.Tpo -c -o omnicore/test/test_test_omnicore-parsing_b_tests.o `test -f 'omnicore/test/parsing_b_tests.cpp' || echo '$(srcdir)/'`omnicore/test/parsing_b_tests.cpp
-	$(AM_V_at)$(am__mv) omnicore/test/$(DEPDIR)/test_test_omnicore-parsing_b_tests.Tpo omnicore/test/$(DEPDIR)/test_test_omnicore-parsing_b_tests.Po
-#	$(AM_V_CXX)source='omnicore/test/parsing_b_tests.cpp' object='omnicore/test/test_test_omnicore-parsing_b_tests.o' libtool=no \
+tradelayer/test/test_test_omnicore-parsing_b_tests.o: tradelayer/test/parsing_b_tests.cpp
+	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(test_test_omnicore_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT tradelayer/test/test_test_omnicore-parsing_b_tests.o -MD -MP -MF tradelayer/test/$(DEPDIR)/test_test_omnicore-parsing_b_tests.Tpo -c -o tradelayer/test/test_test_omnicore-parsing_b_tests.o `test -f 'tradelayer/test/parsing_b_tests.cpp' || echo '$(srcdir)/'`tradelayer/test/parsing_b_tests.cpp
+	$(AM_V_at)$(am__mv) tradelayer/test/$(DEPDIR)/test_test_omnicore-parsing_b_tests.Tpo tradelayer/test/$(DEPDIR)/test_test_omnicore-parsing_b_tests.Po
+#	$(AM_V_CXX)source='tradelayer/test/parsing_b_tests.cpp' object='tradelayer/test/test_test_omnicore-parsing_b_tests.o' libtool=no \
 #	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) \
-#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(test_test_omnicore_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o omnicore/test/test_test_omnicore-parsing_b_tests.o `test -f 'omnicore/test/parsing_b_tests.cpp' || echo '$(srcdir)/'`omnicore/test/parsing_b_tests.cpp
+#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(test_test_omnicore_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o tradelayer/test/test_test_omnicore-parsing_b_tests.o `test -f 'tradelayer/test/parsing_b_tests.cpp' || echo '$(srcdir)/'`tradelayer/test/parsing_b_tests.cpp
 
-omnicore/test/test_test_omnicore-parsing_b_tests.obj: omnicore/test/parsing_b_tests.cpp
-	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(test_test_omnicore_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT omnicore/test/test_test_omnicore-parsing_b_tests.obj -MD -MP -MF omnicore/test/$(DEPDIR)/test_test_omnicore-parsing_b_tests.Tpo -c -o omnicore/test/test_test_omnicore-parsing_b_tests.obj `if test -f 'omnicore/test/parsing_b_tests.cpp'; then $(CYGPATH_W) 'omnicore/test/parsing_b_tests.cpp'; else $(CYGPATH_W) '$(srcdir)/omnicore/test/parsing_b_tests.cpp'; fi`
-	$(AM_V_at)$(am__mv) omnicore/test/$(DEPDIR)/test_test_omnicore-parsing_b_tests.Tpo omnicore/test/$(DEPDIR)/test_test_omnicore-parsing_b_tests.Po
-#	$(AM_V_CXX)source='omnicore/test/parsing_b_tests.cpp' object='omnicore/test/test_test_omnicore-parsing_b_tests.obj' libtool=no \
+tradelayer/test/test_test_omnicore-parsing_b_tests.obj: tradelayer/test/parsing_b_tests.cpp
+	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(test_test_omnicore_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT tradelayer/test/test_test_omnicore-parsing_b_tests.obj -MD -MP -MF tradelayer/test/$(DEPDIR)/test_test_omnicore-parsing_b_tests.Tpo -c -o tradelayer/test/test_test_omnicore-parsing_b_tests.obj `if test -f 'tradelayer/test/parsing_b_tests.cpp'; then $(CYGPATH_W) 'tradelayer/test/parsing_b_tests.cpp'; else $(CYGPATH_W) '$(srcdir)/tradelayer/test/parsing_b_tests.cpp'; fi`
+	$(AM_V_at)$(am__mv) tradelayer/test/$(DEPDIR)/test_test_omnicore-parsing_b_tests.Tpo tradelayer/test/$(DEPDIR)/test_test_omnicore-parsing_b_tests.Po
+#	$(AM_V_CXX)source='tradelayer/test/parsing_b_tests.cpp' object='tradelayer/test/test_test_omnicore-parsing_b_tests.obj' libtool=no \
 #	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) \
-#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(test_test_omnicore_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o omnicore/test/test_test_omnicore-parsing_b_tests.obj `if test -f 'omnicore/test/parsing_b_tests.cpp'; then $(CYGPATH_W) 'omnicore/test/parsing_b_tests.cpp'; else $(CYGPATH_W) '$(srcdir)/omnicore/test/parsing_b_tests.cpp'; fi`
+#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(test_test_omnicore_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o tradelayer/test/test_test_omnicore-parsing_b_tests.obj `if test -f 'tradelayer/test/parsing_b_tests.cpp'; then $(CYGPATH_W) 'tradelayer/test/parsing_b_tests.cpp'; else $(CYGPATH_W) '$(srcdir)/tradelayer/test/parsing_b_tests.cpp'; fi`
 
-omnicore/test/test_test_omnicore-parsing_c_tests.o: omnicore/test/parsing_c_tests.cpp
-	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(test_test_omnicore_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT omnicore/test/test_test_omnicore-parsing_c_tests.o -MD -MP -MF omnicore/test/$(DEPDIR)/test_test_omnicore-parsing_c_tests.Tpo -c -o omnicore/test/test_test_omnicore-parsing_c_tests.o `test -f 'omnicore/test/parsing_c_tests.cpp' || echo '$(srcdir)/'`omnicore/test/parsing_c_tests.cpp
-	$(AM_V_at)$(am__mv) omnicore/test/$(DEPDIR)/test_test_omnicore-parsing_c_tests.Tpo omnicore/test/$(DEPDIR)/test_test_omnicore-parsing_c_tests.Po
-#	$(AM_V_CXX)source='omnicore/test/parsing_c_tests.cpp' object='omnicore/test/test_test_omnicore-parsing_c_tests.o' libtool=no \
+tradelayer/test/test_test_omnicore-parsing_c_tests.o: tradelayer/test/parsing_c_tests.cpp
+	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(test_test_omnicore_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT tradelayer/test/test_test_omnicore-parsing_c_tests.o -MD -MP -MF tradelayer/test/$(DEPDIR)/test_test_omnicore-parsing_c_tests.Tpo -c -o tradelayer/test/test_test_omnicore-parsing_c_tests.o `test -f 'tradelayer/test/parsing_c_tests.cpp' || echo '$(srcdir)/'`tradelayer/test/parsing_c_tests.cpp
+	$(AM_V_at)$(am__mv) tradelayer/test/$(DEPDIR)/test_test_omnicore-parsing_c_tests.Tpo tradelayer/test/$(DEPDIR)/test_test_omnicore-parsing_c_tests.Po
+#	$(AM_V_CXX)source='tradelayer/test/parsing_c_tests.cpp' object='tradelayer/test/test_test_omnicore-parsing_c_tests.o' libtool=no \
 #	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) \
-#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(test_test_omnicore_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o omnicore/test/test_test_omnicore-parsing_c_tests.o `test -f 'omnicore/test/parsing_c_tests.cpp' || echo '$(srcdir)/'`omnicore/test/parsing_c_tests.cpp
+#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(test_test_omnicore_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o tradelayer/test/test_test_omnicore-parsing_c_tests.o `test -f 'tradelayer/test/parsing_c_tests.cpp' || echo '$(srcdir)/'`tradelayer/test/parsing_c_tests.cpp
 
-omnicore/test/test_test_omnicore-parsing_c_tests.obj: omnicore/test/parsing_c_tests.cpp
-	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(test_test_omnicore_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT omnicore/test/test_test_omnicore-parsing_c_tests.obj -MD -MP -MF omnicore/test/$(DEPDIR)/test_test_omnicore-parsing_c_tests.Tpo -c -o omnicore/test/test_test_omnicore-parsing_c_tests.obj `if test -f 'omnicore/test/parsing_c_tests.cpp'; then $(CYGPATH_W) 'omnicore/test/parsing_c_tests.cpp'; else $(CYGPATH_W) '$(srcdir)/omnicore/test/parsing_c_tests.cpp'; fi`
-	$(AM_V_at)$(am__mv) omnicore/test/$(DEPDIR)/test_test_omnicore-parsing_c_tests.Tpo omnicore/test/$(DEPDIR)/test_test_omnicore-parsing_c_tests.Po
-#	$(AM_V_CXX)source='omnicore/test/parsing_c_tests.cpp' object='omnicore/test/test_test_omnicore-parsing_c_tests.obj' libtool=no \
+tradelayer/test/test_test_omnicore-parsing_c_tests.obj: tradelayer/test/parsing_c_tests.cpp
+	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(test_test_omnicore_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT tradelayer/test/test_test_omnicore-parsing_c_tests.obj -MD -MP -MF tradelayer/test/$(DEPDIR)/test_test_omnicore-parsing_c_tests.Tpo -c -o tradelayer/test/test_test_omnicore-parsing_c_tests.obj `if test -f 'tradelayer/test/parsing_c_tests.cpp'; then $(CYGPATH_W) 'tradelayer/test/parsing_c_tests.cpp'; else $(CYGPATH_W) '$(srcdir)/tradelayer/test/parsing_c_tests.cpp'; fi`
+	$(AM_V_at)$(am__mv) tradelayer/test/$(DEPDIR)/test_test_omnicore-parsing_c_tests.Tpo tradelayer/test/$(DEPDIR)/test_test_omnicore-parsing_c_tests.Po
+#	$(AM_V_CXX)source='tradelayer/test/parsing_c_tests.cpp' object='tradelayer/test/test_test_omnicore-parsing_c_tests.obj' libtool=no \
 #	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) \
-#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(test_test_omnicore_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o omnicore/test/test_test_omnicore-parsing_c_tests.obj `if test -f 'omnicore/test/parsing_c_tests.cpp'; then $(CYGPATH_W) 'omnicore/test/parsing_c_tests.cpp'; else $(CYGPATH_W) '$(srcdir)/omnicore/test/parsing_c_tests.cpp'; fi`
+#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(test_test_omnicore_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o tradelayer/test/test_test_omnicore-parsing_c_tests.obj `if test -f 'tradelayer/test/parsing_c_tests.cpp'; then $(CYGPATH_W) 'tradelayer/test/parsing_c_tests.cpp'; else $(CYGPATH_W) '$(srcdir)/tradelayer/test/parsing_c_tests.cpp'; fi`
 
-omnicore/test/test_test_omnicore-rounduint64_tests.o: omnicore/test/rounduint64_tests.cpp
-	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(test_test_omnicore_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT omnicore/test/test_test_omnicore-rounduint64_tests.o -MD -MP -MF omnicore/test/$(DEPDIR)/test_test_omnicore-rounduint64_tests.Tpo -c -o omnicore/test/test_test_omnicore-rounduint64_tests.o `test -f 'omnicore/test/rounduint64_tests.cpp' || echo '$(srcdir)/'`omnicore/test/rounduint64_tests.cpp
-	$(AM_V_at)$(am__mv) omnicore/test/$(DEPDIR)/test_test_omnicore-rounduint64_tests.Tpo omnicore/test/$(DEPDIR)/test_test_omnicore-rounduint64_tests.Po
-#	$(AM_V_CXX)source='omnicore/test/rounduint64_tests.cpp' object='omnicore/test/test_test_omnicore-rounduint64_tests.o' libtool=no \
+tradelayer/test/test_test_omnicore-rounduint64_tests.o: tradelayer/test/rounduint64_tests.cpp
+	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(test_test_omnicore_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT tradelayer/test/test_test_omnicore-rounduint64_tests.o -MD -MP -MF tradelayer/test/$(DEPDIR)/test_test_omnicore-rounduint64_tests.Tpo -c -o tradelayer/test/test_test_omnicore-rounduint64_tests.o `test -f 'tradelayer/test/rounduint64_tests.cpp' || echo '$(srcdir)/'`tradelayer/test/rounduint64_tests.cpp
+	$(AM_V_at)$(am__mv) tradelayer/test/$(DEPDIR)/test_test_omnicore-rounduint64_tests.Tpo tradelayer/test/$(DEPDIR)/test_test_omnicore-rounduint64_tests.Po
+#	$(AM_V_CXX)source='tradelayer/test/rounduint64_tests.cpp' object='tradelayer/test/test_test_omnicore-rounduint64_tests.o' libtool=no \
 #	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) \
-#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(test_test_omnicore_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o omnicore/test/test_test_omnicore-rounduint64_tests.o `test -f 'omnicore/test/rounduint64_tests.cpp' || echo '$(srcdir)/'`omnicore/test/rounduint64_tests.cpp
+#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(test_test_omnicore_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o tradelayer/test/test_test_omnicore-rounduint64_tests.o `test -f 'tradelayer/test/rounduint64_tests.cpp' || echo '$(srcdir)/'`tradelayer/test/rounduint64_tests.cpp
 
-omnicore/test/test_test_omnicore-rounduint64_tests.obj: omnicore/test/rounduint64_tests.cpp
-	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(test_test_omnicore_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT omnicore/test/test_test_omnicore-rounduint64_tests.obj -MD -MP -MF omnicore/test/$(DEPDIR)/test_test_omnicore-rounduint64_tests.Tpo -c -o omnicore/test/test_test_omnicore-rounduint64_tests.obj `if test -f 'omnicore/test/rounduint64_tests.cpp'; then $(CYGPATH_W) 'omnicore/test/rounduint64_tests.cpp'; else $(CYGPATH_W) '$(srcdir)/omnicore/test/rounduint64_tests.cpp'; fi`
-	$(AM_V_at)$(am__mv) omnicore/test/$(DEPDIR)/test_test_omnicore-rounduint64_tests.Tpo omnicore/test/$(DEPDIR)/test_test_omnicore-rounduint64_tests.Po
-#	$(AM_V_CXX)source='omnicore/test/rounduint64_tests.cpp' object='omnicore/test/test_test_omnicore-rounduint64_tests.obj' libtool=no \
+tradelayer/test/test_test_omnicore-rounduint64_tests.obj: tradelayer/test/rounduint64_tests.cpp
+	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(test_test_omnicore_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT tradelayer/test/test_test_omnicore-rounduint64_tests.obj -MD -MP -MF tradelayer/test/$(DEPDIR)/test_test_omnicore-rounduint64_tests.Tpo -c -o tradelayer/test/test_test_omnicore-rounduint64_tests.obj `if test -f 'tradelayer/test/rounduint64_tests.cpp'; then $(CYGPATH_W) 'tradelayer/test/rounduint64_tests.cpp'; else $(CYGPATH_W) '$(srcdir)/tradelayer/test/rounduint64_tests.cpp'; fi`
+	$(AM_V_at)$(am__mv) tradelayer/test/$(DEPDIR)/test_test_omnicore-rounduint64_tests.Tpo tradelayer/test/$(DEPDIR)/test_test_omnicore-rounduint64_tests.Po
+#	$(AM_V_CXX)source='tradelayer/test/rounduint64_tests.cpp' object='tradelayer/test/test_test_omnicore-rounduint64_tests.obj' libtool=no \
 #	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) \
-#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(test_test_omnicore_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o omnicore/test/test_test_omnicore-rounduint64_tests.obj `if test -f 'omnicore/test/rounduint64_tests.cpp'; then $(CYGPATH_W) 'omnicore/test/rounduint64_tests.cpp'; else $(CYGPATH_W) '$(srcdir)/omnicore/test/rounduint64_tests.cpp'; fi`
+#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(test_test_omnicore_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o tradelayer/test/test_test_omnicore-rounduint64_tests.obj `if test -f 'tradelayer/test/rounduint64_tests.cpp'; then $(CYGPATH_W) 'tradelayer/test/rounduint64_tests.cpp'; else $(CYGPATH_W) '$(srcdir)/tradelayer/test/rounduint64_tests.cpp'; fi`
 
-omnicore/test/test_test_omnicore-rules_txs_tests.o: omnicore/test/rules_txs_tests.cpp
-	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(test_test_omnicore_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT omnicore/test/test_test_omnicore-rules_txs_tests.o -MD -MP -MF omnicore/test/$(DEPDIR)/test_test_omnicore-rules_txs_tests.Tpo -c -o omnicore/test/test_test_omnicore-rules_txs_tests.o `test -f 'omnicore/test/rules_txs_tests.cpp' || echo '$(srcdir)/'`omnicore/test/rules_txs_tests.cpp
-	$(AM_V_at)$(am__mv) omnicore/test/$(DEPDIR)/test_test_omnicore-rules_txs_tests.Tpo omnicore/test/$(DEPDIR)/test_test_omnicore-rules_txs_tests.Po
-#	$(AM_V_CXX)source='omnicore/test/rules_txs_tests.cpp' object='omnicore/test/test_test_omnicore-rules_txs_tests.o' libtool=no \
+tradelayer/test/test_test_omnicore-rules_txs_tests.o: tradelayer/test/rules_txs_tests.cpp
+	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(test_test_omnicore_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT tradelayer/test/test_test_omnicore-rules_txs_tests.o -MD -MP -MF tradelayer/test/$(DEPDIR)/test_test_omnicore-rules_txs_tests.Tpo -c -o tradelayer/test/test_test_omnicore-rules_txs_tests.o `test -f 'tradelayer/test/rules_txs_tests.cpp' || echo '$(srcdir)/'`tradelayer/test/rules_txs_tests.cpp
+	$(AM_V_at)$(am__mv) tradelayer/test/$(DEPDIR)/test_test_omnicore-rules_txs_tests.Tpo tradelayer/test/$(DEPDIR)/test_test_omnicore-rules_txs_tests.Po
+#	$(AM_V_CXX)source='tradelayer/test/rules_txs_tests.cpp' object='tradelayer/test/test_test_omnicore-rules_txs_tests.o' libtool=no \
 #	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) \
-#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(test_test_omnicore_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o omnicore/test/test_test_omnicore-rules_txs_tests.o `test -f 'omnicore/test/rules_txs_tests.cpp' || echo '$(srcdir)/'`omnicore/test/rules_txs_tests.cpp
+#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(test_test_omnicore_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o tradelayer/test/test_test_omnicore-rules_txs_tests.o `test -f 'tradelayer/test/rules_txs_tests.cpp' || echo '$(srcdir)/'`tradelayer/test/rules_txs_tests.cpp
 
-omnicore/test/test_test_omnicore-rules_txs_tests.obj: omnicore/test/rules_txs_tests.cpp
-	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(test_test_omnicore_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT omnicore/test/test_test_omnicore-rules_txs_tests.obj -MD -MP -MF omnicore/test/$(DEPDIR)/test_test_omnicore-rules_txs_tests.Tpo -c -o omnicore/test/test_test_omnicore-rules_txs_tests.obj `if test -f 'omnicore/test/rules_txs_tests.cpp'; then $(CYGPATH_W) 'omnicore/test/rules_txs_tests.cpp'; else $(CYGPATH_W) '$(srcdir)/omnicore/test/rules_txs_tests.cpp'; fi`
-	$(AM_V_at)$(am__mv) omnicore/test/$(DEPDIR)/test_test_omnicore-rules_txs_tests.Tpo omnicore/test/$(DEPDIR)/test_test_omnicore-rules_txs_tests.Po
-#	$(AM_V_CXX)source='omnicore/test/rules_txs_tests.cpp' object='omnicore/test/test_test_omnicore-rules_txs_tests.obj' libtool=no \
+tradelayer/test/test_test_omnicore-rules_txs_tests.obj: tradelayer/test/rules_txs_tests.cpp
+	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(test_test_omnicore_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT tradelayer/test/test_test_omnicore-rules_txs_tests.obj -MD -MP -MF tradelayer/test/$(DEPDIR)/test_test_omnicore-rules_txs_tests.Tpo -c -o tradelayer/test/test_test_omnicore-rules_txs_tests.obj `if test -f 'tradelayer/test/rules_txs_tests.cpp'; then $(CYGPATH_W) 'tradelayer/test/rules_txs_tests.cpp'; else $(CYGPATH_W) '$(srcdir)/tradelayer/test/rules_txs_tests.cpp'; fi`
+	$(AM_V_at)$(am__mv) tradelayer/test/$(DEPDIR)/test_test_omnicore-rules_txs_tests.Tpo tradelayer/test/$(DEPDIR)/test_test_omnicore-rules_txs_tests.Po
+#	$(AM_V_CXX)source='tradelayer/test/rules_txs_tests.cpp' object='tradelayer/test/test_test_omnicore-rules_txs_tests.obj' libtool=no \
 #	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) \
-#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(test_test_omnicore_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o omnicore/test/test_test_omnicore-rules_txs_tests.obj `if test -f 'omnicore/test/rules_txs_tests.cpp'; then $(CYGPATH_W) 'omnicore/test/rules_txs_tests.cpp'; else $(CYGPATH_W) '$(srcdir)/omnicore/test/rules_txs_tests.cpp'; fi`
+#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(test_test_omnicore_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o tradelayer/test/test_test_omnicore-rules_txs_tests.obj `if test -f 'tradelayer/test/rules_txs_tests.cpp'; then $(CYGPATH_W) 'tradelayer/test/rules_txs_tests.cpp'; else $(CYGPATH_W) '$(srcdir)/tradelayer/test/rules_txs_tests.cpp'; fi`
 
-omnicore/test/test_test_omnicore-script_dust_tests.o: omnicore/test/script_dust_tests.cpp
-	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(test_test_omnicore_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT omnicore/test/test_test_omnicore-script_dust_tests.o -MD -MP -MF omnicore/test/$(DEPDIR)/test_test_omnicore-script_dust_tests.Tpo -c -o omnicore/test/test_test_omnicore-script_dust_tests.o `test -f 'omnicore/test/script_dust_tests.cpp' || echo '$(srcdir)/'`omnicore/test/script_dust_tests.cpp
-	$(AM_V_at)$(am__mv) omnicore/test/$(DEPDIR)/test_test_omnicore-script_dust_tests.Tpo omnicore/test/$(DEPDIR)/test_test_omnicore-script_dust_tests.Po
-#	$(AM_V_CXX)source='omnicore/test/script_dust_tests.cpp' object='omnicore/test/test_test_omnicore-script_dust_tests.o' libtool=no \
+tradelayer/test/test_test_omnicore-script_dust_tests.o: tradelayer/test/script_dust_tests.cpp
+	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(test_test_omnicore_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT tradelayer/test/test_test_omnicore-script_dust_tests.o -MD -MP -MF tradelayer/test/$(DEPDIR)/test_test_omnicore-script_dust_tests.Tpo -c -o tradelayer/test/test_test_omnicore-script_dust_tests.o `test -f 'tradelayer/test/script_dust_tests.cpp' || echo '$(srcdir)/'`tradelayer/test/script_dust_tests.cpp
+	$(AM_V_at)$(am__mv) tradelayer/test/$(DEPDIR)/test_test_omnicore-script_dust_tests.Tpo tradelayer/test/$(DEPDIR)/test_test_omnicore-script_dust_tests.Po
+#	$(AM_V_CXX)source='tradelayer/test/script_dust_tests.cpp' object='tradelayer/test/test_test_omnicore-script_dust_tests.o' libtool=no \
 #	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) \
-#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(test_test_omnicore_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o omnicore/test/test_test_omnicore-script_dust_tests.o `test -f 'omnicore/test/script_dust_tests.cpp' || echo '$(srcdir)/'`omnicore/test/script_dust_tests.cpp
+#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(test_test_omnicore_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o tradelayer/test/test_test_omnicore-script_dust_tests.o `test -f 'tradelayer/test/script_dust_tests.cpp' || echo '$(srcdir)/'`tradelayer/test/script_dust_tests.cpp
 
-omnicore/test/test_test_omnicore-script_dust_tests.obj: omnicore/test/script_dust_tests.cpp
-	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(test_test_omnicore_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT omnicore/test/test_test_omnicore-script_dust_tests.obj -MD -MP -MF omnicore/test/$(DEPDIR)/test_test_omnicore-script_dust_tests.Tpo -c -o omnicore/test/test_test_omnicore-script_dust_tests.obj `if test -f 'omnicore/test/script_dust_tests.cpp'; then $(CYGPATH_W) 'omnicore/test/script_dust_tests.cpp'; else $(CYGPATH_W) '$(srcdir)/omnicore/test/script_dust_tests.cpp'; fi`
-	$(AM_V_at)$(am__mv) omnicore/test/$(DEPDIR)/test_test_omnicore-script_dust_tests.Tpo omnicore/test/$(DEPDIR)/test_test_omnicore-script_dust_tests.Po
-#	$(AM_V_CXX)source='omnicore/test/script_dust_tests.cpp' object='omnicore/test/test_test_omnicore-script_dust_tests.obj' libtool=no \
+tradelayer/test/test_test_omnicore-script_dust_tests.obj: tradelayer/test/script_dust_tests.cpp
+	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(test_test_omnicore_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT tradelayer/test/test_test_omnicore-script_dust_tests.obj -MD -MP -MF tradelayer/test/$(DEPDIR)/test_test_omnicore-script_dust_tests.Tpo -c -o tradelayer/test/test_test_omnicore-script_dust_tests.obj `if test -f 'tradelayer/test/script_dust_tests.cpp'; then $(CYGPATH_W) 'tradelayer/test/script_dust_tests.cpp'; else $(CYGPATH_W) '$(srcdir)/tradelayer/test/script_dust_tests.cpp'; fi`
+	$(AM_V_at)$(am__mv) tradelayer/test/$(DEPDIR)/test_test_omnicore-script_dust_tests.Tpo tradelayer/test/$(DEPDIR)/test_test_omnicore-script_dust_tests.Po
+#	$(AM_V_CXX)source='tradelayer/test/script_dust_tests.cpp' object='tradelayer/test/test_test_omnicore-script_dust_tests.obj' libtool=no \
 #	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) \
-#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(test_test_omnicore_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o omnicore/test/test_test_omnicore-script_dust_tests.obj `if test -f 'omnicore/test/script_dust_tests.cpp'; then $(CYGPATH_W) 'omnicore/test/script_dust_tests.cpp'; else $(CYGPATH_W) '$(srcdir)/omnicore/test/script_dust_tests.cpp'; fi`
+#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(test_test_omnicore_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o tradelayer/test/test_test_omnicore-script_dust_tests.obj `if test -f 'tradelayer/test/script_dust_tests.cpp'; then $(CYGPATH_W) 'tradelayer/test/script_dust_tests.cpp'; else $(CYGPATH_W) '$(srcdir)/tradelayer/test/script_dust_tests.cpp'; fi`
 
-omnicore/test/test_test_omnicore-script_extraction_tests.o: omnicore/test/script_extraction_tests.cpp
-	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(test_test_omnicore_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT omnicore/test/test_test_omnicore-script_extraction_tests.o -MD -MP -MF omnicore/test/$(DEPDIR)/test_test_omnicore-script_extraction_tests.Tpo -c -o omnicore/test/test_test_omnicore-script_extraction_tests.o `test -f 'omnicore/test/script_extraction_tests.cpp' || echo '$(srcdir)/'`omnicore/test/script_extraction_tests.cpp
-	$(AM_V_at)$(am__mv) omnicore/test/$(DEPDIR)/test_test_omnicore-script_extraction_tests.Tpo omnicore/test/$(DEPDIR)/test_test_omnicore-script_extraction_tests.Po
-#	$(AM_V_CXX)source='omnicore/test/script_extraction_tests.cpp' object='omnicore/test/test_test_omnicore-script_extraction_tests.o' libtool=no \
+tradelayer/test/test_test_omnicore-script_extraction_tests.o: tradelayer/test/script_extraction_tests.cpp
+	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(test_test_omnicore_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT tradelayer/test/test_test_omnicore-script_extraction_tests.o -MD -MP -MF tradelayer/test/$(DEPDIR)/test_test_omnicore-script_extraction_tests.Tpo -c -o tradelayer/test/test_test_omnicore-script_extraction_tests.o `test -f 'tradelayer/test/script_extraction_tests.cpp' || echo '$(srcdir)/'`tradelayer/test/script_extraction_tests.cpp
+	$(AM_V_at)$(am__mv) tradelayer/test/$(DEPDIR)/test_test_omnicore-script_extraction_tests.Tpo tradelayer/test/$(DEPDIR)/test_test_omnicore-script_extraction_tests.Po
+#	$(AM_V_CXX)source='tradelayer/test/script_extraction_tests.cpp' object='tradelayer/test/test_test_omnicore-script_extraction_tests.o' libtool=no \
 #	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) \
-#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(test_test_omnicore_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o omnicore/test/test_test_omnicore-script_extraction_tests.o `test -f 'omnicore/test/script_extraction_tests.cpp' || echo '$(srcdir)/'`omnicore/test/script_extraction_tests.cpp
+#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(test_test_omnicore_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o tradelayer/test/test_test_omnicore-script_extraction_tests.o `test -f 'tradelayer/test/script_extraction_tests.cpp' || echo '$(srcdir)/'`tradelayer/test/script_extraction_tests.cpp
 
-omnicore/test/test_test_omnicore-script_extraction_tests.obj: omnicore/test/script_extraction_tests.cpp
-	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(test_test_omnicore_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT omnicore/test/test_test_omnicore-script_extraction_tests.obj -MD -MP -MF omnicore/test/$(DEPDIR)/test_test_omnicore-script_extraction_tests.Tpo -c -o omnicore/test/test_test_omnicore-script_extraction_tests.obj `if test -f 'omnicore/test/script_extraction_tests.cpp'; then $(CYGPATH_W) 'omnicore/test/script_extraction_tests.cpp'; else $(CYGPATH_W) '$(srcdir)/omnicore/test/script_extraction_tests.cpp'; fi`
-	$(AM_V_at)$(am__mv) omnicore/test/$(DEPDIR)/test_test_omnicore-script_extraction_tests.Tpo omnicore/test/$(DEPDIR)/test_test_omnicore-script_extraction_tests.Po
-#	$(AM_V_CXX)source='omnicore/test/script_extraction_tests.cpp' object='omnicore/test/test_test_omnicore-script_extraction_tests.obj' libtool=no \
+tradelayer/test/test_test_omnicore-script_extraction_tests.obj: tradelayer/test/script_extraction_tests.cpp
+	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(test_test_omnicore_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT tradelayer/test/test_test_omnicore-script_extraction_tests.obj -MD -MP -MF tradelayer/test/$(DEPDIR)/test_test_omnicore-script_extraction_tests.Tpo -c -o tradelayer/test/test_test_omnicore-script_extraction_tests.obj `if test -f 'tradelayer/test/script_extraction_tests.cpp'; then $(CYGPATH_W) 'tradelayer/test/script_extraction_tests.cpp'; else $(CYGPATH_W) '$(srcdir)/tradelayer/test/script_extraction_tests.cpp'; fi`
+	$(AM_V_at)$(am__mv) tradelayer/test/$(DEPDIR)/test_test_omnicore-script_extraction_tests.Tpo tradelayer/test/$(DEPDIR)/test_test_omnicore-script_extraction_tests.Po
+#	$(AM_V_CXX)source='tradelayer/test/script_extraction_tests.cpp' object='tradelayer/test/test_test_omnicore-script_extraction_tests.obj' libtool=no \
 #	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) \
-#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(test_test_omnicore_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o omnicore/test/test_test_omnicore-script_extraction_tests.obj `if test -f 'omnicore/test/script_extraction_tests.cpp'; then $(CYGPATH_W) 'omnicore/test/script_extraction_tests.cpp'; else $(CYGPATH_W) '$(srcdir)/omnicore/test/script_extraction_tests.cpp'; fi`
+#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(test_test_omnicore_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o tradelayer/test/test_test_omnicore-script_extraction_tests.obj `if test -f 'tradelayer/test/script_extraction_tests.cpp'; then $(CYGPATH_W) 'tradelayer/test/script_extraction_tests.cpp'; else $(CYGPATH_W) '$(srcdir)/tradelayer/test/script_extraction_tests.cpp'; fi`
 
-omnicore/test/test_test_omnicore-script_solver_tests.o: omnicore/test/script_solver_tests.cpp
-	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(test_test_omnicore_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT omnicore/test/test_test_omnicore-script_solver_tests.o -MD -MP -MF omnicore/test/$(DEPDIR)/test_test_omnicore-script_solver_tests.Tpo -c -o omnicore/test/test_test_omnicore-script_solver_tests.o `test -f 'omnicore/test/script_solver_tests.cpp' || echo '$(srcdir)/'`omnicore/test/script_solver_tests.cpp
-	$(AM_V_at)$(am__mv) omnicore/test/$(DEPDIR)/test_test_omnicore-script_solver_tests.Tpo omnicore/test/$(DEPDIR)/test_test_omnicore-script_solver_tests.Po
-#	$(AM_V_CXX)source='omnicore/test/script_solver_tests.cpp' object='omnicore/test/test_test_omnicore-script_solver_tests.o' libtool=no \
+tradelayer/test/test_test_omnicore-script_solver_tests.o: tradelayer/test/script_solver_tests.cpp
+	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(test_test_omnicore_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT tradelayer/test/test_test_omnicore-script_solver_tests.o -MD -MP -MF tradelayer/test/$(DEPDIR)/test_test_omnicore-script_solver_tests.Tpo -c -o tradelayer/test/test_test_omnicore-script_solver_tests.o `test -f 'tradelayer/test/script_solver_tests.cpp' || echo '$(srcdir)/'`tradelayer/test/script_solver_tests.cpp
+	$(AM_V_at)$(am__mv) tradelayer/test/$(DEPDIR)/test_test_omnicore-script_solver_tests.Tpo tradelayer/test/$(DEPDIR)/test_test_omnicore-script_solver_tests.Po
+#	$(AM_V_CXX)source='tradelayer/test/script_solver_tests.cpp' object='tradelayer/test/test_test_omnicore-script_solver_tests.o' libtool=no \
 #	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) \
-#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(test_test_omnicore_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o omnicore/test/test_test_omnicore-script_solver_tests.o `test -f 'omnicore/test/script_solver_tests.cpp' || echo '$(srcdir)/'`omnicore/test/script_solver_tests.cpp
+#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(test_test_omnicore_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o tradelayer/test/test_test_omnicore-script_solver_tests.o `test -f 'tradelayer/test/script_solver_tests.cpp' || echo '$(srcdir)/'`tradelayer/test/script_solver_tests.cpp
 
-omnicore/test/test_test_omnicore-script_solver_tests.obj: omnicore/test/script_solver_tests.cpp
-	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(test_test_omnicore_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT omnicore/test/test_test_omnicore-script_solver_tests.obj -MD -MP -MF omnicore/test/$(DEPDIR)/test_test_omnicore-script_solver_tests.Tpo -c -o omnicore/test/test_test_omnicore-script_solver_tests.obj `if test -f 'omnicore/test/script_solver_tests.cpp'; then $(CYGPATH_W) 'omnicore/test/script_solver_tests.cpp'; else $(CYGPATH_W) '$(srcdir)/omnicore/test/script_solver_tests.cpp'; fi`
-	$(AM_V_at)$(am__mv) omnicore/test/$(DEPDIR)/test_test_omnicore-script_solver_tests.Tpo omnicore/test/$(DEPDIR)/test_test_omnicore-script_solver_tests.Po
-#	$(AM_V_CXX)source='omnicore/test/script_solver_tests.cpp' object='omnicore/test/test_test_omnicore-script_solver_tests.obj' libtool=no \
+tradelayer/test/test_test_omnicore-script_solver_tests.obj: tradelayer/test/script_solver_tests.cpp
+	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(test_test_omnicore_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT tradelayer/test/test_test_omnicore-script_solver_tests.obj -MD -MP -MF tradelayer/test/$(DEPDIR)/test_test_omnicore-script_solver_tests.Tpo -c -o tradelayer/test/test_test_omnicore-script_solver_tests.obj `if test -f 'tradelayer/test/script_solver_tests.cpp'; then $(CYGPATH_W) 'tradelayer/test/script_solver_tests.cpp'; else $(CYGPATH_W) '$(srcdir)/tradelayer/test/script_solver_tests.cpp'; fi`
+	$(AM_V_at)$(am__mv) tradelayer/test/$(DEPDIR)/test_test_omnicore-script_solver_tests.Tpo tradelayer/test/$(DEPDIR)/test_test_omnicore-script_solver_tests.Po
+#	$(AM_V_CXX)source='tradelayer/test/script_solver_tests.cpp' object='tradelayer/test/test_test_omnicore-script_solver_tests.obj' libtool=no \
 #	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) \
-#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(test_test_omnicore_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o omnicore/test/test_test_omnicore-script_solver_tests.obj `if test -f 'omnicore/test/script_solver_tests.cpp'; then $(CYGPATH_W) 'omnicore/test/script_solver_tests.cpp'; else $(CYGPATH_W) '$(srcdir)/omnicore/test/script_solver_tests.cpp'; fi`
+#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(test_test_omnicore_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o tradelayer/test/test_test_omnicore-script_solver_tests.obj `if test -f 'tradelayer/test/script_solver_tests.cpp'; then $(CYGPATH_W) 'tradelayer/test/script_solver_tests.cpp'; else $(CYGPATH_W) '$(srcdir)/tradelayer/test/script_solver_tests.cpp'; fi`
 
-omnicore/test/test_test_omnicore-sender_bycontribution_tests.o: omnicore/test/sender_bycontribution_tests.cpp
-	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(test_test_omnicore_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT omnicore/test/test_test_omnicore-sender_bycontribution_tests.o -MD -MP -MF omnicore/test/$(DEPDIR)/test_test_omnicore-sender_bycontribution_tests.Tpo -c -o omnicore/test/test_test_omnicore-sender_bycontribution_tests.o `test -f 'omnicore/test/sender_bycontribution_tests.cpp' || echo '$(srcdir)/'`omnicore/test/sender_bycontribution_tests.cpp
-	$(AM_V_at)$(am__mv) omnicore/test/$(DEPDIR)/test_test_omnicore-sender_bycontribution_tests.Tpo omnicore/test/$(DEPDIR)/test_test_omnicore-sender_bycontribution_tests.Po
-#	$(AM_V_CXX)source='omnicore/test/sender_bycontribution_tests.cpp' object='omnicore/test/test_test_omnicore-sender_bycontribution_tests.o' libtool=no \
+tradelayer/test/test_test_omnicore-sender_bycontribution_tests.o: tradelayer/test/sender_bycontribution_tests.cpp
+	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(test_test_omnicore_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT tradelayer/test/test_test_omnicore-sender_bycontribution_tests.o -MD -MP -MF tradelayer/test/$(DEPDIR)/test_test_omnicore-sender_bycontribution_tests.Tpo -c -o tradelayer/test/test_test_omnicore-sender_bycontribution_tests.o `test -f 'tradelayer/test/sender_bycontribution_tests.cpp' || echo '$(srcdir)/'`tradelayer/test/sender_bycontribution_tests.cpp
+	$(AM_V_at)$(am__mv) tradelayer/test/$(DEPDIR)/test_test_omnicore-sender_bycontribution_tests.Tpo tradelayer/test/$(DEPDIR)/test_test_omnicore-sender_bycontribution_tests.Po
+#	$(AM_V_CXX)source='tradelayer/test/sender_bycontribution_tests.cpp' object='tradelayer/test/test_test_omnicore-sender_bycontribution_tests.o' libtool=no \
 #	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) \
-#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(test_test_omnicore_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o omnicore/test/test_test_omnicore-sender_bycontribution_tests.o `test -f 'omnicore/test/sender_bycontribution_tests.cpp' || echo '$(srcdir)/'`omnicore/test/sender_bycontribution_tests.cpp
+#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(test_test_omnicore_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o tradelayer/test/test_test_omnicore-sender_bycontribution_tests.o `test -f 'tradelayer/test/sender_bycontribution_tests.cpp' || echo '$(srcdir)/'`tradelayer/test/sender_bycontribution_tests.cpp
 
-omnicore/test/test_test_omnicore-sender_bycontribution_tests.obj: omnicore/test/sender_bycontribution_tests.cpp
-	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(test_test_omnicore_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT omnicore/test/test_test_omnicore-sender_bycontribution_tests.obj -MD -MP -MF omnicore/test/$(DEPDIR)/test_test_omnicore-sender_bycontribution_tests.Tpo -c -o omnicore/test/test_test_omnicore-sender_bycontribution_tests.obj `if test -f 'omnicore/test/sender_bycontribution_tests.cpp'; then $(CYGPATH_W) 'omnicore/test/sender_bycontribution_tests.cpp'; else $(CYGPATH_W) '$(srcdir)/omnicore/test/sender_bycontribution_tests.cpp'; fi`
-	$(AM_V_at)$(am__mv) omnicore/test/$(DEPDIR)/test_test_omnicore-sender_bycontribution_tests.Tpo omnicore/test/$(DEPDIR)/test_test_omnicore-sender_bycontribution_tests.Po
-#	$(AM_V_CXX)source='omnicore/test/sender_bycontribution_tests.cpp' object='omnicore/test/test_test_omnicore-sender_bycontribution_tests.obj' libtool=no \
+tradelayer/test/test_test_omnicore-sender_bycontribution_tests.obj: tradelayer/test/sender_bycontribution_tests.cpp
+	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(test_test_omnicore_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT tradelayer/test/test_test_omnicore-sender_bycontribution_tests.obj -MD -MP -MF tradelayer/test/$(DEPDIR)/test_test_omnicore-sender_bycontribution_tests.Tpo -c -o tradelayer/test/test_test_omnicore-sender_bycontribution_tests.obj `if test -f 'tradelayer/test/sender_bycontribution_tests.cpp'; then $(CYGPATH_W) 'tradelayer/test/sender_bycontribution_tests.cpp'; else $(CYGPATH_W) '$(srcdir)/tradelayer/test/sender_bycontribution_tests.cpp'; fi`
+	$(AM_V_at)$(am__mv) tradelayer/test/$(DEPDIR)/test_test_omnicore-sender_bycontribution_tests.Tpo tradelayer/test/$(DEPDIR)/test_test_omnicore-sender_bycontribution_tests.Po
+#	$(AM_V_CXX)source='tradelayer/test/sender_bycontribution_tests.cpp' object='tradelayer/test/test_test_omnicore-sender_bycontribution_tests.obj' libtool=no \
 #	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) \
-#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(test_test_omnicore_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o omnicore/test/test_test_omnicore-sender_bycontribution_tests.obj `if test -f 'omnicore/test/sender_bycontribution_tests.cpp'; then $(CYGPATH_W) 'omnicore/test/sender_bycontribution_tests.cpp'; else $(CYGPATH_W) '$(srcdir)/omnicore/test/sender_bycontribution_tests.cpp'; fi`
+#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(test_test_omnicore_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o tradelayer/test/test_test_omnicore-sender_bycontribution_tests.obj `if test -f 'tradelayer/test/sender_bycontribution_tests.cpp'; then $(CYGPATH_W) 'tradelayer/test/sender_bycontribution_tests.cpp'; else $(CYGPATH_W) '$(srcdir)/tradelayer/test/sender_bycontribution_tests.cpp'; fi`
 
-omnicore/test/test_test_omnicore-sender_firstin_tests.o: omnicore/test/sender_firstin_tests.cpp
-	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(test_test_omnicore_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT omnicore/test/test_test_omnicore-sender_firstin_tests.o -MD -MP -MF omnicore/test/$(DEPDIR)/test_test_omnicore-sender_firstin_tests.Tpo -c -o omnicore/test/test_test_omnicore-sender_firstin_tests.o `test -f 'omnicore/test/sender_firstin_tests.cpp' || echo '$(srcdir)/'`omnicore/test/sender_firstin_tests.cpp
-	$(AM_V_at)$(am__mv) omnicore/test/$(DEPDIR)/test_test_omnicore-sender_firstin_tests.Tpo omnicore/test/$(DEPDIR)/test_test_omnicore-sender_firstin_tests.Po
-#	$(AM_V_CXX)source='omnicore/test/sender_firstin_tests.cpp' object='omnicore/test/test_test_omnicore-sender_firstin_tests.o' libtool=no \
+tradelayer/test/test_test_omnicore-sender_firstin_tests.o: tradelayer/test/sender_firstin_tests.cpp
+	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(test_test_omnicore_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT tradelayer/test/test_test_omnicore-sender_firstin_tests.o -MD -MP -MF tradelayer/test/$(DEPDIR)/test_test_omnicore-sender_firstin_tests.Tpo -c -o tradelayer/test/test_test_omnicore-sender_firstin_tests.o `test -f 'tradelayer/test/sender_firstin_tests.cpp' || echo '$(srcdir)/'`tradelayer/test/sender_firstin_tests.cpp
+	$(AM_V_at)$(am__mv) tradelayer/test/$(DEPDIR)/test_test_omnicore-sender_firstin_tests.Tpo tradelayer/test/$(DEPDIR)/test_test_omnicore-sender_firstin_tests.Po
+#	$(AM_V_CXX)source='tradelayer/test/sender_firstin_tests.cpp' object='tradelayer/test/test_test_omnicore-sender_firstin_tests.o' libtool=no \
 #	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) \
-#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(test_test_omnicore_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o omnicore/test/test_test_omnicore-sender_firstin_tests.o `test -f 'omnicore/test/sender_firstin_tests.cpp' || echo '$(srcdir)/'`omnicore/test/sender_firstin_tests.cpp
+#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(test_test_omnicore_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o tradelayer/test/test_test_omnicore-sender_firstin_tests.o `test -f 'tradelayer/test/sender_firstin_tests.cpp' || echo '$(srcdir)/'`tradelayer/test/sender_firstin_tests.cpp
 
-omnicore/test/test_test_omnicore-sender_firstin_tests.obj: omnicore/test/sender_firstin_tests.cpp
-	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(test_test_omnicore_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT omnicore/test/test_test_omnicore-sender_firstin_tests.obj -MD -MP -MF omnicore/test/$(DEPDIR)/test_test_omnicore-sender_firstin_tests.Tpo -c -o omnicore/test/test_test_omnicore-sender_firstin_tests.obj `if test -f 'omnicore/test/sender_firstin_tests.cpp'; then $(CYGPATH_W) 'omnicore/test/sender_firstin_tests.cpp'; else $(CYGPATH_W) '$(srcdir)/omnicore/test/sender_firstin_tests.cpp'; fi`
-	$(AM_V_at)$(am__mv) omnicore/test/$(DEPDIR)/test_test_omnicore-sender_firstin_tests.Tpo omnicore/test/$(DEPDIR)/test_test_omnicore-sender_firstin_tests.Po
-#	$(AM_V_CXX)source='omnicore/test/sender_firstin_tests.cpp' object='omnicore/test/test_test_omnicore-sender_firstin_tests.obj' libtool=no \
+tradelayer/test/test_test_omnicore-sender_firstin_tests.obj: tradelayer/test/sender_firstin_tests.cpp
+	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(test_test_omnicore_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT tradelayer/test/test_test_omnicore-sender_firstin_tests.obj -MD -MP -MF tradelayer/test/$(DEPDIR)/test_test_omnicore-sender_firstin_tests.Tpo -c -o tradelayer/test/test_test_omnicore-sender_firstin_tests.obj `if test -f 'tradelayer/test/sender_firstin_tests.cpp'; then $(CYGPATH_W) 'tradelayer/test/sender_firstin_tests.cpp'; else $(CYGPATH_W) '$(srcdir)/tradelayer/test/sender_firstin_tests.cpp'; fi`
+	$(AM_V_at)$(am__mv) tradelayer/test/$(DEPDIR)/test_test_omnicore-sender_firstin_tests.Tpo tradelayer/test/$(DEPDIR)/test_test_omnicore-sender_firstin_tests.Po
+#	$(AM_V_CXX)source='tradelayer/test/sender_firstin_tests.cpp' object='tradelayer/test/test_test_omnicore-sender_firstin_tests.obj' libtool=no \
 #	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) \
-#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(test_test_omnicore_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o omnicore/test/test_test_omnicore-sender_firstin_tests.obj `if test -f 'omnicore/test/sender_firstin_tests.cpp'; then $(CYGPATH_W) 'omnicore/test/sender_firstin_tests.cpp'; else $(CYGPATH_W) '$(srcdir)/omnicore/test/sender_firstin_tests.cpp'; fi`
+#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(test_test_omnicore_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o tradelayer/test/test_test_omnicore-sender_firstin_tests.obj `if test -f 'tradelayer/test/sender_firstin_tests.cpp'; then $(CYGPATH_W) 'tradelayer/test/sender_firstin_tests.cpp'; else $(CYGPATH_W) '$(srcdir)/tradelayer/test/sender_firstin_tests.cpp'; fi`
 
-omnicore/test/test_test_omnicore-strtoint64_tests.o: omnicore/test/strtoint64_tests.cpp
-	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(test_test_omnicore_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT omnicore/test/test_test_omnicore-strtoint64_tests.o -MD -MP -MF omnicore/test/$(DEPDIR)/test_test_omnicore-strtoint64_tests.Tpo -c -o omnicore/test/test_test_omnicore-strtoint64_tests.o `test -f 'omnicore/test/strtoint64_tests.cpp' || echo '$(srcdir)/'`omnicore/test/strtoint64_tests.cpp
-	$(AM_V_at)$(am__mv) omnicore/test/$(DEPDIR)/test_test_omnicore-strtoint64_tests.Tpo omnicore/test/$(DEPDIR)/test_test_omnicore-strtoint64_tests.Po
-#	$(AM_V_CXX)source='omnicore/test/strtoint64_tests.cpp' object='omnicore/test/test_test_omnicore-strtoint64_tests.o' libtool=no \
+tradelayer/test/test_test_omnicore-strtoint64_tests.o: tradelayer/test/strtoint64_tests.cpp
+	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(test_test_omnicore_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT tradelayer/test/test_test_omnicore-strtoint64_tests.o -MD -MP -MF tradelayer/test/$(DEPDIR)/test_test_omnicore-strtoint64_tests.Tpo -c -o tradelayer/test/test_test_omnicore-strtoint64_tests.o `test -f 'tradelayer/test/strtoint64_tests.cpp' || echo '$(srcdir)/'`tradelayer/test/strtoint64_tests.cpp
+	$(AM_V_at)$(am__mv) tradelayer/test/$(DEPDIR)/test_test_omnicore-strtoint64_tests.Tpo tradelayer/test/$(DEPDIR)/test_test_omnicore-strtoint64_tests.Po
+#	$(AM_V_CXX)source='tradelayer/test/strtoint64_tests.cpp' object='tradelayer/test/test_test_omnicore-strtoint64_tests.o' libtool=no \
 #	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) \
-#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(test_test_omnicore_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o omnicore/test/test_test_omnicore-strtoint64_tests.o `test -f 'omnicore/test/strtoint64_tests.cpp' || echo '$(srcdir)/'`omnicore/test/strtoint64_tests.cpp
+#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(test_test_omnicore_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o tradelayer/test/test_test_omnicore-strtoint64_tests.o `test -f 'tradelayer/test/strtoint64_tests.cpp' || echo '$(srcdir)/'`tradelayer/test/strtoint64_tests.cpp
 
-omnicore/test/test_test_omnicore-strtoint64_tests.obj: omnicore/test/strtoint64_tests.cpp
-	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(test_test_omnicore_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT omnicore/test/test_test_omnicore-strtoint64_tests.obj -MD -MP -MF omnicore/test/$(DEPDIR)/test_test_omnicore-strtoint64_tests.Tpo -c -o omnicore/test/test_test_omnicore-strtoint64_tests.obj `if test -f 'omnicore/test/strtoint64_tests.cpp'; then $(CYGPATH_W) 'omnicore/test/strtoint64_tests.cpp'; else $(CYGPATH_W) '$(srcdir)/omnicore/test/strtoint64_tests.cpp'; fi`
-	$(AM_V_at)$(am__mv) omnicore/test/$(DEPDIR)/test_test_omnicore-strtoint64_tests.Tpo omnicore/test/$(DEPDIR)/test_test_omnicore-strtoint64_tests.Po
-#	$(AM_V_CXX)source='omnicore/test/strtoint64_tests.cpp' object='omnicore/test/test_test_omnicore-strtoint64_tests.obj' libtool=no \
+tradelayer/test/test_test_omnicore-strtoint64_tests.obj: tradelayer/test/strtoint64_tests.cpp
+	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(test_test_omnicore_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT tradelayer/test/test_test_omnicore-strtoint64_tests.obj -MD -MP -MF tradelayer/test/$(DEPDIR)/test_test_omnicore-strtoint64_tests.Tpo -c -o tradelayer/test/test_test_omnicore-strtoint64_tests.obj `if test -f 'tradelayer/test/strtoint64_tests.cpp'; then $(CYGPATH_W) 'tradelayer/test/strtoint64_tests.cpp'; else $(CYGPATH_W) '$(srcdir)/tradelayer/test/strtoint64_tests.cpp'; fi`
+	$(AM_V_at)$(am__mv) tradelayer/test/$(DEPDIR)/test_test_omnicore-strtoint64_tests.Tpo tradelayer/test/$(DEPDIR)/test_test_omnicore-strtoint64_tests.Po
+#	$(AM_V_CXX)source='tradelayer/test/strtoint64_tests.cpp' object='tradelayer/test/test_test_omnicore-strtoint64_tests.obj' libtool=no \
 #	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) \
-#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(test_test_omnicore_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o omnicore/test/test_test_omnicore-strtoint64_tests.obj `if test -f 'omnicore/test/strtoint64_tests.cpp'; then $(CYGPATH_W) 'omnicore/test/strtoint64_tests.cpp'; else $(CYGPATH_W) '$(srcdir)/omnicore/test/strtoint64_tests.cpp'; fi`
+#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(test_test_omnicore_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o tradelayer/test/test_test_omnicore-strtoint64_tests.obj `if test -f 'tradelayer/test/strtoint64_tests.cpp'; then $(CYGPATH_W) 'tradelayer/test/strtoint64_tests.cpp'; else $(CYGPATH_W) '$(srcdir)/tradelayer/test/strtoint64_tests.cpp'; fi`
 
-omnicore/test/test_test_omnicore-swapbyteorder_tests.o: omnicore/test/swapbyteorder_tests.cpp
-	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(test_test_omnicore_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT omnicore/test/test_test_omnicore-swapbyteorder_tests.o -MD -MP -MF omnicore/test/$(DEPDIR)/test_test_omnicore-swapbyteorder_tests.Tpo -c -o omnicore/test/test_test_omnicore-swapbyteorder_tests.o `test -f 'omnicore/test/swapbyteorder_tests.cpp' || echo '$(srcdir)/'`omnicore/test/swapbyteorder_tests.cpp
-	$(AM_V_at)$(am__mv) omnicore/test/$(DEPDIR)/test_test_omnicore-swapbyteorder_tests.Tpo omnicore/test/$(DEPDIR)/test_test_omnicore-swapbyteorder_tests.Po
-#	$(AM_V_CXX)source='omnicore/test/swapbyteorder_tests.cpp' object='omnicore/test/test_test_omnicore-swapbyteorder_tests.o' libtool=no \
+tradelayer/test/test_test_omnicore-swapbyteorder_tests.o: tradelayer/test/swapbyteorder_tests.cpp
+	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(test_test_omnicore_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT tradelayer/test/test_test_omnicore-swapbyteorder_tests.o -MD -MP -MF tradelayer/test/$(DEPDIR)/test_test_omnicore-swapbyteorder_tests.Tpo -c -o tradelayer/test/test_test_omnicore-swapbyteorder_tests.o `test -f 'tradelayer/test/swapbyteorder_tests.cpp' || echo '$(srcdir)/'`tradelayer/test/swapbyteorder_tests.cpp
+	$(AM_V_at)$(am__mv) tradelayer/test/$(DEPDIR)/test_test_omnicore-swapbyteorder_tests.Tpo tradelayer/test/$(DEPDIR)/test_test_omnicore-swapbyteorder_tests.Po
+#	$(AM_V_CXX)source='tradelayer/test/swapbyteorder_tests.cpp' object='tradelayer/test/test_test_omnicore-swapbyteorder_tests.o' libtool=no \
 #	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) \
-#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(test_test_omnicore_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o omnicore/test/test_test_omnicore-swapbyteorder_tests.o `test -f 'omnicore/test/swapbyteorder_tests.cpp' || echo '$(srcdir)/'`omnicore/test/swapbyteorder_tests.cpp
+#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(test_test_omnicore_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o tradelayer/test/test_test_omnicore-swapbyteorder_tests.o `test -f 'tradelayer/test/swapbyteorder_tests.cpp' || echo '$(srcdir)/'`tradelayer/test/swapbyteorder_tests.cpp
 
-omnicore/test/test_test_omnicore-swapbyteorder_tests.obj: omnicore/test/swapbyteorder_tests.cpp
-	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(test_test_omnicore_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT omnicore/test/test_test_omnicore-swapbyteorder_tests.obj -MD -MP -MF omnicore/test/$(DEPDIR)/test_test_omnicore-swapbyteorder_tests.Tpo -c -o omnicore/test/test_test_omnicore-swapbyteorder_tests.obj `if test -f 'omnicore/test/swapbyteorder_tests.cpp'; then $(CYGPATH_W) 'omnicore/test/swapbyteorder_tests.cpp'; else $(CYGPATH_W) '$(srcdir)/omnicore/test/swapbyteorder_tests.cpp'; fi`
-	$(AM_V_at)$(am__mv) omnicore/test/$(DEPDIR)/test_test_omnicore-swapbyteorder_tests.Tpo omnicore/test/$(DEPDIR)/test_test_omnicore-swapbyteorder_tests.Po
-#	$(AM_V_CXX)source='omnicore/test/swapbyteorder_tests.cpp' object='omnicore/test/test_test_omnicore-swapbyteorder_tests.obj' libtool=no \
+tradelayer/test/test_test_omnicore-swapbyteorder_tests.obj: tradelayer/test/swapbyteorder_tests.cpp
+	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(test_test_omnicore_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT tradelayer/test/test_test_omnicore-swapbyteorder_tests.obj -MD -MP -MF tradelayer/test/$(DEPDIR)/test_test_omnicore-swapbyteorder_tests.Tpo -c -o tradelayer/test/test_test_omnicore-swapbyteorder_tests.obj `if test -f 'tradelayer/test/swapbyteorder_tests.cpp'; then $(CYGPATH_W) 'tradelayer/test/swapbyteorder_tests.cpp'; else $(CYGPATH_W) '$(srcdir)/tradelayer/test/swapbyteorder_tests.cpp'; fi`
+	$(AM_V_at)$(am__mv) tradelayer/test/$(DEPDIR)/test_test_omnicore-swapbyteorder_tests.Tpo tradelayer/test/$(DEPDIR)/test_test_omnicore-swapbyteorder_tests.Po
+#	$(AM_V_CXX)source='tradelayer/test/swapbyteorder_tests.cpp' object='tradelayer/test/test_test_omnicore-swapbyteorder_tests.obj' libtool=no \
 #	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) \
-#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(test_test_omnicore_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o omnicore/test/test_test_omnicore-swapbyteorder_tests.obj `if test -f 'omnicore/test/swapbyteorder_tests.cpp'; then $(CYGPATH_W) 'omnicore/test/swapbyteorder_tests.cpp'; else $(CYGPATH_W) '$(srcdir)/omnicore/test/swapbyteorder_tests.cpp'; fi`
+#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(test_test_omnicore_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o tradelayer/test/test_test_omnicore-swapbyteorder_tests.obj `if test -f 'tradelayer/test/swapbyteorder_tests.cpp'; then $(CYGPATH_W) 'tradelayer/test/swapbyteorder_tests.cpp'; else $(CYGPATH_W) '$(srcdir)/tradelayer/test/swapbyteorder_tests.cpp'; fi`
 
-omnicore/test/test_test_omnicore-tally_tests.o: omnicore/test/tally_tests.cpp
-	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(test_test_omnicore_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT omnicore/test/test_test_omnicore-tally_tests.o -MD -MP -MF omnicore/test/$(DEPDIR)/test_test_omnicore-tally_tests.Tpo -c -o omnicore/test/test_test_omnicore-tally_tests.o `test -f 'omnicore/test/tally_tests.cpp' || echo '$(srcdir)/'`omnicore/test/tally_tests.cpp
-	$(AM_V_at)$(am__mv) omnicore/test/$(DEPDIR)/test_test_omnicore-tally_tests.Tpo omnicore/test/$(DEPDIR)/test_test_omnicore-tally_tests.Po
-#	$(AM_V_CXX)source='omnicore/test/tally_tests.cpp' object='omnicore/test/test_test_omnicore-tally_tests.o' libtool=no \
+tradelayer/test/test_test_omnicore-tally_tests.o: tradelayer/test/tally_tests.cpp
+	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(test_test_omnicore_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT tradelayer/test/test_test_omnicore-tally_tests.o -MD -MP -MF tradelayer/test/$(DEPDIR)/test_test_omnicore-tally_tests.Tpo -c -o tradelayer/test/test_test_omnicore-tally_tests.o `test -f 'tradelayer/test/tally_tests.cpp' || echo '$(srcdir)/'`tradelayer/test/tally_tests.cpp
+	$(AM_V_at)$(am__mv) tradelayer/test/$(DEPDIR)/test_test_omnicore-tally_tests.Tpo tradelayer/test/$(DEPDIR)/test_test_omnicore-tally_tests.Po
+#	$(AM_V_CXX)source='tradelayer/test/tally_tests.cpp' object='tradelayer/test/test_test_omnicore-tally_tests.o' libtool=no \
 #	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) \
-#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(test_test_omnicore_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o omnicore/test/test_test_omnicore-tally_tests.o `test -f 'omnicore/test/tally_tests.cpp' || echo '$(srcdir)/'`omnicore/test/tally_tests.cpp
+#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(test_test_omnicore_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o tradelayer/test/test_test_omnicore-tally_tests.o `test -f 'tradelayer/test/tally_tests.cpp' || echo '$(srcdir)/'`tradelayer/test/tally_tests.cpp
 
-omnicore/test/test_test_omnicore-tally_tests.obj: omnicore/test/tally_tests.cpp
-	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(test_test_omnicore_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT omnicore/test/test_test_omnicore-tally_tests.obj -MD -MP -MF omnicore/test/$(DEPDIR)/test_test_omnicore-tally_tests.Tpo -c -o omnicore/test/test_test_omnicore-tally_tests.obj `if test -f 'omnicore/test/tally_tests.cpp'; then $(CYGPATH_W) 'omnicore/test/tally_tests.cpp'; else $(CYGPATH_W) '$(srcdir)/omnicore/test/tally_tests.cpp'; fi`
-	$(AM_V_at)$(am__mv) omnicore/test/$(DEPDIR)/test_test_omnicore-tally_tests.Tpo omnicore/test/$(DEPDIR)/test_test_omnicore-tally_tests.Po
-#	$(AM_V_CXX)source='omnicore/test/tally_tests.cpp' object='omnicore/test/test_test_omnicore-tally_tests.obj' libtool=no \
+tradelayer/test/test_test_omnicore-tally_tests.obj: tradelayer/test/tally_tests.cpp
+	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(test_test_omnicore_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT tradelayer/test/test_test_omnicore-tally_tests.obj -MD -MP -MF tradelayer/test/$(DEPDIR)/test_test_omnicore-tally_tests.Tpo -c -o tradelayer/test/test_test_omnicore-tally_tests.obj `if test -f 'tradelayer/test/tally_tests.cpp'; then $(CYGPATH_W) 'tradelayer/test/tally_tests.cpp'; else $(CYGPATH_W) '$(srcdir)/tradelayer/test/tally_tests.cpp'; fi`
+	$(AM_V_at)$(am__mv) tradelayer/test/$(DEPDIR)/test_test_omnicore-tally_tests.Tpo tradelayer/test/$(DEPDIR)/test_test_omnicore-tally_tests.Po
+#	$(AM_V_CXX)source='tradelayer/test/tally_tests.cpp' object='tradelayer/test/test_test_omnicore-tally_tests.obj' libtool=no \
 #	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) \
-#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(test_test_omnicore_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o omnicore/test/test_test_omnicore-tally_tests.obj `if test -f 'omnicore/test/tally_tests.cpp'; then $(CYGPATH_W) 'omnicore/test/tally_tests.cpp'; else $(CYGPATH_W) '$(srcdir)/omnicore/test/tally_tests.cpp'; fi`
+#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(test_test_omnicore_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o tradelayer/test/test_test_omnicore-tally_tests.obj `if test -f 'tradelayer/test/tally_tests.cpp'; then $(CYGPATH_W) 'tradelayer/test/tally_tests.cpp'; else $(CYGPATH_W) '$(srcdir)/tradelayer/test/tally_tests.cpp'; fi`
 
-omnicore/test/test_test_omnicore-uint256_extensions_tests.o: omnicore/test/uint256_extensions_tests.cpp
-	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(test_test_omnicore_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT omnicore/test/test_test_omnicore-uint256_extensions_tests.o -MD -MP -MF omnicore/test/$(DEPDIR)/test_test_omnicore-uint256_extensions_tests.Tpo -c -o omnicore/test/test_test_omnicore-uint256_extensions_tests.o `test -f 'omnicore/test/uint256_extensions_tests.cpp' || echo '$(srcdir)/'`omnicore/test/uint256_extensions_tests.cpp
-	$(AM_V_at)$(am__mv) omnicore/test/$(DEPDIR)/test_test_omnicore-uint256_extensions_tests.Tpo omnicore/test/$(DEPDIR)/test_test_omnicore-uint256_extensions_tests.Po
-#	$(AM_V_CXX)source='omnicore/test/uint256_extensions_tests.cpp' object='omnicore/test/test_test_omnicore-uint256_extensions_tests.o' libtool=no \
+tradelayer/test/test_test_omnicore-uint256_extensions_tests.o: tradelayer/test/uint256_extensions_tests.cpp
+	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(test_test_omnicore_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT tradelayer/test/test_test_omnicore-uint256_extensions_tests.o -MD -MP -MF tradelayer/test/$(DEPDIR)/test_test_omnicore-uint256_extensions_tests.Tpo -c -o tradelayer/test/test_test_omnicore-uint256_extensions_tests.o `test -f 'tradelayer/test/uint256_extensions_tests.cpp' || echo '$(srcdir)/'`tradelayer/test/uint256_extensions_tests.cpp
+	$(AM_V_at)$(am__mv) tradelayer/test/$(DEPDIR)/test_test_omnicore-uint256_extensions_tests.Tpo tradelayer/test/$(DEPDIR)/test_test_omnicore-uint256_extensions_tests.Po
+#	$(AM_V_CXX)source='tradelayer/test/uint256_extensions_tests.cpp' object='tradelayer/test/test_test_omnicore-uint256_extensions_tests.o' libtool=no \
 #	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) \
-#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(test_test_omnicore_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o omnicore/test/test_test_omnicore-uint256_extensions_tests.o `test -f 'omnicore/test/uint256_extensions_tests.cpp' || echo '$(srcdir)/'`omnicore/test/uint256_extensions_tests.cpp
+#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(test_test_omnicore_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o tradelayer/test/test_test_omnicore-uint256_extensions_tests.o `test -f 'tradelayer/test/uint256_extensions_tests.cpp' || echo '$(srcdir)/'`tradelayer/test/uint256_extensions_tests.cpp
 
-omnicore/test/test_test_omnicore-uint256_extensions_tests.obj: omnicore/test/uint256_extensions_tests.cpp
-	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(test_test_omnicore_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT omnicore/test/test_test_omnicore-uint256_extensions_tests.obj -MD -MP -MF omnicore/test/$(DEPDIR)/test_test_omnicore-uint256_extensions_tests.Tpo -c -o omnicore/test/test_test_omnicore-uint256_extensions_tests.obj `if test -f 'omnicore/test/uint256_extensions_tests.cpp'; then $(CYGPATH_W) 'omnicore/test/uint256_extensions_tests.cpp'; else $(CYGPATH_W) '$(srcdir)/omnicore/test/uint256_extensions_tests.cpp'; fi`
-	$(AM_V_at)$(am__mv) omnicore/test/$(DEPDIR)/test_test_omnicore-uint256_extensions_tests.Tpo omnicore/test/$(DEPDIR)/test_test_omnicore-uint256_extensions_tests.Po
-#	$(AM_V_CXX)source='omnicore/test/uint256_extensions_tests.cpp' object='omnicore/test/test_test_omnicore-uint256_extensions_tests.obj' libtool=no \
+tradelayer/test/test_test_omnicore-uint256_extensions_tests.obj: tradelayer/test/uint256_extensions_tests.cpp
+	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(test_test_omnicore_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT tradelayer/test/test_test_omnicore-uint256_extensions_tests.obj -MD -MP -MF tradelayer/test/$(DEPDIR)/test_test_omnicore-uint256_extensions_tests.Tpo -c -o tradelayer/test/test_test_omnicore-uint256_extensions_tests.obj `if test -f 'tradelayer/test/uint256_extensions_tests.cpp'; then $(CYGPATH_W) 'tradelayer/test/uint256_extensions_tests.cpp'; else $(CYGPATH_W) '$(srcdir)/tradelayer/test/uint256_extensions_tests.cpp'; fi`
+	$(AM_V_at)$(am__mv) tradelayer/test/$(DEPDIR)/test_test_omnicore-uint256_extensions_tests.Tpo tradelayer/test/$(DEPDIR)/test_test_omnicore-uint256_extensions_tests.Po
+#	$(AM_V_CXX)source='tradelayer/test/uint256_extensions_tests.cpp' object='tradelayer/test/test_test_omnicore-uint256_extensions_tests.obj' libtool=no \
 #	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) \
-#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(test_test_omnicore_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o omnicore/test/test_test_omnicore-uint256_extensions_tests.obj `if test -f 'omnicore/test/uint256_extensions_tests.cpp'; then $(CYGPATH_W) 'omnicore/test/uint256_extensions_tests.cpp'; else $(CYGPATH_W) '$(srcdir)/omnicore/test/uint256_extensions_tests.cpp'; fi`
+#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(test_test_omnicore_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o tradelayer/test/test_test_omnicore-uint256_extensions_tests.obj `if test -f 'tradelayer/test/uint256_extensions_tests.cpp'; then $(CYGPATH_W) 'tradelayer/test/uint256_extensions_tests.cpp'; else $(CYGPATH_W) '$(srcdir)/tradelayer/test/uint256_extensions_tests.cpp'; fi`
 
-omnicore/test/test_test_omnicore-utils_tx.o: omnicore/test/utils_tx.cpp
-	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(test_test_omnicore_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT omnicore/test/test_test_omnicore-utils_tx.o -MD -MP -MF omnicore/test/$(DEPDIR)/test_test_omnicore-utils_tx.Tpo -c -o omnicore/test/test_test_omnicore-utils_tx.o `test -f 'omnicore/test/utils_tx.cpp' || echo '$(srcdir)/'`omnicore/test/utils_tx.cpp
-	$(AM_V_at)$(am__mv) omnicore/test/$(DEPDIR)/test_test_omnicore-utils_tx.Tpo omnicore/test/$(DEPDIR)/test_test_omnicore-utils_tx.Po
-#	$(AM_V_CXX)source='omnicore/test/utils_tx.cpp' object='omnicore/test/test_test_omnicore-utils_tx.o' libtool=no \
+tradelayer/test/test_test_omnicore-utils_tx.o: tradelayer/test/utils_tx.cpp
+	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(test_test_omnicore_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT tradelayer/test/test_test_omnicore-utils_tx.o -MD -MP -MF tradelayer/test/$(DEPDIR)/test_test_omnicore-utils_tx.Tpo -c -o tradelayer/test/test_test_omnicore-utils_tx.o `test -f 'tradelayer/test/utils_tx.cpp' || echo '$(srcdir)/'`tradelayer/test/utils_tx.cpp
+	$(AM_V_at)$(am__mv) tradelayer/test/$(DEPDIR)/test_test_omnicore-utils_tx.Tpo tradelayer/test/$(DEPDIR)/test_test_omnicore-utils_tx.Po
+#	$(AM_V_CXX)source='tradelayer/test/utils_tx.cpp' object='tradelayer/test/test_test_omnicore-utils_tx.o' libtool=no \
 #	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) \
-#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(test_test_omnicore_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o omnicore/test/test_test_omnicore-utils_tx.o `test -f 'omnicore/test/utils_tx.cpp' || echo '$(srcdir)/'`omnicore/test/utils_tx.cpp
+#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(test_test_omnicore_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o tradelayer/test/test_test_omnicore-utils_tx.o `test -f 'tradelayer/test/utils_tx.cpp' || echo '$(srcdir)/'`tradelayer/test/utils_tx.cpp
 
-omnicore/test/test_test_omnicore-utils_tx.obj: omnicore/test/utils_tx.cpp
-	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(test_test_omnicore_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT omnicore/test/test_test_omnicore-utils_tx.obj -MD -MP -MF omnicore/test/$(DEPDIR)/test_test_omnicore-utils_tx.Tpo -c -o omnicore/test/test_test_omnicore-utils_tx.obj `if test -f 'omnicore/test/utils_tx.cpp'; then $(CYGPATH_W) 'omnicore/test/utils_tx.cpp'; else $(CYGPATH_W) '$(srcdir)/omnicore/test/utils_tx.cpp'; fi`
-	$(AM_V_at)$(am__mv) omnicore/test/$(DEPDIR)/test_test_omnicore-utils_tx.Tpo omnicore/test/$(DEPDIR)/test_test_omnicore-utils_tx.Po
-#	$(AM_V_CXX)source='omnicore/test/utils_tx.cpp' object='omnicore/test/test_test_omnicore-utils_tx.obj' libtool=no \
+tradelayer/test/test_test_omnicore-utils_tx.obj: tradelayer/test/utils_tx.cpp
+	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(test_test_omnicore_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT tradelayer/test/test_test_omnicore-utils_tx.obj -MD -MP -MF tradelayer/test/$(DEPDIR)/test_test_omnicore-utils_tx.Tpo -c -o tradelayer/test/test_test_omnicore-utils_tx.obj `if test -f 'tradelayer/test/utils_tx.cpp'; then $(CYGPATH_W) 'tradelayer/test/utils_tx.cpp'; else $(CYGPATH_W) '$(srcdir)/tradelayer/test/utils_tx.cpp'; fi`
+	$(AM_V_at)$(am__mv) tradelayer/test/$(DEPDIR)/test_test_omnicore-utils_tx.Tpo tradelayer/test/$(DEPDIR)/test_test_omnicore-utils_tx.Po
+#	$(AM_V_CXX)source='tradelayer/test/utils_tx.cpp' object='tradelayer/test/test_test_omnicore-utils_tx.obj' libtool=no \
 #	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) \
-#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(test_test_omnicore_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o omnicore/test/test_test_omnicore-utils_tx.obj `if test -f 'omnicore/test/utils_tx.cpp'; then $(CYGPATH_W) 'omnicore/test/utils_tx.cpp'; else $(CYGPATH_W) '$(srcdir)/omnicore/test/utils_tx.cpp'; fi`
+#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(test_test_omnicore_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o tradelayer/test/test_test_omnicore-utils_tx.obj `if test -f 'tradelayer/test/utils_tx.cpp'; then $(CYGPATH_W) 'tradelayer/test/utils_tx.cpp'; else $(CYGPATH_W) '$(srcdir)/tradelayer/test/utils_tx.cpp'; fi`
 
-omnicore/test/test_test_omnicore-version_tests.o: omnicore/test/version_tests.cpp
-	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(test_test_omnicore_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT omnicore/test/test_test_omnicore-version_tests.o -MD -MP -MF omnicore/test/$(DEPDIR)/test_test_omnicore-version_tests.Tpo -c -o omnicore/test/test_test_omnicore-version_tests.o `test -f 'omnicore/test/version_tests.cpp' || echo '$(srcdir)/'`omnicore/test/version_tests.cpp
-	$(AM_V_at)$(am__mv) omnicore/test/$(DEPDIR)/test_test_omnicore-version_tests.Tpo omnicore/test/$(DEPDIR)/test_test_omnicore-version_tests.Po
-#	$(AM_V_CXX)source='omnicore/test/version_tests.cpp' object='omnicore/test/test_test_omnicore-version_tests.o' libtool=no \
+tradelayer/test/test_test_omnicore-version_tests.o: tradelayer/test/version_tests.cpp
+	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(test_test_omnicore_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT tradelayer/test/test_test_omnicore-version_tests.o -MD -MP -MF tradelayer/test/$(DEPDIR)/test_test_omnicore-version_tests.Tpo -c -o tradelayer/test/test_test_omnicore-version_tests.o `test -f 'tradelayer/test/version_tests.cpp' || echo '$(srcdir)/'`tradelayer/test/version_tests.cpp
+	$(AM_V_at)$(am__mv) tradelayer/test/$(DEPDIR)/test_test_omnicore-version_tests.Tpo tradelayer/test/$(DEPDIR)/test_test_omnicore-version_tests.Po
+#	$(AM_V_CXX)source='tradelayer/test/version_tests.cpp' object='tradelayer/test/test_test_omnicore-version_tests.o' libtool=no \
 #	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) \
-#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(test_test_omnicore_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o omnicore/test/test_test_omnicore-version_tests.o `test -f 'omnicore/test/version_tests.cpp' || echo '$(srcdir)/'`omnicore/test/version_tests.cpp
+#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(test_test_omnicore_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o tradelayer/test/test_test_omnicore-version_tests.o `test -f 'tradelayer/test/version_tests.cpp' || echo '$(srcdir)/'`tradelayer/test/version_tests.cpp
 
-omnicore/test/test_test_omnicore-version_tests.obj: omnicore/test/version_tests.cpp
-	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(test_test_omnicore_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT omnicore/test/test_test_omnicore-version_tests.obj -MD -MP -MF omnicore/test/$(DEPDIR)/test_test_omnicore-version_tests.Tpo -c -o omnicore/test/test_test_omnicore-version_tests.obj `if test -f 'omnicore/test/version_tests.cpp'; then $(CYGPATH_W) 'omnicore/test/version_tests.cpp'; else $(CYGPATH_W) '$(srcdir)/omnicore/test/version_tests.cpp'; fi`
-	$(AM_V_at)$(am__mv) omnicore/test/$(DEPDIR)/test_test_omnicore-version_tests.Tpo omnicore/test/$(DEPDIR)/test_test_omnicore-version_tests.Po
-#	$(AM_V_CXX)source='omnicore/test/version_tests.cpp' object='omnicore/test/test_test_omnicore-version_tests.obj' libtool=no \
+tradelayer/test/test_test_omnicore-version_tests.obj: tradelayer/test/version_tests.cpp
+	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(test_test_omnicore_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT tradelayer/test/test_test_omnicore-version_tests.obj -MD -MP -MF tradelayer/test/$(DEPDIR)/test_test_omnicore-version_tests.Tpo -c -o tradelayer/test/test_test_omnicore-version_tests.obj `if test -f 'tradelayer/test/version_tests.cpp'; then $(CYGPATH_W) 'tradelayer/test/version_tests.cpp'; else $(CYGPATH_W) '$(srcdir)/tradelayer/test/version_tests.cpp'; fi`
+	$(AM_V_at)$(am__mv) tradelayer/test/$(DEPDIR)/test_test_omnicore-version_tests.Tpo tradelayer/test/$(DEPDIR)/test_test_omnicore-version_tests.Po
+#	$(AM_V_CXX)source='tradelayer/test/version_tests.cpp' object='tradelayer/test/test_test_omnicore-version_tests.obj' libtool=no \
 #	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) \
-#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(test_test_omnicore_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o omnicore/test/test_test_omnicore-version_tests.obj `if test -f 'omnicore/test/version_tests.cpp'; then $(CYGPATH_W) 'omnicore/test/version_tests.cpp'; else $(CYGPATH_W) '$(srcdir)/omnicore/test/version_tests.cpp'; fi`
+#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(test_test_omnicore_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o tradelayer/test/test_test_omnicore-version_tests.obj `if test -f 'tradelayer/test/version_tests.cpp'; then $(CYGPATH_W) 'tradelayer/test/version_tests.cpp'; else $(CYGPATH_W) '$(srcdir)/tradelayer/test/version_tests.cpp'; fi`
 
 .cpp.o:
 	$(AM_V_CXX)depbase=`echo $@ | sed 's|[^/]*$$|$(DEPDIR)/&|;s|\.o$$||'`;\
@@ -14887,7 +14939,7 @@ check-TESTS:
 	log_list=`echo $$log_list`; trs_list=`echo $$trs_list`; \
 	$(MAKE) $(AM_MAKEFLAGS) $(TEST_SUITE_LOG) TEST_LOGS="$$log_list"; \
 	exit $$?;
-recheck: all 
+recheck: all
 	@test -z "$(TEST_SUITE_LOG)" || rm -f $(TEST_SUITE_LOG)
 	@set +e; $(am__set_TESTS_bases); \
 	bases=`for i in $$bases; do echo $$i; done \
@@ -15042,12 +15094,8 @@ distclean-generic:
 	-rm -f leveldb/util/$(am__dirstamp)
 	-rm -f node/$(DEPDIR)/$(am__dirstamp)
 	-rm -f node/$(am__dirstamp)
-	-rm -f omnicore/$(DEPDIR)/$(am__dirstamp)
-	-rm -f omnicore/$(am__dirstamp)
 	-rm -f omnicore/res/$(DEPDIR)/$(am__dirstamp)
 	-rm -f omnicore/res/$(am__dirstamp)
-	-rm -f omnicore/test/$(DEPDIR)/$(am__dirstamp)
-	-rm -f omnicore/test/$(am__dirstamp)
 	-rm -f policy/$(DEPDIR)/$(am__dirstamp)
 	-rm -f policy/$(am__dirstamp)
 	-rm -f primitives/$(DEPDIR)/$(am__dirstamp)
@@ -15068,6 +15116,10 @@ distclean-generic:
 	-rm -f test/fuzz/$(am__dirstamp)
 	-rm -f test/gen/$(DEPDIR)/$(am__dirstamp)
 	-rm -f test/gen/$(am__dirstamp)
+	-rm -f tradelayer/$(DEPDIR)/$(am__dirstamp)
+	-rm -f tradelayer/$(am__dirstamp)
+	-rm -f tradelayer/test/$(DEPDIR)/$(am__dirstamp)
+	-rm -f tradelayer/test/$(am__dirstamp)
 	-rm -f util/$(DEPDIR)/$(am__dirstamp)
 	-rm -f util/$(am__dirstamp)
 	-rm -f wallet/$(DEPDIR)/$(am__dirstamp)
@@ -15086,7 +15138,7 @@ clean-am: clean-binPROGRAMS clean-generic clean-libLTLIBRARIES \
 	clean-libtool clean-local clean-noinstPROGRAMS mostlyclean-am
 
 distclean: distclean-recursive
-	-rm -rf ./$(DEPDIR) bench/$(DEPDIR) compat/$(DEPDIR) consensus/$(DEPDIR) crypto/$(DEPDIR) index/$(DEPDIR) interfaces/$(DEPDIR) leveldb/db/$(DEPDIR) leveldb/helpers/memenv/$(DEPDIR) leveldb/port/$(DEPDIR) leveldb/table/$(DEPDIR) leveldb/util/$(DEPDIR) node/$(DEPDIR) omnicore/$(DEPDIR) omnicore/test/$(DEPDIR) policy/$(DEPDIR) primitives/$(DEPDIR) qt/$(DEPDIR) qt/test/$(DEPDIR) rpc/$(DEPDIR) script/$(DEPDIR) support/$(DEPDIR) test/$(DEPDIR) test/fuzz/$(DEPDIR) test/gen/$(DEPDIR) util/$(DEPDIR) wallet/$(DEPDIR) wallet/test/$(DEPDIR) zmq/$(DEPDIR)
+	-rm -rf ./$(DEPDIR) bench/$(DEPDIR) compat/$(DEPDIR) consensus/$(DEPDIR) crypto/$(DEPDIR) index/$(DEPDIR) interfaces/$(DEPDIR) leveldb/db/$(DEPDIR) leveldb/helpers/memenv/$(DEPDIR) leveldb/port/$(DEPDIR) leveldb/table/$(DEPDIR) leveldb/util/$(DEPDIR) node/$(DEPDIR) policy/$(DEPDIR) primitives/$(DEPDIR) qt/$(DEPDIR) qt/test/$(DEPDIR) rpc/$(DEPDIR) script/$(DEPDIR) support/$(DEPDIR) test/$(DEPDIR) test/fuzz/$(DEPDIR) test/gen/$(DEPDIR) tradelayer/$(DEPDIR) tradelayer/test/$(DEPDIR) util/$(DEPDIR) wallet/$(DEPDIR) wallet/test/$(DEPDIR) zmq/$(DEPDIR)
 	-rm -f Makefile
 distclean-am: clean-am distclean-compile distclean-generic \
 	distclean-tags
@@ -15132,7 +15184,7 @@ install-ps-am:
 installcheck-am:
 
 maintainer-clean: maintainer-clean-recursive
-	-rm -rf ./$(DEPDIR) bench/$(DEPDIR) compat/$(DEPDIR) consensus/$(DEPDIR) crypto/$(DEPDIR) index/$(DEPDIR) interfaces/$(DEPDIR) leveldb/db/$(DEPDIR) leveldb/helpers/memenv/$(DEPDIR) leveldb/port/$(DEPDIR) leveldb/table/$(DEPDIR) leveldb/util/$(DEPDIR) node/$(DEPDIR) omnicore/$(DEPDIR) omnicore/test/$(DEPDIR) policy/$(DEPDIR) primitives/$(DEPDIR) qt/$(DEPDIR) qt/test/$(DEPDIR) rpc/$(DEPDIR) script/$(DEPDIR) support/$(DEPDIR) test/$(DEPDIR) test/fuzz/$(DEPDIR) test/gen/$(DEPDIR) util/$(DEPDIR) wallet/$(DEPDIR) wallet/test/$(DEPDIR) zmq/$(DEPDIR)
+	-rm -rf ./$(DEPDIR) bench/$(DEPDIR) compat/$(DEPDIR) consensus/$(DEPDIR) crypto/$(DEPDIR) index/$(DEPDIR) interfaces/$(DEPDIR) leveldb/db/$(DEPDIR) leveldb/helpers/memenv/$(DEPDIR) leveldb/port/$(DEPDIR) leveldb/table/$(DEPDIR) leveldb/util/$(DEPDIR) node/$(DEPDIR) policy/$(DEPDIR) primitives/$(DEPDIR) qt/$(DEPDIR) qt/test/$(DEPDIR) rpc/$(DEPDIR) script/$(DEPDIR) support/$(DEPDIR) test/$(DEPDIR) test/fuzz/$(DEPDIR) test/gen/$(DEPDIR) tradelayer/$(DEPDIR) tradelayer/test/$(DEPDIR) util/$(DEPDIR) wallet/$(DEPDIR) wallet/test/$(DEPDIR) zmq/$(DEPDIR)
 	-rm -f Makefile
 maintainer-clean-am: distclean-am maintainer-clean-generic
 
@@ -15338,9 +15390,10 @@ bitcoin_bench_clean : FORCE
 #test_omnicore_qt_clean: FORCE
 #	rm -f $(CLEAN_BITCOIN_QT_TEST) $(qt_test_test_omnicore_qt_OBJECTS)
 
-omnicore/libbitcoin_server_a-version.$(OBJEXT): obj/build.h # build info
+tradelayer/libbitcoin_server_a-version.$(OBJEXT): obj/build.h # build info
 
-# Omni Core
+
+# Trade Layer
 #
 
 # Tell versions [3.59,3.63) of GNU make to not export all variables.

@@ -129,7 +129,7 @@ mkinstalldirs = $(install_sh) -d
 CONFIG_HEADER = $(top_builddir)/src/config/bitcoin-config.h
 CONFIG_CLEAN_FILES = libbitcoinconsensus.pc share/setup.nsi \
 	share/qt/Info.plist test/config.ini \
-	src/omnicore/res/omnicore-setup-win.nsi \
+	src/tradelayer/res/omnicore-setup-win.nsi \
 	contrib/devtools/split-debug.sh doc/Doxyfile
 CONFIG_CLEAN_VPATH_FILES = contrib/filter-lcov.py \
 	test/functional/test_runner.py test/util/bitcoin-util-test.py \
@@ -234,7 +234,7 @@ am__DIST_COMMON = $(srcdir)/Makefile.in \
 	$(top_srcdir)/share/qt/Info.plist.in \
 	$(top_srcdir)/share/setup.nsi.in \
 	$(top_srcdir)/src/config/bitcoin-config.h.in \
-	$(top_srcdir)/src/omnicore/res/omnicore-setup-win.nsi.in \
+	$(top_srcdir)/src/tradelayer/res/omnicore-setup-win.nsi.in \
 	$(top_srcdir)/test/config.ini.in \
 	$(top_srcdir)/test/functional/test_runner.py \
 	$(top_srcdir)/test/util/bitcoin-util-test.py \
@@ -283,14 +283,14 @@ distuninstallcheck_listfiles = find . -type f -print
 am__distuninstallcheck_listfiles = $(distuninstallcheck_listfiles) \
   | sed 's|^\./|$(prefix)/|' | grep -v '$(infodir)/dir$$'
 distcleancheck_listfiles = find . -type f -print
-ACLOCAL = ${SHELL} /home/ale/Escritorio/AWork/btesting/build-aux/missing aclocal-1.15
+ACLOCAL = ${SHELL} /home/ale/Escritorio/AWork/bnome/build-aux/missing aclocal-1.15
 AMTAR = $${TAR-tar}
 AM_DEFAULT_VERBOSITY = 0
 AR = /usr/bin/ar
 ARFLAGS = cr
-AUTOCONF = ${SHELL} /home/ale/Escritorio/AWork/btesting/build-aux/missing autoconf
-AUTOHEADER = ${SHELL} /home/ale/Escritorio/AWork/btesting/build-aux/missing autoheader
-AUTOMAKE = ${SHELL} /home/ale/Escritorio/AWork/btesting/build-aux/missing automake-1.15
+AUTOCONF = ${SHELL} /home/ale/Escritorio/AWork/bnome/build-aux/missing autoconf
+AUTOHEADER = ${SHELL} /home/ale/Escritorio/AWork/bnome/build-aux/missing autoheader
+AUTOMAKE = ${SHELL} /home/ale/Escritorio/AWork/bnome/build-aux/missing automake-1.15
 AVX2_CXXFLAGS = -mavx -mavx2
 AWK = gawk
 BDB_CFLAGS = 
@@ -392,7 +392,7 @@ LTLIBOBJS =
 LT_SYS_LIBRARY_PATH = 
 LUPDATE = 
 MAINT = 
-MAKEINFO = ${SHELL} /home/ale/Escritorio/AWork/btesting/build-aux/missing makeinfo
+MAKEINFO = ${SHELL} /home/ale/Escritorio/AWork/bnome/build-aux/missing makeinfo
 MAKENSIS = 
 MANIFEST_TOOL = :
 MINIUPNPC_CPPFLAGS = 
@@ -507,10 +507,10 @@ X11XCB_LIBS =
 XGETTEXT = /usr/bin/xgettext
 ZMQ_CFLAGS = 
 ZMQ_LIBS = -lzmq
-abs_builddir = /home/ale/Escritorio/AWork/btesting
-abs_srcdir = /home/ale/Escritorio/AWork/btesting
-abs_top_builddir = /home/ale/Escritorio/AWork/btesting
-abs_top_srcdir = /home/ale/Escritorio/AWork/btesting
+abs_builddir = /home/ale/Escritorio/AWork/bnome
+abs_srcdir = /home/ale/Escritorio/AWork/bnome
+abs_top_builddir = /home/ale/Escritorio/AWork/bnome
+abs_top_srcdir = /home/ale/Escritorio/AWork/bnome
 ac_ct_AR = ar
 ac_ct_CC = gcc
 ac_ct_CXX = g++
@@ -542,7 +542,7 @@ host_vendor = pc
 htmldir = ${docdir}
 includedir = ${prefix}/include
 infodir = ${datarootdir}/info
-install_sh = ${SHELL} /home/ale/Escritorio/AWork/btesting/build-aux/install-sh
+install_sh = ${SHELL} /home/ale/Escritorio/AWork/bnome/build-aux/install-sh
 libdir = ${exec_prefix}/lib
 libexecdir = ${exec_prefix}/libexec
 localedir = ${datarootdir}/locale
@@ -741,7 +741,7 @@ share/qt/Info.plist: $(top_builddir)/config.status $(top_srcdir)/share/qt/Info.p
 	cd $(top_builddir) && $(SHELL) ./config.status $@
 test/config.ini: $(top_builddir)/config.status $(top_srcdir)/test/config.ini.in
 	cd $(top_builddir) && $(SHELL) ./config.status $@
-src/omnicore/res/omnicore-setup-win.nsi: $(top_builddir)/config.status $(top_srcdir)/src/omnicore/res/omnicore-setup-win.nsi.in
+src/tradelayer/res/omnicore-setup-win.nsi: $(top_builddir)/config.status $(top_srcdir)/src/tradelayer/res/omnicore-setup-win.nsi.in
 	cd $(top_builddir) && $(SHELL) ./config.status $@
 contrib/devtools/split-debug.sh: $(top_builddir)/config.status $(top_srcdir)/contrib/devtools/split-debug.sh.in
 	cd $(top_builddir) && $(SHELL) ./config.status $@

@@ -308,21 +308,21 @@ public:
                     GuessVerificationProgress(Params().TxData(), block));
             }));
     }
-    std::unique_ptr<Handler> handleOmniStateChanged(OmniStateChangedFn fn) override
+    std::unique_ptr<Handler> handleTLStateChanged(TLStateChangedFn fn) override
     {
-        return MakeHandler(::uiInterface.OmniStateChanged_connect(fn));
+        return MakeHandler(::uiInterface.TLStateChanged_connect(fn));
     }
-    std::unique_ptr<Handler> handleOmniPendingChanged(OmniPendingChangedFn fn) override
+    std::unique_ptr<Handler> handleTLPendingChanged(TLPendingChangedFn fn) override
     {
-        return MakeHandler(::uiInterface.OmniPendingChanged_connect(fn));
+        return MakeHandler(::uiInterface.TLPendingChanged_connect(fn));
     }
-    std::unique_ptr<Handler> handleOmniBalanceChanged(OmniBalanceChangedFn fn) override
+    std::unique_ptr<Handler> handleTLBalanceChanged(TLBalanceChangedFn fn) override
     {
-        return MakeHandler(::uiInterface.OmniBalanceChanged_connect(fn));
+        return MakeHandler(::uiInterface.TLBalanceChanged_connect(fn));
     }
-    std::unique_ptr<Handler> handleOmniStateInvalidated(OmniStateInvalidatedFn fn) override
+    std::unique_ptr<Handler> handleTLStateInvalidated(TLStateInvalidatedFn fn) override
     {
-        return MakeHandler(::uiInterface.OmniStateInvalidated_connect(fn));
+        return MakeHandler(::uiInterface.TLStateInvalidated_connect(fn));
     }
     InitInterfaces m_interfaces;
 };

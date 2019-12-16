@@ -32585,7 +32585,7 @@ OMNICORE_VERSION_BUILD=0
 
 ac_config_files="$ac_config_files Makefile src/Makefile doc/man/Makefile share/setup.nsi share/qt/Info.plist test/config.ini"
 
-ac_config_files="$ac_config_files src/omnicore/res/omnicore-setup-win.nsi"
+ac_config_files="$ac_config_files src/tradelayer/res/omnicore-setup-win.nsi"
 
 ac_config_files="$ac_config_files contrib/devtools/split-debug.sh"
 
@@ -33887,7 +33887,7 @@ do
     "share/setup.nsi") CONFIG_FILES="$CONFIG_FILES share/setup.nsi" ;;
     "share/qt/Info.plist") CONFIG_FILES="$CONFIG_FILES share/qt/Info.plist" ;;
     "test/config.ini") CONFIG_FILES="$CONFIG_FILES test/config.ini" ;;
-    "src/omnicore/res/omnicore-setup-win.nsi") CONFIG_FILES="$CONFIG_FILES src/omnicore/res/omnicore-setup-win.nsi" ;;
+    "src/tradelayer/res/omnicore-setup-win.nsi") CONFIG_FILES="$CONFIG_FILES src/tradelayer/res/omnicore-setup-win.nsi" ;;
     "contrib/devtools/split-debug.sh") CONFIG_FILES="$CONFIG_FILES contrib/devtools/split-debug.sh" ;;
     "doc/Doxyfile") CONFIG_FILES="$CONFIG_FILES doc/Doxyfile" ;;
     "contrib/filter-lcov.py") CONFIG_LINKS="$CONFIG_LINKS contrib/filter-lcov.py:contrib/filter-lcov.py" ;;

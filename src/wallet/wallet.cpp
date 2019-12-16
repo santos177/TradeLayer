@@ -17,7 +17,7 @@
 #include <keystore.h>
 #include <validation.h>
 #include <net.h>
-#include <omnicore/script.h> // OmniGetDustThreshold
+#include <tradelayer/script.h> // OmniGetDustThreshold
 #include <policy/fees.h>
 #include <policy/policy.h>
 #include <policy/rbf.h>

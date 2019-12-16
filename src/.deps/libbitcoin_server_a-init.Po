@@ -1332,7 +1332,7 @@ libbitcoin_server_a-init.o: init.cpp /usr/include/stdc-predef.h \
  /usr/include/boost/detail/atomic_undef_macros.hpp \
  /usr/include/boost/detail/atomic_redef_macros.hpp shutdown.h \
  torcontrol.h ui_interface.h util/moneystr.h warnings.h \
- walletinitinterface.h omnicore/version.h /usr/include/signal.h \
+ walletinitinterface.h tradelayer/version.h /usr/include/signal.h \
  /usr/include/x86_64-linux-gnu/bits/signum.h \
  /usr/include/x86_64-linux-gnu/bits/signum-generic.h \
  /usr/include/x86_64-linux-gnu/bits/types/sig_atomic_t.h \
@@ -4549,7 +4549,7 @@ warnings.h:
 
 walletinitinterface.h:
 
-omnicore/version.h:
+tradelayer/version.h:
 
 /usr/include/signal.h:
 

@@ -957,7 +957,7 @@ libbitcoin_server_a-httprpc.o: httprpc.cpp /usr/include/stdc-predef.h \
  /usr/include/boost/smart_ptr/enable_shared_from_this.hpp \
  /usr/include/boost/smart_ptr/weak_ptr.hpp util/strencodings.h \
  ui_interface.h walletinitinterface.h crypto/hmac_sha256.h \
- omnicore/rpcmbstring.h /usr/include/boost/algorithm/string.hpp \
+ tradelayer/rpcmbstring.h /usr/include/boost/algorithm/string.hpp \
  /usr/include/boost/algorithm/string/std_containers_traits.hpp \
  /usr/include/boost/algorithm/string/std/string_traits.hpp \
  /usr/include/boost/algorithm/string/yes_no_type.hpp \
@@ -3313,7 +3313,7 @@ walletinitinterface.h:
 
 crypto/hmac_sha256.h:
 
-omnicore/rpcmbstring.h:
+tradelayer/rpcmbstring.h:
 
 /usr/include/boost/algorithm/string.hpp:
 

@@ -363,32 +363,32 @@
 /* Define to the sub-directory where libtool stores uninstalled libraries. */
 #define LT_OBJDIR ".libs/"
 
-/* Omni Core build number */
-#define OMNICORE_VERSION_BUILD 0
+/* Trade Layer build number */
+#define TRADELAYER_VERSION_BUILD 0
 
-/* Omni Core major version */
-#define OMNICORE_VERSION_MAJOR 0
+/* Trade Layer major version */
+#define TRADELAYER_VERSION_MAJOR 0
 
-/* Omni Core minor version */
-#define OMNICORE_VERSION_MINOR 7
+/* Trade Layer minor version */
+#define TRADELAYER_VERSION_MINOR 7
 
-/* Omni Core patch version */
-#define OMNICORE_VERSION_PATCH 0
+/* Trade Layer patch version */
+#define TRADELAYER_VERSION_PATCH 0
 
 /* Define to the address where bug reports for this package should be sent. */
 #define PACKAGE_BUGREPORT "https://github.com/OmniLayer/omnicore/issues"
 
 /* Define to the full name of this package. */
-#define PACKAGE_NAME "Omni Core"
+#define PACKAGE_NAME "Trade Layer"
 
 /* Define to the full name and version of this package. */
-#define PACKAGE_STRING "Omni Core 0.7.0"
+#define PACKAGE_STRING "Trade Layer 0.7.0"
 
 /* Define to the one symbol short name of this package. */
-#define PACKAGE_TARNAME "omnicore"
+#define PACKAGE_TARNAME "tradelayer"
 
 /* Define to the home page for this package. */
-#define PACKAGE_URL "http://www.omnilayer.org/"
+#define PACKAGE_URL "http://www.tradelayer.org/"
 
 /* Define to the version of this package. */
 #define PACKAGE_VERSION "0.7.0"

@@ -1034,7 +1034,7 @@ wallet/libbitcoin_wallet_a-wallet.o: wallet/wallet.cpp \
  chainparamsbase.h protocol.h netaddress.h validation.h coins.h \
  compressor.h core_memusage.h memusage.h indirectmap.h crypto/siphash.h \
  versionbits.h net.h addrdb.h addrman.h timedata.h bloom.h limitedmap.h \
- threadinterrupt.h omnicore/script.h policy/policy.h policy/rbf.h \
+ threadinterrupt.h tradelayer/script.h policy/policy.h policy/rbf.h \
  txmempool.h /usr/include/boost/multi_index_container.hpp \
  /usr/include/boost/detail/allocator_utilities.hpp \
  /usr/include/boost/mpl/at.hpp /usr/include/boost/mpl/at_fwd.hpp \
@@ -3763,7 +3763,7 @@ limitedmap.h:
 
 threadinterrupt.h:
 
-omnicore/script.h:
+tradelayer/script.h:
 
 policy/policy.h:
 
