@@ -429,8 +429,8 @@ $config_links
 Configuration commands:
 $config_commands
 
-Report bugs to <https://github.com/OmniLayer/omnicore/issues>.
-Omni Core home page: <http://www.omnilayer.org/>."
+Report bugs to <https://github.com/TradeLayer/tradelayer/issues>.
+Omni Core home page: <http://www.tradelayer.org/>."
 
 ac_cs_config="--disable-shared --with-pic --with-bignum=no --enable-module-recovery --disable-jni"
 ac_cs_version="\
@@ -792,7 +792,7 @@ if test -n "${ZSH_VERSION+set}"; then
 fi
 
 
-    PACKAGE='omnicore'
+    PACKAGE='tradelayer'
     VERSION='0.7.0'
     RM='rm -f'
     ofile='libtool'
@@ -923,10 +923,10 @@ S["NOWARN_CXXFLAGS"]=" -Wno-unused-parameter -Wno-implicit-fallthrough"
 S["WARN_CXXFLAGS"]=" -Wall -Wextra -Wformat -Wvla -Wformat-security -Wredundant-decls"
 S["DEBUG_CPPFLAGS"]=""
 S["RELDFLAGS"]=""
-S["OMNICORE_VERSION_BUILD"]="0"
-S["OMNICORE_VERSION_PATCH"]="0"
-S["OMNICORE_VERSION_MINOR"]="7"
-S["OMNICORE_VERSION_MAJOR"]="0"
+S["TRADELAYER_VERSION_BUILD"]="0"
+S["TRADELAYER_VERSION_PATCH"]="0"
+S["TRADELAYER_VERSION_MINOR"]="7"
+S["TRADELAYER_VERSION_MAJOR"]="0"
 S["BITCOIN_WALLET_TOOL_NAME"]="bitcoin-wallet"
 S["BITCOIN_TX_NAME"]="bitcoin-tx"
 S["BITCOIN_CLI_NAME"]="omnicore-cli"
@@ -1185,7 +1185,7 @@ S["AUTOMAKE"]="${SHELL} /home/ale/Escritorio/AWork/bnome/build-aux/missing autom
 S["AUTOCONF"]="${SHELL} /home/ale/Escritorio/AWork/bnome/build-aux/missing autoconf"
 S["ACLOCAL"]="${SHELL} /home/ale/Escritorio/AWork/bnome/build-aux/missing aclocal-1.15"
 S["VERSION"]="0.7.0"
-S["PACKAGE"]="omnicore"
+S["PACKAGE"]="tradelayer"
 S["CYGPATH_W"]="echo"
 S["am__isrc"]=""
 S["INSTALL_DATA"]="${INSTALL} -m 644"
@@ -1231,11 +1231,11 @@ S["bindir"]="${exec_prefix}/bin"
 S["program_transform_name"]="s,x,x,"
 S["prefix"]="/usr/local"
 S["exec_prefix"]="${prefix}"
-S["PACKAGE_URL"]="http://www.omnilayer.org/"
-S["PACKAGE_BUGREPORT"]="https://github.com/OmniLayer/omnicore/issues"
+S["PACKAGE_URL"]="http://www.tradelayer.org/"
+S["PACKAGE_BUGREPORT"]="https://github.com/TradeLayer/tradelayer/issues"
 S["PACKAGE_STRING"]="Omni Core 0.7.0"
 S["PACKAGE_VERSION"]="0.7.0"
-S["PACKAGE_TARNAME"]="omnicore"
+S["PACKAGE_TARNAME"]="tradelayer"
 S["PACKAGE_NAME"]="Omni Core"
 S["PATH_SEPARATOR"]=":"
 S["SHELL"]="/bin/bash"
@@ -1281,11 +1281,11 @@ if test -n "$CONFIG_HEADERS"; then
 cat >"$ac_tmp/defines.awk" <<\_ACAWK ||
 BEGIN {
 D["PACKAGE_NAME"]=" \"Omni Core\""
-D["PACKAGE_TARNAME"]=" \"omnicore\""
+D["PACKAGE_TARNAME"]=" \"tradelayer\""
 D["PACKAGE_VERSION"]=" \"0.7.0\""
 D["PACKAGE_STRING"]=" \"Omni Core 0.7.0\""
-D["PACKAGE_BUGREPORT"]=" \"https://github.com/OmniLayer/omnicore/issues\""
-D["PACKAGE_URL"]=" \"http://www.omnilayer.org/\""
+D["PACKAGE_BUGREPORT"]=" \"https://github.com/TradeLayer/tradelayer/issues\""
+D["PACKAGE_URL"]=" \"http://www.tradelayer.org/\""
 D["HAVE_CXX11"]=" 1"
 D["STDC_HEADERS"]=" 1"
 D["HAVE_SYS_TYPES_H"]=" 1"
@@ -1373,10 +1373,10 @@ D["COPYRIGHT_YEAR"]=" 2019"
 D["COPYRIGHT_HOLDERS"]=" \"The %s developers\""
 D["COPYRIGHT_HOLDERS_SUBSTITUTION"]=" \"Bitcoin Core and Omni Core\""
 D["COPYRIGHT_HOLDERS_FINAL"]=" \"The Bitcoin Core and Omni Core developers\""
-D["OMNICORE_VERSION_MAJOR"]=" 0"
-D["OMNICORE_VERSION_MINOR"]=" 7"
-D["OMNICORE_VERSION_PATCH"]=" 0"
-D["OMNICORE_VERSION_BUILD"]=" 0"
+D["TRADELAYER_VERSION_MAJOR"]=" 0"
+D["TRADELAYER_VERSION_MINOR"]=" 7"
+D["TRADELAYER_VERSION_PATCH"]=" 0"
+D["TRADELAYER_VERSION_BUILD"]=" 0"
   for (key in D) D_is_set[key] = 1
   FS = ""
 }

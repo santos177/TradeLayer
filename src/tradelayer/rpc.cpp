@@ -159,11 +159,11 @@ bool BalanceToJSON(const std::string& address, uint32_t property, UniValue& bala
 }
 
 // Obtains details of a fee distribution
-static UniValue omni_getfeedistribution(const JSONRPCRequest& request)
+static UniValue tl_getfeedistribution(const JSONRPCRequest& request)
 {
     if (request.fHelp || request.params.size() != 1)
         throw runtime_error(
-            RPCHelpMan{"omni_getfeedistribution",
+            RPCHelpMan{"tl_getfeedistribution",
                "\nGet the details for a fee distribution.\n",
                {
                    {"distributionid", RPCArg::Type::NUM, RPCArg::Optional::NO, "(number, required) the distribution to obtain details for\n"},
@@ -184,8 +184,8 @@ static UniValue omni_getfeedistribution(const JSONRPCRequest& request)
                    "}\n"
                },
                RPCExamples{
-                   HelpExampleCli("omni_getfeedistribution", "1")
-                   + HelpExampleRpc("omni_getfeedistribution", "1")
+                   HelpExampleCli("tl_getfeedistribution", "1")
+                   + HelpExampleRpc("tl_getfeedistribution", "1")
                }
             }.ToString());
 
@@ -228,11 +228,11 @@ static UniValue omni_getfeedistribution(const JSONRPCRequest& request)
 
 // Obtains all fee distributions for a property
 // TODO : Split off code to populate a fee distribution object into a separate function
-static UniValue omni_getfeedistributions(const JSONRPCRequest& request)
+static UniValue tl_getfeedistributions(const JSONRPCRequest& request)
 {
     if (request.fHelp || request.params.size() != 1)
         throw runtime_error(
-            RPCHelpMan{"omni_getfeedistributions",
+            RPCHelpMan{"tl_getfeedistributions",
                "\nGet the details of all fee distributions for a property.\n",
                {
                    {"propertyid", RPCArg::Type::NUM, RPCArg::Optional::NO, "the property id to retrieve distributions for\n"},
@@ -254,8 +254,8 @@ static UniValue omni_getfeedistributions(const JSONRPCRequest& request)
                    "]\n"
                },
                RPCExamples{
-                   HelpExampleCli("omni_getfeedistributions", "1")
-                   + HelpExampleRpc("omni_getfeedistributions", "1")
+                   HelpExampleCli("tl_getfeedistributions", "1")
+                   + HelpExampleRpc("tl_getfeedistributions", "1")
                }
             }.ToString());
 
@@ -306,11 +306,11 @@ static UniValue omni_getfeedistributions(const JSONRPCRequest& request)
 }
 
 // Obtains the trigger value for fee distribution for a/all properties
-static UniValue omni_getfeetrigger(const JSONRPCRequest& request)
+static UniValue tl_getfeetrigger(const JSONRPCRequest& request)
 {
     if (request.fHelp || request.params.size() > 1)
         throw runtime_error(
-            RPCHelpMan{"omni_getfeetrigger",
+            RPCHelpMan{"tl_getfeetrigger",
                "\nReturns the amount of fees required in the cache to trigger distribution.\n",
                {
                    {"propertyid", RPCArg::Type::NUM, RPCArg::Optional::OMITTED, "filter the results on this property id\n"},
@@ -325,8 +325,8 @@ static UniValue omni_getfeetrigger(const JSONRPCRequest& request)
                    "]\n"
                },
                RPCExamples{
-                   HelpExampleCli("omni_getfeetrigger", "3")
-                   + HelpExampleRpc("omni_getfeetrigger", "3")
+                   HelpExampleCli("tl_getfeetrigger", "3")
+                   + HelpExampleRpc("tl_getfeetrigger", "3")
                }
             }.ToString());
 
@@ -359,7 +359,7 @@ static UniValue omni_getfeetrigger(const JSONRPCRequest& request)
 }
 
 // Provides the fee share the wallet (or specific address) will receive from fee distributions
-static UniValue omni_getfeeshare(const JSONRPCRequest& request)
+static UniValue tl_getfeeshare(const JSONRPCRequest& request)
 {
 #ifdef ENABLE_WALLET
     std::shared_ptr<CWallet> const wallet = GetWalletForJSONRPCRequest(request);
@@ -370,7 +370,7 @@ static UniValue omni_getfeeshare(const JSONRPCRequest& request)
 
     if (request.fHelp || request.params.size() > 2)
         throw runtime_error(
-            RPCHelpMan{"omni_getfeeshare",
+            RPCHelpMan{"tl_getfeeshare",
                "\nReturns the percentage share of fees distribution applied to the wallet (default) or address (if supplied).\n",
                {
                    {"address", RPCArg::Type::STR, RPCArg::Optional::OMITTED, "retrieve the fee share for the supplied address\n"},
@@ -386,8 +386,8 @@ static UniValue omni_getfeeshare(const JSONRPCRequest& request)
                    "]\n"
                },
                RPCExamples{
-                   HelpExampleCli("omni_getfeeshare", "\"1EXoDusjGwvnjZUyKkxZ4UHEf77z6A5S4P\" 1")
-                   + HelpExampleRpc("omni_getfeeshare", "\"1EXoDusjGwvnjZUyKkxZ4UHEf77z6A5S4P\", 1")
+                   HelpExampleCli("tl_getfeeshare", "\"1EXoDusjGwvnjZUyKkxZ4UHEf77z6A5S4P\" 1")
+                   + HelpExampleRpc("tl_getfeeshare", "\"1EXoDusjGwvnjZUyKkxZ4UHEf77z6A5S4P\", 1")
                }
             }.ToString());
 
@@ -426,7 +426,7 @@ static UniValue omni_getfeeshare(const JSONRPCRequest& request)
         if (addObj) {
             UniValue feeShareObj(UniValue::VOBJ);
             // NOTE: using float here as this is a display value only which isn't an exact percentage and
-            //       changes block to block (due to dev Omni) so high precision not required(?)
+            //       changes block to block (due to dev TL) so high precision not required(?)
             double feeShare = (double(it->first) / double(COIN)) * (double)100;
             std::string strFeeShare = strprintf("%.4f", feeShare);
             strFeeShare += "%";
@@ -440,11 +440,11 @@ static UniValue omni_getfeeshare(const JSONRPCRequest& request)
 }
 
 // Provides the current values of the fee cache
-static UniValue omni_getfeecache(const JSONRPCRequest& request)
+static UniValue tl_getfeecache(const JSONRPCRequest& request)
 {
     if (request.fHelp || request.params.size() > 1)
         throw runtime_error(
-            RPCHelpMan{"omni_getfeecache",
+            RPCHelpMan{"tl_getfeecache",
                "\nReturns the amount of fees cached for distribution.\n",
                {
                    {"propertyid", RPCArg::Type::NUM, RPCArg::Optional::OMITTED, "filter the results on this property id\n"},
@@ -459,8 +459,8 @@ static UniValue omni_getfeecache(const JSONRPCRequest& request)
                    "]\n"
                },
                RPCExamples{
-                   HelpExampleCli("omni_getfeecache", "31")
-                   + HelpExampleRpc("omni_getfeecache", "31")
+                   HelpExampleCli("tl_getfeecache", "31")
+                   + HelpExampleRpc("tl_getfeecache", "31")
                }
             }.ToString());
 
@@ -497,15 +497,15 @@ static UniValue omni_getfeecache(const JSONRPCRequest& request)
 }
 
 // generate a list of seed blocks based on the data in LevelDB
-static UniValue omni_getseedblocks(const JSONRPCRequest& request)
+static UniValue tl_getseedblocks(const JSONRPCRequest& request)
 {
     if (request.fHelp || request.params.size() != 2)
         throw runtime_error(
-            RPCHelpMan{"omni_getseedblocks",
-               "\nReturns a list of blocks containing Omni transactions for use in seed block filtering.\n",
+            RPCHelpMan{"tl_getseedblocks",
+               "\nReturns a list of blocks containing tl transactions for use in seed block filtering.\n",
                {
-                   {"startblock", RPCArg::Type::NUM, RPCArg::Optional::NO, "the first block to look for Omni transactions (inclusive)\n"},
-                   {"endblock", RPCArg::Type::NUM, RPCArg::Optional::NO, "the last block to look for Omni transactions (inclusive)\n"},
+                   {"startblock", RPCArg::Type::NUM, RPCArg::Optional::NO, "the first block to look for Trade Layer transactions (inclusive)\n"},
+                   {"endblock", RPCArg::Type::NUM, RPCArg::Optional::NO, "the last block to look for Trade Layer transactions (inclusive)\n"},
                },
                RPCResult{
                    "[                     (array of numbers) a list of seed blocks\n"
@@ -514,8 +514,8 @@ static UniValue omni_getseedblocks(const JSONRPCRequest& request)
                    "]\n"
                },
                RPCExamples{
-                   HelpExampleCli("omni_getseedblocks", "290000 300000")
-                   + HelpExampleRpc("omni_getseedblocks", "290000, 300000")
+                   HelpExampleCli("tl_getseedblocks", "290000 300000")
+                   + HelpExampleRpc("tl_getseedblocks", "290000, 300000")
                }
             }.ToString());
 
@@ -539,24 +539,24 @@ static UniValue omni_getseedblocks(const JSONRPCRequest& request)
 }
 
 // obtain the payload for a transaction
-static UniValue omni_getpayload(const JSONRPCRequest& request)
+static UniValue tl_getpayload(const JSONRPCRequest& request)
 {
     if (request.fHelp || request.params.size() != 1)
         throw runtime_error(
-            RPCHelpMan{"omni_getpayload",
-               "\nGet the payload for an Omni transaction.\n",
+            RPCHelpMan{"tl_getpayload",
+               "\nGet the payload for an Trade Layer transaction.\n",
                {
                    {"txid", RPCArg::Type::STR, RPCArg::Optional::NO, "the hash of the transaction to retrieve payload\n"},
                },
                RPCResult{
                    "{\n"
-                   "  \"payload\" : \"payloadmessage\",       (string) the decoded Omni payload message\n"
+                   "  \"payload\" : \"payloadmessage\",       (string) the decoded Trade Layer payload message\n"
                    "  \"payloadsize\" : n                     (number) the size of the payload\n"
                    "}\n"
                },
                RPCExamples{
-                   HelpExampleCli("omni_getpayload", "\"1075db55d416d3ca199f55b6084e2115b9345e16c5cf302fc80e9d5fbf5d48d\"")
-                   + HelpExampleRpc("omni_getpayload", "\"1075db55d416d3ca199f55b6084e2115b9345e16c5cf302fc80e9d5fbf5d48d\"")
+                   HelpExampleCli("tl_getpayload", "\"1075db55d416d3ca199f55b6084e2115b9345e16c5cf302fc80e9d5fbf5d48d\"")
+                   + HelpExampleRpc("tl_getpayload", "\"1075db55d416d3ca199f55b6084e2115b9345e16c5cf302fc80e9d5fbf5d48d\"")
                }
             }.ToString());
 
@@ -598,11 +598,11 @@ static UniValue omni_getpayload(const JSONRPCRequest& request)
 }
 
 // determine whether to automatically commit transactions
-static UniValue omni_setautocommit(const JSONRPCRequest& request)
+static UniValue tl_setautocommit(const JSONRPCRequest& request)
 {
     if (request.fHelp || request.params.size() != 1)
         throw runtime_error(
-            RPCHelpMan{"omni_setautocommit",
+            RPCHelpMan{"tl_setautocommit",
                "\nSets the global flag that determines whether transactions are automatically committed and broadcast.\n",
                {
                    {"flag", RPCArg::Type::BOOL, RPCArg::Optional::NO, "the flag\n"},
@@ -611,8 +611,8 @@ static UniValue omni_setautocommit(const JSONRPCRequest& request)
                    "true|false              (boolean) the updated flag status\n"
                },
                RPCExamples{
-                   HelpExampleCli("omni_setautocommit", "false")
-                   + HelpExampleRpc("omni_setautocommit", "false")
+                   HelpExampleCli("tl_setautocommit", "false")
+                   + HelpExampleRpc("tl_setautocommit", "false")
                }
             }.ToString());
 
@@ -798,11 +798,11 @@ static UniValue mscrpc(const JSONRPCRequest& request)
 }
 
 // display an MP balance via RPC
-static UniValue omni_getbalance(const JSONRPCRequest& request)
+static UniValue tl_getbalance(const JSONRPCRequest& request)
 {
     if (request.fHelp || request.params.size() != 2)
         throw runtime_error(
-            RPCHelpMan{"omni_getbalance",
+            RPCHelpMan{"tl_getbalance",
                "\nReturns the token balance for a given address and property.\n",
                {
                    {"address", RPCArg::Type::STR, RPCArg::Optional::NO, "the address\n"},
@@ -816,8 +816,8 @@ static UniValue omni_getbalance(const JSONRPCRequest& request)
                    "}\n"
                },
                RPCExamples{
-                   HelpExampleCli("omni_getbalance", "\"1EXoDusjGwvnjZUyKkxZ4UHEf77z6A5S4P\" 1")
-                   + HelpExampleRpc("omni_getbalance", "\"1EXoDusjGwvnjZUyKkxZ4UHEf77z6A5S4P\", 1")
+                   HelpExampleCli("tl_getbalance", "\"1EXoDusjGwvnjZUyKkxZ4UHEf77z6A5S4P\" 1")
+                   + HelpExampleRpc("tl_getbalance", "\"1EXoDusjGwvnjZUyKkxZ4UHEf77z6A5S4P\", 1")
                }
             }.ToString());
 
@@ -832,11 +832,11 @@ static UniValue omni_getbalance(const JSONRPCRequest& request)
     return balanceObj;
 }
 
-static UniValue omni_getallbalancesforid(const JSONRPCRequest& request)
+static UniValue tl_getallbalancesforid(const JSONRPCRequest& request)
 {
     if (request.fHelp || request.params.size() != 1)
         throw runtime_error(
-            RPCHelpMan{"omni_getallbalancesforid",
+            RPCHelpMan{"tl_getallbalancesforid",
                "\nReturns a list of token balances for a given currency or property identifier.\n",
                {
                    {"propertyid", RPCArg::Type::NUM, RPCArg::Optional::NO, "the property identifier\n"},
@@ -853,8 +853,8 @@ static UniValue omni_getallbalancesforid(const JSONRPCRequest& request)
                    "]\n"
                },
                RPCExamples{
-                   HelpExampleCli("omni_getallbalancesforid", "1")
-                   + HelpExampleRpc("omni_getallbalancesforid", "1")
+                   HelpExampleCli("tl_getallbalancesforid", "1")
+                   + HelpExampleRpc("tl_getallbalancesforid", "1")
                }
             }.ToString());
 
@@ -893,11 +893,11 @@ static UniValue omni_getallbalancesforid(const JSONRPCRequest& request)
     return response;
 }
 
-static UniValue omni_getallbalancesforaddress(const JSONRPCRequest& request)
+static UniValue tl_getallbalancesforaddress(const JSONRPCRequest& request)
 {
     if (request.fHelp || request.params.size() != 1)
         throw runtime_error(
-            RPCHelpMan{"omni_getallbalancesforaddress",
+            RPCHelpMan{"tl_getallbalancesforaddress",
                "\nReturns a list of all token balances for a given address.\n",
                {
                    {"address", RPCArg::Type::STR, RPCArg::Optional::NO, "the address\n"},
@@ -915,8 +915,8 @@ static UniValue omni_getallbalancesforaddress(const JSONRPCRequest& request)
                    "]\n"
                },
                RPCExamples{
-                   HelpExampleCli("omni_getallbalancesforaddress", "\"1EXoDusjGwvnjZUyKkxZ4UHEf77z6A5S4P\"")
-                   + HelpExampleRpc("omni_getallbalancesforaddress", "\"1EXoDusjGwvnjZUyKkxZ4UHEf77z6A5S4P\"")
+                   HelpExampleCli("tl_getallbalancesforaddress", "\"1EXoDusjGwvnjZUyKkxZ4UHEf77z6A5S4P\"")
+                   + HelpExampleRpc("tl_getallbalancesforaddress", "\"1EXoDusjGwvnjZUyKkxZ4UHEf77z6A5S4P\"")
                }
             }.ToString());
 
@@ -981,7 +981,7 @@ static std::set<std::string> getWalletAddresses(const JSONRPCRequest& request, b
     return result;
 }
 
-static UniValue omni_getwalletbalances(const JSONRPCRequest& request)
+static UniValue tl_getwalletbalances(const JSONRPCRequest& request)
 {
 #ifdef ENABLE_WALLET
     std::shared_ptr<CWallet> const wallet = GetWalletForJSONRPCRequest(request);
@@ -990,7 +990,7 @@ static UniValue omni_getwalletbalances(const JSONRPCRequest& request)
 
     if (request.fHelp || request.params.size() > 1)
         throw runtime_error(
-            RPCHelpMan{"omni_getwalletbalances",
+            RPCHelpMan{"tl_getwalletbalances",
                "\nReturns a list of the total token balances of the whole wallet.\n",
                {
                    {"includewatchonly", RPCArg::Type::BOOL, /* default */ "false", "include balances of watchonly addresses\n"},
@@ -1008,8 +1008,8 @@ static UniValue omni_getwalletbalances(const JSONRPCRequest& request)
                    "]\n"
                },
                RPCExamples{
-                   HelpExampleCli("omni_getwalletbalances", "")
-                   + HelpExampleRpc("omni_getwalletbalances", "")
+                   HelpExampleCli("tl_getwalletbalances", "")
+                   + HelpExampleRpc("tl_getwalletbalances", "")
                }
             }.ToString());
 
@@ -1096,7 +1096,7 @@ static UniValue omni_getwalletbalances(const JSONRPCRequest& request)
     return response;
 }
 
-static UniValue omni_getwalletaddressbalances(const JSONRPCRequest& request)
+static UniValue tl_getwalletaddressbalances(const JSONRPCRequest& request)
 {
 #ifdef ENABLE_WALLET
     std::shared_ptr<CWallet> const wallet = GetWalletForJSONRPCRequest(request);
@@ -1105,7 +1105,7 @@ static UniValue omni_getwalletaddressbalances(const JSONRPCRequest& request)
 
     if (request.fHelp || request.params.size() > 1)
         throw runtime_error(
-            RPCHelpMan{"omni_getwalletaddressbalances",
+            RPCHelpMan{"tl_getwalletaddressbalances",
                "\nReturns a list of all token balances for every wallet address.\n",
                {
                    {"includewatchonly", RPCArg::Type::BOOL, /*default */ "false", "include balances of watchonly addresses\n"},
@@ -1130,8 +1130,8 @@ static UniValue omni_getwalletaddressbalances(const JSONRPCRequest& request)
                    "]\n"
                },
                RPCExamples{
-                   HelpExampleCli("omni_getwalletaddressbalances", "")
-                   + HelpExampleRpc("omni_getwalletaddressbalances", "")
+                   HelpExampleCli("tl_getwalletaddressbalances", "")
+                   + HelpExampleRpc("tl_getwalletaddressbalances", "")
                }
             }.ToString());
 
@@ -1189,11 +1189,11 @@ static UniValue omni_getwalletaddressbalances(const JSONRPCRequest& request)
     return response;
 }
 
-static UniValue omni_getproperty(const JSONRPCRequest& request)
+static UniValue tl_getproperty(const JSONRPCRequest& request)
 {
     if (request.fHelp || request.params.size() != 1)
         throw runtime_error(
-            RPCHelpMan{"omni_getproperty",
+            RPCHelpMan{"tl_getproperty",
                "\nReturns details for about the tokens or smart property to lookup.\n",
                {
                    {"propertyid", RPCArg::Type::NUM, RPCArg::Optional::NO, "the identifier of the tokens or property\n"},
@@ -1215,8 +1215,8 @@ static UniValue omni_getproperty(const JSONRPCRequest& request)
                    "}\n"
                },
                RPCExamples{
-                   HelpExampleCli("omni_getproperty", "3")
-                   + HelpExampleRpc("omni_getproperty", "3")
+                   HelpExampleCli("tl_getproperty", "3")
+                   + HelpExampleRpc("tl_getproperty", "3")
                }
             }.ToString());
 
@@ -1252,11 +1252,11 @@ static UniValue omni_getproperty(const JSONRPCRequest& request)
     return response;
 }
 
-static UniValue omni_listproperties(const JSONRPCRequest& request)
+static UniValue tl_listproperties(const JSONRPCRequest& request)
 {
     if (request.fHelp)
         throw runtime_error(
-            RPCHelpMan{"omni_listproperties",
+            RPCHelpMan{"tl_listproperties",
                "\nLists all tokens or smart properties.\n",
                {},
                RPCResult{
@@ -1274,8 +1274,8 @@ static UniValue omni_listproperties(const JSONRPCRequest& request)
                    "]\n"
                },
                RPCExamples{
-                   HelpExampleCli("omni_listproperties", "")
-                   + HelpExampleRpc("omni_listproperties", "")
+                   HelpExampleCli("tl_listproperties", "")
+                   + HelpExampleRpc("tl_listproperties", "")
                }
             }.ToString());
 
@@ -1310,11 +1310,11 @@ static UniValue omni_listproperties(const JSONRPCRequest& request)
     return response;
 }
 
-static UniValue omni_getcrowdsale(const JSONRPCRequest& request)
+static UniValue tl_getcrowdsale(const JSONRPCRequest& request)
 {
     if (request.fHelp || request.params.size() < 1 || request.params.size() > 2)
         throw runtime_error(
-            RPCHelpMan{"omni_getcrowdsale",
+            RPCHelpMan{"tl_getcrowdsale",
                "\nReturns information about a crowdsale.\n",
                {
                    {"propertyid", RPCArg::Type::NUM, RPCArg::Optional::NO, "the identifier of the crowdsale\n"},
@@ -1352,8 +1352,8 @@ static UniValue omni_getcrowdsale(const JSONRPCRequest& request)
                    "}\n"
                },
                RPCExamples{
-                   HelpExampleCli("omni_getcrowdsale", "3 true")
-                   + HelpExampleRpc("omni_getcrowdsale", "3, true")
+                   HelpExampleCli("tl_getcrowdsale", "3 true")
+                   + HelpExampleRpc("tl_getcrowdsale", "3, true")
                }
             }.ToString());
 
@@ -1470,11 +1470,11 @@ static UniValue omni_getcrowdsale(const JSONRPCRequest& request)
     return response;
 }
 
-static UniValue omni_getactivecrowdsales(const JSONRPCRequest& request)
+static UniValue tl_getactivecrowdsales(const JSONRPCRequest& request)
 {
     if (request.fHelp)
         throw runtime_error(
-            RPCHelpMan{"omni_getactivecrowdsales",
+            RPCHelpMan{"tl_getactivecrowdsales",
                "\nLists currently active crowdsales.\n",
                {},
                RPCResult{
@@ -1494,8 +1494,8 @@ static UniValue omni_getactivecrowdsales(const JSONRPCRequest& request)
                    "]\n"
                },
                RPCExamples{
-                   HelpExampleCli("omni_getactivecrowdsales", "")
-                   + HelpExampleRpc("omni_getactivecrowdsales", "")
+                   HelpExampleCli("tl_getactivecrowdsales", "")
+                   + HelpExampleRpc("tl_getactivecrowdsales", "")
                }
             }.ToString());
 
@@ -1550,11 +1550,11 @@ static UniValue omni_getactivecrowdsales(const JSONRPCRequest& request)
     return response;
 }
 
-static UniValue omni_getgrants(const JSONRPCRequest& request)
+static UniValue tl_getgrants(const JSONRPCRequest& request)
 {
     if (request.fHelp || request.params.size() != 1)
         throw runtime_error(
-            RPCHelpMan{"omni_getgrants",
+            RPCHelpMan{"tl_getgrants",
                "\nReturns information about granted and revoked units of managed tokens.\n",
                {
                    {"propertyid", RPCArg::Type::NUM, RPCArg::Optional::NO, "the identifier of the managed tokens to lookup\n"},
@@ -1580,8 +1580,8 @@ static UniValue omni_getgrants(const JSONRPCRequest& request)
                    "}\n"
                },
                RPCExamples{
-                   HelpExampleCli("omni_getgrants", "31")
-                   + HelpExampleRpc("omni_getgrants", "31")
+                   HelpExampleCli("tl_getgrants", "31")
+                   + HelpExampleRpc("tl_getgrants", "31")
                }
             }.ToString());
 
@@ -1635,11 +1635,11 @@ static UniValue omni_getgrants(const JSONRPCRequest& request)
     return response;
 }
 
-static UniValue omni_getorderbook(const JSONRPCRequest& request)
+static UniValue tl_getorderbook(const JSONRPCRequest& request)
 {
     if (request.fHelp || request.params.size() < 1 || request.params.size() > 2)
         throw runtime_error(
-            RPCHelpMan{"omni_getorderbook",
+            RPCHelpMan{"tl_getorderbook",
                "\nList active offers on the distributed token exchange.\n",
                {
                    {"propertyid", RPCArg::Type::NUM, RPCArg::Optional::NO, "filter orders by property identifier for sale\n"},
@@ -1667,8 +1667,8 @@ static UniValue omni_getorderbook(const JSONRPCRequest& request)
                    "]\n"
                },
                RPCExamples{
-                   HelpExampleCli("omni_getorderbook", "2")
-                   + HelpExampleRpc("omni_getorderbook", "2")
+                   HelpExampleCli("tl_getorderbook", "2")
+                   + HelpExampleRpc("tl_getorderbook", "2")
                }
             }.ToString());
 
@@ -1707,7 +1707,7 @@ static UniValue omni_getorderbook(const JSONRPCRequest& request)
     return response;
 }
 
-static UniValue omni_gettradehistoryforaddress(const JSONRPCRequest& request)
+static UniValue tl_gettradehistoryforaddress(const JSONRPCRequest& request)
 {
 #ifdef ENABLE_WALLET
     std::shared_ptr<CWallet> const wallet = GetWalletForJSONRPCRequest(request);
@@ -1718,7 +1718,7 @@ static UniValue omni_gettradehistoryforaddress(const JSONRPCRequest& request)
 
     if (request.fHelp || request.params.size() < 1 || request.params.size() > 3)
         throw runtime_error(
-            RPCHelpMan{"omni_gettradehistoryforaddress",
+            RPCHelpMan{"tl_gettradehistoryforaddress",
                "\nRetrieves the history of orders on the distributed exchange for the supplied address.\n",
                {
                    {"address", RPCArg::Type::STR, RPCArg::Optional::NO, "address to retrieve history for\n"},
@@ -1764,8 +1764,8 @@ static UniValue omni_gettradehistoryforaddress(const JSONRPCRequest& request)
                    "The documentation only covers the output for a trade, but there are also cancel transactions with different properties.\n"
                },
                RPCExamples{
-                   HelpExampleCli("omni_gettradehistoryforaddress", "\"1MCHESTptvd2LnNp7wmr2sGTpRomteAkq8\"")
-                   + HelpExampleRpc("omni_gettradehistoryforaddress", "\"1MCHESTptvd2LnNp7wmr2sGTpRomteAkq8\"")
+                   HelpExampleCli("tl_gettradehistoryforaddress", "\"1MCHESTptvd2LnNp7wmr2sGTpRomteAkq8\"")
+                   + HelpExampleRpc("tl_gettradehistoryforaddress", "\"1MCHESTptvd2LnNp7wmr2sGTpRomteAkq8\"")
                }
             }.ToString());
 
@@ -1801,11 +1801,11 @@ static UniValue omni_gettradehistoryforaddress(const JSONRPCRequest& request)
     return response;
 }
 
-static UniValue omni_gettradehistoryforpair(const JSONRPCRequest& request)
+static UniValue tl_gettradehistoryforpair(const JSONRPCRequest& request)
 {
     if (request.fHelp || request.params.size() < 2 || request.params.size() > 3)
         throw runtime_error(
-            RPCHelpMan{"omni_gettradehistoryforpair",
+            RPCHelpMan{"tl_gettradehistoryforpair",
                "\nRetrieves the history of trades on the distributed token exchange for the specified market.\n",
                {
                    {"propertyid", RPCArg::Type::NUM, RPCArg::Optional::NO, "the first side of the traded pair\n"},
@@ -1829,8 +1829,8 @@ static UniValue omni_gettradehistoryforpair(const JSONRPCRequest& request)
                    "]\n"
                },
                RPCExamples{
-                   HelpExampleCli("omni_gettradehistoryforpair", "1 12 500")
-                   + HelpExampleRpc("omni_gettradehistoryforpair", "1, 12, 500")
+                   HelpExampleCli("tl_gettradehistoryforpair", "1 12 500")
+                   + HelpExampleRpc("tl_gettradehistoryforpair", "1, 12, 500")
                }
             }.ToString());
 
@@ -1851,11 +1851,11 @@ static UniValue omni_gettradehistoryforpair(const JSONRPCRequest& request)
     return response;
 }
 
-static UniValue omni_getactivedexsells(const JSONRPCRequest& request)
+static UniValue tl_getactivedexsells(const JSONRPCRequest& request)
 {
     if (request.fHelp || request.params.size() > 1)
         throw runtime_error(
-            RPCHelpMan{"omni_getactivedexsells",
+            RPCHelpMan{"tl_getactivedexsells",
                "\nReturns currently active offers on the distributed exchange.\n",
                {
                    {"address", RPCArg::Type::STR, /* default */ "include any", "address filter\n"},
@@ -1887,8 +1887,8 @@ static UniValue omni_getactivedexsells(const JSONRPCRequest& request)
                    "]\n"
                },
                RPCExamples{
-                   HelpExampleCli("omni_getactivedexsells", "")
-                   + HelpExampleRpc("omni_getactivedexsells", "")
+                   HelpExampleCli("tl_getactivedexsells", "")
+                   + HelpExampleRpc("tl_getactivedexsells", "")
                }
             }.ToString());
 
@@ -1977,12 +1977,12 @@ static UniValue omni_getactivedexsells(const JSONRPCRequest& request)
     return response;
 }
 
-static UniValue omni_listblocktransactions(const JSONRPCRequest& request)
+static UniValue tl_listblocktransactions(const JSONRPCRequest& request)
 {
     if (request.fHelp || request.params.size() != 1)
         throw runtime_error(
-            RPCHelpMan{"omni_listblocktransactions",
-               "\nLists all Omni transactions in a block.\n",
+            RPCHelpMan{"tl_listblocktransactions",
+               "\nLists all Trade Layer transactions in a block.\n",
                {
                    {"index", RPCArg::Type::NUM, RPCArg::Optional::NO, "the block height or block index\n"},
                },
@@ -1993,8 +1993,8 @@ static UniValue omni_listblocktransactions(const JSONRPCRequest& request)
                    "]\n"
                },
                RPCExamples{
-                HelpExampleCli("omni_listblocktransactions", "279007")
-                + HelpExampleRpc("omni_listblocktransactions", "279007")
+                HelpExampleCli("tl_listblocktransactions", "279007")
+                + HelpExampleRpc("tl_listblocktransactions", "279007")
                }
             }.ToString());
 
@@ -2031,12 +2031,12 @@ static UniValue omni_listblocktransactions(const JSONRPCRequest& request)
     return response;
 }
 
-static UniValue omni_listblockstransactions(const JSONRPCRequest& request)
+static UniValue tl_listblockstransactions(const JSONRPCRequest& request)
 {
     if (request.fHelp || request.params.size() != 2)
         throw runtime_error(
-            RPCHelpMan{"omni_listblocktransactions",
-               "\nLists all Omni transactions in a given range of blocks.\n",
+            RPCHelpMan{"tl_listblocktransactions",
+               "\nLists all Trade Layer transactions in a given range of blocks.\n",
                {
                    {"firstblock", RPCArg::Type::NUM, RPCArg::Optional::NO, "the index of the first block to consider\n"},
                    {"lastblock", RPCArg::Type::NUM, RPCArg::Optional::NO, "the index of the last block to consider\n"},
@@ -2048,8 +2048,8 @@ static UniValue omni_listblockstransactions(const JSONRPCRequest& request)
                    "]\n"
                },
                RPCExamples{
-                   HelpExampleCli("omni_listblocktransactions", "279007 300000")
-                   + HelpExampleRpc("omni_listblocktransactions", "279007, 300000")
+                   HelpExampleCli("tl_listblocktransactions", "279007 300000")
+                   + HelpExampleRpc("tl_listblocktransactions", "279007, 300000")
                }
             }.ToString());
 
@@ -2071,7 +2071,7 @@ static UniValue omni_listblockstransactions(const JSONRPCRequest& request)
     return response;
 }
 
-static UniValue omni_gettransaction(const JSONRPCRequest& request)
+static UniValue tl_gettransaction(const JSONRPCRequest& request)
 {
 #ifdef ENABLE_WALLET
     std::shared_ptr<CWallet> const wallet = GetWalletForJSONRPCRequest(request);
@@ -2082,8 +2082,8 @@ static UniValue omni_gettransaction(const JSONRPCRequest& request)
 
     if (request.fHelp || request.params.size() != 1)
         throw runtime_error(
-            RPCHelpMan{"omni_gettransaction",
-               "\nGet detailed information about an Omni transaction.\n",
+            RPCHelpMan{"tl_gettransaction",
+               "\nGet detailed information about an Trade Layer transaction.\n",
                {
                    {"txid", RPCArg::Type::STR, RPCArg::Optional::NO, "the hash of the transaction to lookup\n"},
                },
@@ -2105,8 +2105,8 @@ static UniValue omni_gettransaction(const JSONRPCRequest& request)
                    "}\n"
                },
                RPCExamples{
-                   HelpExampleCli("omni_gettransaction", "\"1075db55d416d3ca199f55b6084e2115b9345e16c5cf302fc80e9d5fbf5d48d\"")
-                   + HelpExampleRpc("omni_gettransaction", "\"1075db55d416d3ca199f55b6084e2115b9345e16c5cf302fc80e9d5fbf5d48d\"")
+                   HelpExampleCli("tl_gettransaction", "\"1075db55d416d3ca199f55b6084e2115b9345e16c5cf302fc80e9d5fbf5d48d\"")
+                   + HelpExampleRpc("tl_gettransaction", "\"1075db55d416d3ca199f55b6084e2115b9345e16c5cf302fc80e9d5fbf5d48d\"")
                }
             }.ToString());
 
@@ -2119,7 +2119,7 @@ static UniValue omni_gettransaction(const JSONRPCRequest& request)
     return txobj;
 }
 
-static UniValue omni_listtransactions(const JSONRPCRequest& request)
+static UniValue tl_listtransactions(const JSONRPCRequest& request)
 {
 #ifdef ENABLE_WALLET
     std::shared_ptr<CWallet> const wallet = GetWalletForJSONRPCRequest(request);
@@ -2130,7 +2130,7 @@ static UniValue omni_listtransactions(const JSONRPCRequest& request)
 
     if (request.fHelp || request.params.size() > 5)
         throw runtime_error(
-            RPCHelpMan{"omni_listtransactions",
+            RPCHelpMan{"tl_listtransactions",
                "\nList wallet transactions, optionally filtered by an address and block boundaries.\n",
                {
                    {"address", RPCArg::Type::STR, /* default */ "\"*\"", "address filter\n"},
@@ -2159,8 +2159,8 @@ static UniValue omni_listtransactions(const JSONRPCRequest& request)
                    "]\n"
                },
                RPCExamples{
-                   HelpExampleCli("omni_listtransactions", "")
-                   + HelpExampleRpc("omni_listtransactions", "")
+                   HelpExampleCli("tl_listtransactions", "")
+                   + HelpExampleRpc("tl_listtransactions", "")
                }
             }.ToString());
 
@@ -2182,7 +2182,7 @@ static UniValue omni_listtransactions(const JSONRPCRequest& request)
     if (request.params.size() > 4) nEndBlock = request.params[4].get_int64();
     if (nEndBlock < 0) throw JSONRPCError(RPC_INVALID_PARAMETER, "Negative end block");
 
-    // obtain a sorted list of Omni layer wallet transactions (including STO receipts and pending)
+    // obtain a sorted list of Trade layer wallet transactions (including STO receipts and pending)
     std::map<std::string,uint256> walletTransactions = FetchWalletOmniTransactions(*pWallet, nFrom+nCount, nStartBlock, nEndBlock);
 
     // reverse iterate over (now ordered) transactions and populate RPC objects for each one
@@ -2203,7 +2203,7 @@ static UniValue omni_listtransactions(const JSONRPCRequest& request)
     return response;
 }
 
-static UniValue omni_listpendingtransactions(const JSONRPCRequest& request)
+static UniValue tl_listpendingtransactions(const JSONRPCRequest& request)
 {
 #ifdef ENABLE_WALLET
     std::shared_ptr<CWallet> const wallet = GetWalletForJSONRPCRequest(request);
@@ -2214,8 +2214,8 @@ static UniValue omni_listpendingtransactions(const JSONRPCRequest& request)
 
     if (request.fHelp || request.params.size() > 1)
         throw runtime_error(
-            RPCHelpMan{"omni_listpendingtransactions",
-               "\nReturns a list of unconfirmed Omni transactions, pending in the memory pool.\n"
+            RPCHelpMan{"tl_listpendingtransactions",
+               "\nReturns a list of unconfirmed Trade Layer transactions, pending in the memory pool.\n"
                "\nAn optional filter can be provided to only include transactions which involve the given address.\n"
                "\nNote: the validity of pending transactions is uncertain, and the state of the memory pool may "
                "change at any moment. It is recommended to check transactions after confirmation, and pending "
@@ -2240,8 +2240,8 @@ static UniValue omni_listpendingtransactions(const JSONRPCRequest& request)
                    "]\n"
                },
                RPCExamples{
-                   HelpExampleCli("omni_listpendingtransactions", "")
-                   + HelpExampleRpc("omni_listpendingtransactions", "")
+                   HelpExampleCli("tl_listpendingtransactions", "")
+                   + HelpExampleRpc("tl_listpendingtransactions", "")
                }
             }.ToString());
 
@@ -2268,23 +2268,23 @@ static UniValue omni_listpendingtransactions(const JSONRPCRequest& request)
     return result;
 }
 
-static UniValue omni_getinfo(const JSONRPCRequest& request)
+static UniValue tl_getinfo(const JSONRPCRequest& request)
 {
     if (request.fHelp || request.params.size() != 0)
         throw runtime_error(
-            RPCHelpMan{"omni_getinfo",
+            RPCHelpMan{"tl_getinfo",
                "Returns various state information of the client and protocol.\n",
                {},
                RPCResult{
                    "{\n"
-                   "  \"omnicoreversion_int\" : xxxxxxx,       (number) client version as integer\n"
-                   "  \"omnicoreversion\" : \"x.x.x.x-xxx\",     (string) client version\n"
+                   "  \"tlcoreversion_int\" : xxxxxxx,       (number) client version as integer\n"
+                   "  \"tlcoreversion\" : \"x.x.x.x-xxx\",     (string) client version\n"
                    "  \"mastercoreversion\" : \"x.x.x.x-xxx\",   (string) client version (DEPRECIATED)\n"
                    "  \"bitcoincoreversion\" : \"x.x.x\",        (string) Bitcoin Core version\n"
                    "  \"block\" : nnnnnn,                      (number) index of the last processed block\n"
                    "  \"blocktime\" : nnnnnnnnnn,              (number) timestamp of the last processed block\n"
-                   "  \"blocktransactions\" : nnnn,            (number) Omni transactions found in the last processed block\n"
-                   "  \"totaltransactions\" : nnnnnnnn,        (number) Omni transactions processed in total\n"
+                   "  \"blocktransactions\" : nnnn,            (number) Trade Layer transactions found in the last processed block\n"
+                   "  \"totaltransactions\" : nnnnnnnn,        (number) Trade Layer transactions processed in total\n"
                    "  \"alerts\" : [                           (array of JSON objects) active protocol alert (if any)\n"
                    "    {\n"
                    "      \"alerttypeint\" : n,                    (number) alert type as integer\n"
@@ -2297,16 +2297,16 @@ static UniValue omni_getinfo(const JSONRPCRequest& request)
                    "}\n"
                },
                RPCExamples{
-                   HelpExampleCli("omni_getinfo", "")
-                   + HelpExampleRpc("omni_getinfo", "")
+                   HelpExampleCli("tl_getinfo", "")
+                   + HelpExampleRpc("tl_getinfo", "")
                }
             }.ToString());
 
     UniValue infoResponse(UniValue::VOBJ);
 
     // provide the mastercore and bitcoin version
-    infoResponse.pushKV("omnicoreversion_int", TRADELAYER_VERSION);
-    infoResponse.pushKV("omnicoreversion", TradeLayerVersion());
+    infoResponse.pushKV("tlcoreversion_int", TRADELAYER_VERSION);
+    infoResponse.pushKV("tlcoreversion", TradeLayerVersion());
     infoResponse.pushKV("mastercoreversion", TradeLayerVersion());
     infoResponse.pushKV("bitcoincoreversion", BitcoinCoreVersion());
 
@@ -2355,11 +2355,11 @@ static UniValue omni_getinfo(const JSONRPCRequest& request)
     return infoResponse;
 }
 
-static UniValue omni_getactivations(const JSONRPCRequest& request)
+static UniValue tl_getactivations(const JSONRPCRequest& request)
 {
     if (request.fHelp || request.params.size() != 0)
         throw runtime_error(
-            RPCHelpMan{"omni_getactivations",
+            RPCHelpMan{"tl_getactivations",
                "Returns pending and completed feature activations.\n",
                {},
                RPCResult{
@@ -2385,8 +2385,8 @@ static UniValue omni_getactivations(const JSONRPCRequest& request)
                    "}\n"
                },
                RPCExamples{
-                   HelpExampleCli("omni_getactivations", "")
-                   + HelpExampleRpc("omni_getactivations", "")
+                   HelpExampleCli("tl_getactivations", "")
+                   + HelpExampleRpc("tl_getactivations", "")
                }
             }.ToString());
 
@@ -2422,7 +2422,7 @@ static UniValue omni_getactivations(const JSONRPCRequest& request)
     return response;
 }
 
-static UniValue omni_getsto(const JSONRPCRequest& request)
+static UniValue tl_getsto(const JSONRPCRequest& request)
 {
 #ifdef ENABLE_WALLET
     std::shared_ptr<CWallet> const wallet = GetWalletForJSONRPCRequest(request);
@@ -2433,7 +2433,7 @@ static UniValue omni_getsto(const JSONRPCRequest& request)
 
     if (request.fHelp || request.params.size() < 1 || request.params.size() > 2)
         throw runtime_error(
-            RPCHelpMan{"omni_getsto",
+            RPCHelpMan{"tl_getsto",
                "\nGet information and recipients of a send-to-owners transaction.\n",
                {
                    {"txid", RPCArg::Type::STR, RPCArg::Optional::NO, "the hash of the transaction to lookup\n"},
@@ -2465,8 +2465,8 @@ static UniValue omni_getsto(const JSONRPCRequest& request)
                    "}\n"
                },
                RPCExamples{
-                   HelpExampleCli("omni_getsto", "\"1075db55d416d3ca199f55b6084e2115b9345e16c5cf302fc80e9d5fbf5d48d\" \"*\"")
-                   + HelpExampleRpc("omni_getsto", "\"1075db55d416d3ca199f55b6084e2115b9345e16c5cf302fc80e9d5fbf5d48d\", \"*\"")
+                   HelpExampleCli("tl_getsto", "\"1075db55d416d3ca199f55b6084e2115b9345e16c5cf302fc80e9d5fbf5d48d\" \"*\"")
+                   + HelpExampleRpc("tl_getsto", "\"1075db55d416d3ca199f55b6084e2115b9345e16c5cf302fc80e9d5fbf5d48d\", \"*\"")
                }
             }.ToString());
 
@@ -2481,7 +2481,7 @@ static UniValue omni_getsto(const JSONRPCRequest& request)
     return txobj;
 }
 
-static UniValue omni_gettrade(const JSONRPCRequest& request)
+static UniValue tl_gettrade(const JSONRPCRequest& request)
 {
 #ifdef ENABLE_WALLET
     std::shared_ptr<CWallet> const wallet = GetWalletForJSONRPCRequest(request);
@@ -2492,7 +2492,7 @@ static UniValue omni_gettrade(const JSONRPCRequest& request)
 
     if (request.fHelp || request.params.size() != 1)
         throw runtime_error(
-            RPCHelpMan{"omni_gettrade",
+            RPCHelpMan{"tl_gettrade",
                "\nGet detailed information and trade matches for orders on the distributed token exchange.\n",
                {
                    {"txid", RPCArg::Type::STR, RPCArg::Optional::NO, "the hash of the order to lookup\n"},
@@ -2533,8 +2533,8 @@ static UniValue omni_gettrade(const JSONRPCRequest& request)
                    "The documentation only covers the output for a trade, but there are also cancel transactions with different properties.\n"
                },
                RPCExamples{
-                   HelpExampleCli("omni_gettrade", "\"1075db55d416d3ca199f55b6084e2115b9345e16c5cf302fc80e9d5fbf5d48d\"")
-                   + HelpExampleRpc("omni_gettrade", "\"1075db55d416d3ca199f55b6084e2115b9345e16c5cf302fc80e9d5fbf5d48d\"")
+                   HelpExampleCli("tl_gettrade", "\"1075db55d416d3ca199f55b6084e2115b9345e16c5cf302fc80e9d5fbf5d48d\"")
+                   + HelpExampleRpc("tl_gettrade", "\"1075db55d416d3ca199f55b6084e2115b9345e16c5cf302fc80e9d5fbf5d48d\"")
                }
             }.ToString());
 
@@ -2547,11 +2547,11 @@ static UniValue omni_gettrade(const JSONRPCRequest& request)
     return txobj;
 }
 
-static UniValue omni_getcurrentconsensushash(const JSONRPCRequest& request)
+static UniValue tl_getcurrentconsensushash(const JSONRPCRequest& request)
 {
     if (request.fHelp || request.params.size() != 0)
         throw runtime_error(
-            RPCHelpMan{"omni_getcurrentconsensushash",
+            RPCHelpMan{"tl_getcurrentconsensushash",
                "\nReturns the consensus hash for all balances for the current block.\n",
                {},
                RPCResult{
@@ -2562,8 +2562,8 @@ static UniValue omni_getcurrentconsensushash(const JSONRPCRequest& request)
                    "}\n"
                },
                RPCExamples{
-                   HelpExampleCli("omni_getcurrentconsensushash", "")
-                   + HelpExampleRpc("omni_getcurrentconsensushash", "")
+                   HelpExampleCli("tl_getcurrentconsensushash", "")
+                   + HelpExampleRpc("tl_getcurrentconsensushash", "")
                }
             }.ToString());
 
@@ -2584,11 +2584,11 @@ static UniValue omni_getcurrentconsensushash(const JSONRPCRequest& request)
     return response;
 }
 
-static UniValue omni_getmetadexhash(const JSONRPCRequest& request)
+static UniValue tl_getmetadexhash(const JSONRPCRequest& request)
 {
     if (request.fHelp || request.params.size() > 1)
         throw runtime_error(
-            RPCHelpMan{"omni_getmetadexhash",
+            RPCHelpMan{"tl_getmetadexhash",
                "\nReturns a hash of the current state of the MetaDEx (default) or orderbook.\n",
                {
                    {"propertyid", RPCArg::Type::NUM, RPCArg::Optional::OMITTED, "hash orderbook (only trades selling propertyid)\n"},
@@ -2602,8 +2602,8 @@ static UniValue omni_getmetadexhash(const JSONRPCRequest& request)
                    "}\n"
                },
                RPCExamples{
-                   HelpExampleCli("omni_getmetadexhash", "3")
-                   + HelpExampleRpc("omni_getmetadexhash", "3")
+                   HelpExampleCli("tl_getmetadexhash", "3")
+                   + HelpExampleRpc("tl_getmetadexhash", "3")
                }
             }.ToString());
 
@@ -2630,12 +2630,12 @@ static UniValue omni_getmetadexhash(const JSONRPCRequest& request)
     return response;
 }
 
-static UniValue omni_getbalanceshash(const JSONRPCRequest& request)
+static UniValue tl_getbalanceshash(const JSONRPCRequest& request)
 {
     if (request.fHelp || request.params.size() != 1)
         throw runtime_error(
-            RPCHelpMan{"omni_getbalanceshash",
-               "omni_getbalanceshash propertyid\n",
+            RPCHelpMan{"tl_getbalanceshash",
+               "tl_getbalanceshash propertyid\n",
                {
                    {"propertyid", RPCArg::Type::NUM, RPCArg::Optional::NO, "the property to hash balances for\n"},
                },
@@ -2648,8 +2648,8 @@ static UniValue omni_getbalanceshash(const JSONRPCRequest& request)
                    "}\n"
                },
                RPCExamples{
-                   HelpExampleCli("omni_getbalanceshash", "31")
-                   + HelpExampleRpc("omni_getbalanceshash", "31")
+                   HelpExampleCli("tl_getbalanceshash", "31")
+                   + HelpExampleRpc("tl_getbalanceshash", "31")
                }
             }.ToString());
 
@@ -2676,62 +2676,62 @@ static UniValue omni_getbalanceshash(const JSONRPCRequest& request)
 static const CRPCCommand commands[] =
 { //  category                             name                            actor (function)               argNames
   //  ------------------------------------ ------------------------------- ------------------------------ ----------
-    { "omni layer (data retrieval)", "omni_getinfo",                   &omni_getinfo,                    {} },
-    { "omni layer (data retrieval)", "omni_getactivations",            &omni_getactivations,             {} },
-    { "omni layer (data retrieval)", "omni_getallbalancesforid",       &omni_getallbalancesforid,        {"propertyid"} },
-    { "omni layer (data retrieval)", "omni_getbalance",                &omni_getbalance,                 {"address", "propertyid"} },
-    { "omni layer (data retrieval)", "omni_gettransaction",            &omni_gettransaction,             {"txid"} },
-    { "omni layer (data retrieval)", "omni_getproperty",               &omni_getproperty,                {"propertyid"} },
-    { "omni layer (data retrieval)", "omni_listproperties",            &omni_listproperties,             {} },
-    { "omni layer (data retrieval)", "omni_getcrowdsale",              &omni_getcrowdsale,               {"propertyid", "verbose"} },
-    { "omni layer (data retrieval)", "omni_getgrants",                 &omni_getgrants,                  {"propertyid"} },
-    { "omni layer (data retrieval)", "omni_getactivedexsells",         &omni_getactivedexsells,          {"address"} },
-    { "omni layer (data retrieval)", "omni_getactivecrowdsales",       &omni_getactivecrowdsales,        {} },
-    { "omni layer (data retrieval)", "omni_getorderbook",              &omni_getorderbook,               {"propertyid", "propertyid"} },
-    { "omni layer (data retrieval)", "omni_gettrade",                  &omni_gettrade,                   {"txid"} },
-    { "omni layer (data retrieval)", "omni_getsto",                    &omni_getsto,                     {"txid", "recipientfilter"} },
-    { "omni layer (data retrieval)", "omni_listblocktransactions",     &omni_listblocktransactions,      {"index"} },
-    { "omni layer (data retrieval)", "omni_listblockstransactions",    &omni_listblockstransactions,     {"firstblock", "lastblock"} },
-    { "omni layer (data retrieval)", "omni_listpendingtransactions",   &omni_listpendingtransactions,    {"address"} },
-    { "omni layer (data retrieval)", "omni_getallbalancesforaddress",  &omni_getallbalancesforaddress,   {"address"} },
-    { "omni layer (data retrieval)", "omni_gettradehistoryforaddress", &omni_gettradehistoryforaddress,  {"address", "count", "propertyid"} },
-    { "omni layer (data retrieval)", "omni_gettradehistoryforpair",    &omni_gettradehistoryforpair,     {"propertyid", "propertyidsecond", "count"} },
-    { "omni layer (data retrieval)", "omni_getcurrentconsensushash",   &omni_getcurrentconsensushash,    {} },
-    { "omni layer (data retrieval)", "omni_getpayload",                &omni_getpayload,                 {"txid"} },
-    { "omni layer (data retrieval)", "omni_getseedblocks",             &omni_getseedblocks,              {"startblock", "endblock"} },
-    { "omni layer (data retrieval)", "omni_getmetadexhash",            &omni_getmetadexhash,             {"propertyid"} },
-    { "omni layer (data retrieval)", "omni_getfeecache",               &omni_getfeecache,                {"propertyid"} },
-    { "omni layer (data retrieval)", "omni_getfeetrigger",             &omni_getfeetrigger,              {"propertyid"} },
-    { "omni layer (data retrieval)", "omni_getfeedistribution",        &omni_getfeedistribution,         {"distributionid"} },
-    { "omni layer (data retrieval)", "omni_getfeedistributions",       &omni_getfeedistributions,        {"propertyid"} },
-    { "omni layer (data retrieval)", "omni_getbalanceshash",           &omni_getbalanceshash,            {"propertyid"} },
+    { "trade layer (data retrieval)", "tl_getinfo",                   &tl_getinfo,                    {} },
+    { "trade layer (data retrieval)", "tl_getactivations",            &tl_getactivations,             {} },
+    { "trade layer (data retrieval)", "tl_getallbalancesforid",       &tl_getallbalancesforid,        {"propertyid"} },
+    { "trade layer (data retrieval)", "tl_getbalance",                &tl_getbalance,                 {"address", "propertyid"} },
+    { "trade layer (data retrieval)", "tl_gettransaction",            &tl_gettransaction,             {"txid"} },
+    { "trade layer (data retrieval)", "tl_getproperty",               &tl_getproperty,                {"propertyid"} },
+    { "trade layer (data retrieval)", "tl_listproperties",            &tl_listproperties,             {} },
+    { "trade layer (data retrieval)", "tl_getcrowdsale",              &tl_getcrowdsale,               {"propertyid", "verbose"} },
+    { "trade layer (data retrieval)", "tl_getgrants",                 &tl_getgrants,                  {"propertyid"} },
+    { "trade layer (data retrieval)", "tl_getactivedexsells",         &tl_getactivedexsells,          {"address"} },
+    { "trade layer (data retrieval)", "tl_getactivecrowdsales",       &tl_getactivecrowdsales,        {} },
+    { "trade layer (data retrieval)", "tl_getorderbook",              &tl_getorderbook,               {"propertyid", "propertyid"} },
+    { "trade layer (data retrieval)", "tl_gettrade",                  &tl_gettrade,                   {"txid"} },
+    { "trade layer (data retrieval)", "tl_getsto",                    &tl_getsto,                     {"txid", "recipientfilter"} },
+    { "trade layer (data retrieval)", "tl_listblocktransactions",     &tl_listblocktransactions,      {"index"} },
+    { "trade layer (data retrieval)", "tl_listblockstransactions",    &tl_listblockstransactions,     {"firstblock", "lastblock"} },
+    { "trade layer (data retrieval)", "tl_listpendingtransactions",   &tl_listpendingtransactions,    {"address"} },
+    { "trade layer (data retrieval)", "tl_getallbalancesforaddress",  &tl_getallbalancesforaddress,   {"address"} },
+    { "trade layer (data retrieval)", "tl_gettradehistoryforaddress", &tl_gettradehistoryforaddress,  {"address", "count", "propertyid"} },
+    { "trade layer (data retrieval)", "tl_gettradehistoryforpair",    &tl_gettradehistoryforpair,     {"propertyid", "propertyidsecond", "count"} },
+    { "trade layer (data retrieval)", "tl_getcurrentconsensushash",   &tl_getcurrentconsensushash,    {} },
+    { "trade layer (data retrieval)", "tl_getpayload",                &tl_getpayload,                 {"txid"} },
+    { "trade layer (data retrieval)", "tl_getseedblocks",             &tl_getseedblocks,              {"startblock", "endblock"} },
+    { "trade layer (data retrieval)", "tl_getmetadexhash",            &tl_getmetadexhash,             {"propertyid"} },
+    { "trade layer (data retrieval)", "tl_getfeecache",               &tl_getfeecache,                {"propertyid"} },
+    { "trade layer (data retrieval)", "tl_getfeetrigger",             &tl_getfeetrigger,              {"propertyid"} },
+    { "trade layer (data retrieval)", "tl_getfeedistribution",        &tl_getfeedistribution,         {"distributionid"} },
+    { "trade layer (data retrieval)", "tl_getfeedistributions",       &tl_getfeedistributions,        {"propertyid"} },
+    { "trade layer (data retrieval)", "tl_getbalanceshash",           &tl_getbalanceshash,            {"propertyid"} },
 #ifdef ENABLE_WALLET
-    { "omni layer (data retrieval)", "omni_listtransactions",          &omni_listtransactions,           {"address", "count", "skip", "startblock", "endblock"} },
-    { "omni layer (data retrieval)", "omni_getfeeshare",               &omni_getfeeshare,                {"address", "ecosystem"} },
-    { "omni layer (configuration)",  "omni_setautocommit",             &omni_setautocommit,              {"flag"}  },
-    { "omni layer (data retrieval)", "omni_getwalletbalances",         &omni_getwalletbalances,          {"includewatchonly"} },
-    { "omni layer (data retrieval)", "omni_getwalletaddressbalances",  &omni_getwalletaddressbalances,   {"includewatchonly"} },
+    { "trade layer (data retrieval)", "tl_listtransactions",          &tl_listtransactions,           {"address", "count", "skip", "startblock", "endblock"} },
+    { "trade layer (data retrieval)", "tl_getfeeshare",               &tl_getfeeshare,                {"address", "ecosystem"} },
+    { "trade layer (configuration)",  "tl_setautocommit",             &tl_setautocommit,              {"flag"}  },
+    { "trade layer (data retrieval)", "tl_getwalletbalances",         &tl_getwalletbalances,          {"includewatchonly"} },
+    { "trade layer (data retrieval)", "tl_getwalletaddressbalances",  &tl_getwalletaddressbalances,   {"includewatchonly"} },
 #endif
     { "hidden",                      "mscrpc",                         &mscrpc,                          {"extra", "extra2", "extra3"}  },
 
     /* depreciated: */
-    { "hidden",                      "getinfo_MP",                     &omni_getinfo,                    {}  },
-    { "hidden",                      "getbalance_MP",                  &omni_getbalance,                 {"address", "propertyid"} },
-    { "hidden",                      "getallbalancesforaddress_MP",    &omni_getallbalancesforaddress,   {"address"} },
-    { "hidden",                      "getallbalancesforid_MP",         &omni_getallbalancesforid,        {"propertyid"} },
-    { "hidden",                      "getproperty_MP",                 &omni_getproperty,                {"propertyid"} },
-    { "hidden",                      "listproperties_MP",              &omni_listproperties,             {} },
-    { "hidden",                      "getcrowdsale_MP",                &omni_getcrowdsale,               {"propertyid", "verbose"} },
-    { "hidden",                      "getgrants_MP",                   &omni_getgrants,                  {"propertyid"} },
-    { "hidden",                      "getactivedexsells_MP",           &omni_getactivedexsells,          {"address"} },
-    { "hidden",                      "getactivecrowdsales_MP",         &omni_getactivecrowdsales,        {} },
-    { "hidden",                      "getsto_MP",                      &omni_getsto,                     {"txid", "recipientfilter"} },
-    { "hidden",                      "getorderbook_MP",                &omni_getorderbook,               {"propertyid", "propertyiddesired"} },
-    { "hidden",                      "gettrade_MP",                    &omni_gettrade,                   {"txid"} },
-    { "hidden",                      "gettransaction_MP",              &omni_gettransaction,             {"txid"} },
-    { "hidden",                      "listblocktransactions_MP",       &omni_listblocktransactions,      {"index"} },
+    { "hidden",                      "getinfo_MP",                     &tl_getinfo,                    {}  },
+    { "hidden",                      "getbalance_MP",                  &tl_getbalance,                 {"address", "propertyid"} },
+    { "hidden",                      "getallbalancesforaddress_MP",    &tl_getallbalancesforaddress,   {"address"} },
+    { "hidden",                      "getallbalancesforid_MP",         &tl_getallbalancesforid,        {"propertyid"} },
+    { "hidden",                      "getproperty_MP",                 &tl_getproperty,                {"propertyid"} },
+    { "hidden",                      "listproperties_MP",              &tl_listproperties,             {} },
+    { "hidden",                      "getcrowdsale_MP",                &tl_getcrowdsale,               {"propertyid", "verbose"} },
+    { "hidden",                      "getgrants_MP",                   &tl_getgrants,                  {"propertyid"} },
+    { "hidden",                      "getactivedexsells_MP",           &tl_getactivedexsells,          {"address"} },
+    { "hidden",                      "getactivecrowdsales_MP",         &tl_getactivecrowdsales,        {} },
+    { "hidden",                      "getsto_MP",                      &tl_getsto,                     {"txid", "recipientfilter"} },
+    { "hidden",                      "getorderbook_MP",                &tl_getorderbook,               {"propertyid", "propertyiddesired"} },
+    { "hidden",                      "gettrade_MP",                    &tl_gettrade,                   {"txid"} },
+    { "hidden",                      "gettransaction_MP",              &tl_gettransaction,             {"txid"} },
+    { "hidden",                      "listblocktransactions_MP",       &tl_listblocktransactions,      {"index"} },
 #ifdef ENABLE_WALLET
-    { "hidden",                      "listtransactions_MP",            &omni_listtransactions,           {"address", "count", "skip", "startblock", "endblock"} },
+    { "hidden",                      "listtransactions_MP",            &tl_listtransactions,           {"address", "count", "skip", "startblock", "endblock"} },
 #endif
 };
 

@@ -6,7 +6,7 @@ SetCompressor /SOLID lzma
 # General Symbol Definitions
 !define REGKEY "SOFTWARE\$(^Name)"
 !define COMPANY "Omni Core project"
-!define URL http://www.omnilayer.org/
+!define URL http://www.tradelayer.org/
 
 # MUI Symbol Definitions
 !define MUI_ICON "/home/ale/Escritorio/AWork/bnome/share/pixmaps/bitcoin.ico"
@@ -48,7 +48,7 @@ Var StartMenuGroup
 !insertmacro MUI_LANGUAGE English
 
 # Installer attributes
-OutFile /home/ale/Escritorio/AWork/bnome/omnicore-0.7.0-win-setup.exe
+OutFile /home/ale/Escritorio/AWork/bnome/tradelayer-0.7.0-win-setup.exe
 !if "" == "64"
 InstallDir $PROGRAMFILES64\Bitcoin
 !else
@@ -105,10 +105,10 @@ Section -post SEC0001
     WriteRegStr HKCU "SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\$(^Name)" UninstallString $INSTDIR\uninstall.exe
     WriteRegDWORD HKCU "SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\$(^Name)" NoModify 1
     WriteRegDWORD HKCU "SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\$(^Name)" NoRepair 1
-    WriteRegStr HKCR "omnicore" "URL Protocol" ""
-    WriteRegStr HKCR "omnicore" "" "URL:Bitcoin"
-    WriteRegStr HKCR "omnicore\DefaultIcon" "" $INSTDIR\omnicore-qt
-    WriteRegStr HKCR "omnicore\shell\open\command" "" '"$INSTDIR\omnicore-qt" "%1"'
+    WriteRegStr HKCR "tradelayer" "URL Protocol" ""
+    WriteRegStr HKCR "tradelayer" "" "URL:Bitcoin"
+    WriteRegStr HKCR "tradelayer\DefaultIcon" "" $INSTDIR\omnicore-qt
+    WriteRegStr HKCR "tradelayer\shell\open\command" "" '"$INSTDIR\omnicore-qt" "%1"'
 SectionEnd
 
 # Macro for selecting uninstaller sections
@@ -147,7 +147,7 @@ Section -un.post UNSEC0001
     DeleteRegValue HKCU "${REGKEY}" Path
     DeleteRegKey /IfEmpty HKCU "${REGKEY}\Components"
     DeleteRegKey /IfEmpty HKCU "${REGKEY}"
-    DeleteRegKey HKCR "omnicore"
+    DeleteRegKey HKCR "tradelayer"
     RmDir /REBOOTOK $SMPROGRAMS\$StartMenuGroup
     RmDir /REBOOTOK $INSTDIR
     Push $R0

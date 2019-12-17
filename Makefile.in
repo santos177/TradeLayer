@@ -238,8 +238,8 @@ am__DIST_COMMON = $(srcdir)/Makefile.in \
 	$(top_srcdir)/test/config.ini.in \
 	$(top_srcdir)/test/functional/test_runner.py \
 	$(top_srcdir)/test/util/bitcoin-util-test.py \
-	$(top_srcdir)/test/util/rpcauth-test.py COPYING \
-	build-aux/compile build-aux/config.guess build-aux/config.sub \
+	$(top_srcdir)/test/util/rpcauth-test.py build-aux/compile \
+	build-aux/config.guess build-aux/config.sub \
 	build-aux/install-sh build-aux/ltmain.sh build-aux/missing
 DISTFILES = $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST)
 distdir = $(PACKAGE)-$(VERSION)
@@ -409,10 +409,6 @@ OBJCXXDEPMODE = @OBJCXXDEPMODE@
 OBJCXXFLAGS = @OBJCXXFLAGS@
 OBJDUMP = @OBJDUMP@
 OBJEXT = @OBJEXT@
-OMNICORE_VERSION_BUILD = @OMNICORE_VERSION_BUILD@
-OMNICORE_VERSION_MAJOR = @OMNICORE_VERSION_MAJOR@
-OMNICORE_VERSION_MINOR = @OMNICORE_VERSION_MINOR@
-OMNICORE_VERSION_PATCH = @OMNICORE_VERSION_PATCH@
 OTOOL = @OTOOL@
 OTOOL64 = @OTOOL64@
 PACKAGE = @PACKAGE@
@@ -493,6 +489,10 @@ SSL_LIBS = @SSL_LIBS@
 STRIP = @STRIP@
 TESTDEFS = @TESTDEFS@
 TIFFCP = @TIFFCP@
+TRADELAYER_VERSION_BUILD = @TRADELAYER_VERSION_BUILD@
+TRADELAYER_VERSION_MAJOR = @TRADELAYER_VERSION_MAJOR@
+TRADELAYER_VERSION_MINOR = @TRADELAYER_VERSION_MINOR@
+TRADELAYER_VERSION_PATCH = @TRADELAYER_VERSION_PATCH@
 UIC = @UIC@
 UNIVALUE_CFLAGS = @UNIVALUE_CFLAGS@
 UNIVALUE_LIBS = @UNIVALUE_LIBS@

@@ -39,7 +39,7 @@ using namespace mastercore;
 
 extern volatile int64_t LTCPriceOffer;
 
-static UniValue omni_funded_send(const JSONRPCRequest& request)
+static UniValue tl_funded_send(const JSONRPCRequest& request)
 {
 #ifdef ENABLE_WALLET
     std::shared_ptr<CWallet> const wallet = GetWalletForJSONRPCRequest(request);
@@ -49,7 +49,7 @@ static UniValue omni_funded_send(const JSONRPCRequest& request)
 #endif
     if (request.fHelp || request.params.size() != 5)
         throw runtime_error(
-            RPCHelpMan{"omni_funded_send",
+            RPCHelpMan{"tl_funded_send",
                "\nCreates and sends a funded simple send transaction.\n"
                "\nAll bitcoins from the sender are consumed and if there are bitcoins missing, they are taken from the specified fee source. Change is sent to the fee source!\n",
                {
@@ -63,8 +63,8 @@ static UniValue omni_funded_send(const JSONRPCRequest& request)
                    "\"hash\"                  (string) the hex-encoded transaction hash\n"
                },
                RPCExamples{
-                   HelpExampleCli("omni_funded_send", "\"1DFa5bT6KMEr6ta29QJouainsjaNBsJQhH\" \"15cWrfuvMxyxGst2FisrQcvcpF48x6sXoH\" 1 \"100.0\" \"15Jhzz4omEXEyFKbdcccJwuVPea5LqsKM1\"")
-                   + HelpExampleRpc("omni_funded_send", "\"1DFa5bT6KMEr6ta29QJouainsjaNBsJQhH\", \"15cWrfuvMxyxGst2FisrQcvcpF48x6sXoH\", 1, \"100.0\", \"15Jhzz4omEXEyFKbdcccJwuVPea5LqsKM1\"")
+                   HelpExampleCli("tl_funded_send", "\"1DFa5bT6KMEr6ta29QJouainsjaNBsJQhH\" \"15cWrfuvMxyxGst2FisrQcvcpF48x6sXoH\" 1 \"100.0\" \"15Jhzz4omEXEyFKbdcccJwuVPea5LqsKM1\"")
+                   + HelpExampleRpc("tl_funded_send", "\"1DFa5bT6KMEr6ta29QJouainsjaNBsJQhH\", \"15cWrfuvMxyxGst2FisrQcvcpF48x6sXoH\", 1, \"100.0\", \"15Jhzz4omEXEyFKbdcccJwuVPea5LqsKM1\"")
                }
             }.ToString());
 
@@ -92,7 +92,7 @@ static UniValue omni_funded_send(const JSONRPCRequest& request)
     return retTxid.ToString();
 }
 
-static UniValue omni_funded_sendall(const JSONRPCRequest& request)
+static UniValue tl_funded_sendall(const JSONRPCRequest& request)
 {
 #ifdef ENABLE_WALLET
     std::shared_ptr<CWallet> const wallet = GetWalletForJSONRPCRequest(request);
@@ -103,7 +103,7 @@ static UniValue omni_funded_sendall(const JSONRPCRequest& request)
 
     if (request.fHelp || request.params.size() != 4)
         throw runtime_error(
-            RPCHelpMan{"omni_funded_sendall",
+            RPCHelpMan{"tl_funded_sendall",
                "\nCreates and sends a transaction that transfers all available tokens in the given ecosystem to the recipient.\n"
                "\nAll bitcoins from the sender are consumed and if there are bitcoins missing, they are taken from the specified fee source. Change is sent to the fee source!\n",
                {
@@ -116,8 +116,8 @@ static UniValue omni_funded_sendall(const JSONRPCRequest& request)
                    "\"hash\"                  (string) the hex-encoded transaction hash\n"
                },
                RPCExamples{
-                   HelpExampleCli("omni_funded_sendall", "\"1DFa5bT6KMEr6ta29QJouainsjaNBsJQhH\" \"15cWrfuvMxyxGst2FisrQcvcpF48x6sXoH\" 1 \"15Jhzz4omEXEyFKbdcccJwuVPea5LqsKM1\"")
-                   + HelpExampleRpc("omni_funded_sendall", "\"1DFa5bT6KMEr6ta29QJouainsjaNBsJQhH\", \"15cWrfuvMxyxGst2FisrQcvcpF48x6sXoH\", 1, \"15Jhzz4omEXEyFKbdcccJwuVPea5LqsKM1\"")
+                   HelpExampleCli("tl_funded_sendall", "\"1DFa5bT6KMEr6ta29QJouainsjaNBsJQhH\" \"15cWrfuvMxyxGst2FisrQcvcpF48x6sXoH\" 1 \"15Jhzz4omEXEyFKbdcccJwuVPea5LqsKM1\"")
+                   + HelpExampleRpc("tl_funded_sendall", "\"1DFa5bT6KMEr6ta29QJouainsjaNBsJQhH\", \"15cWrfuvMxyxGst2FisrQcvcpF48x6sXoH\", 1, \"15Jhzz4omEXEyFKbdcccJwuVPea5LqsKM1\"")
                }
             }.ToString());
 
@@ -140,7 +140,7 @@ static UniValue omni_funded_sendall(const JSONRPCRequest& request)
     return retTxid.ToString();
 }
 
-static UniValue omni_sendrawtx(const JSONRPCRequest& request)
+static UniValue tl_sendrawtx(const JSONRPCRequest& request)
 {
 #ifdef ENABLE_WALLET
     std::shared_ptr<CWallet> const wallet = GetWalletForJSONRPCRequest(request);
@@ -151,8 +151,8 @@ static UniValue omni_sendrawtx(const JSONRPCRequest& request)
 
     if (request.fHelp || request.params.size() < 2 || request.params.size() > 5)
         throw runtime_error(
-            RPCHelpMan{"omni_sendrawtx",
-               "\nBroadcasts a raw Omni Layer transaction.\n",
+            RPCHelpMan{"tl_sendrawtx",
+               "\nBroadcasts a raw Trade Layer transaction.\n",
                {
                    {"fromaddress", RPCArg::Type::STR, RPCArg::Optional::NO, "the address to send from\n"},
                    {"rawtransaction", RPCArg::Type::STR, RPCArg::Optional::NO, "the hex-encoded raw transaction"},
@@ -164,8 +164,8 @@ static UniValue omni_sendrawtx(const JSONRPCRequest& request)
                    "\"hash\"                  (string) the hex-encoded transaction hash\n"
                },
                RPCExamples{
-                   HelpExampleCli("omni_sendrawtx", "\"1MCHESTptvd2LnNp7wmr2sGTpRomteAkq8\" \"000000000000000100000000017d7840\" \"1EqTta1Rt8ixAA32DuC29oukbsSWU62qAV\"")
-                   + HelpExampleRpc("omni_sendrawtx", "\"1MCHESTptvd2LnNp7wmr2sGTpRomteAkq8\", \"000000000000000100000000017d7840\", \"1EqTta1Rt8ixAA32DuC29oukbsSWU62qAV\"")
+                   HelpExampleCli("tl_sendrawtx", "\"1MCHESTptvd2LnNp7wmr2sGTpRomteAkq8\" \"000000000000000100000000017d7840\" \"1EqTta1Rt8ixAA32DuC29oukbsSWU62qAV\"")
+                   + HelpExampleRpc("tl_sendrawtx", "\"1MCHESTptvd2LnNp7wmr2sGTpRomteAkq8\", \"000000000000000100000000017d7840\", \"1EqTta1Rt8ixAA32DuC29oukbsSWU62qAV\"")
                }
             }.ToString());
 
@@ -192,7 +192,7 @@ static UniValue omni_sendrawtx(const JSONRPCRequest& request)
     }
 }
 
-static UniValue omni_send(const JSONRPCRequest& request)
+static UniValue tl_send(const JSONRPCRequest& request)
 {
 #ifdef ENABLE_WALLET
     std::shared_ptr<CWallet> const wallet = GetWalletForJSONRPCRequest(request);
@@ -203,7 +203,7 @@ static UniValue omni_send(const JSONRPCRequest& request)
 
     if (request.fHelp || request.params.size() < 4 || request.params.size() > 6)
         throw runtime_error(
-            RPCHelpMan{"omni_send",
+            RPCHelpMan{"tl_send",
                "\nCreate and broadcast a simple send transaction.\n",
                {
                    {"fromaddress", RPCArg::Type::STR, RPCArg::Optional::NO, "the address to send from\n"},
@@ -217,8 +217,8 @@ static UniValue omni_send(const JSONRPCRequest& request)
                    "\"hash\"                  (string) the hex-encoded transaction hash\n"
                },
                RPCExamples{
-                   HelpExampleCli("omni_send", "\"3M9qvHKtgARhqcMtM5cRT9VaiDJ5PSfQGY\" \"37FaKponF7zqoMLUjEiko25pDiuVH5YLEa\" 1 \"100.0\"")
-                   + HelpExampleRpc("omni_send", "\"3M9qvHKtgARhqcMtM5cRT9VaiDJ5PSfQGY\", \"37FaKponF7zqoMLUjEiko25pDiuVH5YLEa\", 1, \"100.0\"")
+                   HelpExampleCli("tl_send", "\"3M9qvHKtgARhqcMtM5cRT9VaiDJ5PSfQGY\" \"37FaKponF7zqoMLUjEiko25pDiuVH5YLEa\" 1 \"100.0\"")
+                   + HelpExampleRpc("tl_send", "\"3M9qvHKtgARhqcMtM5cRT9VaiDJ5PSfQGY\", \"37FaKponF7zqoMLUjEiko25pDiuVH5YLEa\", 1, \"100.0\"")
                }
             }.ToString());
 
@@ -256,7 +256,7 @@ static UniValue omni_send(const JSONRPCRequest& request)
     }
 }
 
-static UniValue omni_sendall(const JSONRPCRequest& request)
+static UniValue tl_sendall(const JSONRPCRequest& request)
 {
 #ifdef ENABLE_WALLET
     std::shared_ptr<CWallet> const wallet = GetWalletForJSONRPCRequest(request);
@@ -267,7 +267,7 @@ static UniValue omni_sendall(const JSONRPCRequest& request)
 
     if (request.fHelp || request.params.size() < 3 || request.params.size() > 5)
         throw runtime_error(
-            RPCHelpMan{"omni_sendall",
+            RPCHelpMan{"tl_sendall",
                "\nTransfers all available tokens in the given ecosystem to the recipient.\n",
                {
                    {"fromaddress", RPCArg::Type::STR, RPCArg::Optional::NO, "the address to send from\n"},
@@ -280,8 +280,8 @@ static UniValue omni_sendall(const JSONRPCRequest& request)
                    "\"hash\"                  (string) the hex-encoded transaction hash\n"
                },
                RPCExamples{
-                   HelpExampleCli("omni_sendall", "\"3M9qvHKtgARhqcMtM5cRT9VaiDJ5PSfQGY\" \"37FaKponF7zqoMLUjEiko25pDiuVH5YLEa\" 2")
-                   + HelpExampleRpc("omni_sendall", "\"3M9qvHKtgARhqcMtM5cRT9VaiDJ5PSfQGY\", \"37FaKponF7zqoMLUjEiko25pDiuVH5YLEa\" 2")
+                   HelpExampleCli("tl_sendall", "\"3M9qvHKtgARhqcMtM5cRT9VaiDJ5PSfQGY\" \"37FaKponF7zqoMLUjEiko25pDiuVH5YLEa\" 2")
+                   + HelpExampleRpc("tl_sendall", "\"3M9qvHKtgARhqcMtM5cRT9VaiDJ5PSfQGY\", \"37FaKponF7zqoMLUjEiko25pDiuVH5YLEa\" 2")
                }
             }.ToString());
 
@@ -334,7 +334,7 @@ UniValue tl_senddexoffer(const JSONRPCRequest& request)
 			"\nArguments:\n"
 
 			"1. fromaddress         (string, required) the address to send from\n"
-			"2. propertyidoffer     (number, required) the identifier of the tokens to list for sale (must be 1 for OMNI or 2 for TOMNI)\n"
+			"2. propertyidoffer     (number, required) the identifier of the tokens to list for sale (must be 1 for TL or 2 for TTL)\n"
 			"3. amountoffering      (string, required) the amount of tokens to list for sale\n"
 			"4. price               (string, required) the price in litecoin of the offer \n"
 			"5. paymentwindow       (number, required) a time limit in blocks a buyer has to pay following a successful accepting order\n"
@@ -392,7 +392,7 @@ UniValue tl_senddexoffer(const JSONRPCRequest& request)
   }
 }
 
-static UniValue omni_senddexaccept(const JSONRPCRequest& request)
+static UniValue tl_senddexaccept(const JSONRPCRequest& request)
 {
 #ifdef ENABLE_WALLET
     std::shared_ptr<CWallet> const wallet = GetWalletForJSONRPCRequest(request);
@@ -403,7 +403,7 @@ static UniValue omni_senddexaccept(const JSONRPCRequest& request)
 
     if (request.fHelp || request.params.size() < 4 || request.params.size() > 5)
         throw runtime_error(
-            RPCHelpMan{"omni_senddexaccept",
+            RPCHelpMan{"tl_senddexaccept",
                "\nCreate and broadcast an accept offer for the specified token and amount.\n",
                {
                    {"fromaddress", RPCArg::Type::STR, RPCArg::Optional::NO, "the address to send from\n"},
@@ -416,8 +416,8 @@ static UniValue omni_senddexaccept(const JSONRPCRequest& request)
                    "\"hash\"                  (string) the hex-encoded transaction hash\n"
                },
                RPCExamples{
-                   HelpExampleCli("omni_senddexaccept", "\"35URq1NN3xL6GeRKUP6vzaQVcxoJiiJKd8\" \"37FaKponF7zqoMLUjEiko25pDiuVH5YLEa\" 1 \"15.0\"")
-                   + HelpExampleRpc("omni_senddexaccept", "\"35URq1NN3xL6GeRKUP6vzaQVcxoJiiJKd8\", \"37FaKponF7zqoMLUjEiko25pDiuVH5YLEa\", 1, \"15.0\"")
+                   HelpExampleCli("tl_senddexaccept", "\"35URq1NN3xL6GeRKUP6vzaQVcxoJiiJKd8\" \"37FaKponF7zqoMLUjEiko25pDiuVH5YLEa\" 1 \"15.0\"")
+                   + HelpExampleRpc("tl_senddexaccept", "\"35URq1NN3xL6GeRKUP6vzaQVcxoJiiJKd8\", \"37FaKponF7zqoMLUjEiko25pDiuVH5YLEa\", 1, \"15.0\"")
                }
             }.ToString());
 
@@ -478,7 +478,7 @@ static UniValue omni_senddexaccept(const JSONRPCRequest& request)
     }
 }
 
-static UniValue omni_sendissuancecrowdsale(const JSONRPCRequest& request)
+static UniValue tl_sendissuancecrowdsale(const JSONRPCRequest& request)
 {
 #ifdef ENABLE_WALLET
     std::shared_ptr<CWallet> const wallet = GetWalletForJSONRPCRequest(request);
@@ -489,7 +489,7 @@ static UniValue omni_sendissuancecrowdsale(const JSONRPCRequest& request)
 
     if (request.fHelp || request.params.size() != 14)
         throw runtime_error(
-            RPCHelpMan{"omni_sendissuancecrowdsale",
+            RPCHelpMan{"tl_sendissuancecrowdsale",
                "Create new tokens as crowdsale.",
                {
                    {"fromaddress", RPCArg::Type::STR, RPCArg::Optional::NO, "the address to send from\n"},
@@ -511,8 +511,8 @@ static UniValue omni_sendissuancecrowdsale(const JSONRPCRequest& request)
                    "\"hash\"                  (string) the hex-encoded transaction hash\n"
                },
                RPCExamples{
-                   HelpExampleCli("omni_sendissuancecrowdsale", "\"3JYd75REX3HXn1vAU83YuGfmiPXW7BpYXo\" 2 1 0 \"Companies\" \"Bitcoin Mining\" \"Quantum Miner\" \"\" \"\" 2 \"100\" 1483228800 30 2")
-                   + HelpExampleRpc("omni_sendissuancecrowdsale", "\"3JYd75REX3HXn1vAU83YuGfmiPXW7BpYXo\", 2, 1, 0, \"Companies\", \"Bitcoin Mining\", \"Quantum Miner\", \"\", \"\", 2, \"100\", 1483228800, 30, 2")
+                   HelpExampleCli("tl_sendissuancecrowdsale", "\"3JYd75REX3HXn1vAU83YuGfmiPXW7BpYXo\" 2 1 0 \"Companies\" \"Bitcoin Mining\" \"Quantum Miner\" \"\" \"\" 2 \"100\" 1483228800 30 2")
+                   + HelpExampleRpc("tl_sendissuancecrowdsale", "\"3JYd75REX3HXn1vAU83YuGfmiPXW7BpYXo\", 2, 1, 0, \"Companies\", \"Bitcoin Mining\", \"Quantum Miner\", \"\", \"\", 2, \"100\", 1483228800, 30, 2")
                }
             }.ToString());
 
@@ -557,7 +557,7 @@ static UniValue omni_sendissuancecrowdsale(const JSONRPCRequest& request)
     }
 }
 
-static UniValue omni_sendissuancefixed(const JSONRPCRequest& request)
+static UniValue tl_sendissuancefixed(const JSONRPCRequest& request)
 {
 #ifdef ENABLE_WALLET
     std::shared_ptr<CWallet> const wallet = GetWalletForJSONRPCRequest(request);
@@ -568,7 +568,7 @@ static UniValue omni_sendissuancefixed(const JSONRPCRequest& request)
 
     if (request.fHelp || request.params.size() != 10)
         throw runtime_error(
-            RPCHelpMan{"omni_sendissuancefixed",
+            RPCHelpMan{"tl_sendissuancefixed",
                "\nCreate new tokens with fixed supply.\n",
                {
                    {"fromaddress", RPCArg::Type::STR, RPCArg::Optional::NO, "the address to send from\n"},
@@ -586,8 +586,8 @@ static UniValue omni_sendissuancefixed(const JSONRPCRequest& request)
                    "\"hash\"                  (string) the hex-encoded transaction hash\n"
                },
                RPCExamples{
-                   HelpExampleCli("omni_sendissuancefixed", "\"3Ck2kEGLJtZw9ENj2tameMCtS3HB7uRar3\" 2 1 0 \"Companies\" \"Bitcoin Mining\" \"Quantum Miner\" \"\" \"\" \"1000000\"")
-                   + HelpExampleRpc("omni_sendissuancefixed", "\"3Ck2kEGLJtZw9ENj2tameMCtS3HB7uRar3\", 2, 1, 0, \"Companies\", \"Bitcoin Mining\", \"Quantum Miner\", \"\", \"\", \"1000000\"")
+                   HelpExampleCli("tl_sendissuancefixed", "\"3Ck2kEGLJtZw9ENj2tameMCtS3HB7uRar3\" 2 1 0 \"Companies\" \"Bitcoin Mining\" \"Quantum Miner\" \"\" \"\" \"1000000\"")
+                   + HelpExampleRpc("tl_sendissuancefixed", "\"3Ck2kEGLJtZw9ENj2tameMCtS3HB7uRar3\", 2, 1, 0, \"Companies\", \"Bitcoin Mining\", \"Quantum Miner\", \"\", \"\", \"1000000\"")
                }
             }.ToString());
 
@@ -626,7 +626,7 @@ static UniValue omni_sendissuancefixed(const JSONRPCRequest& request)
     }
 }
 
-static UniValue omni_sendissuancemanaged(const JSONRPCRequest& request)
+static UniValue tl_sendissuancemanaged(const JSONRPCRequest& request)
 {
 #ifdef ENABLE_WALLET
     std::shared_ptr<CWallet> const wallet = GetWalletForJSONRPCRequest(request);
@@ -637,7 +637,7 @@ static UniValue omni_sendissuancemanaged(const JSONRPCRequest& request)
 
     if (request.fHelp || request.params.size() != 9)
         throw runtime_error(
-            RPCHelpMan{"omni_sendissuancemanaged",
+            RPCHelpMan{"tl_sendissuancemanaged",
                "\nCreate new tokens with manageable supply.\n",
                {
                    {"fromaddress", RPCArg::Type::STR, RPCArg::Optional::NO, "the address to send from\n"},
@@ -654,8 +654,8 @@ static UniValue omni_sendissuancemanaged(const JSONRPCRequest& request)
                    "\"hash\"                  (string) the hex-encoded transaction hash\n"
                },
                RPCExamples{
-                   HelpExampleCli("omni_sendissuancemanaged", "\"3HsJvhr9qzgRe3ss97b1QHs38rmaLExLcH\" 2 1 0 \"Companies\" \"Bitcoin Mining\" \"Quantum Miner\" \"\" \"\"")
-                   + HelpExampleRpc("omni_sendissuancemanaged", "\"3HsJvhr9qzgRe3ss97b1QHs38rmaLExLcH\", 2, 1, 0, \"Companies\", \"Bitcoin Mining\", \"Quantum Miner\", \"\", \"\"")
+                   HelpExampleCli("tl_sendissuancemanaged", "\"3HsJvhr9qzgRe3ss97b1QHs38rmaLExLcH\" 2 1 0 \"Companies\" \"Bitcoin Mining\" \"Quantum Miner\" \"\" \"\"")
+                   + HelpExampleRpc("tl_sendissuancemanaged", "\"3HsJvhr9qzgRe3ss97b1QHs38rmaLExLcH\", 2, 1, 0, \"Companies\", \"Bitcoin Mining\", \"Quantum Miner\", \"\", \"\"")
                }
             }.ToString());
 
@@ -693,7 +693,7 @@ static UniValue omni_sendissuancemanaged(const JSONRPCRequest& request)
     }
 }
 
-static UniValue omni_sendsto(const JSONRPCRequest& request)
+static UniValue tl_sendsto(const JSONRPCRequest& request)
 {
 #ifdef ENABLE_WALLET
     std::shared_ptr<CWallet> const wallet = GetWalletForJSONRPCRequest(request);
@@ -704,7 +704,7 @@ static UniValue omni_sendsto(const JSONRPCRequest& request)
 
     if (request.fHelp || request.params.size() < 3 || request.params.size() > 5)
         throw runtime_error(
-            RPCHelpMan{"omni_sendsto",
+            RPCHelpMan{"tl_sendsto",
                "\nCreate and broadcast a send-to-owners transaction.\n",
                {
                    {"fromaddress", RPCArg::Type::STR, RPCArg::Optional::NO, "the address to send from\n"},
@@ -717,8 +717,8 @@ static UniValue omni_sendsto(const JSONRPCRequest& request)
                    "\"hash\"                  (string) the hex-encoded transaction hash\n"
                },
                RPCExamples{
-                   HelpExampleCli("omni_sendsto", "\"32Z3tJccZuqQZ4PhJR2hxHC3tjgjA8cbqz\" \"37FaKponF7zqoMLUjEiko25pDiuVH5YLEa\" 3 \"5000\"")
-                   + HelpExampleRpc("omni_sendsto", "\"32Z3tJccZuqQZ4PhJR2hxHC3tjgjA8cbqz\", \"37FaKponF7zqoMLUjEiko25pDiuVH5YLEa\", 3, \"5000\"")
+                   HelpExampleCli("tl_sendsto", "\"32Z3tJccZuqQZ4PhJR2hxHC3tjgjA8cbqz\" \"37FaKponF7zqoMLUjEiko25pDiuVH5YLEa\" 3 \"5000\"")
+                   + HelpExampleRpc("tl_sendsto", "\"32Z3tJccZuqQZ4PhJR2hxHC3tjgjA8cbqz\", \"37FaKponF7zqoMLUjEiko25pDiuVH5YLEa\", 3, \"5000\"")
                }
             }.ToString());
 
@@ -753,7 +753,7 @@ static UniValue omni_sendsto(const JSONRPCRequest& request)
     }
 }
 
-static UniValue omni_sendgrant(const JSONRPCRequest& request)
+static UniValue tl_sendgrant(const JSONRPCRequest& request)
 {
 #ifdef ENABLE_WALLET
     std::shared_ptr<CWallet> const wallet = GetWalletForJSONRPCRequest(request);
@@ -764,7 +764,7 @@ static UniValue omni_sendgrant(const JSONRPCRequest& request)
 
     if (request.fHelp || request.params.size() < 4 || request.params.size() > 5)
         throw runtime_error(
-            RPCHelpMan{"omni_sendgrant",
+            RPCHelpMan{"tl_sendgrant",
                "\nIssue or grant new units of managed tokens.\n",
                {
                    {"fromaddress", RPCArg::Type::STR, RPCArg::Optional::NO, "the address to send from\n"},
@@ -777,8 +777,8 @@ static UniValue omni_sendgrant(const JSONRPCRequest& request)
                    "\"hash\"                  (string) the hex-encoded transaction hash\n"
                },
                RPCExamples{
-                   HelpExampleCli("omni_sendgrant", "\"3HsJvhr9qzgRe3ss97b1QHs38rmaLExLcH\" \"\" 51 \"7000\"")
-                   + HelpExampleRpc("omni_sendgrant", "\"3HsJvhr9qzgRe3ss97b1QHs38rmaLExLcH\", \"\", 51, \"7000\"")
+                   HelpExampleCli("tl_sendgrant", "\"3HsJvhr9qzgRe3ss97b1QHs38rmaLExLcH\" \"\" 51 \"7000\"")
+                   + HelpExampleRpc("tl_sendgrant", "\"3HsJvhr9qzgRe3ss97b1QHs38rmaLExLcH\", \"\", 51, \"7000\"")
                }
             }.ToString());
 
@@ -814,7 +814,7 @@ static UniValue omni_sendgrant(const JSONRPCRequest& request)
     }
 }
 
-static UniValue omni_sendrevoke(const JSONRPCRequest& request)
+static UniValue tl_sendrevoke(const JSONRPCRequest& request)
 {
 #ifdef ENABLE_WALLET
     std::shared_ptr<CWallet> const wallet = GetWalletForJSONRPCRequest(request);
@@ -825,7 +825,7 @@ static UniValue omni_sendrevoke(const JSONRPCRequest& request)
 
     if (request.fHelp || request.params.size() < 3 || request.params.size() > 4)
         throw runtime_error(
-            RPCHelpMan{"omni_sendrevoke",
+            RPCHelpMan{"tl_sendrevoke",
                "\nRevoke units of managed tokens.\n",
                {
                    {"fromaddress", RPCArg::Type::STR, RPCArg::Optional::NO, "the address to revoke the tokens from\n"},
@@ -837,8 +837,8 @@ static UniValue omni_sendrevoke(const JSONRPCRequest& request)
                    "\"hash\"                  (string) the hex-encoded transaction hash\n"
                },
                RPCExamples{
-                   HelpExampleCli("omni_sendrevoke", "\"3HsJvhr9qzgRe3ss97b1QHs38rmaLExLcH\" \"\" 51 \"100\"")
-                   + HelpExampleRpc("omni_sendrevoke", "\"3HsJvhr9qzgRe3ss97b1QHs38rmaLExLcH\", \"\", 51, \"100\"")
+                   HelpExampleCli("tl_sendrevoke", "\"3HsJvhr9qzgRe3ss97b1QHs38rmaLExLcH\" \"\" 51 \"100\"")
+                   + HelpExampleRpc("tl_sendrevoke", "\"3HsJvhr9qzgRe3ss97b1QHs38rmaLExLcH\", \"\", 51, \"100\"")
                }
             }.ToString());
 
@@ -874,7 +874,7 @@ static UniValue omni_sendrevoke(const JSONRPCRequest& request)
     }
 }
 
-static UniValue omni_sendclosecrowdsale(const JSONRPCRequest& request)
+static UniValue tl_sendclosecrowdsale(const JSONRPCRequest& request)
 {
 #ifdef ENABLE_WALLET
     std::shared_ptr<CWallet> const wallet = GetWalletForJSONRPCRequest(request);
@@ -885,7 +885,7 @@ static UniValue omni_sendclosecrowdsale(const JSONRPCRequest& request)
 
     if (request.fHelp || request.params.size() != 2)
         throw runtime_error(
-            RPCHelpMan{"omni_sendclosecrowdsale",
+            RPCHelpMan{"tl_sendclosecrowdsale",
                "\nManually close a crowdsale.\n",
                {
                    {"fromaddress", RPCArg::Type::STR, RPCArg::Optional::NO, "the address associated with the crowdsale to close\n"},
@@ -895,8 +895,8 @@ static UniValue omni_sendclosecrowdsale(const JSONRPCRequest& request)
                    "\"hash\"                  (string) the hex-encoded transaction hash\n"
                },
                RPCExamples{
-                   HelpExampleCli("omni_sendclosecrowdsale", "\"3JYd75REX3HXn1vAU83YuGfmiPXW7BpYXo\" 70")
-                   + HelpExampleRpc("omni_sendclosecrowdsale", "\"3JYd75REX3HXn1vAU83YuGfmiPXW7BpYXo\", 70")
+                   HelpExampleCli("tl_sendclosecrowdsale", "\"3JYd75REX3HXn1vAU83YuGfmiPXW7BpYXo\" 70")
+                   + HelpExampleRpc("tl_sendclosecrowdsale", "\"3JYd75REX3HXn1vAU83YuGfmiPXW7BpYXo\", 70")
                }
             }.ToString());
 
@@ -930,7 +930,7 @@ static UniValue omni_sendclosecrowdsale(const JSONRPCRequest& request)
     }
 }
 
-static UniValue omni_sendtrade(const JSONRPCRequest& request)
+static UniValue tl_sendtrade(const JSONRPCRequest& request)
 {
 #ifdef ENABLE_WALLET
     std::shared_ptr<CWallet> const wallet = GetWalletForJSONRPCRequest(request);
@@ -941,7 +941,7 @@ static UniValue omni_sendtrade(const JSONRPCRequest& request)
 
     if (request.fHelp || request.params.size() != 5)
         throw runtime_error(
-            RPCHelpMan{"omni_sendtrade",
+            RPCHelpMan{"tl_sendtrade",
                "\nPlace a trade offer on the distributed token exchange.\n",
                {
                    {"fromaddress", RPCArg::Type::STR, RPCArg::Optional::NO, "the address to trade with\n"},
@@ -954,8 +954,8 @@ static UniValue omni_sendtrade(const JSONRPCRequest& request)
                    "\"hash\"                  (string) the hex-encoded transaction hash\n"
                },
                RPCExamples{
-                   HelpExampleCli("omni_sendtrade", "\"3BydPiSLPP3DR5cf726hDQ89fpqWLxPKLR\" 31 \"250.0\" 1 \"10.0\"")
-                   + HelpExampleRpc("omni_sendtrade", "\"3BydPiSLPP3DR5cf726hDQ89fpqWLxPKLR\", 31, \"250.0\", 1, \"10.0\"")
+                   HelpExampleCli("tl_sendtrade", "\"3BydPiSLPP3DR5cf726hDQ89fpqWLxPKLR\" 31 \"250.0\" 1 \"10.0\"")
+                   + HelpExampleRpc("tl_sendtrade", "\"3BydPiSLPP3DR5cf726hDQ89fpqWLxPKLR\", 31, \"250.0\", 1, \"10.0\"")
                }
             }.ToString());
 
@@ -994,7 +994,7 @@ static UniValue omni_sendtrade(const JSONRPCRequest& request)
     }
 }
 
-static UniValue omni_sendcanceltradesbyprice(const JSONRPCRequest& request)
+static UniValue tl_sendcanceltradesbyprice(const JSONRPCRequest& request)
 {
 #ifdef ENABLE_WALLET
     std::shared_ptr<CWallet> const wallet = GetWalletForJSONRPCRequest(request);
@@ -1005,7 +1005,7 @@ static UniValue omni_sendcanceltradesbyprice(const JSONRPCRequest& request)
 
     if (request.fHelp || request.params.size() != 5)
         throw runtime_error(
-            RPCHelpMan{"omni_sendcanceltradesbyprice",
+            RPCHelpMan{"tl_sendcanceltradesbyprice",
                "\nCancel offers on the distributed token exchange with the specified price.\n",
                {
                    {"fromaddress", RPCArg::Type::STR, RPCArg::Optional::NO, "the address to trade with\n"},
@@ -1018,8 +1018,8 @@ static UniValue omni_sendcanceltradesbyprice(const JSONRPCRequest& request)
                    "\"hash\"                  (string) the hex-encoded transaction hash\n"
                },
                RPCExamples{
-                   HelpExampleCli("omni_sendcanceltradesbyprice", "\"3BydPiSLPP3DR5cf726hDQ89fpqWLxPKLR\" 31 \"100.0\" 1 \"5.0\"")
-                   + HelpExampleRpc("omni_sendcanceltradesbyprice", "\"3BydPiSLPP3DR5cf726hDQ89fpqWLxPKLR\", 31, \"100.0\", 1, \"5.0\"")
+                   HelpExampleCli("tl_sendcanceltradesbyprice", "\"3BydPiSLPP3DR5cf726hDQ89fpqWLxPKLR\" 31 \"100.0\" 1 \"5.0\"")
+                   + HelpExampleRpc("tl_sendcanceltradesbyprice", "\"3BydPiSLPP3DR5cf726hDQ89fpqWLxPKLR\", 31, \"100.0\", 1, \"5.0\"")
                }
             }.ToString());
 
@@ -1058,7 +1058,7 @@ static UniValue omni_sendcanceltradesbyprice(const JSONRPCRequest& request)
     }
 }
 
-static UniValue omni_sendcanceltradesbypair(const JSONRPCRequest& request)
+static UniValue tl_sendcanceltradesbypair(const JSONRPCRequest& request)
 {
 #ifdef ENABLE_WALLET
     std::shared_ptr<CWallet> const wallet = GetWalletForJSONRPCRequest(request);
@@ -1069,7 +1069,7 @@ static UniValue omni_sendcanceltradesbypair(const JSONRPCRequest& request)
 
     if (request.fHelp || request.params.size() != 3)
         throw runtime_error(
-            RPCHelpMan{"omni_sendcanceltradesbypair",
+            RPCHelpMan{"tl_sendcanceltradesbypair",
                "\nCancel all offers on the distributed token exchange with the given currency pair.\n",
                {
                    {"fromaddress", RPCArg::Type::STR, RPCArg::Optional::NO, "the address to trade with\n"},
@@ -1080,8 +1080,8 @@ static UniValue omni_sendcanceltradesbypair(const JSONRPCRequest& request)
                    "\"hash\"                  (string) the hex-encoded transaction hash\n"
                },
                RPCExamples{
-                   HelpExampleCli("omni_sendcanceltradesbypair", "\"3BydPiSLPP3DR5cf726hDQ89fpqWLxPKLR\" 1 31")
-                   + HelpExampleRpc("omni_sendcanceltradesbypair", "\"3BydPiSLPP3DR5cf726hDQ89fpqWLxPKLR\", 1, 31")
+                   HelpExampleCli("tl_sendcanceltradesbypair", "\"3BydPiSLPP3DR5cf726hDQ89fpqWLxPKLR\" 1 31")
+                   + HelpExampleRpc("tl_sendcanceltradesbypair", "\"3BydPiSLPP3DR5cf726hDQ89fpqWLxPKLR\", 1, 31")
                }
             }.ToString());
 
@@ -1118,7 +1118,7 @@ static UniValue omni_sendcanceltradesbypair(const JSONRPCRequest& request)
     }
 }
 
-static UniValue omni_sendcancelalltrades(const JSONRPCRequest& request)
+static UniValue tl_sendcancelalltrades(const JSONRPCRequest& request)
 {
 #ifdef ENABLE_WALLET
     std::shared_ptr<CWallet> const wallet = GetWalletForJSONRPCRequest(request);
@@ -1129,7 +1129,7 @@ static UniValue omni_sendcancelalltrades(const JSONRPCRequest& request)
 
     if (request.fHelp || request.params.size() != 2)
         throw runtime_error(
-            RPCHelpMan{"omni_sendcancelalltrades",
+            RPCHelpMan{"tl_sendcancelalltrades",
                "\nCancel all offers on the distributed token exchange.\n",
                {
                    {"fromaddress", RPCArg::Type::STR, RPCArg::Optional::NO, "the address to trade with\n"},
@@ -1139,8 +1139,8 @@ static UniValue omni_sendcancelalltrades(const JSONRPCRequest& request)
                    "\"hash\"                  (string) the hex-encoded transaction hash\n"
                },
                RPCExamples{
-                   HelpExampleCli("omni_sendcancelalltrades", "\"3BydPiSLPP3DR5cf726hDQ89fpqWLxPKLR\" 1")
-                   + HelpExampleRpc("omni_sendcancelalltrades", "\"3BydPiSLPP3DR5cf726hDQ89fpqWLxPKLR\", 1")
+                   HelpExampleCli("tl_sendcancelalltrades", "\"3BydPiSLPP3DR5cf726hDQ89fpqWLxPKLR\" 1")
+                   + HelpExampleRpc("tl_sendcancelalltrades", "\"3BydPiSLPP3DR5cf726hDQ89fpqWLxPKLR\", 1")
                }
             }.ToString());
 
@@ -1172,7 +1172,7 @@ static UniValue omni_sendcancelalltrades(const JSONRPCRequest& request)
     }
 }
 
-static UniValue omni_sendchangeissuer(const JSONRPCRequest& request)
+static UniValue tl_sendchangeissuer(const JSONRPCRequest& request)
 {
 #ifdef ENABLE_WALLET
     std::shared_ptr<CWallet> const wallet = GetWalletForJSONRPCRequest(request);
@@ -1183,7 +1183,7 @@ static UniValue omni_sendchangeissuer(const JSONRPCRequest& request)
 
     if (request.fHelp || request.params.size() != 3)
         throw runtime_error(
-            RPCHelpMan{"omni_sendchangeissuer",
+            RPCHelpMan{"tl_sendchangeissuer",
                "\nChange the issuer on record of the given tokens.\n",
                {
                    {"fromaddress", RPCArg::Type::STR, RPCArg::Optional::NO, "the address associated with the tokens\n"},
@@ -1194,8 +1194,8 @@ static UniValue omni_sendchangeissuer(const JSONRPCRequest& request)
                    "\"hash\"                  (string) the hex-encoded transaction hash\n"
                },
                RPCExamples{
-                   HelpExampleCli("omni_sendchangeissuer", "\"1ARjWDkZ7kT9fwjPrjcQyvbXDkEySzKHwu\" \"3HTHRxu3aSDV4deakjC7VmsiUp7c6dfbvs\" 3")
-                   + HelpExampleRpc("omni_sendchangeissuer", "\"1ARjWDkZ7kT9fwjPrjcQyvbXDkEySzKHwu\", \"3HTHRxu3aSDV4deakjC7VmsiUp7c6dfbvs\", 3")
+                   HelpExampleCli("tl_sendchangeissuer", "\"1ARjWDkZ7kT9fwjPrjcQyvbXDkEySzKHwu\" \"3HTHRxu3aSDV4deakjC7VmsiUp7c6dfbvs\" 3")
+                   + HelpExampleRpc("tl_sendchangeissuer", "\"1ARjWDkZ7kT9fwjPrjcQyvbXDkEySzKHwu\", \"3HTHRxu3aSDV4deakjC7VmsiUp7c6dfbvs\", 3")
                }
             }.ToString());
 
@@ -1228,7 +1228,7 @@ static UniValue omni_sendchangeissuer(const JSONRPCRequest& request)
     }
 }
 
-static UniValue omni_sendenablefreezing(const JSONRPCRequest& request)
+static UniValue tl_sendenablefreezing(const JSONRPCRequest& request)
 {
 #ifdef ENABLE_WALLET
     std::shared_ptr<CWallet> const wallet = GetWalletForJSONRPCRequest(request);
@@ -1239,7 +1239,7 @@ static UniValue omni_sendenablefreezing(const JSONRPCRequest& request)
 
     if (request.fHelp || request.params.size() != 2)
         throw runtime_error(
-            RPCHelpMan{"omni_sendenablefreezing",
+            RPCHelpMan{"tl_sendenablefreezing",
                "\nEnables address freezing for a centrally managed property.\n",
                {
                    {"fromaddress", RPCArg::Type::STR, RPCArg::Optional::NO, "the issuer of the tokens\n"},
@@ -1249,8 +1249,8 @@ static UniValue omni_sendenablefreezing(const JSONRPCRequest& request)
                    "\"hash\"                  (string) the hex-encoded transaction hash\n"
                },
                RPCExamples{
-                   HelpExampleCli("omni_sendenablefreezing", "\"3HTHRxu3aSDV4deakjC7VmsiUp7c6dfbvs\" 3")
-                   + HelpExampleRpc("omni_sendenablefreezing", "\"3HTHRxu3aSDV4deakjC7VmsiUp7c6dfbvs\", 3")
+                   HelpExampleCli("tl_sendenablefreezing", "\"3HTHRxu3aSDV4deakjC7VmsiUp7c6dfbvs\" 3")
+                   + HelpExampleRpc("tl_sendenablefreezing", "\"3HTHRxu3aSDV4deakjC7VmsiUp7c6dfbvs\", 3")
                }
             }.ToString());
 
@@ -1283,7 +1283,7 @@ static UniValue omni_sendenablefreezing(const JSONRPCRequest& request)
     }
 }
 
-static UniValue omni_senddisablefreezing(const JSONRPCRequest& request)
+static UniValue tl_senddisablefreezing(const JSONRPCRequest& request)
 {
 #ifdef ENABLE_WALLET
     std::shared_ptr<CWallet> const wallet = GetWalletForJSONRPCRequest(request);
@@ -1294,7 +1294,7 @@ static UniValue omni_senddisablefreezing(const JSONRPCRequest& request)
 
     if (request.fHelp || request.params.size() != 2)
         throw runtime_error(
-            RPCHelpMan{"omni_senddisablefreezing",
+            RPCHelpMan{"tl_senddisablefreezing",
                "\nDisables address freezing for a centrally managed property.\n"
                "\nIMPORTANT NOTE:  Disabling freezing for a property will UNFREEZE all frozen addresses for that property!",
                {
@@ -1305,8 +1305,8 @@ static UniValue omni_senddisablefreezing(const JSONRPCRequest& request)
                    "\"hash\"                  (string) the hex-encoded transaction hash\n"
                },
                RPCExamples{
-                   HelpExampleCli("omni_senddisablefreezing", "\"3HTHRxu3aSDV4deakjC7VmsiUp7c6dfbvs\" 3")
-                   + HelpExampleRpc("omni_senddisablefreezing", "\"3HTHRxu3aSDV4deakjC7VmsiUp7c6dfbvs\", 3")
+                   HelpExampleCli("tl_senddisablefreezing", "\"3HTHRxu3aSDV4deakjC7VmsiUp7c6dfbvs\" 3")
+                   + HelpExampleRpc("tl_senddisablefreezing", "\"3HTHRxu3aSDV4deakjC7VmsiUp7c6dfbvs\", 3")
                }
             }.ToString());
 
@@ -1339,7 +1339,7 @@ static UniValue omni_senddisablefreezing(const JSONRPCRequest& request)
     }
 }
 
-static UniValue omni_sendfreeze(const JSONRPCRequest& request)
+static UniValue tl_sendfreeze(const JSONRPCRequest& request)
 {
 #ifdef ENABLE_WALLET
     std::shared_ptr<CWallet> const wallet = GetWalletForJSONRPCRequest(request);
@@ -1350,7 +1350,7 @@ static UniValue omni_sendfreeze(const JSONRPCRequest& request)
 
     if (request.fHelp || request.params.size() != 4)
         throw runtime_error(
-            RPCHelpMan{"omni_sendfreeze",
+            RPCHelpMan{"tl_sendfreeze",
                "\nFreeze an address for a centrally managed token.\n"
                "\nNote: Only the issuer may freeze tokens, and only if the token is of the managed type with the freezing option enabled.\n",
                {
@@ -1363,8 +1363,8 @@ static UniValue omni_sendfreeze(const JSONRPCRequest& request)
                    "\"hash\"                  (string) the hex-encoded transaction hash\n"
                },
                RPCExamples{
-                   HelpExampleCli("omni_sendfreeze", "\"1EXoDusjGwvnjZUyKkxZ4UHEf77z6A5S4P\" \"3HTHRxu3aSDV4deakjC7VmsiUp7c6dfbvs\" 1 0")
-                   + HelpExampleRpc("omni_sendfreeze", "\"1EXoDusjGwvnjZUyKkxZ4UHEf77z6A5S4P\", \"3HTHRxu3aSDV4deakjC7VmsiUp7c6dfbvs\", 1, 0")
+                   HelpExampleCli("tl_sendfreeze", "\"1EXoDusjGwvnjZUyKkxZ4UHEf77z6A5S4P\" \"3HTHRxu3aSDV4deakjC7VmsiUp7c6dfbvs\" 1 0")
+                   + HelpExampleRpc("tl_sendfreeze", "\"1EXoDusjGwvnjZUyKkxZ4UHEf77z6A5S4P\", \"3HTHRxu3aSDV4deakjC7VmsiUp7c6dfbvs\", 1, 0")
                }
             }.ToString());
 
@@ -1400,7 +1400,7 @@ static UniValue omni_sendfreeze(const JSONRPCRequest& request)
     }
 }
 
-static UniValue omni_sendunfreeze(const JSONRPCRequest& request)
+static UniValue tl_sendunfreeze(const JSONRPCRequest& request)
 {
 #ifdef ENABLE_WALLET
     std::shared_ptr<CWallet> const wallet = GetWalletForJSONRPCRequest(request);
@@ -1411,7 +1411,7 @@ static UniValue omni_sendunfreeze(const JSONRPCRequest& request)
 
     if (request.fHelp || request.params.size() != 4)
         throw runtime_error(
-            RPCHelpMan{"omni_sendunfreeze",
+            RPCHelpMan{"tl_sendunfreeze",
                "\nUnfreezes an address for a centrally managed token.\n"
                "\nNote: Only the issuer may unfreeze tokens.\n",
                {
@@ -1424,8 +1424,8 @@ static UniValue omni_sendunfreeze(const JSONRPCRequest& request)
                    "\"hash\"                  (string) the hex-encoded transaction hash\n"
                },
                RPCExamples{
-                   HelpExampleCli("omni_sendunfreeze", "\"1EXoDusjGwvnjZUyKkxZ4UHEf77z6A5S4P\" \"3HTHRxu3aSDV4deakjC7VmsiUp7c6dfbvs\" 1 0")
-                   + HelpExampleRpc("omni_sendunfreeze", "\"1EXoDusjGwvnjZUyKkxZ4UHEf77z6A5S4P\", \"3HTHRxu3aSDV4deakjC7VmsiUp7c6dfbvs\", 1, 0")
+                   HelpExampleCli("tl_sendunfreeze", "\"1EXoDusjGwvnjZUyKkxZ4UHEf77z6A5S4P\" \"3HTHRxu3aSDV4deakjC7VmsiUp7c6dfbvs\" 1 0")
+                   + HelpExampleRpc("tl_sendunfreeze", "\"1EXoDusjGwvnjZUyKkxZ4UHEf77z6A5S4P\", \"3HTHRxu3aSDV4deakjC7VmsiUp7c6dfbvs\", 1, 0")
                }
             }.ToString());
 
@@ -1461,7 +1461,7 @@ static UniValue omni_sendunfreeze(const JSONRPCRequest& request)
     }
 }
 
-static UniValue omni_sendactivation(const JSONRPCRequest& request)
+static UniValue tl_sendactivation(const JSONRPCRequest& request)
 {
 #ifdef ENABLE_WALLET
     std::shared_ptr<CWallet> const wallet = GetWalletForJSONRPCRequest(request);
@@ -1472,9 +1472,9 @@ static UniValue omni_sendactivation(const JSONRPCRequest& request)
 
     if (request.fHelp || request.params.size() != 4)
         throw runtime_error(
-            RPCHelpMan{"omni_sendactivation",
+            RPCHelpMan{"tl_sendactivation",
                "\nActivate a protocol feature.\n"
-               "\nNote: Omni Core ignores activations from unauthorized sources.\n",
+               "\nNote: Trade Layer ignores activations from unauthorized sources.\n",
                {
                    {"fromaddress", RPCArg::Type::STR, RPCArg::Optional::NO, "the address to send from\n"},
                    {"featureid", RPCArg::Type::NUM, RPCArg::Optional::NO, "the identifier of the feature to activate\n"},
@@ -1485,8 +1485,8 @@ static UniValue omni_sendactivation(const JSONRPCRequest& request)
                    "\"hash\"                  (string) the hex-encoded transaction hash\n"
                },
                RPCExamples{
-                   HelpExampleCli("omni_sendactivation", "\"1EXoDusjGwvnjZUyKkxZ4UHEf77z6A5S4P\" 1 370000 999")
-                   + HelpExampleRpc("omni_sendactivation", "\"1EXoDusjGwvnjZUyKkxZ4UHEf77z6A5S4P\", 1, 370000, 999")
+                   HelpExampleCli("tl_sendactivation", "\"1EXoDusjGwvnjZUyKkxZ4UHEf77z6A5S4P\" 1 370000 999")
+                   + HelpExampleRpc("tl_sendactivation", "\"1EXoDusjGwvnjZUyKkxZ4UHEf77z6A5S4P\", 1, 370000, 999")
                }
             }.ToString());
 
@@ -1516,7 +1516,7 @@ static UniValue omni_sendactivation(const JSONRPCRequest& request)
     }
 }
 
-static UniValue omni_senddeactivation(const JSONRPCRequest& request)
+static UniValue tl_senddeactivation(const JSONRPCRequest& request)
 {
 #ifdef ENABLE_WALLET
     std::shared_ptr<CWallet> const wallet = GetWalletForJSONRPCRequest(request);
@@ -1527,9 +1527,9 @@ static UniValue omni_senddeactivation(const JSONRPCRequest& request)
 
     if (request.fHelp || request.params.size() != 2)
         throw runtime_error(
-            RPCHelpMan{"omni_senddeactivation",
+            RPCHelpMan{"tl_senddeactivation",
                "\nDeactivate a protocol feature.  For Emergency Use Only.\n"
-               "\nNote: Omni Core ignores deactivations from unauthorized sources.\n",
+               "\nNote: Trade Layer ignores deactivations from unauthorized sources.\n",
                {
                    {"fromaddress", RPCArg::Type::STR, RPCArg::Optional::NO, "the address to send from\n"},
                    {"featureid", RPCArg::Type::NUM, RPCArg::Optional::NO, "the identifier of the feature to activate\n"},
@@ -1538,8 +1538,8 @@ static UniValue omni_senddeactivation(const JSONRPCRequest& request)
                    "\"hash\"                  (string) the hex-encoded transaction hash\n"
                },
                RPCExamples{
-                   HelpExampleCli("omni_senddeactivation", "\"1EXoDusjGwvnjZUyKkxZ4UHEf77z6A5S4P\" 1")
-                   + HelpExampleRpc("omni_senddeactivation", "\"1EXoDusjGwvnjZUyKkxZ4UHEf77z6A5S4P\", 1")
+                   HelpExampleCli("tl_senddeactivation", "\"1EXoDusjGwvnjZUyKkxZ4UHEf77z6A5S4P\" 1")
+                   + HelpExampleRpc("tl_senddeactivation", "\"1EXoDusjGwvnjZUyKkxZ4UHEf77z6A5S4P\", 1")
                }
             }.ToString());
 
@@ -1567,7 +1567,7 @@ static UniValue omni_senddeactivation(const JSONRPCRequest& request)
     }
 }
 
-static UniValue omni_sendalert(const JSONRPCRequest& request)
+static UniValue tl_sendalert(const JSONRPCRequest& request)
 {
 #ifdef ENABLE_WALLET
     std::shared_ptr<CWallet> const wallet = GetWalletForJSONRPCRequest(request);
@@ -1578,9 +1578,9 @@ static UniValue omni_sendalert(const JSONRPCRequest& request)
 
     if (request.fHelp || request.params.size() != 4)
         throw runtime_error(
-            RPCHelpMan{"omni_sendalert",
-               "\nCreates and broadcasts an Omni Core alert.\n"
-               "\nNote: Omni Core ignores alerts from unauthorized sources.\n",
+            RPCHelpMan{"tl_sendalert",
+               "\nCreates and broadcasts an Trade Layer alert.\n"
+               "\nNote: Trade Layer ignores alerts from unauthorized sources.\n",
                {
                    {"fromaddress", RPCArg::Type::STR, RPCArg::Optional::NO, "the address to send from\n"},
                    {"alerttype", RPCArg::Type::NUM, RPCArg::Optional::NO, "the alert type\n"},
@@ -1591,8 +1591,8 @@ static UniValue omni_sendalert(const JSONRPCRequest& request)
                    "\"hash\"                  (string) the hex-encoded transaction hash\n"
                },
                RPCExamples{
-                   HelpExampleCli("omni_sendalert", "")
-                   + HelpExampleRpc("omni_sendalert", "")
+                   HelpExampleCli("tl_sendalert", "")
+                   + HelpExampleRpc("tl_sendalert", "")
                }
             }.ToString());
 
@@ -1649,10 +1649,10 @@ static UniValue trade_MP(const JSONRPCRequest& request)
                    "\"hash\"                  (string) the hex-encoded transaction hash\n"
                },
                RPCExamples{
-                   " - sendtrade_OMNI\n"
-                   " - sendcanceltradebyprice_OMNI\n"
-                   " - sendcanceltradebypair_OMNI\n"
-                   " - sendcanceltradebypair_OMNI\n"
+                   " - sendtrade_TL\n"
+                   " - sendcanceltradebyprice_TL\n"
+                   " - sendcanceltradebypair_TL\n"
+                   " - sendcanceltradebypair_TL\n"
                }
             }.ToString());
 
@@ -1668,7 +1668,7 @@ static UniValue trade_MP(const JSONRPCRequest& request)
             values.push_back(request.params[2]); // amountForSale
             values.push_back(request.params[3]); // propertyIdDesired
             values.push_back(request.params[4]); // amountDesired
-            return omni_sendtrade(request);
+            return tl_sendtrade(request);
         }
         case CMPTransaction::CANCEL_AT_PRICE:
         {
@@ -1677,14 +1677,14 @@ static UniValue trade_MP(const JSONRPCRequest& request)
             values.push_back(request.params[2]); // amountForSale
             values.push_back(request.params[3]); // propertyIdDesired
             values.push_back(request.params[4]); // amountDesired
-            return omni_sendcanceltradesbyprice(request);
+            return tl_sendcanceltradesbyprice(request);
         }
         case CMPTransaction::CANCEL_ALL_FOR_PAIR:
         {
             values.push_back(request.params[0]); // fromAddress
             values.push_back(request.params[1]); // propertyIdForSale
             values.push_back(request.params[3]); // propertyIdDesired
-            return omni_sendcanceltradesbypair(request);
+            return tl_sendcanceltradesbypair(request);
         }
         case CMPTransaction::CANCEL_EVERYTHING:
         {
@@ -1699,7 +1699,7 @@ static UniValue trade_MP(const JSONRPCRequest& request)
             }
             values.push_back(request.params[0]); // fromAddress
             values.push_back(ecosystem);
-            return omni_sendcancelalltrades(request);
+            return tl_sendcancelalltrades(request);
         }
     }
 
@@ -2938,32 +2938,32 @@ static const CRPCCommand commands[] =
 { //  category                             name                            actor (function)               okSafeMode
   //  ------------------------------------ ------------------------------- ------------------------------ ----------
 #ifdef ENABLE_WALLET
-    { "omni layer (transaction creation)", "omni_sendrawtx",               &omni_sendrawtx,               {"fromaddress", "rawtransaction", "referenceaddress", "redeemaddress", "referenceamount"} },
-    { "omni layer (transaction creation)", "omni_send",                    &omni_send,                    {"fromaddress", "toaddress", "propertyid", "amount", "redeemaddress", "referenceamount"} },
-    { "omni layer (transaction creation)", "tl_senddexoffer",              &tl_senddexoffer,              {} },
-    { "omni layer (transaction creation)", "omni_senddexaccept",           &omni_senddexaccept,           {"fromaddress", "toaddress", "propertyid", "amount", "override"} },
-    { "omni layer (transaction creation)", "omni_sendissuancecrowdsale",   &omni_sendissuancecrowdsale,   {"fromaddress", "ecosystem", "type", "previousid", "category", "subcategory", "name", "url", "data", "propertyiddesired", "tokensperunit", "deadline", "earlybonus", "issuerpercentage"} },
-    { "omni layer (transaction creation)", "omni_sendissuancefixed",       &omni_sendissuancefixed,       {"fromaddress", "ecosystem", "type", "previousid", "category", "subcategory", "name", "url", "data", "amount"} },
-    { "omni layer (transaction creation)", "omni_sendissuancemanaged",     &omni_sendissuancemanaged,     {"fromaddress", "ecosystem", "type", "previousid", "category", "subcategory", "name", "url", "data"} },
-    { "omni layer (transaction creation)", "omni_sendtrade",               &omni_sendtrade,               {"fromaddress", "propertyidforsale", "amountforsale", "propertiddesired", "amountdesired"} },
-    { "omni layer (transaction creation)", "omni_sendcanceltradesbyprice", &omni_sendcanceltradesbyprice, {"fromaddress", "propertyidforsale", "amountforsale", "propertiddesired", "amountdesired"} },
-    { "omni layer (transaction creation)", "omni_sendcanceltradesbypair",  &omni_sendcanceltradesbypair,  {"fromaddress", "propertyidforsale", "propertiddesired"} },
-    { "omni layer (transaction creation)", "omni_sendcancelalltrades",     &omni_sendcancelalltrades,     {"fromaddress", "ecosystem"} },
-    { "omni layer (transaction creation)", "omni_sendsto",                 &omni_sendsto,                 {"fromaddress", "propertyid", "amount", "redeemaddress", "distributionproperty"} },
-    { "omni layer (transaction creation)", "omni_sendgrant",               &omni_sendgrant,               {"fromaddress", "toaddress", "propertyid", "amount", "memo"} },
-    { "omni layer (transaction creation)", "omni_sendrevoke",              &omni_sendrevoke,              {"fromaddress", "propertyid", "amount", "memo"} },
-    { "omni layer (transaction creation)", "omni_sendclosecrowdsale",      &omni_sendclosecrowdsale,      {"fromaddress", "propertyid"} },
-    { "omni layer (transaction creation)", "omni_sendchangeissuer",        &omni_sendchangeissuer,        {"fromaddress", "toaddress", "propertyid"} },
-    { "omni layer (transaction creation)", "omni_sendall",                 &omni_sendall,                 {"fromaddress", "toaddress", "ecosystem", "redeemaddress", "referenceamount"} },
-    { "omni layer (transaction creation)", "omni_sendenablefreezing",      &omni_sendenablefreezing,      {"fromaddress", "propertyid"} },
-    { "omni layer (transaction creation)", "omni_senddisablefreezing",     &omni_senddisablefreezing,     {"fromaddress", "propertyid"} },
-    { "omni layer (transaction creation)", "omni_sendfreeze",              &omni_sendfreeze,              {"fromaddress", "toaddress", "propertyid", "amount"} },
-    { "omni layer (transaction creation)", "omni_sendunfreeze",            &omni_sendunfreeze,            {"fromaddress", "toaddress", "propertyid", "amount"} },
-    { "hidden",                            "omni_senddeactivation",        &omni_senddeactivation,        {"fromaddress", "featureid"} },
-    { "hidden",                            "omni_sendactivation",          &omni_sendactivation,          {"fromaddress", "featureid", "block", "minclientversion"} },
-    { "hidden",                            "omni_sendalert",               &omni_sendalert,               {"fromaddress", "alerttype", "expiryvalue", "message"} },
-    { "omni layer (transaction creation)", "omni_funded_send",             &omni_funded_send,             {"fromaddress", "toaddress", "propertyid", "amount", "feeaddress"} },
-    { "omni layer (transaction creation)", "omni_funded_sendall",          &omni_funded_sendall,          {"fromaddress", "toaddress", "ecosystem", "feeaddress"} },
+    { "trade layer (transaction creation)", "tl_sendrawtx",               &tl_sendrawtx,               {"fromaddress", "rawtransaction", "referenceaddress", "redeemaddress", "referenceamount"} },
+    { "trade layer (transaction creation)", "tl_send",                    &tl_send,                    {"fromaddress", "toaddress", "propertyid", "amount", "redeemaddress", "referenceamount"} },
+    { "trade layer (transaction creation)", "tl_senddexoffer",              &tl_senddexoffer,              {} },
+    { "trade layer (transaction creation)", "tl_senddexaccept",           &tl_senddexaccept,           {"fromaddress", "toaddress", "propertyid", "amount", "override"} },
+    { "trade layer (transaction creation)", "tl_sendissuancecrowdsale",   &tl_sendissuancecrowdsale,   {"fromaddress", "ecosystem", "type", "previousid", "category", "subcategory", "name", "url", "data", "propertyiddesired", "tokensperunit", "deadline", "earlybonus", "issuerpercentage"} },
+    { "trade layer (transaction creation)", "tl_sendissuancefixed",       &tl_sendissuancefixed,       {"fromaddress", "ecosystem", "type", "previousid", "category", "subcategory", "name", "url", "data", "amount"} },
+    { "trade layer (transaction creation)", "tl_sendissuancemanaged",     &tl_sendissuancemanaged,     {"fromaddress", "ecosystem", "type", "previousid", "category", "subcategory", "name", "url", "data"} },
+    { "trade layer (transaction creation)", "tl_sendtrade",               &tl_sendtrade,               {"fromaddress", "propertyidforsale", "amountforsale", "propertiddesired", "amountdesired"} },
+    { "trade layer (transaction creation)", "tl_sendcanceltradesbyprice", &tl_sendcanceltradesbyprice, {"fromaddress", "propertyidforsale", "amountforsale", "propertiddesired", "amountdesired"} },
+    { "trade layer (transaction creation)", "tl_sendcanceltradesbypair",  &tl_sendcanceltradesbypair,  {"fromaddress", "propertyidforsale", "propertiddesired"} },
+    { "trade layer (transaction creation)", "tl_sendcancelalltrades",     &tl_sendcancelalltrades,     {"fromaddress", "ecosystem"} },
+    { "trade layer (transaction creation)", "tl_sendsto",                 &tl_sendsto,                 {"fromaddress", "propertyid", "amount", "redeemaddress", "distributionproperty"} },
+    { "trade layer (transaction creation)", "tl_sendgrant",               &tl_sendgrant,               {"fromaddress", "toaddress", "propertyid", "amount", "memo"} },
+    { "trade layer (transaction creation)", "tl_sendrevoke",              &tl_sendrevoke,              {"fromaddress", "propertyid", "amount", "memo"} },
+    { "trade layer (transaction creation)", "tl_sendclosecrowdsale",      &tl_sendclosecrowdsale,      {"fromaddress", "propertyid"} },
+    { "trade layer (transaction creation)", "tl_sendchangeissuer",        &tl_sendchangeissuer,        {"fromaddress", "toaddress", "propertyid"} },
+    { "trade layer (transaction creation)", "tl_sendall",                 &tl_sendall,                 {"fromaddress", "toaddress", "ecosystem", "redeemaddress", "referenceamount"} },
+    { "trade layer (transaction creation)", "tl_sendenablefreezing",      &tl_sendenablefreezing,      {"fromaddress", "propertyid"} },
+    { "trade layer (transaction creation)", "tl_senddisablefreezing",     &tl_senddisablefreezing,     {"fromaddress", "propertyid"} },
+    { "trade layer (transaction creation)", "tl_sendfreeze",              &tl_sendfreeze,              {"fromaddress", "toaddress", "propertyid", "amount"} },
+    { "trade layer (transaction creation)", "tl_sendunfreeze",            &tl_sendunfreeze,            {"fromaddress", "toaddress", "propertyid", "amount"} },
+    { "hidden",                            "tl_senddeactivation",        &tl_senddeactivation,        {"fromaddress", "featureid"} },
+    { "hidden",                            "tl_sendactivation",          &tl_sendactivation,          {"fromaddress", "featureid", "block", "minclientversion"} },
+    { "hidden",                            "tl_sendalert",               &tl_sendalert,               {"fromaddress", "alerttype", "expiryvalue", "message"} },
+    { "tl layer (transaction creation)", "tl_funded_send",             &tl_funded_send,             {"fromaddress", "toaddress", "propertyid", "amount", "feeaddress"} },
+    { "tl layer (transaction creation)", "tl_funded_sendall",          &tl_funded_sendall,          {"fromaddress", "toaddress", "ecosystem", "feeaddress"} },
     { "trade layer (transaction creation)",  "tl_send_dex_payment",         &tl_send_dex_payment,                {} },
     { "trade layer (transaction creation)",  "tl_sendvesting",              &tl_sendvesting,                     {} },
     { "trade layer (transaction creation)",  "tl_createcontract",           &tl_createcontract,                  {} },
@@ -2985,9 +2985,9 @@ static const CRPCCommand commands[] =
     { "trade layer (transaction creation)",  "tl_commit_tochannel",         &tl_commit_tochannel,                {} },
 
     /* depreciated: */
-    { "hidden",                            "sendrawtx_MP",                 &omni_sendrawtx,               {"fromaddress", "rawtransaction", "referenceaddress", "redeemaddress", "referenceamount"} },
-    { "hidden",                            "send_MP",                      &omni_send,                    {"fromaddress", "toaddress", "propertyid", "amount", "redeemaddress", "referenceamount"} },
-    { "hidden",                            "sendtoowners_MP",              &omni_sendsto,                 {"fromaddress", "propertyid", "amount", "redeemaddress", "distributionproperty"} },
+    { "hidden",                            "sendrawtx_MP",                 &tl_sendrawtx,               {"fromaddress", "rawtransaction", "referenceaddress", "redeemaddress", "referenceamount"} },
+    { "hidden",                            "send_MP",                      &tl_send,                    {"fromaddress", "toaddress", "propertyid", "amount", "redeemaddress", "referenceamount"} },
+    { "hidden",                            "sendtoowners_MP",              &tl_sendsto,                 {"fromaddress", "propertyid", "amount", "redeemaddress", "distributionproperty"} },
     { "hidden",                            "trade_MP",                     &trade_MP,                     {"fromaddress", "propertyidforsale", "amountforsale", "propertiddesired", "amountdesired", "action"} },
 #endif
 };

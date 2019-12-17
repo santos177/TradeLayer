@@ -28,7 +28,7 @@ using mastercore::cs_tx_cache;
 using mastercore::view;
 
 
-static UniValue omni_decodetransaction(const JSONRPCRequest& request)
+static UniValue tl_decodetransaction(const JSONRPCRequest& request)
 {
 #ifdef ENABLE_WALLET
     std::shared_ptr<CWallet> const wallet = GetWalletForJSONRPCRequest(request);
@@ -39,8 +39,8 @@ static UniValue omni_decodetransaction(const JSONRPCRequest& request)
 
     if (request.fHelp || request.params.size() < 1 || request.params.size() > 3)
         throw std::runtime_error(
-            RPCHelpMan{"omni_decodetransaction",
-               "\nDecodes an Omni transaction.\n"
+            RPCHelpMan{"tl_decodetransaction",
+               "\nDecodes an Trade Layer transaction.\n"
                "\nIf the inputs of the transaction are not in the chain, then they must be provided, because "
                "the transaction inputs are used to identify the sender of a transaction.\n"
                "\nA block height can be provided, which is used to determine the parsing rules.\n",
@@ -74,8 +74,8 @@ static UniValue omni_decodetransaction(const JSONRPCRequest& request)
                    "}\n"
                },
                RPCExamples{
-                   HelpExampleCli("omni_decodetransaction", "\"010000000163af14ce6d477e1c793507e32a5b7696288fa89705c0d02a3f66beb3c5b8afee0100000000ffffffff02ac020000000000004751210261ea979f6a06f9dafe00fb1263ea0aca959875a7073556a088cdfadcd494b3752102a3fd0a8a067e06941e066f78d930bfc47746f097fcd3f7ab27db8ddf37168b6b52ae22020000000000001976a914946cb2e08075bcbaf157e47bcb67eb2b2339d24288ac00000000\" \"[{\\\"txid\\\":\\\"eeafb8c5b3be663f2ad0c00597a88f2896765b2ae30735791c7e476dce14af63\\\",\\\"vout\\\":1,\\\"scriptPubKey\\\":\\\"76a9149084c0bd89289bc025d0264f7f23148fb683d56c88ac\\\",\\\"value\\\":0.0001123}]\"")
-                   + HelpExampleRpc("omni_decodetransaction", "\"010000000163af14ce6d477e1c793507e32a5b7696288fa89705c0d02a3f66beb3c5b8afee0100000000ffffffff02ac020000000000004751210261ea979f6a06f9dafe00fb1263ea0aca959875a7073556a088cdfadcd494b3752102a3fd0a8a067e06941e066f78d930bfc47746f097fcd3f7ab27db8ddf37168b6b52ae22020000000000001976a914946cb2e08075bcbaf157e47bcb67eb2b2339d24288ac00000000\", [{\"txid\":\"eeafb8c5b3be663f2ad0c00597a88f2896765b2ae30735791c7e476dce14af63\",\"vout\":1,\"scriptPubKey\":\"76a9149084c0bd89289bc025d0264f7f23148fb683d56c88ac\",\"value\":0.0001123}]")
+                   HelpExampleCli("tl_decodetransaction", "\"010000000163af14ce6d477e1c793507e32a5b7696288fa89705c0d02a3f66beb3c5b8afee0100000000ffffffff02ac020000000000004751210261ea979f6a06f9dafe00fb1263ea0aca959875a7073556a088cdfadcd494b3752102a3fd0a8a067e06941e066f78d930bfc47746f097fcd3f7ab27db8ddf37168b6b52ae22020000000000001976a914946cb2e08075bcbaf157e47bcb67eb2b2339d24288ac00000000\" \"[{\\\"txid\\\":\\\"eeafb8c5b3be663f2ad0c00597a88f2896765b2ae30735791c7e476dce14af63\\\",\\\"vout\\\":1,\\\"scriptPubKey\\\":\\\"76a9149084c0bd89289bc025d0264f7f23148fb683d56c88ac\\\",\\\"value\\\":0.0001123}]\"")
+                   + HelpExampleRpc("tl_decodetransaction", "\"010000000163af14ce6d477e1c793507e32a5b7696288fa89705c0d02a3f66beb3c5b8afee0100000000ffffffff02ac020000000000004751210261ea979f6a06f9dafe00fb1263ea0aca959875a7073556a088cdfadcd494b3752102a3fd0a8a067e06941e066f78d930bfc47746f097fcd3f7ab27db8ddf37168b6b52ae22020000000000001976a914946cb2e08075bcbaf157e47bcb67eb2b2339d24288ac00000000\", [{\"txid\":\"eeafb8c5b3be663f2ad0c00597a88f2896765b2ae30735791c7e476dce14af63\",\"vout\":1,\"scriptPubKey\":\"76a9149084c0bd89289bc025d0264f7f23148fb683d56c88ac\",\"value\":0.0001123}]")
                }
             }.ToString());
 
@@ -112,11 +112,11 @@ static UniValue omni_decodetransaction(const JSONRPCRequest& request)
     return txObj;
 }
 
-static UniValue omni_createrawtx_opreturn(const JSONRPCRequest& request)
+static UniValue tl_createrawtx_opreturn(const JSONRPCRequest& request)
 {
     if (request.fHelp || request.params.size() != 2)
         throw std::runtime_error(
-            RPCHelpMan{"omni_createrawtx_opreturn",
+            RPCHelpMan{"tl_createrawtx_opreturn",
                "\nAdds a payload with class C (op-return) encoding to the transaction.\n"
                "\nIf no raw transaction is provided, a new transaction is created.\n"
                "\nIf the data encoding fails, then the transaction is not modified.\n",
@@ -128,8 +128,8 @@ static UniValue omni_createrawtx_opreturn(const JSONRPCRequest& request)
                    "\"rawtx\"                 (string) the hex-encoded modified raw transaction\n"
                },
                RPCExamples{
-                   HelpExampleCli("omni_createrawtx_opreturn", "\"01000000000000000000\" \"00000000000000020000000006dac2c0\"")
-                   + HelpExampleRpc("omni_createrawtx_opreturn", "\"01000000000000000000\", \"00000000000000020000000006dac2c0\"")
+                   HelpExampleCli("tl_createrawtx_opreturn", "\"01000000000000000000\" \"00000000000000020000000006dac2c0\"")
+                   + HelpExampleRpc("tl_createrawtx_opreturn", "\"01000000000000000000\", \"00000000000000020000000006dac2c0\"")
                }
             }.ToString());
 
@@ -144,7 +144,7 @@ static UniValue omni_createrawtx_opreturn(const JSONRPCRequest& request)
     return EncodeHexTx(CTransaction(tx));
 }
 
-static UniValue omni_createrawtx_multisig(const JSONRPCRequest& request)
+static UniValue tl_createrawtx_multisig(const JSONRPCRequest& request)
 {
 #ifdef ENABLE_WALLET
     std::shared_ptr<CWallet> const wallet = GetWalletForJSONRPCRequest(request);
@@ -155,7 +155,7 @@ static UniValue omni_createrawtx_multisig(const JSONRPCRequest& request)
 
     if (request.fHelp || request.params.size() != 4)
         throw std::runtime_error(
-            RPCHelpMan{"omni_createrawtx_multisig",
+            RPCHelpMan{"tl_createrawtx_multisig",
                "\nAdds a payload with class B (bare-multisig) encoding to the transaction.\n"
                "\nIf no raw transaction is provided, a new transaction is created.\n"
                "\nIf the data encoding fails, then the transaction is not modified.\n",
@@ -169,8 +169,8 @@ static UniValue omni_createrawtx_multisig(const JSONRPCRequest& request)
                    "\"rawtx\"                 (string) the hex-encoded modified raw transaction\n"
                },
                RPCExamples{
-                   HelpExampleCli("omni_createrawtx_multisig", "\"0100000001a7a9402ecd77f3c9f745793c9ec805bfa2e14b89877581c734c774864247e6f50400000000ffffffff01aa0a0000000000001976a9146d18edfe073d53f84dd491dae1379f8fb0dfe5d488ac00000000\" \"00000000000000020000000000989680\" \"1LifmeXYHeUe2qdKWBGVwfbUCMMrwYtoMm\" \"0252ce4bdd3ce38b4ebbc5a6e1343608230da508ff12d23d85b58c964204c4cef3\"")
-                   + HelpExampleRpc("omni_createrawtx_multisig", "\"0100000001a7a9402ecd77f3c9f745793c9ec805bfa2e14b89877581c734c774864247e6f50400000000ffffffff01aa0a0000000000001976a9146d18edfe073d53f84dd491dae1379f8fb0dfe5d488ac00000000\", \"00000000000000020000000000989680\", \"1LifmeXYHeUe2qdKWBGVwfbUCMMrwYtoMm\", \"0252ce4bdd3ce38b4ebbc5a6e1343608230da508ff12d23d85b58c964204c4cef3\"")
+                   HelpExampleCli("tl_createrawtx_multisig", "\"0100000001a7a9402ecd77f3c9f745793c9ec805bfa2e14b89877581c734c774864247e6f50400000000ffffffff01aa0a0000000000001976a9146d18edfe073d53f84dd491dae1379f8fb0dfe5d488ac00000000\" \"00000000000000020000000000989680\" \"1LifmeXYHeUe2qdKWBGVwfbUCMMrwYtoMm\" \"0252ce4bdd3ce38b4ebbc5a6e1343608230da508ff12d23d85b58c964204c4cef3\"")
+                   + HelpExampleRpc("tl_createrawtx_multisig", "\"0100000001a7a9402ecd77f3c9f745793c9ec805bfa2e14b89877581c734c774864247e6f50400000000ffffffff01aa0a0000000000001976a9146d18edfe073d53f84dd491dae1379f8fb0dfe5d488ac00000000\", \"00000000000000020000000000989680\", \"1LifmeXYHeUe2qdKWBGVwfbUCMMrwYtoMm\", \"0252ce4bdd3ce38b4ebbc5a6e1343608230da508ff12d23d85b58c964204c4cef3\"")
                }
             }.ToString());
 
@@ -187,11 +187,11 @@ static UniValue omni_createrawtx_multisig(const JSONRPCRequest& request)
     return EncodeHexTx(CTransaction(tx));
 }
 
-static UniValue omni_createrawtx_input(const JSONRPCRequest& request)
+static UniValue tl_createrawtx_input(const JSONRPCRequest& request)
 {
     if (request.fHelp || request.params.size() != 3)
         throw std::runtime_error(
-            RPCHelpMan{"omni_createrawtx_input",
+            RPCHelpMan{"tl_createrawtx_input",
                "\nAdds a transaction input to the transaction.\n"
                "\nIf no raw transaction is provided, a new transaction is created.\n",
                {
@@ -203,8 +203,8 @@ static UniValue omni_createrawtx_input(const JSONRPCRequest& request)
                    "\"rawtx\"                 (string) the hex-encoded modified raw transaction\n"
                },
                RPCExamples{
-                   HelpExampleCli("omni_createrawtx_input", "\"01000000000000000000\" \"b006729017df05eda586df9ad3f8ccfee5be340aadf88155b784d1fc0e8342ee\" 0")
-                   + HelpExampleRpc("omni_createrawtx_input", "\"01000000000000000000\", \"b006729017df05eda586df9ad3f8ccfee5be340aadf88155b784d1fc0e8342ee\", 0")
+                   HelpExampleCli("tl_createrawtx_input", "\"01000000000000000000\" \"b006729017df05eda586df9ad3f8ccfee5be340aadf88155b784d1fc0e8342ee\" 0")
+                   + HelpExampleRpc("tl_createrawtx_input", "\"01000000000000000000\", \"b006729017df05eda586df9ad3f8ccfee5be340aadf88155b784d1fc0e8342ee\", 0")
                }
             }.ToString());
 
@@ -220,11 +220,11 @@ static UniValue omni_createrawtx_input(const JSONRPCRequest& request)
     return EncodeHexTx(CTransaction(tx));
 }
 
-static UniValue omni_createrawtx_reference(const JSONRPCRequest& request)
+static UniValue tl_createrawtx_reference(const JSONRPCRequest& request)
 {
     if (request.fHelp || request.params.size() < 2 || request.params.size() > 3)
         throw std::runtime_error(
-            RPCHelpMan{"omni_createrawtx_reference",
+            RPCHelpMan{"tl_createrawtx_reference",
                "\nAdds a reference output to the transaction.\n"
                "\nIf no raw transaction is provided, a new transaction is created.\n"
                "\nThe output value is set to at least the dust threshold.\n",
@@ -237,8 +237,8 @@ static UniValue omni_createrawtx_reference(const JSONRPCRequest& request)
                    "\"rawtx\"                 (string) the hex-encoded modified raw transaction\n"
                },
                RPCExamples{
-                   HelpExampleCli("omni_createrawtx_reference", "\"0100000001a7a9402ecd77f3c9f745793c9ec805bfa2e14b89877581c734c774864247e6f50400000000ffffffff03aa0a0000000000001976a9146d18edfe073d53f84dd491dae1379f8fb0dfe5d488ac5c0d0000000000004751210252ce4bdd3ce38b4ebbc5a6e1343608230da508ff12d23d85b58c964204c4cef3210294cc195fc096f87d0f813a337ae7e5f961b1c8a18f1f8604a909b3a5121f065b52aeaa0a0000000000001976a914946cb2e08075bcbaf157e47bcb67eb2b2339d24288ac00000000\" \"1CE8bBr1dYZRMnpmyYsFEoexa1YoPz2mfB\" 0.005")
-                   + HelpExampleRpc("omni_createrawtx_reference", "\"0100000001a7a9402ecd77f3c9f745793c9ec805bfa2e14b89877581c734c774864247e6f50400000000ffffffff03aa0a0000000000001976a9146d18edfe073d53f84dd491dae1379f8fb0dfe5d488ac5c0d0000000000004751210252ce4bdd3ce38b4ebbc5a6e1343608230da508ff12d23d85b58c964204c4cef3210294cc195fc096f87d0f813a337ae7e5f961b1c8a18f1f8604a909b3a5121f065b52aeaa0a0000000000001976a914946cb2e08075bcbaf157e47bcb67eb2b2339d24288ac00000000\", \"1CE8bBr1dYZRMnpmyYsFEoexa1YoPz2mfB\", 0.005")
+                   HelpExampleCli("tl_createrawtx_reference", "\"0100000001a7a9402ecd77f3c9f745793c9ec805bfa2e14b89877581c734c774864247e6f50400000000ffffffff03aa0a0000000000001976a9146d18edfe073d53f84dd491dae1379f8fb0dfe5d488ac5c0d0000000000004751210252ce4bdd3ce38b4ebbc5a6e1343608230da508ff12d23d85b58c964204c4cef3210294cc195fc096f87d0f813a337ae7e5f961b1c8a18f1f8604a909b3a5121f065b52aeaa0a0000000000001976a914946cb2e08075bcbaf157e47bcb67eb2b2339d24288ac00000000\" \"1CE8bBr1dYZRMnpmyYsFEoexa1YoPz2mfB\" 0.005")
+                   + HelpExampleRpc("tl_createrawtx_reference", "\"0100000001a7a9402ecd77f3c9f745793c9ec805bfa2e14b89877581c734c774864247e6f50400000000ffffffff03aa0a0000000000001976a9146d18edfe073d53f84dd491dae1379f8fb0dfe5d488ac5c0d0000000000004751210252ce4bdd3ce38b4ebbc5a6e1343608230da508ff12d23d85b58c964204c4cef3210294cc195fc096f87d0f813a337ae7e5f961b1c8a18f1f8604a909b3a5121f065b52aeaa0a0000000000001976a914946cb2e08075bcbaf157e47bcb67eb2b2339d24288ac00000000\", \"1CE8bBr1dYZRMnpmyYsFEoexa1YoPz2mfB\", 0.005")
                }
             }.ToString());
 
@@ -254,11 +254,11 @@ static UniValue omni_createrawtx_reference(const JSONRPCRequest& request)
     return EncodeHexTx(CTransaction(tx));
 }
 
-static UniValue omni_createrawtx_change(const JSONRPCRequest& request)
+static UniValue tl_createrawtx_change(const JSONRPCRequest& request)
 {
     if (request.fHelp || request.params.size() < 4 || request.params.size() > 5)
         throw std::runtime_error(
-            RPCHelpMan{"omni_createrawtx_change",
+            RPCHelpMan{"tl_createrawtx_change",
                "\nAdds a change output to the transaction.\n"
                "\nThe provided inputs are not added to the transaction, but only used to "
                "determine the change. It is assumed that the inputs were previously added, "
@@ -291,8 +291,8 @@ static UniValue omni_createrawtx_change(const JSONRPCRequest& request)
                    "\"rawtx\"                 (string) the hex-encoded modified raw transaction\n"
                },
                RPCExamples{
-                   HelpExampleCli("omni_createrawtx_change", "\"0100000001b15ee60431ef57ec682790dec5a3c0d83a0c360633ea8308fbf6d5fc10a779670400000000ffffffff025c0d00000000000047512102f3e471222bb57a7d416c82bf81c627bfcd2bdc47f36e763ae69935bba4601ece21021580b888ff56feb27f17f08802ebed26258c23697d6a462d43fc13b565fda2dd52aeaa0a0000000000001976a914946cb2e08075bcbaf157e47bcb67eb2b2339d24288ac00000000\" \"[{\\\"txid\\\":\\\"6779a710fcd5f6fb0883ea3306360c3ad8c0a3c5de902768ec57ef3104e65eb1\\\",\\\"vout\\\":4,\\\"scriptPubKey\\\":\\\"76a9147b25205fd98d462880a3e5b0541235831ae959e588ac\\\",\\\"value\\\":0.00068257}]\" \"1CE8bBr1dYZRMnpmyYsFEoexa1YoPz2mfB\" 0.00003500 1")
-                   + HelpExampleRpc("omni_createrawtx_change", "\"0100000001b15ee60431ef57ec682790dec5a3c0d83a0c360633ea8308fbf6d5fc10a779670400000000ffffffff025c0d00000000000047512102f3e471222bb57a7d416c82bf81c627bfcd2bdc47f36e763ae69935bba4601ece21021580b888ff56feb27f17f08802ebed26258c23697d6a462d43fc13b565fda2dd52aeaa0a0000000000001976a914946cb2e08075bcbaf157e47bcb67eb2b2339d24288ac00000000\", [{\"txid\":\"6779a710fcd5f6fb0883ea3306360c3ad8c0a3c5de902768ec57ef3104e65eb1\",\"vout\":4,\"scriptPubKey\":\"76a9147b25205fd98d462880a3e5b0541235831ae959e588ac\",\"value\":0.00068257}], \"1CE8bBr1dYZRMnpmyYsFEoexa1YoPz2mfB\", 0.00003500, 1")
+                   HelpExampleCli("tl_createrawtx_change", "\"0100000001b15ee60431ef57ec682790dec5a3c0d83a0c360633ea8308fbf6d5fc10a779670400000000ffffffff025c0d00000000000047512102f3e471222bb57a7d416c82bf81c627bfcd2bdc47f36e763ae69935bba4601ece21021580b888ff56feb27f17f08802ebed26258c23697d6a462d43fc13b565fda2dd52aeaa0a0000000000001976a914946cb2e08075bcbaf157e47bcb67eb2b2339d24288ac00000000\" \"[{\\\"txid\\\":\\\"6779a710fcd5f6fb0883ea3306360c3ad8c0a3c5de902768ec57ef3104e65eb1\\\",\\\"vout\\\":4,\\\"scriptPubKey\\\":\\\"76a9147b25205fd98d462880a3e5b0541235831ae959e588ac\\\",\\\"value\\\":0.00068257}]\" \"1CE8bBr1dYZRMnpmyYsFEoexa1YoPz2mfB\" 0.00003500 1")
+                   + HelpExampleRpc("tl_createrawtx_change", "\"0100000001b15ee60431ef57ec682790dec5a3c0d83a0c360633ea8308fbf6d5fc10a779670400000000ffffffff025c0d00000000000047512102f3e471222bb57a7d416c82bf81c627bfcd2bdc47f36e763ae69935bba4601ece21021580b888ff56feb27f17f08802ebed26258c23697d6a462d43fc13b565fda2dd52aeaa0a0000000000001976a914946cb2e08075bcbaf157e47bcb67eb2b2339d24288ac00000000\", [{\"txid\":\"6779a710fcd5f6fb0883ea3306360c3ad8c0a3c5de902768ec57ef3104e65eb1\",\"vout\":4,\"scriptPubKey\":\"76a9147b25205fd98d462880a3e5b0541235831ae959e588ac\",\"value\":0.00068257}], \"1CE8bBr1dYZRMnpmyYsFEoexa1YoPz2mfB\", 0.00003500, 1")
                }
             }.ToString());
 
@@ -318,12 +318,12 @@ static UniValue omni_createrawtx_change(const JSONRPCRequest& request)
 static const CRPCCommand commands[] =
 { //  category                         name                          actor (function)             okSafeMode
   //  -------------------------------- ----------------------------- ---------------------------- ----------
-    { "omni layer (raw transactions)", "omni_decodetransaction",     &omni_decodetransaction,     {"rawtx", "prevtxs", "height"} },
-    { "omni layer (raw transactions)", "omni_createrawtx_opreturn",  &omni_createrawtx_opreturn,  {"rawtx", "payload"} },
-    { "omni layer (raw transactions)", "omni_createrawtx_multisig",  &omni_createrawtx_multisig,  {"rawtx", "payload", "seed", "redeemkey"} },
-    { "omni layer (raw transactions)", "omni_createrawtx_input",     &omni_createrawtx_input,     {"rawtx", "txid", "n"} },
-    { "omni layer (raw transactions)", "omni_createrawtx_reference", &omni_createrawtx_reference, {"rawtx", "destination", "referenceamount"} },
-    { "omni layer (raw transactions)", "omni_createrawtx_change",    &omni_createrawtx_change,    {"rawtx", "prevtxs", "destination", "fee", "position"} },
+    { "trade layer (raw transactions)", "tl_decodetransaction",     &tl_decodetransaction,     {"rawtx", "prevtxs", "height"} },
+    { "trade layer (raw transactions)", "tl_createrawtx_opreturn",  &tl_createrawtx_opreturn,  {"rawtx", "payload"} },
+    { "trade layer (raw transactions)", "tl_createrawtx_multisig",  &tl_createrawtx_multisig,  {"rawtx", "payload", "seed", "redeemkey"} },
+    { "trade layer (raw transactions)", "tl_createrawtx_input",     &tl_createrawtx_input,     {"rawtx", "txid", "n"} },
+    { "trade layer (raw transactions)", "tl_createrawtx_reference", &tl_createrawtx_reference, {"rawtx", "destination", "referenceamount"} },
+    { "trade layer (raw transactions)", "tl_createrawtx_change",    &tl_createrawtx_change,    {"rawtx", "prevtxs", "destination", "fee", "position"} },
 
 };
 

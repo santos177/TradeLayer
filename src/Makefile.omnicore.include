@@ -43,7 +43,7 @@ TRADELAYER_H = \
   tradelayer/walletfetchtxs.h \
   tradelayer/wallettxbuilder.h \
   tradelayer/tradelayer_matrices.h\
-  tradelayer/externfns.h\
+  tradelayer/externfns.h \
   tradelayer/walletutils.h
 
 TRADELAYER_CPP = \
@@ -108,4 +108,3 @@ CLEANFILES += $(CLEAN_TRADELAYER)
 if ENABLE_TESTS
 include Makefile.omnitest.include
 endif
-tradelayer

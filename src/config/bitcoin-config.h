@@ -363,26 +363,14 @@
 /* Define to the sub-directory where libtool stores uninstalled libraries. */
 #define LT_OBJDIR ".libs/"
 
-/* Trade Layer build number */
-#define TRADELAYER_VERSION_BUILD 0
-
-/* Trade Layer major version */
-#define TRADELAYER_VERSION_MAJOR 0
-
-/* Trade Layer minor version */
-#define TRADELAYER_VERSION_MINOR 7
-
-/* Trade Layer patch version */
-#define TRADELAYER_VERSION_PATCH 0
-
 /* Define to the address where bug reports for this package should be sent. */
-#define PACKAGE_BUGREPORT "https://github.com/OmniLayer/omnicore/issues"
+#define PACKAGE_BUGREPORT "https://github.com/TradeLayer/tradelayer/issues"
 
 /* Define to the full name of this package. */
-#define PACKAGE_NAME "Trade Layer"
+#define PACKAGE_NAME "Omni Core"
 
 /* Define to the full name and version of this package. */
-#define PACKAGE_STRING "Trade Layer 0.7.0"
+#define PACKAGE_STRING "Omni Core 0.7.0"
 
 /* Define to the one symbol short name of this package. */
 #define PACKAGE_TARNAME "tradelayer"
@@ -417,6 +405,18 @@
 
 /* Define to 1 if strerror_r returns char *. */
 #define STRERROR_R_CHAR_P 1
+
+/* Omni Core build number */
+#define TRADELAYER_VERSION_BUILD 0
+
+/* Omni Core major version */
+#define TRADELAYER_VERSION_MAJOR 0
+
+/* Omni Core minor version */
+#define TRADELAYER_VERSION_MINOR 7
+
+/* Omni Core patch version */
+#define TRADELAYER_VERSION_PATCH 0
 
 /* Define this symbol to build in assembly routines */
 #define USE_ASM 1

@@ -676,6 +676,6 @@ if ENABLE_QT_TESTS
 include Makefile.qttest.include
 endif
 
-# Trade Layer
+# Omni Core
 include Makefile.omnicore.include
 #

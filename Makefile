@@ -75,10 +75,10 @@ am__make_running_with_option = \
   test $$has_opt = yes
 am__make_dryrun = (target_option=n; $(am__make_running_with_option))
 am__make_keepgoing = (target_option=k; $(am__make_running_with_option))
-pkgdatadir = $(datadir)/omnicore
-pkgincludedir = $(includedir)/omnicore
-pkglibdir = $(libdir)/omnicore
-pkglibexecdir = $(libexecdir)/omnicore
+pkgdatadir = $(datadir)/tradelayer
+pkgincludedir = $(includedir)/tradelayer
+pkglibdir = $(libdir)/tradelayer
+pkglibexecdir = $(libexecdir)/tradelayer
 am__cd = CDPATH="$${ZSH_VERSION+.}$(PATH_SEPARATOR)" && cd
 install_sh_DATA = $(install_sh) -c -m 644
 install_sh_PROGRAM = $(install_sh) -c
@@ -238,8 +238,8 @@ am__DIST_COMMON = $(srcdir)/Makefile.in \
 	$(top_srcdir)/test/config.ini.in \
 	$(top_srcdir)/test/functional/test_runner.py \
 	$(top_srcdir)/test/util/bitcoin-util-test.py \
-	$(top_srcdir)/test/util/rpcauth-test.py COPYING \
-	build-aux/compile build-aux/config.guess build-aux/config.sub \
+	$(top_srcdir)/test/util/rpcauth-test.py build-aux/compile \
+	build-aux/config.guess build-aux/config.sub \
 	build-aux/install-sh build-aux/ltmain.sh build-aux/missing
 DISTFILES = $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST)
 distdir = $(PACKAGE)-$(VERSION)
@@ -409,18 +409,14 @@ OBJCXXDEPMODE = depmode=gcc3
 OBJCXXFLAGS = 
 OBJDUMP = objdump
 OBJEXT = o
-OMNICORE_VERSION_BUILD = 0
-OMNICORE_VERSION_MAJOR = 0
-OMNICORE_VERSION_MINOR = 7
-OMNICORE_VERSION_PATCH = 0
 OTOOL = 
 OTOOL64 = 
-PACKAGE = omnicore
-PACKAGE_BUGREPORT = https://github.com/OmniLayer/omnicore/issues
+PACKAGE = tradelayer
+PACKAGE_BUGREPORT = https://github.com/TradeLayer/tradelayer/issues
 PACKAGE_NAME = Omni Core
 PACKAGE_STRING = Omni Core 0.7.0
-PACKAGE_TARNAME = omnicore
-PACKAGE_URL = http://www.omnilayer.org/
+PACKAGE_TARNAME = tradelayer
+PACKAGE_URL = http://www.tradelayer.org/
 PACKAGE_VERSION = 0.7.0
 PATH_SEPARATOR = :
 PIC_FLAGS = -fPIC
@@ -493,6 +489,10 @@ SSL_LIBS = -lssl
 STRIP = /usr/bin/strip
 TESTDEFS =  -DBOOST_TEST_DYN_LINK
 TIFFCP = 
+TRADELAYER_VERSION_BUILD = 0
+TRADELAYER_VERSION_MAJOR = 0
+TRADELAYER_VERSION_MINOR = 7
+TRADELAYER_VERSION_PATCH = 0
 UIC = 
 UNIVALUE_CFLAGS = -I$(srcdir)/univalue/include
 UNIVALUE_LIBS = univalue/libunivalue.la
