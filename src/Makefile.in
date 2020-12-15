@@ -122,8 +122,8 @@ bin_PROGRAMS = $(am__EXEEXT_1) $(am__EXEEXT_2) $(am__EXEEXT_3) \
 	$(am__EXEEXT_7) $(am__EXEEXT_8)
 noinst_PROGRAMS = $(am__EXEEXT_10)
 TESTS = $(am__EXEEXT_8)
-@BUILD_BITCOIND_TRUE@am__append_4 = omnicored
-@BUILD_BITCOIN_CLI_TRUE@am__append_5 = omnicore-cli
+@BUILD_BITCOIND_TRUE@am__append_4 = bitcoind
+@BUILD_BITCOIN_CLI_TRUE@am__append_5 = bitcoin-cli
 @BUILD_BITCOIN_TX_TRUE@am__append_6 = bitcoin-tx
 @BUILD_BITCOIN_WALLET_TRUE@@ENABLE_WALLET_TRUE@am__append_7 = bitcoin-wallet
 @ENABLE_WALLET_FALSE@am__append_8 = dummywallet.cpp
@@ -1152,8 +1152,8 @@ libbitcoinconsensus_la_LINK = $(LIBTOOL) $(AM_V_lt) --tag=CXX \
 	$(libbitcoinconsensus_la_LDFLAGS) $(LDFLAGS) -o $@
 @BUILD_BITCOIN_LIBS_TRUE@am_libbitcoinconsensus_la_rpath = -rpath \
 @BUILD_BITCOIN_LIBS_TRUE@	$(libdir)
-@BUILD_BITCOIND_TRUE@am__EXEEXT_1 = omnicored$(EXEEXT)
-@BUILD_BITCOIN_CLI_TRUE@am__EXEEXT_2 = omnicore-cli$(EXEEXT)
+@BUILD_BITCOIND_TRUE@am__EXEEXT_1 = bitcoind$(EXEEXT)
+@BUILD_BITCOIN_CLI_TRUE@am__EXEEXT_2 = bitcoin-cli$(EXEEXT)
 @BUILD_BITCOIN_TX_TRUE@am__EXEEXT_3 = bitcoin-tx$(EXEEXT)
 @BUILD_BITCOIN_WALLET_TRUE@@ENABLE_WALLET_TRUE@am__EXEEXT_4 = bitcoin-wallet$(EXEEXT)
 @ENABLE_FUZZ_FALSE@@ENABLE_TESTS_TRUE@am__EXEEXT_5 = test/test_omnicore$(EXEEXT)
@@ -1243,10 +1243,21 @@ bench_bench_bitcoin_LINK = $(LIBTOOL) $(AM_V_lt) --tag=CXX \
 	$(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=link $(CXXLD) \
 	$(bench_bench_bitcoin_CXXFLAGS) $(CXXFLAGS) \
 	$(bench_bench_bitcoin_LDFLAGS) $(LDFLAGS) -o $@
-am__bitcoin_tx_SOURCES_DIST = bitcoin-tx.cpp bitcoin-tx-res.rc
-@TARGET_WINDOWS_TRUE@am__objects_28 = bitcoin-tx-res.$(OBJEXT)
-am_bitcoin_tx_OBJECTS = bitcoin_tx-bitcoin-tx.$(OBJEXT) \
+am__bitcoin_cli_SOURCES_DIST = bitcoin-cli.cpp bitcoin-cli-res.rc
+@TARGET_WINDOWS_TRUE@am__objects_28 = bitcoin-cli-res.$(OBJEXT)
+am_bitcoin_cli_OBJECTS = bitcoin_cli-bitcoin-cli.$(OBJEXT) \
 	$(am__objects_28)
+bitcoin_cli_OBJECTS = $(am_bitcoin_cli_OBJECTS)
+bitcoin_cli_DEPENDENCIES = $(LIBBITCOIN_CLI) $(am__DEPENDENCIES_4) \
+	$(LIBBITCOIN_UTIL) $(LIBBITCOIN_CRYPTO) $(am__DEPENDENCIES_3) \
+	$(am__DEPENDENCIES_3) $(am__DEPENDENCIES_3)
+bitcoin_cli_LINK = $(LIBTOOL) $(AM_V_lt) --tag=CXX $(AM_LIBTOOLFLAGS) \
+	$(LIBTOOLFLAGS) --mode=link $(CXXLD) $(bitcoin_cli_CXXFLAGS) \
+	$(CXXFLAGS) $(bitcoin_cli_LDFLAGS) $(LDFLAGS) -o $@
+am__bitcoin_tx_SOURCES_DIST = bitcoin-tx.cpp bitcoin-tx-res.rc
+@TARGET_WINDOWS_TRUE@am__objects_29 = bitcoin-tx-res.$(OBJEXT)
+am_bitcoin_tx_OBJECTS = bitcoin_tx-bitcoin-tx.$(OBJEXT) \
+	$(am__objects_29)
 bitcoin_tx_OBJECTS = $(am_bitcoin_tx_OBJECTS)
 bitcoin_tx_DEPENDENCIES = $(am__DEPENDENCIES_4) $(LIBBITCOIN_COMMON) \
 	$(LIBBITCOIN_UTIL) $(LIBBITCOIN_CONSENSUS) \
@@ -1257,9 +1268,9 @@ bitcoin_tx_LINK = $(LIBTOOL) $(AM_V_lt) --tag=CXX $(AM_LIBTOOLFLAGS) \
 	$(CXXFLAGS) $(bitcoin_tx_LDFLAGS) $(LDFLAGS) -o $@
 am__bitcoin_wallet_SOURCES_DIST = bitcoin-wallet.cpp \
 	bitcoin-wallet-res.rc
-@TARGET_WINDOWS_TRUE@am__objects_29 = bitcoin-wallet-res.$(OBJEXT)
+@TARGET_WINDOWS_TRUE@am__objects_30 = bitcoin-wallet-res.$(OBJEXT)
 am_bitcoin_wallet_OBJECTS = bitcoin_wallet-bitcoin-wallet.$(OBJEXT) \
-	$(am__objects_29)
+	$(am__objects_30)
 bitcoin_wallet_OBJECTS = $(am_bitcoin_wallet_OBJECTS)
 bitcoin_wallet_DEPENDENCIES = $(LIBBITCOIN_WALLET_TOOL) \
 	$(LIBBITCOIN_WALLET) $(LIBBITCOIN_SERVER) \
@@ -1273,22 +1284,11 @@ bitcoin_wallet_LINK = $(LIBTOOL) $(AM_V_lt) --tag=CXX \
 	$(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=link $(CXXLD) \
 	$(bitcoin_wallet_CXXFLAGS) $(CXXFLAGS) \
 	$(bitcoin_wallet_LDFLAGS) $(LDFLAGS) -o $@
-am__omnicore_cli_SOURCES_DIST = bitcoin-cli.cpp bitcoin-cli-res.rc
-@TARGET_WINDOWS_TRUE@am__objects_30 = bitcoin-cli-res.$(OBJEXT)
-am_omnicore_cli_OBJECTS = omnicore_cli-bitcoin-cli.$(OBJEXT) \
-	$(am__objects_30)
-omnicore_cli_OBJECTS = $(am_omnicore_cli_OBJECTS)
-omnicore_cli_DEPENDENCIES = $(LIBBITCOIN_CLI) $(am__DEPENDENCIES_4) \
-	$(LIBBITCOIN_UTIL) $(LIBBITCOIN_CRYPTO) $(am__DEPENDENCIES_3) \
-	$(am__DEPENDENCIES_3) $(am__DEPENDENCIES_3)
-omnicore_cli_LINK = $(LIBTOOL) $(AM_V_lt) --tag=CXX $(AM_LIBTOOLFLAGS) \
-	$(LIBTOOLFLAGS) --mode=link $(CXXLD) $(omnicore_cli_CXXFLAGS) \
-	$(CXXFLAGS) $(omnicore_cli_LDFLAGS) $(LDFLAGS) -o $@
-am__omnicored_SOURCES_DIST = bitcoind.cpp bitcoind-res.rc
+am__bitcoind_SOURCES_DIST = bitcoind.cpp bitcoind-res.rc
 @TARGET_WINDOWS_TRUE@am__objects_31 = bitcoind-res.$(OBJEXT)
-am_omnicored_OBJECTS = omnicored-bitcoind.$(OBJEXT) $(am__objects_31)
-omnicored_OBJECTS = $(am_omnicored_OBJECTS)
-omnicored_DEPENDENCIES = $(LIBBITCOIN_SERVER) $(LIBBITCOIN_WALLET) \
+am_bitcoind_OBJECTS = bitcoind-bitcoind.$(OBJEXT) $(am__objects_31)
+bitcoind_OBJECTS = $(am_bitcoind_OBJECTS)
+bitcoind_DEPENDENCIES = $(LIBBITCOIN_SERVER) $(LIBBITCOIN_WALLET) \
 	$(LIBBITCOIN_SERVER) $(LIBBITCOIN_COMMON) \
 	$(am__DEPENDENCIES_4) $(LIBBITCOIN_UTIL) $(LIBBITCOIN_ZMQ) \
 	$(LIBBITCOIN_CONSENSUS) $(LIBBITCOIN_CRYPTO) \
@@ -1297,9 +1297,9 @@ omnicored_DEPENDENCIES = $(LIBBITCOIN_SERVER) $(LIBBITCOIN_WALLET) \
 	$(am__DEPENDENCIES_3) $(am__DEPENDENCIES_3) \
 	$(am__DEPENDENCIES_3) $(am__DEPENDENCIES_3) \
 	$(am__DEPENDENCIES_3) $(am__DEPENDENCIES_3)
-omnicored_LINK = $(LIBTOOL) $(AM_V_lt) --tag=CXX $(AM_LIBTOOLFLAGS) \
-	$(LIBTOOLFLAGS) --mode=link $(CXXLD) $(omnicored_CXXFLAGS) \
-	$(CXXFLAGS) $(omnicored_LDFLAGS) $(LDFLAGS) -o $@
+bitcoind_LINK = $(LIBTOOL) $(AM_V_lt) --tag=CXX $(AM_LIBTOOLFLAGS) \
+	$(LIBTOOLFLAGS) --mode=link $(CXXLD) $(bitcoind_CXXFLAGS) \
+	$(CXXFLAGS) $(bitcoind_LDFLAGS) $(LDFLAGS) -o $@
 am__qt_omnicore_qt_SOURCES_DIST = qt/main.cpp \
 	omnicore/res/omnicore-qt-res.rc
 @ENABLE_QT_TRUE@am__objects_32 =  \
@@ -2244,9 +2244,9 @@ SOURCES = $(crypto_libbitcoin_crypto_avx2_a_SOURCES) \
 	$(nodist_qt_libbitcoinqt_a_SOURCES) \
 	$(libbitcoinconsensus_la_SOURCES) \
 	$(bench_bench_bitcoin_SOURCES) \
-	$(nodist_bench_bench_bitcoin_SOURCES) $(bitcoin_tx_SOURCES) \
-	$(bitcoin_wallet_SOURCES) $(omnicore_cli_SOURCES) \
-	$(omnicored_SOURCES) $(qt_omnicore_qt_SOURCES) \
+	$(nodist_bench_bench_bitcoin_SOURCES) $(bitcoin_cli_SOURCES) \
+	$(bitcoin_tx_SOURCES) $(bitcoin_wallet_SOURCES) \
+	$(bitcoind_SOURCES) $(qt_omnicore_qt_SOURCES) \
 	$(qt_test_test_omnicore_qt_SOURCES) \
 	$(nodist_qt_test_test_omnicore_qt_SOURCES) \
 	$(test_fuzz_address_deserialize_SOURCES) \
@@ -2289,9 +2289,9 @@ DIST_SOURCES = $(crypto_libbitcoin_crypto_avx2_a_SOURCES) \
 	$(am__qt_libbitcoinqt_a_SOURCES_DIST) \
 	$(am__libbitcoinconsensus_la_SOURCES_DIST) \
 	$(am__bench_bench_bitcoin_SOURCES_DIST) \
-	$(am__bitcoin_tx_SOURCES_DIST) \
+	$(am__bitcoin_cli_SOURCES_DIST) $(am__bitcoin_tx_SOURCES_DIST) \
 	$(am__bitcoin_wallet_SOURCES_DIST) \
-	$(am__omnicore_cli_SOURCES_DIST) $(am__omnicored_SOURCES_DIST) \
+	$(am__bitcoind_SOURCES_DIST) \
 	$(am__qt_omnicore_qt_SOURCES_DIST) \
 	$(am__qt_test_test_omnicore_qt_SOURCES_DIST) \
 	$(am__test_fuzz_address_deserialize_SOURCES_DIST) \
@@ -2536,11 +2536,11 @@ TEST_LOG_COMPILE = $(TEST_LOG_COMPILER) $(AM_TEST_LOG_FLAGS) \
 	$(TEST_LOG_FLAGS)
 am__DIST_COMMON = $(srcdir)/Makefile.bench.include \
 	$(srcdir)/Makefile.in $(srcdir)/Makefile.leveldb.include \
-	$(srcdir)/Makefile.omnicore.include \
-	$(srcdir)/Makefile.omnitest.include \
 	$(srcdir)/Makefile.qt.include \
 	$(srcdir)/Makefile.qttest.include \
 	$(srcdir)/Makefile.test.include \
+	$(srcdir)/Makefile.tradelayer.include \
+	$(srcdir)/Makefile.tradelayertest.include \
 	$(top_srcdir)/build-aux/depcomp \
 	$(top_srcdir)/build-aux/test-driver
 DISTFILES = $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST)
@@ -3193,11 +3193,11 @@ nodist_libbitcoin_util_a_SOURCES = $(srcdir)/obj/build.h
 #
 
 # bitcoind binary #
-omnicored_SOURCES = bitcoind.cpp $(am__append_12)
-omnicored_CPPFLAGS = $(AM_CPPFLAGS) $(BITCOIN_INCLUDES)
-omnicored_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
-omnicored_LDFLAGS = $(RELDFLAGS) $(AM_LDFLAGS) $(LIBTOOL_APP_LDFLAGS)
-omnicored_LDADD = $(LIBBITCOIN_SERVER) $(LIBBITCOIN_WALLET) \
+bitcoind_SOURCES = bitcoind.cpp $(am__append_12)
+bitcoind_CPPFLAGS = $(AM_CPPFLAGS) $(BITCOIN_INCLUDES)
+bitcoind_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
+bitcoind_LDFLAGS = $(RELDFLAGS) $(AM_LDFLAGS) $(LIBTOOL_APP_LDFLAGS)
+bitcoind_LDADD = $(LIBBITCOIN_SERVER) $(LIBBITCOIN_WALLET) \
 	$(LIBBITCOIN_SERVER) $(LIBBITCOIN_COMMON) $(LIBUNIVALUE) \
 	$(LIBBITCOIN_UTIL) $(LIBBITCOIN_ZMQ) $(LIBBITCOIN_CONSENSUS) \
 	$(LIBBITCOIN_CRYPTO) $(LIBLEVELDB) $(LIBLEVELDB_SSE42) \
@@ -3206,11 +3206,11 @@ omnicored_LDADD = $(LIBBITCOIN_SERVER) $(LIBBITCOIN_WALLET) \
 	$(EVENT_LIBS) $(ZMQ_LIBS)
 
 # bitcoin-cli binary #
-omnicore_cli_SOURCES = bitcoin-cli.cpp $(am__append_13)
-omnicore_cli_CPPFLAGS = $(AM_CPPFLAGS) $(BITCOIN_INCLUDES) $(EVENT_CFLAGS)
-omnicore_cli_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
-omnicore_cli_LDFLAGS = $(RELDFLAGS) $(AM_LDFLAGS) $(LIBTOOL_APP_LDFLAGS)
-omnicore_cli_LDADD = $(LIBBITCOIN_CLI) $(LIBUNIVALUE) \
+bitcoin_cli_SOURCES = bitcoin-cli.cpp $(am__append_13)
+bitcoin_cli_CPPFLAGS = $(AM_CPPFLAGS) $(BITCOIN_INCLUDES) $(EVENT_CFLAGS)
+bitcoin_cli_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
+bitcoin_cli_LDFLAGS = $(RELDFLAGS) $(AM_LDFLAGS) $(LIBTOOL_APP_LDFLAGS)
+bitcoin_cli_LDADD = $(LIBBITCOIN_CLI) $(LIBUNIVALUE) \
 	$(LIBBITCOIN_UTIL) $(LIBBITCOIN_CRYPTO) $(BOOST_LIBS) \
 	$(CRYPTO_LIBS) $(EVENT_LIBS)
 #
@@ -4571,7 +4571,7 @@ all: all-recursive
 
 .SUFFIXES:
 .SUFFIXES: .cc .cpp .lo .log .mm .o .obj .rc .test .test$(EXEEXT) .trs
-$(srcdir)/Makefile.in: @MAINTAINER_MODE_TRUE@ $(srcdir)/Makefile.am $(srcdir)/Makefile.leveldb.include $(srcdir)/Makefile.test.include $(srcdir)/Makefile.bench.include $(srcdir)/Makefile.qt.include $(srcdir)/Makefile.qttest.include $(srcdir)/Makefile.omnicore.include $(srcdir)/Makefile.omnitest.include $(am__configure_deps)
+$(srcdir)/Makefile.in: @MAINTAINER_MODE_TRUE@ $(srcdir)/Makefile.am $(srcdir)/Makefile.leveldb.include $(srcdir)/Makefile.test.include $(srcdir)/Makefile.bench.include $(srcdir)/Makefile.qt.include $(srcdir)/Makefile.qttest.include $(srcdir)/Makefile.tradelayer.include $(srcdir)/Makefile.tradelayertest.include $(am__configure_deps)
 	@for dep in $?; do \
 	  case '$(am__configure_deps)' in \
 	    *$$dep*) \
@@ -4591,7 +4591,7 @@ Makefile: $(srcdir)/Makefile.in $(top_builddir)/config.status
 	    echo ' cd $(top_builddir) && $(SHELL) ./config.status $(subdir)/$@ $(am__depfiles_maybe)'; \
 	    cd $(top_builddir) && $(SHELL) ./config.status $(subdir)/$@ $(am__depfiles_maybe);; \
 	esac;
-$(srcdir)/Makefile.leveldb.include $(srcdir)/Makefile.test.include $(srcdir)/Makefile.bench.include $(srcdir)/Makefile.qt.include $(srcdir)/Makefile.qttest.include $(srcdir)/Makefile.omnicore.include $(srcdir)/Makefile.omnitest.include $(am__empty):
+$(srcdir)/Makefile.leveldb.include $(srcdir)/Makefile.test.include $(srcdir)/Makefile.bench.include $(srcdir)/Makefile.qt.include $(srcdir)/Makefile.qttest.include $(srcdir)/Makefile.tradelayer.include $(srcdir)/Makefile.tradelayertest.include $(am__empty):
 
 $(top_builddir)/config.status: $(top_srcdir)/configure $(CONFIG_STATUS_DEPENDENCIES)
 	cd $(top_builddir) && $(MAKE) $(AM_MAKEFLAGS) am--refresh
@@ -5673,6 +5673,10 @@ bench/bench_bitcoin$(EXEEXT): $(bench_bench_bitcoin_OBJECTS) $(bench_bench_bitco
 	@rm -f bench/bench_bitcoin$(EXEEXT)
 	$(AM_V_CXXLD)$(bench_bench_bitcoin_LINK) $(bench_bench_bitcoin_OBJECTS) $(bench_bench_bitcoin_LDADD) $(LIBS)
 
+bitcoin-cli$(EXEEXT): $(bitcoin_cli_OBJECTS) $(bitcoin_cli_DEPENDENCIES) $(EXTRA_bitcoin_cli_DEPENDENCIES) 
+	@rm -f bitcoin-cli$(EXEEXT)
+	$(AM_V_CXXLD)$(bitcoin_cli_LINK) $(bitcoin_cli_OBJECTS) $(bitcoin_cli_LDADD) $(LIBS)
+
 bitcoin-tx$(EXEEXT): $(bitcoin_tx_OBJECTS) $(bitcoin_tx_DEPENDENCIES) $(EXTRA_bitcoin_tx_DEPENDENCIES) 
 	@rm -f bitcoin-tx$(EXEEXT)
 	$(AM_V_CXXLD)$(bitcoin_tx_LINK) $(bitcoin_tx_OBJECTS) $(bitcoin_tx_LDADD) $(LIBS)
@@ -5681,13 +5685,9 @@ bitcoin-wallet$(EXEEXT): $(bitcoin_wallet_OBJECTS) $(bitcoin_wallet_DEPENDENCIES
 	@rm -f bitcoin-wallet$(EXEEXT)
 	$(AM_V_CXXLD)$(bitcoin_wallet_LINK) $(bitcoin_wallet_OBJECTS) $(bitcoin_wallet_LDADD) $(LIBS)
 
-omnicore-cli$(EXEEXT): $(omnicore_cli_OBJECTS) $(omnicore_cli_DEPENDENCIES) $(EXTRA_omnicore_cli_DEPENDENCIES) 
-	@rm -f omnicore-cli$(EXEEXT)
-	$(AM_V_CXXLD)$(omnicore_cli_LINK) $(omnicore_cli_OBJECTS) $(omnicore_cli_LDADD) $(LIBS)
-
-omnicored$(EXEEXT): $(omnicored_OBJECTS) $(omnicored_DEPENDENCIES) $(EXTRA_omnicored_DEPENDENCIES) 
-	@rm -f omnicored$(EXEEXT)
-	$(AM_V_CXXLD)$(omnicored_LINK) $(omnicored_OBJECTS) $(omnicored_LDADD) $(LIBS)
+bitcoind$(EXEEXT): $(bitcoind_OBJECTS) $(bitcoind_DEPENDENCIES) $(EXTRA_bitcoind_DEPENDENCIES) 
+	@rm -f bitcoind$(EXEEXT)
+	$(AM_V_CXXLD)$(bitcoind_LINK) $(bitcoind_OBJECTS) $(bitcoind_LDADD) $(LIBS)
 qt/qt_omnicore_qt-main.$(OBJEXT): qt/$(am__dirstamp) \
 	qt/$(DEPDIR)/$(am__dirstamp)
 omnicore/res/$(am__dirstamp):
@@ -6255,8 +6255,10 @@ mostlyclean-compile:
 distclean-compile:
 	-rm -f *.tab.c
 
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/bitcoin_cli-bitcoin-cli.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/bitcoin_tx-bitcoin-tx.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/bitcoin_wallet-bitcoin-wallet.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/bitcoind-bitcoind.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libbitcoin_common_a-base58.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libbitcoin_common_a-bech32.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libbitcoin_common_a-chainparams.Po@am__quote@
@@ -6319,8 +6321,6 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libbitcoinconsensus_la-hash.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libbitcoinconsensus_la-pubkey.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libbitcoinconsensus_la-uint256.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/omnicore_cli-bitcoin-cli.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/omnicored-bitcoind.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@bench/$(DEPDIR)/bench_bench_bitcoin-base58.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@bench/$(DEPDIR)/bench_bench_bitcoin-bech32.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@bench/$(DEPDIR)/bench_bench_bitcoin-bench.Po@am__quote@
@@ -12118,6 +12118,20 @@ bench/bench_bench_bitcoin-coin_selection.obj: bench/coin_selection.cpp
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(bench_bench_bitcoin_CPPFLAGS) $(CPPFLAGS) $(bench_bench_bitcoin_CXXFLAGS) $(CXXFLAGS) -c -o bench/bench_bench_bitcoin-coin_selection.obj `if test -f 'bench/coin_selection.cpp'; then $(CYGPATH_W) 'bench/coin_selection.cpp'; else $(CYGPATH_W) '$(srcdir)/bench/coin_selection.cpp'; fi`
 
+bitcoin_cli-bitcoin-cli.o: bitcoin-cli.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(bitcoin_cli_CPPFLAGS) $(CPPFLAGS) $(bitcoin_cli_CXXFLAGS) $(CXXFLAGS) -MT bitcoin_cli-bitcoin-cli.o -MD -MP -MF $(DEPDIR)/bitcoin_cli-bitcoin-cli.Tpo -c -o bitcoin_cli-bitcoin-cli.o `test -f 'bitcoin-cli.cpp' || echo '$(srcdir)/'`bitcoin-cli.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/bitcoin_cli-bitcoin-cli.Tpo $(DEPDIR)/bitcoin_cli-bitcoin-cli.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='bitcoin-cli.cpp' object='bitcoin_cli-bitcoin-cli.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(bitcoin_cli_CPPFLAGS) $(CPPFLAGS) $(bitcoin_cli_CXXFLAGS) $(CXXFLAGS) -c -o bitcoin_cli-bitcoin-cli.o `test -f 'bitcoin-cli.cpp' || echo '$(srcdir)/'`bitcoin-cli.cpp
+
+bitcoin_cli-bitcoin-cli.obj: bitcoin-cli.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(bitcoin_cli_CPPFLAGS) $(CPPFLAGS) $(bitcoin_cli_CXXFLAGS) $(CXXFLAGS) -MT bitcoin_cli-bitcoin-cli.obj -MD -MP -MF $(DEPDIR)/bitcoin_cli-bitcoin-cli.Tpo -c -o bitcoin_cli-bitcoin-cli.obj `if test -f 'bitcoin-cli.cpp'; then $(CYGPATH_W) 'bitcoin-cli.cpp'; else $(CYGPATH_W) '$(srcdir)/bitcoin-cli.cpp'; fi`
+@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/bitcoin_cli-bitcoin-cli.Tpo $(DEPDIR)/bitcoin_cli-bitcoin-cli.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='bitcoin-cli.cpp' object='bitcoin_cli-bitcoin-cli.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(bitcoin_cli_CPPFLAGS) $(CPPFLAGS) $(bitcoin_cli_CXXFLAGS) $(CXXFLAGS) -c -o bitcoin_cli-bitcoin-cli.obj `if test -f 'bitcoin-cli.cpp'; then $(CYGPATH_W) 'bitcoin-cli.cpp'; else $(CYGPATH_W) '$(srcdir)/bitcoin-cli.cpp'; fi`
+
 bitcoin_tx-bitcoin-tx.o: bitcoin-tx.cpp
 @am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(bitcoin_tx_CPPFLAGS) $(CPPFLAGS) $(bitcoin_tx_CXXFLAGS) $(CXXFLAGS) -MT bitcoin_tx-bitcoin-tx.o -MD -MP -MF $(DEPDIR)/bitcoin_tx-bitcoin-tx.Tpo -c -o bitcoin_tx-bitcoin-tx.o `test -f 'bitcoin-tx.cpp' || echo '$(srcdir)/'`bitcoin-tx.cpp
 @am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/bitcoin_tx-bitcoin-tx.Tpo $(DEPDIR)/bitcoin_tx-bitcoin-tx.Po
@@ -12146,33 +12160,19 @@ bitcoin_wallet-bitcoin-wallet.obj: bitcoin-wallet.cpp
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(bitcoin_wallet_CPPFLAGS) $(CPPFLAGS) $(bitcoin_wallet_CXXFLAGS) $(CXXFLAGS) -c -o bitcoin_wallet-bitcoin-wallet.obj `if test -f 'bitcoin-wallet.cpp'; then $(CYGPATH_W) 'bitcoin-wallet.cpp'; else $(CYGPATH_W) '$(srcdir)/bitcoin-wallet.cpp'; fi`
 
-omnicore_cli-bitcoin-cli.o: bitcoin-cli.cpp
-@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(omnicore_cli_CPPFLAGS) $(CPPFLAGS) $(omnicore_cli_CXXFLAGS) $(CXXFLAGS) -MT omnicore_cli-bitcoin-cli.o -MD -MP -MF $(DEPDIR)/omnicore_cli-bitcoin-cli.Tpo -c -o omnicore_cli-bitcoin-cli.o `test -f 'bitcoin-cli.cpp' || echo '$(srcdir)/'`bitcoin-cli.cpp
-@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/omnicore_cli-bitcoin-cli.Tpo $(DEPDIR)/omnicore_cli-bitcoin-cli.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='bitcoin-cli.cpp' object='omnicore_cli-bitcoin-cli.o' libtool=no @AMDEPBACKSLASH@
+bitcoind-bitcoind.o: bitcoind.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(bitcoind_CPPFLAGS) $(CPPFLAGS) $(bitcoind_CXXFLAGS) $(CXXFLAGS) -MT bitcoind-bitcoind.o -MD -MP -MF $(DEPDIR)/bitcoind-bitcoind.Tpo -c -o bitcoind-bitcoind.o `test -f 'bitcoind.cpp' || echo '$(srcdir)/'`bitcoind.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/bitcoind-bitcoind.Tpo $(DEPDIR)/bitcoind-bitcoind.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='bitcoind.cpp' object='bitcoind-bitcoind.o' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(omnicore_cli_CPPFLAGS) $(CPPFLAGS) $(omnicore_cli_CXXFLAGS) $(CXXFLAGS) -c -o omnicore_cli-bitcoin-cli.o `test -f 'bitcoin-cli.cpp' || echo '$(srcdir)/'`bitcoin-cli.cpp
+@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(bitcoind_CPPFLAGS) $(CPPFLAGS) $(bitcoind_CXXFLAGS) $(CXXFLAGS) -c -o bitcoind-bitcoind.o `test -f 'bitcoind.cpp' || echo '$(srcdir)/'`bitcoind.cpp
 
-omnicore_cli-bitcoin-cli.obj: bitcoin-cli.cpp
-@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(omnicore_cli_CPPFLAGS) $(CPPFLAGS) $(omnicore_cli_CXXFLAGS) $(CXXFLAGS) -MT omnicore_cli-bitcoin-cli.obj -MD -MP -MF $(DEPDIR)/omnicore_cli-bitcoin-cli.Tpo -c -o omnicore_cli-bitcoin-cli.obj `if test -f 'bitcoin-cli.cpp'; then $(CYGPATH_W) 'bitcoin-cli.cpp'; else $(CYGPATH_W) '$(srcdir)/bitcoin-cli.cpp'; fi`
-@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/omnicore_cli-bitcoin-cli.Tpo $(DEPDIR)/omnicore_cli-bitcoin-cli.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='bitcoin-cli.cpp' object='omnicore_cli-bitcoin-cli.obj' libtool=no @AMDEPBACKSLASH@
+bitcoind-bitcoind.obj: bitcoind.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(bitcoind_CPPFLAGS) $(CPPFLAGS) $(bitcoind_CXXFLAGS) $(CXXFLAGS) -MT bitcoind-bitcoind.obj -MD -MP -MF $(DEPDIR)/bitcoind-bitcoind.Tpo -c -o bitcoind-bitcoind.obj `if test -f 'bitcoind.cpp'; then $(CYGPATH_W) 'bitcoind.cpp'; else $(CYGPATH_W) '$(srcdir)/bitcoind.cpp'; fi`
+@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/bitcoind-bitcoind.Tpo $(DEPDIR)/bitcoind-bitcoind.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='bitcoind.cpp' object='bitcoind-bitcoind.obj' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(omnicore_cli_CPPFLAGS) $(CPPFLAGS) $(omnicore_cli_CXXFLAGS) $(CXXFLAGS) -c -o omnicore_cli-bitcoin-cli.obj `if test -f 'bitcoin-cli.cpp'; then $(CYGPATH_W) 'bitcoin-cli.cpp'; else $(CYGPATH_W) '$(srcdir)/bitcoin-cli.cpp'; fi`
-
-omnicored-bitcoind.o: bitcoind.cpp
-@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(omnicored_CPPFLAGS) $(CPPFLAGS) $(omnicored_CXXFLAGS) $(CXXFLAGS) -MT omnicored-bitcoind.o -MD -MP -MF $(DEPDIR)/omnicored-bitcoind.Tpo -c -o omnicored-bitcoind.o `test -f 'bitcoind.cpp' || echo '$(srcdir)/'`bitcoind.cpp
-@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/omnicored-bitcoind.Tpo $(DEPDIR)/omnicored-bitcoind.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='bitcoind.cpp' object='omnicored-bitcoind.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(omnicored_CPPFLAGS) $(CPPFLAGS) $(omnicored_CXXFLAGS) $(CXXFLAGS) -c -o omnicored-bitcoind.o `test -f 'bitcoind.cpp' || echo '$(srcdir)/'`bitcoind.cpp
-
-omnicored-bitcoind.obj: bitcoind.cpp
-@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(omnicored_CPPFLAGS) $(CPPFLAGS) $(omnicored_CXXFLAGS) $(CXXFLAGS) -MT omnicored-bitcoind.obj -MD -MP -MF $(DEPDIR)/omnicored-bitcoind.Tpo -c -o omnicored-bitcoind.obj `if test -f 'bitcoind.cpp'; then $(CYGPATH_W) 'bitcoind.cpp'; else $(CYGPATH_W) '$(srcdir)/bitcoind.cpp'; fi`
-@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/omnicored-bitcoind.Tpo $(DEPDIR)/omnicored-bitcoind.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='bitcoind.cpp' object='omnicored-bitcoind.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(omnicored_CPPFLAGS) $(CPPFLAGS) $(omnicored_CXXFLAGS) $(CXXFLAGS) -c -o omnicored-bitcoind.obj `if test -f 'bitcoind.cpp'; then $(CYGPATH_W) 'bitcoind.cpp'; else $(CYGPATH_W) '$(srcdir)/bitcoind.cpp'; fi`
+@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(bitcoind_CPPFLAGS) $(CPPFLAGS) $(bitcoind_CXXFLAGS) $(CXXFLAGS) -c -o bitcoind-bitcoind.obj `if test -f 'bitcoind.cpp'; then $(CYGPATH_W) 'bitcoind.cpp'; else $(CYGPATH_W) '$(srcdir)/bitcoind.cpp'; fi`
 
 qt/qt_omnicore_qt-main.o: qt/main.cpp
 @am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(qt_omnicore_qt_CPPFLAGS) $(CPPFLAGS) $(qt_omnicore_qt_CXXFLAGS) $(CXXFLAGS) -MT qt/qt_omnicore_qt-main.o -MD -MP -MF qt/$(DEPDIR)/qt_omnicore_qt-main.Tpo -c -o qt/qt_omnicore_qt-main.o `test -f 'qt/main.cpp' || echo '$(srcdir)/'`qt/main.cpp
@@ -15392,7 +15392,7 @@ check-security: $(bin_PROGRAMS)
 
 tradelayer/libbitcoin_server_a-version.$(OBJEXT): obj/build.h # build info
 
-# Omni Core
+# Tradelayer
 #
 
 # Tell versions [3.59,3.63) of GNU make to not export all variables.

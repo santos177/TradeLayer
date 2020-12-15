@@ -16,17 +16,17 @@
 #include <uint256.h>
 #include <qt/walletmodel.h>
 
-#include <omnicore/activation.h>
-#include <omnicore/dbtxlist.h>
-#include <omnicore/notifications.h>
-#include <omnicore/omnicore.h>
-#include <omnicore/rules.h>
-#include <omnicore/sp.h>
-#include <omnicore/tx.h>
-#include <omnicore/parsing.h>
-#include <omnicore/pending.h>
-#include <omnicore/utilsbitcoin.h>
-#include <omnicore/walletutils.h>
+#include <tradelayer/activation.h>
+#include <tradelayer/dbtxlist.h>
+#include <tradelayer/notifications.h>
+#include <tradelayer/tradelayer.h>
+#include <tradelayer/rules.h>
+#include <tradelayer/sp.h>
+#include <tradelayer/tx.h>
+#include <tradelayer/parsing.h>
+#include <tradelayer/pending.h>
+#include <tradelayer/utilsbitcoin.h>
+#include <tradelayer/walletutils.h>
 
 #include <chainparams.h>
 #include <validation.h>
@@ -106,12 +106,12 @@ public:
         QRect addressRect(mainRect.left() + xspace, mainRect.top()+ypad+halfheight, mainRect.width() - xspace, halfheight);
 
         // Rather ugly way to provide recent transaction display support - each time we paint a transaction we will check if
-        // it's Omni and override the values if so.  This will not scale at all, but since we're only ever doing 6 txns via the occasional
+        // it's Tradelayer and override the values if so.  This will not scale at all, but since we're only ever doing 6 txns via the occasional
         // repaint performance should be a non-issue and it'll provide the functionality short term while a better approach is devised.
         uint256 hash;
         hash.SetHex(index.data(TransactionTableModel::TxHashRole).toString().toStdString());
-        bool omniOverride = false, omniSendToSelf = false, valid = false, omniOutbound = true;
-        QString omniAmountStr;
+        bool tlOverride = false, tlSendToSelf = false, valid = false, tlOutbound = true;
+        QString tlAmountStr;
 
         // check pending
         {
@@ -119,19 +119,19 @@ public:
 
             PendingMap::iterator it = my_pending.find(hash);
             if (it != my_pending.end()) {
-                omniOverride = true;
+                tlOverride = true;
                 valid = true; // assume all outbound pending are valid prior to confirmation
                 CMPPending *p_pending = &(it->second);
                 address = QString::fromStdString(p_pending->src);
                 if (isPropertyDivisible(p_pending->prop)) {
-                    omniAmountStr = QString::fromStdString(FormatDivisibleShortMP(p_pending->amount) + getTokenLabel(p_pending->prop));
+                    tlAmountStr = QString::fromStdString(FormatDivisibleShortMP(p_pending->amount) + getTokenLabel(p_pending->prop));
                 } else {
-                    omniAmountStr = QString::fromStdString(FormatIndivisibleMP(p_pending->amount) + getTokenLabel(p_pending->prop));
+                    tlAmountStr = QString::fromStdString(FormatIndivisibleMP(p_pending->amount) + getTokenLabel(p_pending->prop));
                 }
                 // override amount for cancels
                 if (p_pending->type == MSC_TYPE_METADEX_CANCEL_PRICE || p_pending->type == MSC_TYPE_METADEX_CANCEL_PAIR ||
                     p_pending->type == MSC_TYPE_METADEX_CANCEL_ECOSYSTEM || p_pending->type == MSC_TYPE_SEND_ALL) {
-                    omniAmountStr = QString::fromStdString("N/A");
+                    tlAmountStr = QString::fromStdString("N/A");
                 }
             }
         }
@@ -142,14 +142,14 @@ public:
             OverviewCacheEntry txEntry = cacheIt->second;
             address = txEntry.address;
             valid = txEntry.valid;
-            omniSendToSelf = txEntry.sendToSelf;
-            omniOutbound = txEntry.outbound;
-            omniAmountStr = txEntry.amount;
-            omniOverride = true;
+            tlSendToSelf = txEntry.sendToSelf;
+            tlOutbound = txEntry.outbound;
+            tlAmountStr = txEntry.amount;
+            tlOverride = true;
             amount = 0;
         } else { // cache miss, check database
             if (pDbTransactionList->exists(hash)) {
-                omniOverride = true;
+                tlOverride = true;
                 amount = 0;
                 CTransactionRef wtx;
                 uint256 blockHash;
@@ -179,24 +179,24 @@ public:
                                           address = QString::fromStdString(tmpSeller);
                                     } else {
                                           address = QString::fromStdString(tmpBuyer);
-                                          omniOutbound = false;
+                                          tlOutbound = false;
                                     }
-                                    omniAmountStr = QString::fromStdString(FormatDivisibleMP(total));
+                                    tlAmountStr = QString::fromStdString(FormatDivisibleMP(total));
                                 }
                             } else if (0 == parseRC) {
                                 if (mp_obj.interpret_Transaction()) {
                                     valid = pDbTransactionList->getValidMPTX(hash);
-                                    uint32_t omniPropertyId = mp_obj.getProperty();
-                                    int64_t omniAmount = mp_obj.getAmount();
-                                    if (isPropertyDivisible(omniPropertyId)) {
-                                        omniAmountStr = QString::fromStdString(FormatDivisibleShortMP(omniAmount) + getTokenLabel(omniPropertyId));
+                                    uint32_t tlPropertyId = mp_obj.getProperty();
+                                    int64_t tlAmount = mp_obj.getAmount();
+                                    if (isPropertyDivisible(tlPropertyId)) {
+                                        tlAmountStr = QString::fromStdString(FormatDivisibleShortMP(tlAmount) + getTokenLabel(tlPropertyId));
                                     } else {
-                                        omniAmountStr = QString::fromStdString(FormatIndivisibleMP(omniAmount) + getTokenLabel(omniPropertyId));
+                                        tlAmountStr = QString::fromStdString(FormatIndivisibleMP(tlAmount) + getTokenLabel(tlPropertyId));
                                     }
                                     if (!mp_obj.getReceiver().empty()) {
                                         if (IsMyAddress(mp_obj.getReceiver())) {
-                                            omniOutbound = false;
-                                            if (IsMyAddress(mp_obj.getSender())) omniSendToSelf = true;
+                                            tlOutbound = false;
+                                            if (IsMyAddress(mp_obj.getSender())) tlSendToSelf = true;
                                         }
                                         address = QString::fromStdString(mp_obj.getReceiver());
                                     } else {
@@ -208,16 +208,16 @@ public:
                             // override amount for cancels
                             if (mp_obj.getType() == MSC_TYPE_METADEX_CANCEL_PRICE || mp_obj.getType() == MSC_TYPE_METADEX_CANCEL_PAIR ||
                                 mp_obj.getType() == MSC_TYPE_METADEX_CANCEL_ECOSYSTEM || mp_obj.getType() == MSC_TYPE_SEND_ALL) {
-                                omniAmountStr = QString::fromStdString("N/A");
+                                tlAmountStr = QString::fromStdString("N/A");
                             }
 
                             // insert into cache
                             OverviewCacheEntry newEntry;
                             newEntry.valid = valid;
-                            newEntry.sendToSelf = omniSendToSelf;
-                            newEntry.outbound = omniOutbound;
+                            newEntry.sendToSelf = tlSendToSelf;
+                            newEntry.outbound = tlOutbound;
                             newEntry.address = address;
-                            newEntry.amount = omniAmountStr;
+                            newEntry.amount = tlAmountStr;
                             recentCache.insert(std::make_pair(hash, newEntry));
                         }
                     }
@@ -225,13 +225,13 @@ public:
             }
         }
 
-        if (omniOverride) {
+        if (tlOverride) {
             if (!valid) {
                 icon = QIcon(":/icons/omni_invalid");
             } else {
                 icon = QIcon(":/icons/omni_out");
-                if (!omniOutbound) icon = QIcon(":/icons/omni_in");
-                if (omniSendToSelf) icon = QIcon(":/icons/omni_inout");
+                if (!tlOutbound) icon = QIcon(":/icons/omni_in");
+                if (tlSendToSelf) icon = QIcon(":/icons/omni_inout");
             }
         }
 
@@ -270,10 +270,10 @@ public:
         }
         painter->setPen(foreground);
         QString amountText;
-        if (!omniOverride) {
+        if (!tlOverride) {
             amountText = BitcoinUnits::formatWithUnit(unit, amount, true, BitcoinUnits::separatorAlways);
         } else {
-            amountText = omniAmountStr;
+            amountText = tlAmountStr;
         }
         if(!confirmed)
         {
@@ -330,7 +330,7 @@ OverviewPage::OverviewPage(const PlatformStyle *platformStyle, QWidget *parent) 
     // make sure BTC is always first in the list by adding it first
     UpdatePropertyBalance(0,0,0);
 
-    updateOmni();
+    updateTL();
 
     // start with displaying the "out of sync" warnings
     showOutOfSyncWarning(true);
@@ -340,22 +340,22 @@ OverviewPage::OverviewPage(const PlatformStyle *platformStyle, QWidget *parent) 
 
 void OverviewPage::handleTransactionClicked(const QModelIndex &index)
 {
-    // is this an Omni transaction that has been clicked?  Use pending & cache to find out quickly
+    // is this an Tradelayer transaction that has been clicked?  Use pending & cache to find out quickly
     uint256 hash;
     hash.SetHex(index.data(TransactionTableModel::TxHashRole).toString().toStdString());
-    bool omniTx = false;
+    bool tlTx = false;
     {
         LOCK(cs_pending);
 
         PendingMap::iterator it = my_pending.find(hash);
-        if (it != my_pending.end()) omniTx = true;
+        if (it != my_pending.end()) tlTx = true;
     }
     std::map<uint256, OverviewCacheEntry>::iterator cacheIt = recentCache.find(hash);
-    if (cacheIt != recentCache.end()) omniTx = true;
+    if (cacheIt != recentCache.end()) tlTx = true;
 
-    // override if it's an Omni transaction
-    if (omniTx) {
-        // TODO emit omniTransactionClicked(hash);
+    // override if it's an Tradelayer transaction
+    if (tlTx) {
+        // TODO emit tlTransactionClicked(hash);
     } else {
         // TODO if (filter) emit transactionClicked(filter->mapToSource(index));
     }
@@ -487,7 +487,7 @@ void OverviewPage::UpdatePropertyBalance(unsigned int propertyId, uint64_t avail
     }
 }
 
-void OverviewPage::reinitOmni()
+void OverviewPage::reinitTL()
 {
     recentCache.clear();
     ui->overviewLW->clear();
@@ -495,11 +495,11 @@ void OverviewPage::reinitOmni()
         UpdatePropertyBalance(0, walletModel->wallet().getBalance(), walletModel->wallet().getBalances().unconfirmed_balance);
     }
     UpdatePropertyBalance(1, 0, 0);
-    updateOmni();
+    updateTL();
 }
 
 /** Loop through properties and update the overview - only properties with token balances will be displayed **/
-void OverviewPage::updateOmni()
+void OverviewPage::updateTL()
 {
     LOCK(cs_tally);
 
@@ -529,7 +529,7 @@ void OverviewPage::setBalance(const interfaces::WalletBalances& balances)
 // show/hide watch-only labels
 void OverviewPage::updateWatchOnlyLabels(bool showWatchOnly)
 {
-    // Omni Core does not currently fully support watch only
+    // Tradelayer Core does not currently fully support watch only
 }
 
 void OverviewPage::setClientModel(ClientModel *model)
@@ -541,14 +541,14 @@ void OverviewPage::setClientModel(ClientModel *model)
         connect(model, &ClientModel::alertsChanged, this, &OverviewPage::updateAlerts);
         updateAlerts(model->getStatusBarWarnings());
 
-        // Refresh Omni info if there have been Omni layer transactions with balances affecting wallet
-        connect(model, &ClientModel::refreshOmniBalance, this, &OverviewPage::updateOmni);
+        // Refresh Tradelayer info if there have been tl transactions with balances affecting wallet
+        connect(model, &ClientModel::refreshTLBalance, this, &OverviewPage::updateTL);
 
-        // Reinit Omni info if there has been a chain reorg
-        connect(model, &ClientModel::reinitOmniState, this, &OverviewPage::reinitOmni);
+        // Reinit Tradelayer info if there has been a chain reorg
+        connect(model, &ClientModel::reinitTLState, this, &OverviewPage::reinitTL);
 
-        // Refresh alerts when there has been a change to the Omni State
-        connect(model, &ClientModel::refreshOmniState, this, &OverviewPage::updateOmniAlerts);
+        // Refresh alerts when there has been a change to the Tradelayer State
+        connect(model, &ClientModel::refreshTLState, this, &OverviewPage::updateTLAlerts);
     }
 }
 
@@ -602,7 +602,7 @@ void OverviewPage::updateDisplayUnit()
     }
 }
 
-void OverviewPage::updateOmniAlerts()
+void OverviewPage::updateTLAlerts()
 {
     updateAlerts(clientModel->getStatusBarWarnings());
 }
@@ -612,8 +612,8 @@ void OverviewPage::updateAlerts(const QString &warnings)
     QString alertString = warnings; // get current bitcoin alert/warning directly
 
     // get alert messages
-    std::vector<std::string> omniAlerts = GetOmniCoreAlertMessages();
-    for (std::vector<std::string>::iterator it = omniAlerts.begin(); it != omniAlerts.end(); it++) {
+    std::vector<std::string> tlAlerts = GetTradeLayerAlertMessages();
+    for (std::vector<std::string>::iterator it = tlAlerts.begin(); it != tlAlerts.end(); it++) {
         if (!alertString.isEmpty()) alertString += "\n";
         alertString += QString::fromStdString(*it);
     }

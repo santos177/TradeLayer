@@ -14,7 +14,7 @@ class Wallet;
 namespace mastercore
 {
 /** Returns an ordered list of Trade Layer transactions that are relevant to the wallet. */
-std::map<std::string, uint256> FetchWalletOmniTransactions(interfaces::Wallet& iWallet, unsigned int count, int startBlock = 0, int endBlock = 999999);
+std::map<std::string, uint256> FetchWalletTLTransactions(interfaces::Wallet& iWallet, unsigned int count, int startBlock = 0, int endBlock = 999999);
 }
 
 #endif // BITCOIN_TRADELAYER_WALLETFETCHTXS_H

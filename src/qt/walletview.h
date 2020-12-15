@@ -110,8 +110,8 @@ public Q_SLOTS:
     void gotoReceiveCoinsPage();
     /** Switch to send coins page */
     void gotoSendCoinsPage(QString addr = "");
-    /** Switch specifically to omni tx history tab */
-    void gotoOmniHistoryTab();
+    /** Switch specifically to tradelayer tx history tab */
+    void gotoTLHistoryTab();
     /** Switch specifically to bitcoin tx history tab */
     void gotoBitcoinHistoryTab();
     /** Switch to utility page */

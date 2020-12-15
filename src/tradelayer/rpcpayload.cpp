@@ -14,11 +14,11 @@
 using std::runtime_error;
 using namespace mastercore;
 
-static UniValue omni_createpayload_simplesend(const JSONRPCRequest& request)
+static UniValue tl_createpayload_simplesend(const JSONRPCRequest& request)
 {
    if (request.fHelp || request.params.size() != 2)
         throw runtime_error(
-           RPCHelpMan{"omni_createpayload_simplesend",
+           RPCHelpMan{"tl_createpayload_simplesend",
               "\nCreate the payload for a simple send transaction.\n",
               {
                   {"propertyid", RPCArg::Type::NUM, RPCArg::Optional::NO, "the identifier of the tokens to send\n"},
@@ -28,8 +28,8 @@ static UniValue omni_createpayload_simplesend(const JSONRPCRequest& request)
                   "\"payload\"             (string) the hex-encoded payload\n"
               },
               RPCExamples{
-                  HelpExampleCli("omni_createpayload_simplesend", "1 \"100.0\"")
-                  + HelpExampleRpc("omni_createpayload_simplesend", "1, \"100.0\"")
+                  HelpExampleCli("tl_createpayload_simplesend", "1 \"100.0\"")
+                  + HelpExampleRpc("tl_createpayload_simplesend", "1, \"100.0\"")
               }
            }.ToString());
 
@@ -41,11 +41,11 @@ static UniValue omni_createpayload_simplesend(const JSONRPCRequest& request)
     return HexStr(payload.begin(), payload.end());
 }
 
-static UniValue omni_createpayload_sendall(const JSONRPCRequest& request)
+static UniValue tl_createpayload_sendall(const JSONRPCRequest& request)
 {
     if (request.fHelp || request.params.size() != 1)
         throw runtime_error(
-            RPCHelpMan{"omni_createpayload_sendall",
+            RPCHelpMan{"tl_createpayload_sendall",
                "\nCreate the payload for a send all transaction.\n",
                {
                    {"ecosystem", RPCArg::Type::NUM, RPCArg::Optional::NO, "the ecosystem of the tokens to send (1 for main ecosystem, 2 for test ecosystem)\n"},
@@ -54,8 +54,8 @@ static UniValue omni_createpayload_sendall(const JSONRPCRequest& request)
                    "\"payload\"               (string) the hex-encoded payload\n"
                },
                RPCExamples{
-                   HelpExampleCli("omni_createpayload_sendall", "2")
-                   + HelpExampleRpc("omni_createpayload_sendall", "2")
+                   HelpExampleCli("tl_createpayload_sendall", "2")
+                   + HelpExampleRpc("tl_createpayload_sendall", "2")
                }
             }.ToString());
 
@@ -66,12 +66,12 @@ static UniValue omni_createpayload_sendall(const JSONRPCRequest& request)
     return HexStr(payload.begin(), payload.end());
 }
 
-static UniValue omni_createpayload_dexsell(const JSONRPCRequest& request)
+static UniValue tl_createpayload_dexsell(const JSONRPCRequest& request)
 {
     if (request.fHelp || request.params.size() != 6)
         throw runtime_error(
-            RPCHelpMan{"omni_createpayload_dexsell",
-               "\nCreate a payload to place, update or cancel a sell offer on the traditional distributed OMNI/BTC exchange.\n",
+            RPCHelpMan{"tl_createpayload_dexsell",
+               "\nCreate a payload to place, update or cancel a sell offer on the traditional distributed trade/BTC exchange.\n",
                {
                    {"propertyidforsale", RPCArg::Type::NUM, RPCArg::Optional::NO, " the identifier of the tokens to list for sale (must be 1 for OMN or 2 for TOMN)\n"},
                    {"amountforsale", RPCArg::Type::STR, RPCArg::Optional::NO, "the amount of tokens to list for sale\n"},
@@ -84,8 +84,8 @@ static UniValue omni_createpayload_dexsell(const JSONRPCRequest& request)
                    "\"payload\"             (string) the hex-encoded payload\n"
                },
                RPCExamples{
-                   HelpExampleCli("omni_createpayload_dexsell", "1 \"1.5\" \"0.75\" 25 \"0.0005\" 1")
-                   + HelpExampleRpc("omni_createpayload_dexsell", "1, \"1.5\", \"0.75\", 25, \"0.0005\", 1")
+                   HelpExampleCli("tl_createpayload_dexsell", "1 \"1.5\" \"0.75\" 25 \"0.0005\" 1")
+                   + HelpExampleRpc("tl_createpayload_dexsell", "1, \"1.5\", \"0.75\", 25, \"0.0005\", 1")
                }
             }.ToString());
 
@@ -109,11 +109,11 @@ static UniValue omni_createpayload_dexsell(const JSONRPCRequest& request)
     return HexStr(payload.begin(), payload.end());
 }
 
-static UniValue omni_createpayload_dexaccept(const JSONRPCRequest& request)
+static UniValue tl_createpayload_dexaccept(const JSONRPCRequest& request)
 {
     if (request.fHelp || request.params.size() != 2)
         throw runtime_error(
-            RPCHelpMan{"omni_createpayload_dexaccept",
+            RPCHelpMan{"tl_createpayload_dexaccept",
                "\nCreate the payload for an accept offer for the specified token and amount.\n"
                 "\nNote: if the server is not synchronized, amounts are considered as divisible, even if the token may have indivisible units!\n",
                {
@@ -124,8 +124,8 @@ static UniValue omni_createpayload_dexaccept(const JSONRPCRequest& request)
                    "\"payload\"             (string) the hex-encoded payload\n"
                },
                RPCExamples{
-                   HelpExampleCli("omni_createpayload_dexaccept", "1 \"15.0\"")
-                   + HelpExampleRpc("omni_createpayload_dexaccept", "1, \"15.0\"")
+                   HelpExampleCli("tl_createpayload_dexaccept", "1 \"15.0\"")
+                   + HelpExampleRpc("tl_createpayload_dexaccept", "1, \"15.0\"")
                }
             }.ToString());
 
@@ -137,11 +137,11 @@ static UniValue omni_createpayload_dexaccept(const JSONRPCRequest& request)
     return HexStr(payload.begin(), payload.end());
 }
 
-static UniValue omni_createpayload_sto(const JSONRPCRequest& request)
+static UniValue tl_createpayload_sto(const JSONRPCRequest& request)
 {
     if (request.fHelp || request.params.size() < 2 || request.params.size() > 3)
         throw runtime_error(
-            RPCHelpMan{"omni_createpayload_sto",
+            RPCHelpMan{"tl_createpayload_sto",
                "\nCreates the payload for a send-to-owners transaction.\n"
                "\nNote: if the server is not synchronized, amounts are considered as divisible, even if the token may have indivisible units!\n",
                {
@@ -153,8 +153,8 @@ static UniValue omni_createpayload_sto(const JSONRPCRequest& request)
                    "\"payload\"             (string) the hex-encoded payload\n"
                },
                RPCExamples{
-                   HelpExampleCli("omni_createpayload_sto", "3 \"5000\"")
-                   + HelpExampleRpc("omni_createpayload_sto", "3, \"5000\"")
+                   HelpExampleCli("tl_createpayload_sto", "3 \"5000\"")
+                   + HelpExampleRpc("tl_createpayload_sto", "3, \"5000\"")
                }
             }.ToString());
 
@@ -167,11 +167,11 @@ static UniValue omni_createpayload_sto(const JSONRPCRequest& request)
     return HexStr(payload.begin(), payload.end());
 }
 
-static UniValue omni_createpayload_issuancefixed(const JSONRPCRequest& request)
+static UniValue tl_createpayload_issuancefixed(const JSONRPCRequest& request)
 {
     if (request.fHelp || request.params.size() != 9)
         throw runtime_error(
-            RPCHelpMan{"omni_createpayload_issuancefixed",
+            RPCHelpMan{"tl_createpayload_issuancefixed",
                "\nCreates the payload for a new tokens issuance with fixed supply.\n",
                {
                    {"ecosystem", RPCArg::Type::STR, RPCArg::Optional::NO, "the ecosystem to create the tokens in (1 for main ecosystem, 2 for test ecosystem)\n"},
@@ -188,8 +188,8 @@ static UniValue omni_createpayload_issuancefixed(const JSONRPCRequest& request)
                    "\"payload\"             (string) the hex-encoded payload\n"
                },
                RPCExamples{
-                   HelpExampleCli("omni_createpayload_issuancefixed", "2 1 0 \"Companies\" \"Bitcoin Mining\" \"Quantum Miner\" \"\" \"\" \"1000000\"")
-                   + HelpExampleRpc("omni_createpayload_issuancefixed", "2, 1, 0, \"Companies\", \"Bitcoin Mining\", \"Quantum Miner\", \"\", \"\", \"1000000\"")
+                   HelpExampleCli("tl_createpayload_issuancefixed", "2 1 0 \"Companies\" \"Bitcoin Mining\" \"Quantum Miner\" \"\" \"\" \"1000000\"")
+                   + HelpExampleRpc("tl_createpayload_issuancefixed", "2, 1, 0, \"Companies\", \"Bitcoin Mining\", \"Quantum Miner\", \"\", \"\", \"1000000\"")
                }
             }.ToString());
 
@@ -210,11 +210,11 @@ static UniValue omni_createpayload_issuancefixed(const JSONRPCRequest& request)
     return HexStr(payload.begin(), payload.end());
 }
 
-static UniValue omni_createpayload_issuancecrowdsale(const JSONRPCRequest& request)
+static UniValue tl_createpayload_issuancecrowdsale(const JSONRPCRequest& request)
 {
     if (request.fHelp || request.params.size() != 13)
         throw runtime_error(
-            RPCHelpMan{"omni_createpayload_issuancecrowdsale",
+            RPCHelpMan{"tl_createpayload_issuancecrowdsale",
                "\nCreates the payload for a new tokens issuance with crowdsale.\n",
                {
                    {"ecosystem", RPCArg::Type::STR, RPCArg::Optional::NO, "the ecosystem to create the tokens in (1 for main ecosystem, 2 for test ecosystem)\n"},
@@ -235,8 +235,8 @@ static UniValue omni_createpayload_issuancecrowdsale(const JSONRPCRequest& reque
                    "\"payload\"             (string) the hex-encoded payload\n"
                },
                RPCExamples{
-                   HelpExampleCli("omni_createpayload_issuancecrowdsale", "2 1 0 \"Companies\" \"Bitcoin Mining\" \"Quantum Miner\" \"\" \"\" 2 \"100\" 1483228800 30 2")
-                   + HelpExampleRpc("omni_createpayload_issuancecrowdsale", "2, 1, 0, \"Companies\", \"Bitcoin Mining\", \"Quantum Miner\", \"\", \"\", 2, \"100\", 1483228800, 30, 2")
+                   HelpExampleCli("tl_createpayload_issuancecrowdsale", "2 1 0 \"Companies\" \"Bitcoin Mining\" \"Quantum Miner\" \"\" \"\" 2 \"100\" 1483228800 30 2")
+                   + HelpExampleRpc("tl_createpayload_issuancecrowdsale", "2, 1, 0, \"Companies\", \"Bitcoin Mining\", \"Quantum Miner\", \"\", \"\", 2, \"100\", 1483228800, 30, 2")
                }
             }.ToString());
 
@@ -262,11 +262,11 @@ static UniValue omni_createpayload_issuancecrowdsale(const JSONRPCRequest& reque
     return HexStr(payload.begin(), payload.end());
 }
 
-static UniValue omni_createpayload_issuancemanaged(const JSONRPCRequest& request)
+static UniValue tl_createpayload_issuancemanaged(const JSONRPCRequest& request)
 {
     if (request.fHelp || request.params.size() != 8)
         throw runtime_error(
-            RPCHelpMan{"omni_createpayload_issuancemanaged",
+            RPCHelpMan{"tl_createpayload_issuancemanaged",
                "\nCreates the payload for a new tokens issuance with manageable supply.\n",
                {
                    {"ecosystem", RPCArg::Type::STR, RPCArg::Optional::NO, "the ecosystem to create the tokens in (1 for main ecosystem, 2 for test ecosystem)\n"},
@@ -282,8 +282,8 @@ static UniValue omni_createpayload_issuancemanaged(const JSONRPCRequest& request
                    "\"payload\"             (string) the hex-encoded payload\n"
                },
                RPCExamples{
-                   HelpExampleCli("omni_createpayload_issuancemanaged", "2 1 0 \"Companies\" \"Bitcoin Mining\" \"Quantum Miner\" \"\" \"\"")
-                   + HelpExampleRpc("omni_createpayload_issuancemanaged", "2, 1, 0, \"Companies\", \"Bitcoin Mining\", \"Quantum Miner\", \"\", \"\"")
+                   HelpExampleCli("tl_createpayload_issuancemanaged", "2 1 0 \"Companies\" \"Bitcoin Mining\" \"Quantum Miner\" \"\" \"\"")
+                   + HelpExampleRpc("tl_createpayload_issuancemanaged", "2, 1, 0, \"Companies\", \"Bitcoin Mining\", \"Quantum Miner\", \"\", \"\"")
                }
             }.ToString());
 
@@ -303,11 +303,11 @@ static UniValue omni_createpayload_issuancemanaged(const JSONRPCRequest& request
     return HexStr(payload.begin(), payload.end());
 }
 
-static UniValue omni_createpayload_closecrowdsale(const JSONRPCRequest& request)
+static UniValue tl_createpayload_closecrowdsale(const JSONRPCRequest& request)
 {
     if (request.fHelp || request.params.size() != 1)
         throw runtime_error(
-            RPCHelpMan{"omni_createpayload_closecrowdsale",
+            RPCHelpMan{"tl_createpayload_closecrowdsale",
                "\nCreates the payload to manually close a crowdsale.\n",
                {
                    {"propertyid", RPCArg::Type::NUM, RPCArg::Optional::NO, "the identifier of the crowdsale to close\n"},
@@ -316,8 +316,8 @@ static UniValue omni_createpayload_closecrowdsale(const JSONRPCRequest& request)
                    "\"payload\"             (string) the hex-encoded payload\n"
                },
                RPCExamples{
-                   HelpExampleCli("omni_createpayload_closecrowdsale", "70")
-                   + HelpExampleRpc("omni_createpayload_closecrowdsale", "70")
+                   HelpExampleCli("tl_createpayload_closecrowdsale", "70")
+                   + HelpExampleRpc("tl_createpayload_closecrowdsale", "70")
                }
             }.ToString());
 
@@ -328,11 +328,11 @@ static UniValue omni_createpayload_closecrowdsale(const JSONRPCRequest& request)
     return HexStr(payload.begin(), payload.end());
 }
 
-static UniValue omni_createpayload_grant(const JSONRPCRequest& request)
+static UniValue tl_createpayload_grant(const JSONRPCRequest& request)
 {
     if (request.fHelp || request.params.size() < 2 || request.params.size() > 3)
         throw runtime_error(
-            RPCHelpMan{"omni_createpayload_grant",
+            RPCHelpMan{"tl_createpayload_grant",
                "\nCreates the payload to issue or grant new units of managed tokens.\n"
                "\nNote: if the server is not synchronized, amounts are considered as divisible, even if the token may have indivisible units!\n",
                {
@@ -346,8 +346,8 @@ static UniValue omni_createpayload_grant(const JSONRPCRequest& request)
                    "3. memo                 (string, optional) "
                },
                RPCExamples{
-                   HelpExampleCli("omni_createpayload_grant", "51 \"7000\"")
-                   + HelpExampleRpc("omni_createpayload_grant", "51, \"7000\"")
+                   HelpExampleCli("tl_createpayload_grant", "51 \"7000\"")
+                   + HelpExampleRpc("tl_createpayload_grant", "51, \"7000\"")
                }
             }.ToString());
 
@@ -360,11 +360,11 @@ static UniValue omni_createpayload_grant(const JSONRPCRequest& request)
     return HexStr(payload.begin(), payload.end());
 }
 
-static UniValue omni_createpayload_revoke(const JSONRPCRequest& request)
+static UniValue tl_createpayload_revoke(const JSONRPCRequest& request)
 {
     if (request.fHelp || request.params.size() < 2 || request.params.size() > 3)
         throw runtime_error(
-            RPCHelpMan{"omni_createpayload_revoke",
+            RPCHelpMan{"tl_createpayload_revoke",
                "\nCreates the payload to revoke units of managed tokens.\n"
                "\nNote: if the server is not synchronized, amounts are considered as divisible, even if the token may have indivisible units!\n",
                {
@@ -376,8 +376,8 @@ static UniValue omni_createpayload_revoke(const JSONRPCRequest& request)
                    "\"payload\"             (string) the hex-encoded payload\n"
                },
                RPCExamples{
-                   HelpExampleCli("omni_createpayload_revoke", "51 \"100\"")
-                   + HelpExampleRpc("omni_createpayload_revoke", "51, \"100\"")
+                   HelpExampleCli("tl_createpayload_revoke", "51 \"100\"")
+                   + HelpExampleRpc("tl_createpayload_revoke", "51, \"100\"")
                }
             }.ToString());
 
@@ -390,11 +390,11 @@ static UniValue omni_createpayload_revoke(const JSONRPCRequest& request)
     return HexStr(payload.begin(), payload.end());
 }
 
-static UniValue omni_createpayload_changeissuer(const JSONRPCRequest& request)
+static UniValue tl_createpayload_changeissuer(const JSONRPCRequest& request)
 {
     if (request.fHelp || request.params.size() != 1)
         throw runtime_error(
-            RPCHelpMan{"omni_createpayload_changeissuer",
+            RPCHelpMan{"tl_createpayload_changeissuer",
                "\nCreats the payload to change the issuer on record of the given tokens.\n",
                {
                    {"propertyid", RPCArg::Type::NUM, RPCArg::Optional::NO, "the identifier of the tokens\n"},
@@ -403,8 +403,8 @@ static UniValue omni_createpayload_changeissuer(const JSONRPCRequest& request)
                    "\"payload\"             (string) the hex-encoded payload\n"
                },
                RPCExamples{
-                   HelpExampleCli("omni_createpayload_changeissuer", "3")
-                   + HelpExampleRpc("omni_createpayload_changeissuer", "3")
+                   HelpExampleCli("tl_createpayload_changeissuer", "3")
+                   + HelpExampleRpc("tl_createpayload_changeissuer", "3")
                }
             }.ToString());
 
@@ -415,11 +415,11 @@ static UniValue omni_createpayload_changeissuer(const JSONRPCRequest& request)
     return HexStr(payload.begin(), payload.end());
 }
 
-static UniValue omni_createpayload_trade(const JSONRPCRequest& request)
+static UniValue tl_createpayload_trade(const JSONRPCRequest& request)
 {
     if (request.fHelp || request.params.size() != 4)
         throw runtime_error(
-            RPCHelpMan{"omni_createpayload_trade",
+            RPCHelpMan{"tl_createpayload_trade",
                "\nCreates the payload to place a trade offer on the distributed token exchange.\n"
                "\nNote: if the server is not synchronized, amounts are considered as divisible, even if the token may have indivisible units!\n",
                {
@@ -432,8 +432,8 @@ static UniValue omni_createpayload_trade(const JSONRPCRequest& request)
                    "\"payload\"             (string) the hex-encoded payload\n"
                },
                RPCExamples{
-                   HelpExampleCli("omni_createpayload_trade", "31 \"250.0\" 1 \"10.0\"")
-                   + HelpExampleRpc("omni_createpayload_trade", "31, \"250.0\", 1, \"10.0\"")
+                   HelpExampleCli("tl_createpayload_trade", "31 \"250.0\" 1 \"10.0\"")
+                   + HelpExampleRpc("tl_createpayload_trade", "31, \"250.0\", 1, \"10.0\"")
                }
             }.ToString());
 
@@ -450,11 +450,11 @@ static UniValue omni_createpayload_trade(const JSONRPCRequest& request)
     return HexStr(payload.begin(), payload.end());
 }
 
-static UniValue omni_createpayload_canceltradesbyprice(const JSONRPCRequest& request)
+static UniValue tl_createpayload_canceltradesbyprice(const JSONRPCRequest& request)
 {
     if (request.fHelp || request.params.size() != 4)
         throw runtime_error(
-            RPCHelpMan{"omni_createpayload_canceltradesbyprice",
+            RPCHelpMan{"tl_createpayload_canceltradesbyprice",
                "\nCreates the payload to cancel offers on the distributed token exchange with the specified price.\n"
                "\nNote: if the server is not synchronized, amounts are considered as divisible, even if the token may have indivisible units!\n",
                {
@@ -467,8 +467,8 @@ static UniValue omni_createpayload_canceltradesbyprice(const JSONRPCRequest& req
                    "\"payload\"             (string) the hex-encoded payload\n"
                },
                RPCExamples{
-                   HelpExampleCli("omni_createpayload_canceltradesbyprice", "31 \"100.0\" 1 \"5.0\"")
-                   + HelpExampleRpc("omni_createpayload_canceltradesbyprice", "31, \"100.0\", 1, \"5.0\"")
+                   HelpExampleCli("tl_createpayload_canceltradesbyprice", "31 \"100.0\" 1 \"5.0\"")
+                   + HelpExampleRpc("tl_createpayload_canceltradesbyprice", "31, \"100.0\", 1, \"5.0\"")
                }
             }.ToString());
 
@@ -484,11 +484,11 @@ static UniValue omni_createpayload_canceltradesbyprice(const JSONRPCRequest& req
     return HexStr(payload.begin(), payload.end());
 }
 
-static UniValue omni_createpayload_canceltradesbypair(const JSONRPCRequest& request)
+static UniValue tl_createpayload_canceltradesbypair(const JSONRPCRequest& request)
 {
     if (request.fHelp || request.params.size() != 2)
         throw runtime_error(
-            RPCHelpMan{"omni_createpayload_canceltradesbypair",
+            RPCHelpMan{"tl_createpayload_canceltradesbypair",
                "\nCreates the payload to cancel all offers on the distributed token exchange with the given currency pair.\n",
                {
                    {"propertyidforsale", RPCArg::Type::NUM, RPCArg::Optional::NO, "the identifier of the tokens listed for sale\n"},
@@ -498,8 +498,8 @@ static UniValue omni_createpayload_canceltradesbypair(const JSONRPCRequest& requ
                    "\"payload\"             (string) the hex-encoded payload\n"
                },
                RPCExamples{
-                   HelpExampleCli("omni_createpayload_canceltradesbypair", "1 31")
-                   + HelpExampleRpc("omni_createpayload_canceltradesbypair", "1, 31")
+                   HelpExampleCli("tl_createpayload_canceltradesbypair", "1 31")
+                   + HelpExampleRpc("tl_createpayload_canceltradesbypair", "1, 31")
                }
             }.ToString());
 
@@ -513,11 +513,11 @@ static UniValue omni_createpayload_canceltradesbypair(const JSONRPCRequest& requ
     return HexStr(payload.begin(), payload.end());
 }
 
-static UniValue omni_createpayload_cancelalltrades(const JSONRPCRequest& request)
+static UniValue tl_createpayload_cancelalltrades(const JSONRPCRequest& request)
 {
     if (request.fHelp || request.params.size() != 1)
         throw runtime_error(
-            RPCHelpMan{"omni_createpayload_cancelalltrades",
+            RPCHelpMan{"tl_createpayload_cancelalltrades",
                "\nCreates the payload to cancel all offers on the distributed token exchange.\n",
                {
                    {"ecosystem", RPCArg::Type::NUM, RPCArg::Optional::NO, "the ecosystem of the offers to cancel (1 for main ecosystem, 2 for test ecosystem)\n"},
@@ -526,8 +526,8 @@ static UniValue omni_createpayload_cancelalltrades(const JSONRPCRequest& request
                    "\"payload\"             (string) the hex-encoded payload\n"
                },
                RPCExamples{
-                   HelpExampleCli("omni_createpayload_cancelalltrades", "1")
-                   + HelpExampleRpc("omni_createpayload_cancelalltrades", "1")
+                   HelpExampleCli("tl_createpayload_cancelalltrades", "1")
+                   + HelpExampleRpc("tl_createpayload_cancelalltrades", "1")
                }
             }.ToString());
 
@@ -538,11 +538,11 @@ static UniValue omni_createpayload_cancelalltrades(const JSONRPCRequest& request
     return HexStr(payload.begin(), payload.end());
 }
 
-static UniValue omni_createpayload_enablefreezing(const JSONRPCRequest& request)
+static UniValue tl_createpayload_enablefreezing(const JSONRPCRequest& request)
 {
     if (request.fHelp || request.params.size() != 1)
         throw runtime_error(
-            RPCHelpMan{"omni_createpayload_enablefreezing",
+            RPCHelpMan{"tl_createpayload_enablefreezing",
                "\nCreates the payload to enable address freezing for a centrally managed property.\n",
                {
                    {"propertyid", RPCArg::Type::NUM, RPCArg::Optional::NO, "the identifier of the tokens\n"},
@@ -551,8 +551,8 @@ static UniValue omni_createpayload_enablefreezing(const JSONRPCRequest& request)
                    "\"payload\"             (string) the hex-encoded payload\n"
                },
                RPCExamples{
-                   HelpExampleCli("omni_createpayload_enablefreezing", "3")
-                   + HelpExampleRpc("omni_createpayload_enablefreezing", "3")
+                   HelpExampleCli("tl_createpayload_enablefreezing", "3")
+                   + HelpExampleRpc("tl_createpayload_enablefreezing", "3")
                }
             }.ToString());
 
@@ -563,11 +563,11 @@ static UniValue omni_createpayload_enablefreezing(const JSONRPCRequest& request)
     return HexStr(payload.begin(), payload.end());
 }
 
-static UniValue omni_createpayload_disablefreezing(const JSONRPCRequest& request)
+static UniValue tl_createpayload_disablefreezing(const JSONRPCRequest& request)
 {
     if (request.fHelp || request.params.size() != 1)
         throw runtime_error(
-            RPCHelpMan{"omni_createpayload_disablefreezing",
+            RPCHelpMan{"tl_createpayload_disablefreezing",
                "\nCreates the payload to disable address freezing for a centrally managed property.\n"
                "\nIMPORTANT NOTE:  Disabling freezing for a property will UNFREEZE all frozen addresses for that property!",
                {
@@ -577,8 +577,8 @@ static UniValue omni_createpayload_disablefreezing(const JSONRPCRequest& request
                    "\"payload\"             (string) the hex-encoded payload\n"
                },
                RPCExamples{
-                   HelpExampleCli("omni_createpayload_disablefreezing", "3")
-                   + HelpExampleRpc("omni_createpayload_disablefreezing", "3")
+                   HelpExampleCli("tl_createpayload_disablefreezing", "3")
+                   + HelpExampleRpc("tl_createpayload_disablefreezing", "3")
                }
             }.ToString());
 
@@ -589,11 +589,11 @@ static UniValue omni_createpayload_disablefreezing(const JSONRPCRequest& request
     return HexStr(payload.begin(), payload.end());
 }
 
-static UniValue omni_createpayload_freeze(const JSONRPCRequest& request)
+static UniValue tl_createpayload_freeze(const JSONRPCRequest& request)
 {
     if (request.fHelp || request.params.size() != 3)
         throw runtime_error(
-            RPCHelpMan{"omni_createpayload_freeze",
+            RPCHelpMan{"tl_createpayload_freeze",
                "\nCreates the payload to freeze an address for a centrally managed token.\n"
                "\nNote: if the server is not synchronized, amounts are considered as divisible, even if the token may have indivisible units!\n",
                {
@@ -605,8 +605,8 @@ static UniValue omni_createpayload_freeze(const JSONRPCRequest& request)
                    "\"payload\"             (string) the hex-encoded payload\n"
                },
                RPCExamples{
-                   HelpExampleCli("omni_createpayload_freeze", "\"3HTHRxu3aSDV4deakjC7VmsiUp7c6dfbvs\" 1 \"100\"")
-                   + HelpExampleRpc("omni_createpayload_freeze", "\"3HTHRxu3aSDV4deakjC7VmsiUp7c6dfbvs\", 1, \"100\"")
+                   HelpExampleCli("tl_createpayload_freeze", "\"3HTHRxu3aSDV4deakjC7VmsiUp7c6dfbvs\" 1 \"100\"")
+                   + HelpExampleRpc("tl_createpayload_freeze", "\"3HTHRxu3aSDV4deakjC7VmsiUp7c6dfbvs\", 1, \"100\"")
                }
             }.ToString());
 
@@ -619,11 +619,11 @@ static UniValue omni_createpayload_freeze(const JSONRPCRequest& request)
     return HexStr(payload.begin(), payload.end());
 }
 
-static UniValue omni_createpayload_unfreeze(const JSONRPCRequest& request)
+static UniValue tl_createpayload_unfreeze(const JSONRPCRequest& request)
 {
     if (request.fHelp || request.params.size() != 3)
         throw runtime_error(
-            RPCHelpMan{"omni_createpayload_unfreeze",
+            RPCHelpMan{"tl_createpayload_unfreeze",
                "\nCreates the payload to unfreeze an address for a centrally managed token.\n"
                "\nNote: if the server is not synchronized, amounts are considered as divisible, even if the token may have indivisible units!\n",
                {
@@ -635,8 +635,8 @@ static UniValue omni_createpayload_unfreeze(const JSONRPCRequest& request)
                    "\"payload\"             (string) the hex-encoded payload\n"
                },
                RPCExamples{
-                   HelpExampleCli("omni_createpayload_unfreeze", "\"3HTHRxu3aSDV4deakjC7VmsiUp7c6dfbvs\" 1 \"100\"")
-                   + HelpExampleRpc("omni_createpayload_unfreeze", "\"3HTHRxu3aSDV4deakjC7VmsiUp7c6dfbvs\", 1, \"100\"")
+                   HelpExampleCli("tl_createpayload_unfreeze", "\"3HTHRxu3aSDV4deakjC7VmsiUp7c6dfbvs\" 1 \"100\"")
+                   + HelpExampleRpc("tl_createpayload_unfreeze", "\"3HTHRxu3aSDV4deakjC7VmsiUp7c6dfbvs\", 1, \"100\"")
                }
             }.ToString());
 
@@ -922,7 +922,7 @@ static UniValue tl_createpayload_cancelorderbyblock(const JSONRPCRequest& reques
 // 			"\nPayload to place, update or cancel a sell offer on the traditional distributed Trade Layer/LTC exchange.\n"
 //
 // 			"\nArguments:\n"
-// 			"1. propertyidoffer     (number, required) the identifier of the tokens to list for sale (must be 1 for OMNI or 2 for TOMNI)\n"
+// 			"1. propertyidoffer     (number, required) the identifier of the tokens to list for sale (must be 1 for trade or 2 for Ttrade)\n"
 // 			"2. amountoffering      (string, required) the amount of tokens to list for sale\n"
 // 			"3. price               (string, required) the price in litecoin of the offer \n"
 // 			"4. paymentwindow       (number, required) a time limit in blocks a buyer has to pay following a successful accepting order\n"
@@ -958,34 +958,6 @@ static UniValue tl_createpayload_cancelorderbyblock(const JSONRPCRequest& reques
 //
 //   return HexStr(payload.begin(), payload.end());
 // }
-
-static UniValue tl_createpayload_dexaccept(const JSONRPCRequest& request)
-{
-    if (request.fHelp || request.params.size() != 2)
-        throw runtime_error(
-            "tl_createpayload_dexaccept \" propertyid \"amount\n"
-
-            "\nPayload to create and broadcast an accept offer for the specified token and amount.\n"
-
-            "\nArguments:\n"
-            "1. propertyid           (number, required) the identifier of the token traded\n"
-            "2. amount               (string, required) the amount traded\n"
-
-            "\nResult:\n"
-            "\"payload\"             (string) the hex-encoded payload\n"
-
-            "\nExamples:\n"
-            + HelpExampleCli("tl_createpayload_dexaccept", "\" 1 \"15.0\"")
-            + HelpExampleRpc("tl_createpayload_dexaccept", "\1, \"15.0\"")
-        );
-
-    uint32_t propertyId = ParsePropertyId(request.params[0]);
-    int64_t amount = ParseAmount(request.params[1], true); // MSC/TMSC is divisible
-
-    std::vector<unsigned char> payload = CreatePayload_DExAccept(propertyId, amount);
-
-    return HexStr(payload.begin(), payload.end());
-}
 
 static UniValue tl_createpayload_sendvesting(const JSONRPCRequest& request)
 {
@@ -1167,7 +1139,7 @@ static UniValue tl_createpayload_transfer(const JSONRPCRequest& request)
 
 static UniValue tl_createpayload_dex_payment(const JSONRPCRequest& request)
 {
-  if (request.fHelp || request.params.size() != 0)
+  if (request.fHelp)
     throw runtime_error(
 			"tl_createpayload_dex_payment\n"
 
@@ -1191,26 +1163,26 @@ static UniValue tl_createpayload_dex_payment(const JSONRPCRequest& request)
 static const CRPCCommand commands[] =
 { //  category                         name                                      actor (function)                         okSafeMode
   //  -------------------------------- ----------------------------------------- ---------------------------------------- ----------
-    { "omni layer (payload creation)", "omni_createpayload_simplesend",          &omni_createpayload_simplesend,          {"propertyid", "amount"} },
-    { "omni layer (payload creation)", "omni_createpayload_sendall",             &omni_createpayload_sendall,             {"ecosystem"} },
-    { "omni layer (payload creation)", "omni_createpayload_dexsell",             &omni_createpayload_dexsell,             {"propertyidforsale", "amountforsale", "amountdesired", "paymentwindow", "minacceptfee", "action"} },
-    { "omni layer (payload creation)", "omni_createpayload_dexaccept",           &omni_createpayload_dexaccept,           {"propertyid", "amount"} },
-    { "omni layer (payload creation)", "omni_createpayload_sto",                 &omni_createpayload_sto,                 {"propertyid", "amount", "distributionproperty"} },
-    { "omni layer (payload creation)", "omni_createpayload_grant",               &omni_createpayload_grant,               {"propertyid", "amount", "memo"} },
-    { "omni layer (payload creation)", "omni_createpayload_revoke",              &omni_createpayload_revoke,              {"propertyid", "amount", "memo"} },
-    { "omni layer (payload creation)", "omni_createpayload_changeissuer",        &omni_createpayload_changeissuer,        {"propertyid"} },
-    { "omni layer (payload creation)", "omni_createpayload_trade",               &omni_createpayload_trade,               {"propertyidforsale", "amountforsale", "propertiddesired", "amountdesired"} },
-    { "omni layer (payload creation)", "omni_createpayload_issuancefixed",       &omni_createpayload_issuancefixed,       {"ecosystem", "type", "previousid", "category", "subcategory", "name", "url", "data", "amount"} },
-    { "omni layer (payload creation)", "omni_createpayload_issuancecrowdsale",   &omni_createpayload_issuancecrowdsale,   {"ecosystem", "type", "previousid", "category", "subcategory", "name", "url", "data", "propertyiddesired", "tokensperunit", "deadline", "earlybonus", "issuerpercentage"} },
-    { "omni layer (payload creation)", "omni_createpayload_issuancemanaged",     &omni_createpayload_issuancemanaged,     {"ecosystem", "type", "previousid", "category", "subcategory", "name", "url", "data"} },
-    { "omni layer (payload creation)", "omni_createpayload_closecrowdsale",      &omni_createpayload_closecrowdsale,      {"propertyid"} },
-    { "omni layer (payload creation)", "omni_createpayload_canceltradesbyprice", &omni_createpayload_canceltradesbyprice, {"propertyidforsale", "amountforsale", "propertiddesired", "amountdesired"} },
-    { "omni layer (payload creation)", "omni_createpayload_canceltradesbypair",  &omni_createpayload_canceltradesbypair,  {"propertyidforsale", "propertiddesired"} },
-    { "omni layer (payload creation)", "omni_createpayload_cancelalltrades",     &omni_createpayload_cancelalltrades,     {"ecosystem"} },
-    { "omni layer (payload creation)", "omni_createpayload_enablefreezing",      &omni_createpayload_enablefreezing,      {"propertyid"} },
-    { "omni layer (payload creation)", "omni_createpayload_disablefreezing",     &omni_createpayload_disablefreezing,     {"propertyid"} },
-    { "omni layer (payload creation)", "omni_createpayload_freeze",              &omni_createpayload_freeze,              {"toaddress", "propertyid", "amount"} },
-    { "omni layer (payload creation)", "omni_createpayload_unfreeze",            &omni_createpayload_unfreeze,            {"toaddress", "propertyid", "amount"} },
+    { "trade layer (payload creation)", "tl_createpayload_simplesend",          &tl_createpayload_simplesend,          {"propertyid", "amount"} },
+    { "trade layer (payload creation)", "tl_createpayload_sendall",             &tl_createpayload_sendall,             {"ecosystem"} },
+    { "trade layer (payload creation)", "tl_createpayload_dexsell",             &tl_createpayload_dexsell,             {"propertyidforsale", "amountforsale", "amountdesired", "paymentwindow", "minacceptfee", "action"} },
+    { "trade layer (payload creation)", "tl_createpayload_dexaccept",           &tl_createpayload_dexaccept,           {"propertyid", "amount"} },
+    { "trade layer (payload creation)", "tl_createpayload_sto",                 &tl_createpayload_sto,                 {"propertyid", "amount", "distributionproperty"} },
+    { "trade layer (payload creation)", "tl_createpayload_grant",               &tl_createpayload_grant,               {"propertyid", "amount", "memo"} },
+    { "trade layer (payload creation)", "tl_createpayload_revoke",              &tl_createpayload_revoke,              {"propertyid", "amount", "memo"} },
+    { "trade layer (payload creation)", "tl_createpayload_changeissuer",        &tl_createpayload_changeissuer,        {"propertyid"} },
+    { "trade layer (payload creation)", "tl_createpayload_trade",               &tl_createpayload_trade,               {"propertyidforsale", "amountforsale", "propertiddesired", "amountdesired"} },
+    { "trade layer (payload creation)", "tl_createpayload_issuancefixed",       &tl_createpayload_issuancefixed,       {"ecosystem", "type", "previousid", "category", "subcategory", "name", "url", "data", "amount"} },
+    { "trade layer (payload creation)", "tl_createpayload_issuancecrowdsale",   &tl_createpayload_issuancecrowdsale,   {"ecosystem", "type", "previousid", "category", "subcategory", "name", "url", "data", "propertyiddesired", "tokensperunit", "deadline", "earlybonus", "issuerpercentage"} },
+    { "trade layer (payload creation)", "tl_createpayload_issuancemanaged",     &tl_createpayload_issuancemanaged,     {"ecosystem", "type", "previousid", "category", "subcategory", "name", "url", "data"} },
+    { "trade layer (payload creation)", "tl_createpayload_closecrowdsale",      &tl_createpayload_closecrowdsale,      {"propertyid"} },
+    { "trade layer (payload creation)", "tl_createpayload_canceltradesbyprice", &tl_createpayload_canceltradesbyprice, {"propertyidforsale", "amountforsale", "propertiddesired", "amountdesired"} },
+    { "trade layer (payload creation)", "tl_createpayload_canceltradesbypair",  &tl_createpayload_canceltradesbypair,  {"propertyidforsale", "propertiddesired"} },
+    { "trade layer (payload creation)", "tl_createpayload_cancelalltrades",     &tl_createpayload_cancelalltrades,     {"ecosystem"} },
+    { "trade layer (payload creation)", "tl_createpayload_enablefreezing",      &tl_createpayload_enablefreezing,      {"propertyid"} },
+    { "trade layer (payload creation)", "tl_createpayload_disablefreezing",     &tl_createpayload_disablefreezing,     {"propertyid"} },
+    { "trade layer (payload creation)", "tl_createpayload_freeze",              &tl_createpayload_freeze,              {"toaddress", "propertyid", "amount"} },
+    { "trade layer (payload creation)", "tl_createpayload_unfreeze",            &tl_createpayload_unfreeze,            {"toaddress", "propertyid", "amount"} },
     { "trade layer (payload creation)", "tl_createpayload_createcontract",                &tl_createpayload_createcontract,                  {}   },
     { "trade layer (payload creation)", "tl_createpayload_tradecontract",                 &tl_createpayload_tradecontract,                   {}   },
     { "trade layer (payload creation)", "tl_createpayload_cancelallcontractsbyaddress",   &tl_createpayload_cancelallcontractsbyaddress,     {}   },

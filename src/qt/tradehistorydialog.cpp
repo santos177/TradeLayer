@@ -13,20 +13,20 @@
 #include <qt/clientmodel.h>
 #include <qt/platformstyle.h>
 
-#include <omnicore/dbtradelist.h>
-#include <omnicore/dbtxlist.h>
-#include <omnicore/mdex.h>
-#include <omnicore/omnicore.h>
-#include <omnicore/parsing.h>
-#include <omnicore/pending.h>
-#include <omnicore/rpc.h>
-#include <omnicore/rpctxobject.h>
-#include <omnicore/sp.h>
-#include <omnicore/tx.h>
-#include <omnicore/utilsbitcoin.h>
-#include <omnicore/walletcache.h>
-#include <omnicore/walletfetchtxs.h>
-#include <omnicore/walletutils.h>
+#include <tradelayer/dbtradelist.h>
+#include <tradelayer/dbtxlist.h>
+#include <tradelayer/mdex.h>
+#include <tradelayer/tradelayer.h>
+#include <tradelayer/parsing.h>
+#include <tradelayer/pending.h>
+#include <tradelayer/rpc.h>
+#include <tradelayer/rpctxobject.h>
+#include <tradelayer/sp.h>
+#include <tradelayer/tx.h>
+#include <tradelayer/utilsbitcoin.h>
+#include <tradelayer/walletcache.h>
+#include <tradelayer/walletfetchtxs.h>
+#include <tradelayer/walletutils.h>
 
 #include <amount.h>
 #include <chainparams.h>
@@ -309,16 +309,16 @@ int TradeHistoryDialog::PopulateTradeHistoryMap()
     // ### END PENDING TRANSACTIONS PROCESSING ###
 
     // ### START WALLET TRANSACTIONS PROCESSING ###
-    // obtain a sorted list of Omni layer wallet transactions (including STO receipts and pending) - default last 65535
+    // obtain a sorted list of Tradelayer wallet transactions (including STO receipts and pending) - default last 65535
     std::map<std::string,uint256> walletTransactions;
     if (walletModel)
-        walletTransactions = FetchWalletOmniTransactions(walletModel->wallet(), gArgs.GetArg("-omniuiwalletscope", 65535L));
+        walletTransactions = FetchWalletTLTransactions(walletModel->wallet(), gArgs.GetArg("-tluiwalletscope", 65535L));
 
     // reverse iterate over (now ordered) transactions and populate history map for each one
     for (std::map<std::string,uint256>::reverse_iterator it = walletTransactions.rbegin(); it != walletTransactions.rend(); it++) {
         uint256 hash = it->second;
 
-        // use levelDB to perform a fast check on whether it's a bitcoin or Omni tx and whether it's a trade
+        // use levelDB to perform a fast check on whether it's a bitcoin or Tradelayer tx and whether it's a trade
         std::string tempStrValue;
         {
             LOCK(cs_tally);
@@ -550,8 +550,8 @@ void TradeHistoryDialog::setClientModel(ClientModel *model)
 {
     this->clientModel = model;
     if (model != nullptr) {
-        connect(model, &ClientModel::refreshOmniBalance, this, &TradeHistoryDialog::UpdateTradeHistoryTableSignal);
-        connect(model, &ClientModel::reinitOmniState, this, &TradeHistoryDialog::ReinitTradeHistoryTable);
+        connect(model, &ClientModel::refreshTLBalance, this, &TradeHistoryDialog::UpdateTradeHistoryTableSignal);
+        connect(model, &ClientModel::reinitTLState, this, &TradeHistoryDialog::ReinitTradeHistoryTable);
     }
 }
 
@@ -591,4 +591,3 @@ void TradeHistoryDialog::resizeEvent(QResizeEvent* event)
     QWidget::resizeEvent(event);
     borrowedColumnResizingFixer->stretchColumnWidth(5);
 }
-

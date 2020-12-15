@@ -84,7 +84,7 @@ bool TradeLayer_Encode_ClassC(const std::vector<unsigned char>& vchPayload,
         std::vector<std::pair <CScript, int64_t> >& vecOutputs)
 {
     std::vector<unsigned char> vchData;
-    std::vector<unsigned char> vchOmBytes = GetOmMarker();
+    std::vector<unsigned char> vchOmBytes = GetTLMarker();
     vchData.insert(vchData.end(), vchOmBytes.begin(), vchOmBytes.end());
     vchData.insert(vchData.end(), vchPayload.begin(), vchPayload.end());
     if (vchData.size() > nMaxDatacarrierBytes) { return false; }

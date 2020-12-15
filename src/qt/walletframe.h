@@ -72,8 +72,8 @@ public Q_SLOTS:
     void gotoExchangePage();
     /** Switch to history (transactions) page */
     void gotoHistoryPage();
-    /** Switch directory to Omni tx history tab */
-    void gotoOmniHistoryTab();
+    /** Switch directory to Tradelayer tx history tab */
+    void gotoTLHistoryTab();
     /** Switch directory to bitcoin tx history tab */
     void gotoBitcoinHistoryTab();
     /** Switch to utility page */

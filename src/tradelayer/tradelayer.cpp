@@ -919,7 +919,7 @@ int mastercore::GetEncodingClass(const CTransaction& tx, int nBlock)
                 continue;
             }
             if (!scriptPushes.empty()) {
-                std::vector<unsigned char> vchMarker = GetOmMarker();
+                std::vector<unsigned char> vchMarker = GetTLMarker();
                 std::vector<unsigned char> vchPushed = ParseHex(scriptPushes[0]);
                 if (vchPushed.size() < vchMarker.size()) {
                     continue;
@@ -1021,10 +1021,10 @@ static int parseTransaction(bool bRPConly, const CTransaction& wtx, int nBlock, 
     mp_tx.Set(wtx.GetHash(), nBlock, idx, nTime);
 
     // ### CLASS IDENTIFICATION AND MARKER CHECK ###
-    int omniClass = GetEncodingClass(wtx, nBlock);
+    int tlClass = GetEncodingClass(wtx, nBlock);
 
-    if (omniClass == NO_MARKER) {
-        return -1; // No Exodus/Omni marker, thus not a valid Omni transaction
+    if (tlClass == NO_MARKER) {
+        return -1; // Not a valid tradelayer transaction
     }
 
     if (!bRPConly || msc_debug_parser_readonly) {
@@ -1047,7 +1047,7 @@ static int parseTransaction(bool bRPConly, const CTransaction& wtx, int nBlock, 
 
     assert(view.HaveInputs(wtx));
 
-    if (omniClass != TL_CLASS_C)
+    if (tlClass != TL_CLASS_C)
     {
         // OLD LOGIC - collect input amounts and identify sender via "largest input by sum"
         std::map<std::string, int64_t> inputs_sum_of_values;
@@ -1157,7 +1157,7 @@ static int parseTransaction(bool bRPConly, const CTransaction& wtx, int nBlock, 
     if (msc_debug_parser_data) PrintToLog(" address_data.size=%lu\n script_data.size=%lu\n value_data.size=%lu\n", address_data.size(), script_data.size(), value_data.size());
 
     // ### CLASS A PARSING ###
-    if (omniClass == TL_CLASS_A) {
+    if (tlClass == TL_CLASS_A) {
         std::string strScriptData;
         std::string strDataAddress;
         std::string strRefAddress;
@@ -1216,7 +1216,7 @@ static int parseTransaction(bool bRPConly, const CTransaction& wtx, int nBlock, 
         }
     }
     // ### CLASS B / CLASS C PARSING ###
-    if ((omniClass == TL_CLASS_B) || (omniClass == TL_CLASS_C)) {
+    if ((tlClass == TL_CLASS_B) || (tlClass == TL_CLASS_C)) {
         if (msc_debug_parser_data) PrintToLog("Beginning reference identification\n");
         bool referenceFound = false; // bool to hold whether we've found the reference yet
         bool changeRemoved = false; // bool to hold whether we've ignored the first output to sender as change
@@ -1255,7 +1255,7 @@ static int parseTransaction(bool bRPConly, const CTransaction& wtx, int nBlock, 
         if (msc_debug_parser_data) PrintToLog("Ending reference identification\nFinal decision on reference identification is: %s\n", strReference);
 
         // ### CLASS B SPECIFIC PARSING ###
-        if (omniClass == TL_CLASS_B) {
+        if (tlClass == TL_CLASS_B) {
             std::vector<std::string> multisig_script_data;
 
             // ### POPULATE MULTISIG SCRIPT DATA ###
@@ -1343,7 +1343,7 @@ static int parseTransaction(bool bRPConly, const CTransaction& wtx, int nBlock, 
         }
 
         // ### CLASS C SPECIFIC PARSING ###
-        if (omniClass == TL_CLASS_C) {
+        if (tlClass == TL_CLASS_C) {
             std::vector<std::string> op_return_script_data;
 
             // ### POPULATE OP RETURN SCRIPT DATA ###
@@ -1363,7 +1363,7 @@ static int parseTransaction(bool bRPConly, const CTransaction& wtx, int nBlock, 
                     }
                     // TODO: maybe encapsulate the following sort of messy code
                     if (!vstrPushes.empty()) {
-                        std::vector<unsigned char> vchMarker = GetOmMarker();
+                        std::vector<unsigned char> vchMarker = GetTLMarker();
                         std::vector<unsigned char> vchPushed = ParseHex(vstrPushes[0]);
                         if (vchPushed.size() < vchMarker.size()) {
                             continue;
@@ -1406,7 +1406,7 @@ static int parseTransaction(bool bRPConly, const CTransaction& wtx, int nBlock, 
 
     // ### SET MP TX INFO ###
     if (msc_debug_verbose) PrintToLog("single_pkt: %s\n", HexStr(single_pkt, packet_size + single_pkt));
-    mp_tx.Set(strSender, strReference, 0, wtx.GetHash(), nBlock, idx, (unsigned char *)&single_pkt, packet_size, omniClass, (inAll-outAll));
+    mp_tx.Set(strSender, strReference, 0, wtx.GetHash(), nBlock, idx, (unsigned char *)&single_pkt, packet_size, tlClass, (inAll-outAll));
 
     return 0;
 }
@@ -1722,17 +1722,17 @@ int mastercore_init()
                 fs::path tradePath = GetDataDir() / "MP_tradelist";
                 fs::path spPath = GetDataDir() / "MP_spinfo";
                 fs::path stoPath = GetDataDir() / "MP_stolist";
-                fs::path omniTXDBPath = GetDataDir() / "Omni_TXDB";
-                fs::path feesPath = GetDataDir() / "OMNI_feecache";
-                fs::path feeHistoryPath = GetDataDir() / "OMNI_feehistory";
+                fs::path tlTXDBPath = GetDataDir() / "TL_TXDB";
+                fs::path feesPath = GetDataDir() / "TL_feecache";
+                // fs::path feeHistoryPath = GetDataDir() / "TL_feehistory";
                 if (fs::exists(persistPath)) fs::remove_all(persistPath);
                 if (fs::exists(txlistPath)) fs::remove_all(txlistPath);
                 if (fs::exists(tradePath)) fs::remove_all(tradePath);
                 if (fs::exists(spPath)) fs::remove_all(spPath);
                 if (fs::exists(stoPath)) fs::remove_all(stoPath);
-                if (fs::exists(omniTXDBPath)) fs::remove_all(omniTXDBPath);
+                if (fs::exists(tlTXDBPath)) fs::remove_all(tlTXDBPath);
                 if (fs::exists(feesPath)) fs::remove_all(feesPath);
-                if (fs::exists(feeHistoryPath)) fs::remove_all(feeHistoryPath);
+                // if (fs::exists(feeHistoryPath)) fs::remove_all(feeHistoryPath);
                 PrintToLog("Success clearing persistence files in datadir %s\n", GetDataDir().string());
                 startClean = true;
             } catch (const fs::filesystem_error& e) {
@@ -1745,9 +1745,9 @@ int mastercore_init()
         pDbStoList = new CMPSTOList(GetDataDir() / "MP_stolist", fReindex);
         pDbTransactionList = new CMPTxList(GetDataDir() / "MP_txlist", fReindex);
         pDbSpInfo = new CMPSPInfo(GetDataDir() / "MP_spinfo", fReindex);
-        pDbTransaction = new CTLTransactionDB(GetDataDir() / "Omni_TXDB", fReindex);
-        pDbFeeCache = new CTLFeeCache(GetDataDir() / "OMNI_feecache", fReindex);
-        pDbFeeHistory = new CTLFeeHistory(GetDataDir() / "OMNI_feehistory", fReindex);
+        pDbTransaction = new CTLTransactionDB(GetDataDir() / "TL_TXDB", fReindex);
+        pDbFeeCache = new CTLFeeCache(GetDataDir() / "TL_feecache", fReindex);
+        pDbFeeHistory = new CTLFeeHistory(GetDataDir() / "TL_feehistory", fReindex);
 
         pathStateFiles = GetDataDir() / "MP_persist";
         TryCreateDirectories(pathStateFiles);
@@ -1786,7 +1786,7 @@ int mastercore_init()
             if (inconsistentDb) strReason = "INCONSISTENT DB DETECTED!\n"
                     "\n!!! WARNING !!!\n\n"
                     "IF YOU ARE USING AN OVERLAY DB, YOU MAY NEED TO REPROCESS\n"
-                    "ALL OMNI LAYER TRANSACTIONS TO AVOID INCONSISTENCIES!\n"
+                    "ALL TRADE LAYER TRANSACTIONS TO AVOID INCONSISTENCIES!\n"
                     "\n!!! WARNING !!!";
             PrintToConsole("Loading persistent state: NONE (%s)\n", strReason);
         }
@@ -2279,7 +2279,7 @@ bool mastercore_handler_tx(const CTransaction& tx, int nBlock, unsigned int idx,
  */
 bool mastercore::UseEncodingClassC(size_t nDataSize)
 {
-    size_t nTotalSize = nDataSize + GetOmMarker().size(); // Marker "tl"
+    size_t nTotalSize = nDataSize + GetTLMarker().size(); // Marker "tl"
     bool fDataEnabled = gArgs.GetBoolArg("-datacarrier", true);
     int nBlockNow = GetHeight();
     if (!IsAllowedOutputType(TX_NULL_DATA, nBlockNow)) {
@@ -3187,7 +3187,7 @@ bool mastercore::makeWithdrawals(int Block)
 /**
  * @return The marker for class C transactions.
  */
-const std::vector<unsigned char> GetOmMarker()
+const std::vector<unsigned char> GetTLMarker()
 {
     static unsigned char pch[] = {0x6f, 0x6d, 0x6e, 0x69}; // Hex-encoded: "tl"
 

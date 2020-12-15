@@ -224,7 +224,7 @@ const CTxDestination ExodusAddress();
 const CTxDestination ExodusCrowdsaleAddress(int nBlock = 0);
 
 /** Returns the marker for class C transactions. */
-const std::vector<unsigned char> GetOmMarker();
+const std::vector<unsigned char> GetTLMarker();
 
 //! Used to indicate, whether to automatically commit created transactions
 extern bool autoCommit;

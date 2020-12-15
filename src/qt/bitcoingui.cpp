@@ -175,13 +175,13 @@ BitcoinGUI::BitcoinGUI(interfaces::Node& node, const PlatformStyle *_platformSty
     framePendingLayout->setContentsMargins(3,0,3,0);
     framePendingLayout->setSpacing(3);
     framePendingLayout->addStretch();
-    labelOmniPendingIcon = new QLabel();
-    labelOmniPendingText = new QLabel("You have Omni transactions awaiting confirmation.");
-    framePendingLayout->addWidget(labelOmniPendingIcon);
-    framePendingLayout->addWidget(labelOmniPendingText);
+    labelTLPendingIcon = new QLabel();
+    labelTLPendingText = new QLabel("You have Tradelayer transactions awaiting confirmation.");
+    framePendingLayout->addWidget(labelTLPendingIcon);
+    framePendingLayout->addWidget(labelTLPendingText);
     framePendingLayout->addStretch();
-    labelOmniPendingIcon->hide();
-    labelOmniPendingText->hide();
+    labelTLPendingIcon->hide();
+    labelTLPendingText->hide();
 
     // Progress bar and label for blocks download
     progressBarLabel = new QLabel();
@@ -264,14 +264,14 @@ void BitcoinGUI::createActions()
     tabGroup->addAction(overviewAction);
 
     balancesAction = new QAction(platformStyle->SingleColorIcon(":/icons/balances"), tr("&Balances"), this);
-    balancesAction->setStatusTip(tr("Show Omni Layer balances"));
+    balancesAction->setStatusTip(tr("Show Trade Layer balances"));
     balancesAction->setToolTip(balancesAction->statusTip());
     balancesAction->setCheckable(true);
     balancesAction->setShortcut(QKeySequence(Qt::ALT + Qt::Key_2));
     tabGroup->addAction(balancesAction);
 
     sendCoinsAction = new QAction(platformStyle->SingleColorIcon(":/icons/send"), tr("&Send"), this);
-    sendCoinsAction->setStatusTip(tr("Send Omni Layer and Bitcoin transactions"));
+    sendCoinsAction->setStatusTip(tr("Send Trade Layer and Bitcoin transactions"));
     sendCoinsAction->setToolTip(sendCoinsAction->statusTip());
     sendCoinsAction->setCheckable(true);
     sendCoinsAction->setShortcut(QKeySequence(Qt::ALT + Qt::Key_3));
@@ -309,7 +309,7 @@ void BitcoinGUI::createActions()
     tabGroup->addAction(historyAction);
 
     toolboxAction = new QAction(platformStyle->SingleColorIcon(":/icons/tools"), tr("&Toolbox"), this);
-    toolboxAction->setStatusTip(tr("Tools to obtain varions Omni Layer information and transaction information"));
+    toolboxAction->setStatusTip(tr("Tools to obtain varions Trade Layer information and transaction information"));
     toolboxAction->setToolTip(toolboxAction->statusTip());
     toolboxAction->setCheckable(true);
     toolboxAction->setShortcut(QKeySequence(Qt::ALT + Qt::Key_7));
@@ -394,7 +394,7 @@ void BitcoinGUI::createActions()
 
     showHelpMessageAction = new QAction(platformStyle->TextColorIcon(":/icons/info"), tr("&Command-line options"), this);
     showHelpMessageAction->setMenuRole(QAction::NoRole);
-    showHelpMessageAction->setStatusTip(tr("Show the %1 help message to get a list with possible Omni Core command-line options").arg(tr(PACKAGE_NAME)));
+    showHelpMessageAction->setStatusTip(tr("Show the %1 help message to get a list with possible Tradelayer Core command-line options").arg(tr(PACKAGE_NAME)));
 
     connect(quitAction, &QAction::triggered, qApp, QApplication::quit);
     connect(aboutAction, &QAction::triggered, this, &BitcoinGUI::aboutClicked);
@@ -640,8 +640,8 @@ void BitcoinGUI::setClientModel(ClientModel *_clientModel)
         connect(_clientModel, &ClientModel::showProgress, this, &BitcoinGUI::showProgress);
 
 #ifdef ENABLE_WALLET
-        // Update Omni pending status
-        connect(clientModel, &ClientModel::refreshOmniPending, this, &BitcoinGUI::setOmniPendingStatus);
+        // Update Tradelayer pending status
+        connect(clientModel, &ClientModel::refreshTLPending, this, &BitcoinGUI::setTLPendingStatus);
 #endif // ENABLE_WALLET
 
         rpcConsole->setClientModel(_clientModel);
@@ -907,10 +907,10 @@ void BitcoinGUI::gotoHistoryPage()
     if (walletFrame) walletFrame->gotoHistoryPage();
 }
 
-void BitcoinGUI::gotoOmniHistoryTab()
+void BitcoinGUI::gotoTLHistoryTab()
 {
     historyAction->setChecked(true);
-    if (walletFrame) walletFrame->gotoOmniHistoryTab();
+    if (walletFrame) walletFrame->gotoTLHistoryTab();
 }
 
 void BitcoinGUI::gotoBitcoinHistoryTab()
@@ -1129,7 +1129,7 @@ void BitcoinGUI::setNumBlocks(int count, const QDateTime& blockDate, double nVer
 
 void BitcoinGUI::message(const QString &title, const QString &message, unsigned int style, bool *ret)
 {
-    QString strTitle = tr("Omni Core"); // default title
+    QString strTitle = tr("Tradelayer Core"); // default title
     // Default to information icon
     int nMBoxIcon = QMessageBox::Information;
     int nNotifyIcon = Notificator::Information;
@@ -1305,16 +1305,16 @@ bool BitcoinGUI::handlePaymentRequest(const SendCoinsRecipient& recipient)
     return false;
 }
 
-void BitcoinGUI::setOmniPendingStatus(bool pending)
+void BitcoinGUI::setTLPendingStatus(bool pending)
 {
     if (!pending) {
-        labelOmniPendingIcon->hide();
-        labelOmniPendingText->hide();
+        labelTLPendingIcon->hide();
+        labelTLPendingText->hide();
     } else {
-        labelOmniPendingIcon->show();
-        labelOmniPendingText->show();
-        labelOmniPendingIcon->setPixmap(QIcon(":/icons/omni_hourglass").pixmap(STATUSBAR_ICONSIZE,STATUSBAR_ICONSIZE));
-        labelOmniPendingIcon->setToolTip(tr("You have Omni transactions awaiting confirmation."));
+        labelTLPendingIcon->show();
+        labelTLPendingText->show();
+        labelTLPendingIcon->setPixmap(QIcon(":/icons/omni_hourglass").pixmap(STATUSBAR_ICONSIZE,STATUSBAR_ICONSIZE));
+        labelTLPendingIcon->setToolTip(tr("You have Tradelayer transactions awaiting confirmation."));
     }
 }
 

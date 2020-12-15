@@ -205,7 +205,7 @@ BOOST_AUTO_TEST_CASE(trimmed_op_return)
         std::vector<CTxOut> txOutputs;
 
         std::vector<unsigned char> vchFiller(MAX_PACKETS * PACKET_SIZE, 0x07);
-        std::vector<unsigned char> vchPayload = GetOmMarker();
+        std::vector<unsigned char> vchPayload = GetTLMarker();
         vchPayload.insert(vchPayload.end(), vchFiller.begin(), vchFiller.end());
 
         // These will be trimmed:

@@ -7,9 +7,9 @@
 
 #include <qt/guiutil.h>
 
-#include <omnicore/dbspinfo.h>
-#include <omnicore/omnicore.h>
-#include <omnicore/sp.h>
+#include <tradelayer/dbspinfo.h>
+#include <tradelayer/tradelayer.h>
+#include <tradelayer/sp.h>
 
 #include <base58.h>
 #include <key_io.h>

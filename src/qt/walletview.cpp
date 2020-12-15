@@ -52,7 +52,7 @@ WalletView::WalletView(const PlatformStyle *_platformStyle, QWidget *parent):
     // Create tabs
     overviewPage = new OverviewPage(platformStyle);
 
-    // Transactions page, Omni transactions in first tab, BTC only transactions in second tab
+    // Transactions page, Tradelayer transactions in first tab, BTC only transactions in second tab
     transactionsPage = new QWidget(this);
     bitcoinTXTab = new QWidget(this);
     QVBoxLayout *vbox = new QVBoxLayout();
@@ -72,7 +72,7 @@ WalletView::WalletView(const PlatformStyle *_platformStyle, QWidget *parent):
     transactionsPage = new QWidget(this);
     QVBoxLayout *txvbox = new QVBoxLayout();
     txTabHolder = new QTabWidget();
-    txTabHolder->addTab(mpTXTab,tr("Omni Layer"));
+    txTabHolder->addTab(mpTXTab,tr("Trade Layer"));
     txTabHolder->addTab(bitcoinTXTab,tr("Bitcoin"));
     txvbox->addWidget(txTabHolder);
     transactionsPage->setLayout(txvbox);
@@ -89,7 +89,7 @@ WalletView::WalletView(const PlatformStyle *_platformStyle, QWidget *parent):
     sendCoinsTab = new SendCoinsDialog(platformStyle);
     sendMPTab = new SendMPDialog(platformStyle);
     sendTabHolder = new QTabWidget();
-    sendTabHolder->addTab(sendMPTab,tr("Omni Layer"));
+    sendTabHolder->addTab(sendMPTab,tr("Trade Layer"));
     sendTabHolder->addTab(sendCoinsTab,tr("Bitcoin"));
     svbox->addWidget(sendTabHolder);
     sendCoinsPage->setLayout(svbox);
@@ -104,7 +104,7 @@ WalletView::WalletView(const PlatformStyle *_platformStyle, QWidget *parent):
     QTabWidget *exTabHolder = new QTabWidget();
     tradeHistoryTab = new TradeHistoryDialog;
     // exTabHolder->addTab(new QWidget(),tr("Trade Bitcoin/Mastercoin")); not yet implemented
-    exTabHolder->addTab(metaDExTab,tr("Trade Omni Layer Properties"));
+    exTabHolder->addTab(metaDExTab,tr("Trade  TradeLayer Properties"));
     exTabHolder->addTab(tradeHistoryTab,tr("Trade History"));
     exTabHolder->addTab(cancelTab,tr("Cancel Orders"));
     exvbox->addWidget(exTabHolder);
@@ -134,7 +134,7 @@ WalletView::WalletView(const PlatformStyle *_platformStyle, QWidget *parent):
 
     // Clicking on a transaction on the overview pre-selects the transaction on the transaction history page
     connect(overviewPage, &OverviewPage::transactionClicked, transactionView, static_cast<void (TransactionView::*)(const QModelIndex&)>(&TransactionView::focusTransaction));
-    // connect(overviewPage, &OverviewPage::omniTransactionClicked, mpTXTab, &TransactionView::focusTransaction);
+    // connect(overviewPage, &OverviewPage::tlTransactionClicked, mpTXTab, &TransactionView::focusTransaction);
 
     connect(overviewPage, &OverviewPage::outOfSyncWarningClicked, this, &WalletView::requestedSyncWarningInfo);
 
@@ -155,9 +155,9 @@ void WalletView::setBitcoinGUI(BitcoinGUI *gui)
 {
     if (gui)
     {
-        // Clicking on a transaction on the overview page simply sends you to either Omni/Bitcoin history page
+        // Clicking on a transaction on the overview page simply sends you to either TL/Bitcoin history page
         connect(overviewPage, &OverviewPage::transactionClicked, gui, &BitcoinGUI::gotoHistoryPage);
-        // connect(overviewPage, &OverviewPage::omniTransactionClicked, gui, &BitcoinGUI::gotoOmniHistoryTab);
+        // connect(overviewPage, &OverviewPage::tlTransactionClicked, gui, &BitcoinGUI::gotoTLHistoryTab);
 
         // Receive and report messages
         connect(this, &WalletView::message, [gui](const QString &title, const QString &message, unsigned int style) {
@@ -271,7 +271,7 @@ void WalletView::gotoBitcoinHistoryTab()
     txTabHolder->setCurrentIndex(1);
 }
 
-void WalletView::gotoOmniHistoryTab()
+void WalletView::gotoTLHistoryTab()
 {
     setCurrentWidget(transactionsPage);
     txTabHolder->setCurrentIndex(0);

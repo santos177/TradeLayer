@@ -12,20 +12,20 @@
 #include <qt/walletmodel.h>
 #include <qt/platformstyle.h>
 
-#include <omnicore/dbspinfo.h>
-#include <omnicore/dbstolist.h>
-#include <omnicore/dbtxlist.h>
-#include <omnicore/omnicore.h>
-#include <omnicore/parsing.h>
-#include <omnicore/pending.h>
-#include <omnicore/rpc.h>
-#include <omnicore/rpctxobject.h>
-#include <omnicore/sp.h>
-#include <omnicore/tx.h>
-#include <omnicore/utilsbitcoin.h>
-#include <omnicore/walletcache.h>
-#include <omnicore/walletfetchtxs.h>
-#include <omnicore/walletutils.h>
+#include <tradelayer/dbspinfo.h>
+#include <tradelayer/dbstolist.h>
+#include <tradelayer/dbtxlist.h>
+#include <tradelayer/tradelayer.h>
+#include <tradelayer/parsing.h>
+#include <tradelayer/pending.h>
+#include <tradelayer/rpc.h>
+#include <tradelayer/rpctxobject.h>
+#include <tradelayer/sp.h>
+#include <tradelayer/tx.h>
+#include <tradelayer/utilsbitcoin.h>
+#include <tradelayer/walletcache.h>
+#include <tradelayer/walletfetchtxs.h>
+#include <tradelayer/walletutils.h>
 
 #include <init.h>
 #include <key_io.h>
@@ -169,9 +169,9 @@ void TXHistoryDialog::setClientModel(ClientModel *model)
 {
     this->clientModel = model;
     if (model != nullptr) {
-        connect(model, &ClientModel::refreshOmniBalance, this, &TXHistoryDialog::UpdateHistory);
+        connect(model, &ClientModel::refreshTLBalance, this, &TXHistoryDialog::UpdateHistory);
         connect(model, &ClientModel::numBlocksChanged, this, &TXHistoryDialog::UpdateConfirmations);
-        connect(model, &ClientModel::reinitOmniState, this, &TXHistoryDialog::ReinitTXHistoryTable);
+        connect(model, &ClientModel::reinitTLState, this, &TXHistoryDialog::ReinitTXHistoryTable);
     }
 }
 
@@ -196,10 +196,10 @@ int TXHistoryDialog::PopulateHistoryMap()
 
     int64_t nProcessed = 0; // counter for how many transactions we've added to history this time
 
-    // obtain a sorted list of Omni layer wallet transactions (including STO receipts and pending) - default last 65535
+    // obtain a sorted list of Tradelayer wallet transactions (including STO receipts and pending) - default last 65535
     std::map<std::string,uint256> walletTransactions;
     if (walletModel)
-        walletTransactions = FetchWalletOmniTransactions(walletModel->wallet(), gArgs.GetArg("-omniuiwalletscope", 65535L));
+        walletTransactions = FetchWalletTLTransactions(walletModel->wallet(), gArgs.GetArg("-tluiwalletscope", 65535L));
 
     // reverse iterate over (now ordered) transactions and populate history map for each one
     for (std::map<std::string,uint256>::reverse_iterator it = walletTransactions.rbegin(); it != walletTransactions.rend(); it++) {
@@ -215,7 +215,7 @@ int TXHistoryDialog::PopulateHistoryMap()
                 if (pending_it != my_pending.end()) continue; // transaction is still pending, do nothing
             }
 
-            // pending transaction has confirmed, remove temp pending object from map and allow it to be added again as an Omni transaction
+            // pending transaction has confirmed, remove temp pending object from map and allow it to be added again as an Tradelayer transaction
             txHistoryMap.erase(hIter);
             ui->txHistoryTable->setSortingEnabled(false); // disable sorting temporarily while we update the table (leaving enabled gives unexpected results)
             QAbstractItemModel* historyAbstractModel = ui->txHistoryTable->model(); // get a model to work with
@@ -303,7 +303,7 @@ int TXHistoryDialog::PopulateHistoryMap()
             continue;
         }
 
-        // handle Omni transaction
+        // handle Tradelayer transaction
         if (0 != parseRC) continue;
         if (!mp_obj.interpret_Transaction()) continue;
         int64_t amount = mp_obj.getAmount();
@@ -538,5 +538,3 @@ std::string TXHistoryDialog::shrinkTxType(int txType, bool *fundsMoved)
     }
     return displayType;
 }
-
-

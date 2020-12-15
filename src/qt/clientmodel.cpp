@@ -38,8 +38,8 @@ ClientModel::ClientModel(interfaces::Node& node, OptionsModel *_optionsModel, QO
     peerTableModel(nullptr),
     banTableModel(nullptr),
     pollTimer(nullptr),
-    lockedOmniStateChanged(false),
-    lockedOmniBalanceChanged(false)
+    lockedTLStateChanged(false),
+    lockedTLBalanceChanged(false)
 {
     cachedBestHeaderHeight = -1;
     cachedBestHeaderTime = -1;
@@ -117,48 +117,48 @@ void ClientModel::updateNetworkActive(bool networkActive)
     Q_EMIT networkActiveChanged(networkActive);
 }
 
-bool ClientModel::tryLockOmniStateChanged()
+bool ClientModel::tryLockTLStateChanged()
 {
-    // Try to avoid Omni queuing too many messages for the UI
-    if (lockedOmniStateChanged) {
+    // Try to avoid Tradelayer queuing too many messages for the UI
+    if (lockedTLStateChanged) {
         return false;
     }
 
-    lockedOmniStateChanged = true;
+    lockedTLStateChanged = true;
     return true;
 }
 
-bool ClientModel::tryLockOmniBalanceChanged()
+bool ClientModel::tryLockTLBalanceChanged()
 {
-    // Try to avoid Omni queuing too many messages for the UI
-    if (lockedOmniBalanceChanged) {
+    // Try to avoid Tradelayer queuing too many messages for the UI
+    if (lockedTLBalanceChanged) {
         return false;
     }
 
-    lockedOmniBalanceChanged = true;
+    lockedTLBalanceChanged = true;
     return true;
 }
 
-void ClientModel::updateOmniState()
+void ClientModel::updateTLState()
 {
-    lockedOmniStateChanged = false;
-    Q_EMIT refreshOmniState();
+    lockedTLStateChanged = false;
+    Q_EMIT refreshTLState();
 }
 
-void ClientModel::updateOmniPending(bool pending)
+void ClientModel::updateTLPending(bool pending)
 {
-    Q_EMIT refreshOmniPending(pending);
+    Q_EMIT refreshTLPending(pending);
 }
 
-void ClientModel::updateOmniBalance()
+void ClientModel::updateTLBalance()
 {
-    lockedOmniBalanceChanged = false;
-    Q_EMIT refreshOmniBalance();
+    lockedTLBalanceChanged = false;
+    Q_EMIT refreshTLBalance();
 }
 
-void ClientModel::invalidateOmniState()
+void ClientModel::invalidateTLState()
 {
-    Q_EMIT reinitOmniState();
+    Q_EMIT reinitTLState();
 }
 
 void ClientModel::updateAlert()
@@ -301,33 +301,33 @@ static void BlockTipChanged(ClientModel *clientmodel, bool initialSync, int heig
     }
 }
 
-static void OmniStateChanged(ClientModel *clientmodel)
+static void TLStateChanged(ClientModel *clientmodel)
 {
-    // This will be triggered for each block that contains Omni layer transactions
-    if (clientmodel->tryLockOmniStateChanged()) {
-        QMetaObject::invokeMethod(clientmodel, "updateOmniState", Qt::QueuedConnection);
+    // This will be triggered for each block that contains Tradelayer transactions
+    if (clientmodel->tryLockTLStateChanged()) {
+        QMetaObject::invokeMethod(clientmodel, "updateTLState", Qt::QueuedConnection);
     }
 }
 
-static void OmniPendingChanged(ClientModel *clientmodel, bool pending)
+static void TLPendingChanged(ClientModel *clientmodel, bool pending)
 {
-    // Triggered when Omni pending map adds/removes transactions
-    QMetaObject::invokeMethod(clientmodel, "updateOmniPending", Qt::QueuedConnection,
+    // Triggered when Tradelayer pending map adds/removes transactions
+    QMetaObject::invokeMethod(clientmodel, "updateTLPending", Qt::QueuedConnection,
                               Q_ARG(bool, pending));
 }
 
-static void OmniBalanceChanged(ClientModel *clientmodel)
+static void TLBalanceChanged(ClientModel *clientmodel)
 {
     // Triggered when a balance for a wallet address changes
-    if (clientmodel->tryLockOmniBalanceChanged()) {
-        QMetaObject::invokeMethod(clientmodel, "updateOmniBalance", Qt::QueuedConnection);
+    if (clientmodel->tryLockTLBalanceChanged()) {
+        QMetaObject::invokeMethod(clientmodel, "updateTLBalance", Qt::QueuedConnection);
     }
 }
 
-static void OmniStateInvalidated(ClientModel *clientmodel)
+static void TLStateInvalidated(ClientModel *clientmodel)
 {
     // This will be triggered if a reorg invalidates the state
-    QMetaObject::invokeMethod(clientmodel, "invalidateOmniState", Qt::QueuedConnection);
+    QMetaObject::invokeMethod(clientmodel, "invalidateTLState", Qt::QueuedConnection);
 }
 
 void ClientModel::subscribeToCoreSignals()
@@ -341,11 +341,11 @@ void ClientModel::subscribeToCoreSignals()
     m_handler_notify_block_tip = m_node.handleNotifyBlockTip(std::bind(BlockTipChanged, this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3, std::placeholders::_4, false));
     m_handler_notify_header_tip = m_node.handleNotifyHeaderTip(std::bind(BlockTipChanged, this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3, std::placeholders::_4, true));
 
-    // Connect Omni signals
-    m_handler_omni_state_changed = m_node.handleOmniStateChanged(std::bind(OmniStateChanged, this));
-    m_handler_omni_pending_changed = m_node.handleOmniPendingChanged(std::bind(OmniPendingChanged, this, std::placeholders::_1));
-    m_handler_omni_balance_changed = m_node.handleOmniBalanceChanged(std::bind(OmniBalanceChanged, this));
-    m_handler_omni_state_invalidated = m_node.handleOmniStateInvalidated(std::bind(OmniStateInvalidated, this));
+    // Connect Tradelayer signals
+    m_handler_tl_state_changed = m_node.handleTLStateChanged(std::bind(TLStateChanged, this));
+    m_handler_tl_pending_changed = m_node.handleTLPendingChanged(std::bind(TLPendingChanged, this, std::placeholders::_1));
+    m_handler_tl_balance_changed = m_node.handleTLBalanceChanged(std::bind(TLBalanceChanged, this));
+    m_handler_tl_state_invalidated = m_node.handleTLStateInvalidated(std::bind(TLStateInvalidated, this));
 }
 
 void ClientModel::unsubscribeFromCoreSignals()
@@ -359,11 +359,11 @@ void ClientModel::unsubscribeFromCoreSignals()
     m_handler_notify_block_tip->disconnect();
     m_handler_notify_header_tip->disconnect();
 
-    // Disconnect Omni signals
-    m_handler_omni_state_changed->disconnect();
-    m_handler_omni_pending_changed->disconnect();
-    m_handler_omni_balance_changed->disconnect();
-    m_handler_omni_state_invalidated->disconnect();
+    // Disconnect Tradelayer signals
+    m_handler_tl_state_changed->disconnect();
+    m_handler_tl_pending_changed->disconnect();
+    m_handler_tl_balance_changed->disconnect();
+    m_handler_tl_state_invalidated->disconnect();
 }
 
 bool ClientModel::getProxyInfo(std::string& ip_port) const

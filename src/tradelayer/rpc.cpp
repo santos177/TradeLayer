@@ -2183,7 +2183,7 @@ static UniValue tl_listtransactions(const JSONRPCRequest& request)
     if (nEndBlock < 0) throw JSONRPCError(RPC_INVALID_PARAMETER, "Negative end block");
 
     // obtain a sorted list of Trade layer wallet transactions (including STO receipts and pending)
-    std::map<std::string,uint256> walletTransactions = FetchWalletOmniTransactions(*pWallet, nFrom+nCount, nStartBlock, nEndBlock);
+    std::map<std::string,uint256> walletTransactions = FetchWalletTLTransactions(*pWallet, nFrom+nCount, nStartBlock, nEndBlock);
 
     // reverse iterate over (now ordered) transactions and populate RPC objects for each one
     UniValue response(UniValue::VARR);
@@ -2330,8 +2330,8 @@ static UniValue tl_getinfo(const JSONRPCRequest& request)
 
     // handle alerts
     UniValue alerts(UniValue::VARR);
-    std::vector<AlertData> omniAlerts = GetTradeLayerAlerts();
-    for (std::vector<AlertData>::iterator it = omniAlerts.begin(); it != omniAlerts.end(); it++) {
+    std::vector<AlertData> tlAlerts = GetTradeLayerAlerts();
+    for (std::vector<AlertData>::iterator it = tlAlerts.begin(); it != tlAlerts.end(); it++) {
         AlertData alert = *it;
         UniValue alertResponse(UniValue::VOBJ);
         std::string alertTypeStr;
