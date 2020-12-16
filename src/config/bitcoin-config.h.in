@@ -362,18 +362,6 @@
 /* Define to the sub-directory where libtool stores uninstalled libraries. */
 #undef LT_OBJDIR
 
-/* Omni Core build number */
-#undef OMNICORE_VERSION_BUILD
-
-/* Omni Core major version */
-#undef OMNICORE_VERSION_MAJOR
-
-/* Omni Core minor version */
-#undef OMNICORE_VERSION_MINOR
-
-/* Omni Core patch version */
-#undef OMNICORE_VERSION_PATCH
-
 /* Define to the address where bug reports for this package should be sent. */
 #undef PACKAGE_BUGREPORT
 
@@ -416,6 +404,18 @@
 
 /* Define to 1 if strerror_r returns char *. */
 #undef STRERROR_R_CHAR_P
+
+/* Omni Core build number */
+#undef TRADELAYER_VERSION_BUILD
+
+/* Omni Core major version */
+#undef TRADELAYER_VERSION_MAJOR
+
+/* Omni Core minor version */
+#undef TRADELAYER_VERSION_MINOR
+
+/* Omni Core patch version */
+#undef TRADELAYER_VERSION_PATCH
 
 /* Define this symbol to build in assembly routines */
 #undef USE_ASM

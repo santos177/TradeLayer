@@ -48,7 +48,7 @@
 #include <boost/thread.hpp>
 
 #if defined(NDEBUG)
-# error "Omni Core cannot be compiled without assertions."
+# error "Tradelayer Core cannot be compiled without assertions."
 #endif
 
 #define MICRO 0.000001
@@ -286,7 +286,7 @@ namespace {
 
 //////////////////////////////////////////////////////////////////////////////
 //
-// Omni Core notification handlers
+// Tradelayer notification handlers
 //
 
 // TODO: replace handlers with signals
@@ -2346,8 +2346,8 @@ bool CChainState::DisconnectTip(CValidationState& state, const CChainParams& cha
 
     UpdateTip(pindexDelete->pprev, chainparams);
 
-    //! Omni Core: begin block disconnect notification
-    LogPrint(BCLog::HANDLER, "Omni Core handler: block disconnect begin [height: %d, reindex: %d]\n", chainActive.Height(), (int)fReindex);
+    //! Tradelayer: begin block disconnect notification
+    LogPrint(BCLog::HANDLER, "Tradelayer handler: block disconnect begin [height: %d, reindex: %d]\n", chainActive.Height(), (int)fReindex);
     mastercore_handler_disc_begin(pindexDelete->nHeight);
 
     // Let wallets know transactions went from 1-confirmed to
@@ -2358,8 +2358,8 @@ bool CChainState::DisconnectTip(CValidationState& state, const CChainParams& cha
         TryToAddToMarkerCache(ptx);
     }
 
-    //! Omni Core: end of block disconnect notification
-    LogPrint(BCLog::HANDLER, "Omni Core handler: block disconnect end [height: %d, reindex: %d]\n", chainActive.Height(), (int)fReindex);
+    //! Tradelayer: end of block disconnect notification
+    LogPrint(BCLog::HANDLER, "Tradelayer handler: block disconnect end [height: %d, reindex: %d]\n", chainActive.Height(), (int)fReindex);
 
     return true;
 }
@@ -2453,7 +2453,7 @@ bool CChainState::ConnectTip(CValidationState& state, const CChainParams& chainp
         pthisBlock = pblock;
     }
     const CBlock& blockConnecting = *pthisBlock;
-    // Map used by Omni to track removals from the UTXO DB for this block.
+    // Map used by Tradelayer to track removals from the UTXO DB for this block.
     std::shared_ptr<std::map<COutPoint, Coin>> removedCoins = std::make_shared<std::map<COutPoint, Coin>>();
     // Apply the block atomically to the chain state.
     int64_t nTime2 = GetTimeMicros(); nTimeReadFromDisk += nTime2 - nTime1;
@@ -2491,24 +2491,24 @@ bool CChainState::ConnectTip(CValidationState& state, const CChainParams& chainp
     LogPrint(BCLog::BENCH, "  - Connect postprocess: %.2fms [%.2fs (%.2fms/blk)]\n", (nTime6 - nTime5) * MILLI, nTimePostConnect * MICRO, nTimePostConnect * MILLI / nBlocksTotal);
     LogPrint(BCLog::BENCH, "- Connect block: %.2fms [%.2fs (%.2fms/blk)]\n", (nTime6 - nTime1) * MILLI, nTimeTotal * MICRO, nTimeTotal * MILLI / nBlocksTotal);
 
-    //! Omni Core: transaction position within the block
+    //! Tradelayer: transaction position within the block
     unsigned int nTxIdx = 0;
 
-    //! Omni Core: number of meta transactions found
+    //! Tradelayer: number of meta transactions found
     unsigned int nNumMetaTxs = 0;
 
-    //! Omni Core: begin block connect notification
-    LogPrint(BCLog::HANDLER, "Omni Core handler: block connect begin [height: %d]\n", pindexNew->nHeight);
+    //! Tradelayer: begin block connect notification
+    LogPrint(BCLog::HANDLER, "Tradelayer handler: block connect begin [height: %d]\n", pindexNew->nHeight);
     mastercore_handler_block_begin(pindexNew->nHeight, pindexNew);
 
     for (size_t i = 0; i < blockConnecting.vtx.size(); i++) {
-        //! Omni Core: new confirmed transaction notification
-        LogPrint(BCLog::HANDLER, "Omni Core handler: new confirmed transaction [height: %d, idx: %u]\n", pindexNew->nHeight, nTxIdx);
+        //! Tradelayer: new confirmed transaction notification
+        LogPrint(BCLog::HANDLER, "Tradelayer handler: new confirmed transaction [height: %d, idx: %u]\n", pindexNew->nHeight, nTxIdx);
         if (mastercore_handler_tx(*blockConnecting.vtx[i], pindexNew->nHeight, nTxIdx++, pindexNew, removedCoins)) ++nNumMetaTxs;
     }
 
-    //! Omni Core: end of block connect notification
-    LogPrint(BCLog::HANDLER, "Omni Core handler: block connect end [new height: %d, found: %u txs]\n", pindexNew->nHeight, nNumMetaTxs);
+    //! Tradelayer: end of block connect notification
+    LogPrint(BCLog::HANDLER, "Tradelayer handler: block connect end [new height: %d, found: %u txs]\n", pindexNew->nHeight, nNumMetaTxs);
     mastercore_handler_block_end(pindexNew->nHeight, pindexNew, nNumMetaTxs);
 
     connectTrace.BlockConnected(pindexNew, std::move(pthisBlock));

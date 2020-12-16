@@ -18,8 +18,8 @@
 #include <util/system.h>
 #include <version.h>
 
-#include <omnicore/version.h>
-#include <omnicore/utilsbitcoin.h>
+#include <tradelayer/version.h>
+#include <tradelayer/utilsbitcoin.h>
 
 #include <QApplication>
 #include <QCloseEvent>
@@ -43,10 +43,10 @@ SplashScreen::SplashScreen(interfaces::Node& node, Qt::WindowFlags f, const Netw
     devicePixelRatio = static_cast<QGuiApplication*>(QCoreApplication::instance())->devicePixelRatio();
 
     // define text to place
-    QString titleText       = tr("Omni Core");
-    QString versionText     = QString("%1").arg(QString::fromStdString(OmniCoreVersion()));
+    QString titleText       = tr("Trade Layer Core");
+    QString versionText     = QString("%1").arg(QString::fromStdString(TradeLayerVersion()));
     QString copyrightText   = QChar(0xA9)+QString(" 2009-%1 ").arg(COPYRIGHT_YEAR) + QString(tr("The Bitcoin Core developers"));
-    QString copyrightText2  = QChar(0xA9)+QString(" 2013-%1 ").arg(COPYRIGHT_YEAR) + QString(tr("The Omni Core developers"));
+    QString copyrightText2  = QChar(0xA9)+QString(" 2013-%1 ").arg(COPYRIGHT_YEAR) + QString(tr("The Trade Layer Core developers"));
     QString titleAddText    = networkStyle->getTitleAddText();
 
     QString font            = QApplication::font().toString();

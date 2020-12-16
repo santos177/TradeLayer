@@ -1,0 +1,110 @@
+TRADELAYER_H = \
+  tradelayer/activation.h \
+  tradelayer/consensushash.h \
+  tradelayer/convert.h \
+  tradelayer/createpayload.h \
+  tradelayer/createtx.h \
+  tradelayer/dbbase.h \
+  tradelayer/dbfees.h \
+  tradelayer/dbspinfo.h \
+  tradelayer/dbstolist.h \
+  tradelayer/dbtradelist.h \
+  tradelayer/dbtransaction.h \
+  tradelayer/dbtxlist.h \
+  tradelayer/dex.h \
+  tradelayer/encoding.h \
+  tradelayer/errors.h \
+  tradelayer/log.h \
+  tradelayer/mdex.h \
+  tradelayer/notifications.h \
+  tradelayer/tradelayer.h \
+  tradelayer/operators_algo_clearing.h \
+  tradelayer/parse_string.h \
+  tradelayer/parsing.h \
+  tradelayer/pending.h \
+  tradelayer/persistence.h \
+  tradelayer/rpc.h \
+  tradelayer/rpcmbstring.h \
+  tradelayer/rpcrequirements.h \
+  tradelayer/rpctxobject.h \
+  tradelayer/rpcvalues.h \
+  tradelayer/rules.h \
+  tradelayer/script.h \
+  tradelayer/seedblocks.h \
+  tradelayer/sp.h \
+  tradelayer/sto.h \
+  tradelayer/tally.h \
+  tradelayer/tx.h \
+  tradelayer/uint256_extensions.h \
+  tradelayer/utilsbitcoin.h \
+  tradelayer/utilsui.h \
+  tradelayer/version.h \
+  tradelayer/walletcache.h \
+  tradelayer/walletfetchtxs.h \
+  tradelayer/wallettxbuilder.h \
+  tradelayer/tradelayer_matrices.h\
+  tradelayer/externfns.h \
+  tradelayer/walletutils.h
+
+TRADELAYER_CPP = \
+  tradelayer/activation.cpp \
+  tradelayer/consensushash.cpp \
+  tradelayer/convert.cpp \
+  tradelayer/createpayload.cpp \
+  tradelayer/createtx.cpp \
+  tradelayer/dbbase.cpp \
+  tradelayer/dbfees.cpp \
+  tradelayer/dbspinfo.cpp \
+  tradelayer/dbstolist.cpp \
+  tradelayer/dbtradelist.cpp \
+  tradelayer/dbtransaction.cpp \
+  tradelayer/dbtxlist.cpp \
+  tradelayer/dex.cpp \
+  tradelayer/encoding.cpp \
+  tradelayer/log.cpp \
+  tradelayer/mdex.cpp \
+  tradelayer/notifications.cpp \
+  tradelayer/tradelayer.cpp \
+  tradelayer/operators_algo_clearing.cpp \
+  tradelayer/parse_string.cpp \
+  tradelayer/parsing.cpp \
+  tradelayer/pending.cpp \
+  tradelayer/persistence.cpp \
+  tradelayer/rpc.cpp \
+  tradelayer/rpcmbstring.cpp \
+  tradelayer/rpcpayload.cpp \
+  tradelayer/rpcrawtx.cpp \
+  tradelayer/rpcrequirements.cpp \
+  tradelayer/rpctx.cpp \
+  tradelayer/rpctxobject.cpp \
+  tradelayer/rpcvalues.cpp \
+  tradelayer/rules.cpp \
+  tradelayer/script.cpp \
+  tradelayer/seedblocks.cpp \
+  tradelayer/sp.cpp \
+  tradelayer/sto.cpp \
+  tradelayer/tally.cpp \
+  tradelayer/tx.cpp \
+  tradelayer/utilsbitcoin.cpp \
+  tradelayer/utilsui.cpp \
+  tradelayer/version.cpp \
+  tradelayer/walletcache.cpp \
+  tradelayer/walletfetchtxs.cpp \
+  tradelayer/wallettxbuilder.cpp \
+  tradelayer/globals.cpp\
+  tradelayer/externfns.cpp\
+  tradelayer/walletutils.cpp
+
+libbitcoin_server_a_SOURCES += \
+  $(TRADELAYER_CPP) \
+  $(TRADELAYER_H)
+
+tradelayer/libbitcoin_server_a-version.$(OBJEXT): obj/build.h # build info
+
+CLEAN_TRADELAYER = tradelayer/*.gcda tradelayer/*.gcno
+
+CLEANFILES += $(CLEAN_TRADELAYER)
+
+if ENABLE_TESTS
+include Makefile.tradelayertest.include
+endif

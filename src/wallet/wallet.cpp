@@ -17,7 +17,7 @@
 #include <keystore.h>
 #include <validation.h>
 #include <net.h>
-#include <omnicore/script.h> // OmniGetDustThreshold
+#include <tradelayer/script.h> // TLGetDustThreshold
 #include <policy/fees.h>
 #include <policy/policy.h>
 #include <policy/rbf.h>
@@ -2791,7 +2791,7 @@ OutputType CWallet::TransactionChangeType(OutputType change_type, const std::vec
 }
 
 bool CWallet::CreateTransaction(interfaces::Chain::Lock& locked_chain, const std::vector<CRecipient>& vecSend, CTransactionRef& tx, CReserveKey& reservekey, CAmount& nFeeRet,
-                         int& nChangePosInOut, std::string& strFailReason, const CCoinControl& coin_control, bool sign, bool omni)
+                         int& nChangePosInOut, std::string& strFailReason, const CCoinControl& coin_control, bool sign, bool tl)
 {
     CAmount nValue = 0;
     int nChangePosRequest = nChangePosInOut;
@@ -2955,11 +2955,11 @@ bool CWallet::CreateTransaction(interfaces::Chain::Lock& locked_chain, const std
                         }
                     }
 
-                    if (omni) {
-                        // Omni funded send. If vin amount minus the amount to select is less than the dust
+                    if (tl) {
+                        // Tradelayer funded send. If vin amount minus the amount to select is less than the dust
                         // threshold then add the dust threshol to the amount to select and try again. This
                         // avoids dropping the "change" output which would otherwise be added to the fee and
-                        // generating an Omni "send to self without change" error.
+                        // generating an Tradelayer "send to self without change" error.
                         CAmount nAmount = nValueIn - nValueToSelect;
                         CAmount nDust = GetDustThreshold(CTxOut(nAmount, scriptChange), discard_rate);
                         int i = 0; // Stop after 5 iterations

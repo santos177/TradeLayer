@@ -31,8 +31,8 @@ BCLog::Logger& LogInstance()
 
 bool fLogIPs = DEFAULT_LOGIPS;
 
-/** Flag to indicate, whether the Omni Core log file should be reopened. */
-std::atomic<bool> fReopenOmniCoreLog(false);
+/** Flag to indicate, whether the Tradelayer log file should be reopened. */
+std::atomic<bool> fReopenTradeLayerLog(false);
 
 static int FileWriteStr(const std::string &str, FILE *fp)
 {

@@ -119,10 +119,10 @@ public:
     /** Banlist did change. */
     ADD_SIGNALS_DECL_WRAPPER(BannedListChanged, void, void);
 
-    ADD_SIGNALS_DECL_WRAPPER(OmniStateChanged, void);
-    ADD_SIGNALS_DECL_WRAPPER(OmniPendingChanged, void, bool);
-    ADD_SIGNALS_DECL_WRAPPER(OmniBalanceChanged, void);
-    ADD_SIGNALS_DECL_WRAPPER(OmniStateInvalidated, void);
+    ADD_SIGNALS_DECL_WRAPPER(TLStateChanged, void);
+    ADD_SIGNALS_DECL_WRAPPER(TLPendingChanged, void, bool);
+    ADD_SIGNALS_DECL_WRAPPER(TLBalanceChanged, void);
+    ADD_SIGNALS_DECL_WRAPPER(TLStateInvalidated, void);
 };
 
 /** Show warning message **/

@@ -22,10 +22,10 @@ struct UISignals {
     boost::signals2::signal<CClientUIInterface::NotifyBlockTipSig> NotifyBlockTip;
     boost::signals2::signal<CClientUIInterface::NotifyHeaderTipSig> NotifyHeaderTip;
     boost::signals2::signal<CClientUIInterface::BannedListChangedSig> BannedListChanged;
-    boost::signals2::signal<CClientUIInterface::OmniStateChangedSig> OmniStateChanged;
-    boost::signals2::signal<CClientUIInterface::OmniPendingChangedSig> OmniPendingChanged;
-    boost::signals2::signal<CClientUIInterface::OmniBalanceChangedSig> OmniBalanceChanged;
-    boost::signals2::signal<CClientUIInterface::OmniStateInvalidatedSig> OmniStateInvalidated;
+    boost::signals2::signal<CClientUIInterface::TLStateChangedSig> TLStateChanged;
+    boost::signals2::signal<CClientUIInterface::TLPendingChangedSig> TLPendingChanged;
+    boost::signals2::signal<CClientUIInterface::TLBalanceChangedSig> TLBalanceChanged;
+    boost::signals2::signal<CClientUIInterface::TLStateInvalidatedSig> TLStateInvalidated;
 } g_ui_signals;
 
 #define ADD_SIGNALS_IMPL_WRAPPER(signal_name)                                                                 \
@@ -49,10 +49,10 @@ ADD_SIGNALS_IMPL_WRAPPER(ShowProgress);
 ADD_SIGNALS_IMPL_WRAPPER(NotifyBlockTip);
 ADD_SIGNALS_IMPL_WRAPPER(NotifyHeaderTip);
 ADD_SIGNALS_IMPL_WRAPPER(BannedListChanged);
-ADD_SIGNALS_IMPL_WRAPPER(OmniStateChanged);
-ADD_SIGNALS_IMPL_WRAPPER(OmniPendingChanged);
-ADD_SIGNALS_IMPL_WRAPPER(OmniBalanceChanged);
-ADD_SIGNALS_IMPL_WRAPPER(OmniStateInvalidated);
+ADD_SIGNALS_IMPL_WRAPPER(TLStateChanged);
+ADD_SIGNALS_IMPL_WRAPPER(TLPendingChanged);
+ADD_SIGNALS_IMPL_WRAPPER(TLBalanceChanged);
+ADD_SIGNALS_IMPL_WRAPPER(TLStateInvalidated);
 
 bool CClientUIInterface::ThreadSafeMessageBox(const std::string& message, const std::string& caption, unsigned int style) { return g_ui_signals.ThreadSafeMessageBox(message, caption, style); }
 bool CClientUIInterface::ThreadSafeQuestion(const std::string& message, const std::string& non_interactive_message, const std::string& caption, unsigned int style) { return g_ui_signals.ThreadSafeQuestion(message, non_interactive_message, caption, style); }
@@ -65,10 +65,10 @@ void CClientUIInterface::ShowProgress(const std::string& title, int nProgress, b
 void CClientUIInterface::NotifyBlockTip(bool b, const CBlockIndex* i) { return g_ui_signals.NotifyBlockTip(b, i); }
 void CClientUIInterface::NotifyHeaderTip(bool b, const CBlockIndex* i) { return g_ui_signals.NotifyHeaderTip(b, i); }
 void CClientUIInterface::BannedListChanged() { return g_ui_signals.BannedListChanged(); }
-void CClientUIInterface::OmniStateChanged() { return g_ui_signals.OmniStateChanged(); }
-void CClientUIInterface::OmniPendingChanged(bool b) { return g_ui_signals.OmniPendingChanged(b); }
-void CClientUIInterface::OmniBalanceChanged() { return g_ui_signals.OmniBalanceChanged(); }
-void CClientUIInterface::OmniStateInvalidated() { return g_ui_signals.OmniStateInvalidated(); }
+void CClientUIInterface::TLStateChanged() { return g_ui_signals.TLStateChanged(); }
+void CClientUIInterface::TLPendingChanged(bool b) { return g_ui_signals.TLPendingChanged(b); }
+void CClientUIInterface::TLBalanceChanged() { return g_ui_signals.TLBalanceChanged(); }
+void CClientUIInterface::TLStateInvalidated() { return g_ui_signals.TLStateInvalidated(); }
 
 bool InitError(const std::string& str)
 {

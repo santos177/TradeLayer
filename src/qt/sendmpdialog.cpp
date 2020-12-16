@@ -5,23 +5,23 @@
 #include <qt/sendmpdialog.h>
 #include <qt/forms/ui_sendmpdialog.h>
 
-#include <qt/omnicore_qtutils.h>
+#include <qt/tradelayer_qtutils.h>
 
 #include <qt/clientmodel.h>
 #include <qt/walletmodel.h>
 
 #include <qt/platformstyle.h>
 
-#include <omnicore/createpayload.h>
-#include <omnicore/errors.h>
-#include <omnicore/omnicore.h>
-#include <omnicore/parse_string.h>
-#include <omnicore/pending.h>
-#include <omnicore/sp.h>
-#include <omnicore/tally.h>
-#include <omnicore/utilsbitcoin.h>
-#include <omnicore/wallettxbuilder.h>
-#include <omnicore/walletutils.h>
+#include <tradelayer/createpayload.h>
+#include <tradelayer/errors.h>
+#include <tradelayer/tradelayer.h>
+#include <tradelayer/parse_string.h>
+#include <tradelayer/pending.h>
+#include <tradelayer/sp.h>
+#include <tradelayer/tally.h>
+#include <tradelayer/utilsbitcoin.h>
+#include <tradelayer/wallettxbuilder.h>
+#include <tradelayer/walletutils.h>
 
 #include <amount.h>
 #include <base58.h>
@@ -68,7 +68,7 @@ SendMPDialog::SendMPDialog(const PlatformStyle *platformStyle, QWidget *parent) 
     }
 
 #if QT_VERSION >= 0x040700 // populate placeholder text
-    ui->sendToLineEdit->setPlaceholderText("Enter an Omni Layer address (e.g. 1oMn1LaYeRADDreSShef77z6A5S4P)");
+    ui->sendToLineEdit->setPlaceholderText("Enter an Tradelayer address (e.g. 1oMn1LaYeRADDreSShef77z6A5S4P)");
     ui->amountLineEdit->setPlaceholderText("Enter Amount");
 #endif
 
@@ -94,8 +94,8 @@ void SendMPDialog::setClientModel(ClientModel *model)
 {
     this->clientModel = model;
     if (model != nullptr) {
-        connect(model, &ClientModel::refreshOmniBalance, this, &SendMPDialog::balancesUpdated);
-        connect(model, &ClientModel::reinitOmniState, this, &SendMPDialog::balancesUpdated);
+        connect(model, &ClientModel::refreshTLBalance, this, &SendMPDialog::balancesUpdated);
+        connect(model, &ClientModel::reinitTLState, this, &SendMPDialog::balancesUpdated);
     }
 }
 
@@ -175,7 +175,7 @@ void SendMPDialog::updateFrom()
         if (CheckFee(walletModel->wallet(), currentSetFromAddress, 16)) {
             ui->feeWarningLabel->setVisible(false);
         } else {
-            ui->feeWarningLabel->setText("WARNING: The sending address is low on BTC for transaction fees. Please topup the BTC balance for the sending address to send Omni Layer transactions.");
+            ui->feeWarningLabel->setText("WARNING: The sending address is low on BTC for transaction fees. Please topup the BTC balance for the sending address to send Tradelayer transactions.");
             ui->feeWarningLabel->setVisible(true);
         }
     }

@@ -7,10 +7,10 @@
 #include <qt/walletmodel.h>
 #include <qt/guiutil.h>
 
-#include <omnicore/omnicore.h>
-#include <omnicore/sp.h>
-#include <omnicore/tally.h>
-#include <omnicore/walletutils.h>
+#include <tradelayer/tradelayer.h>
+#include <tradelayer/sp.h>
+#include <tradelayer/tally.h>
+#include <tradelayer/walletutils.h>
 
 #include <amount.h>
 #include <key_io.h>
@@ -117,7 +117,7 @@ BalancesDialog::~BalancesDialog()
     delete ui;
 }
 
-void BalancesDialog::reinitOmni()
+void BalancesDialog::reinitTL()
 {
     ui->propSelectorWidget->clear();
     ui->balancesTable->setRowCount(0);
@@ -129,8 +129,8 @@ void BalancesDialog::setClientModel(ClientModel *model)
 {
     this->clientModel = model;
     if (model != nullptr) {
-        connect(model, &ClientModel::refreshOmniBalance, this, &BalancesDialog::balancesUpdated);
-        connect(model, &ClientModel::reinitOmniState, this, &BalancesDialog::reinitOmni);
+        connect(model, &ClientModel::refreshTLBalance, this, &BalancesDialog::balancesUpdated);
+        connect(model, &ClientModel::reinitTLState, this, &BalancesDialog::reinitTL);
     }
 }
 
@@ -310,4 +310,3 @@ void BalancesDialog::resizeEvent(QResizeEvent* event)
     QWidget::resizeEvent(event);
     borrowedColumnResizingFixer->stretchColumnWidth(1);
 }
-

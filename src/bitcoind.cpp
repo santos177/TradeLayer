@@ -22,8 +22,8 @@
 #include <util/strencodings.h>
 #include <walletinitinterface.h>
 
-#include <omnicore/utilsui.h>
-#include <omnicore/tradelayer_matrices.h>
+#include <tradelayer/utilsui.h>
+#include <tradelayer/tradelayer_matrices.h>
 
 #include <stdio.h>
 
@@ -88,7 +88,7 @@ static bool AppInit(int argc, char* argv[])
         }
         else
         {
-            strUsage += "\nUsage:  omnicored [options]                     Start " PACKAGE_NAME " Daemon\n";
+            strUsage += "\nUsage:  bitcoind [options]                     Start " PACKAGE_NAME " Daemon\n";
             strUsage += "\n" + gArgs.GetHelpMessage();
         }
 
@@ -150,7 +150,7 @@ static bool AppInit(int argc, char* argv[])
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wdeprecated-declarations"
 #endif
-            tfm::format(std::cout, "Omni Core server starting\n");
+            tfm::format(std::cout, "Trade Layer server starting\n");
 
             // Daemonize
             if (daemon(1, 0)) { // don't chdir (1), do close FDs (0)

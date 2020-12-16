@@ -52,7 +52,7 @@
 #include <stdint.h>
 #include <stdio.h>
 
-#include <omnicore/version.h>
+#include <tradelayer/version.h>
 
 #ifndef WIN32
 #include <attributes.h>
@@ -96,7 +96,7 @@ std::unique_ptr<BanMan> g_banman;
 
 static const char* FEE_ESTIMATES_FILENAME="fee_estimates.dat";
 
-// Omni Core initialization and shutdown handlers
+// Trade Layer initialization and shutdown handlers
 extern int mastercore_init();
 extern int mastercore_shutdown();
 extern int CheckWalletUpdate(bool forceUpdate = false);
@@ -287,7 +287,7 @@ void Shutdown(InitInterfaces& interfaces)
         client->stop();
     }
 
-    //! Omni Core shutdown
+    //! Trade Layer shutdown
     mastercore_shutdown();
 
 #if ENABLE_ZMQ
@@ -328,7 +328,7 @@ static void HandleSIGTERM(int)
 static void HandleSIGHUP(int)
 {
     LogInstance().m_reopen_file = true;
-    fReopenOmniCoreLog = true;
+    fReopenTradeLayerLog = true;
 }
 #else
 static BOOL WINAPI consoleCtrlHandler(DWORD dwCtrlType)
@@ -554,22 +554,22 @@ void SetupServerArgs()
 
     // TODO: append help messages somewhere else
     // TODO: translation
-    gArgs.AddArg("-startclean", "Clear all persistence files on startup; triggers reparsing of Omni transactions (default: 0)", false, OptionsCategory::OMNI);
-    gArgs.AddArg("-omnitxcache", "The maximum number of transactions in the input transaction cache (default: 500000)", false, OptionsCategory::OMNI);
-    gArgs.AddArg("-omniprogressfrequency", "Time in seconds after which the initial scanning progress is reported (default: 30)", false, OptionsCategory::OMNI);
-    gArgs.AddArg("-omniseedblockfilter", "Set skipping of blocks without Omni transactions during initial scan (default: 1)", false, OptionsCategory::OMNI);
-    gArgs.AddArg("-omnilogfile", "The path of the log file (default: omnicore.log)", false, OptionsCategory::OMNI);
-    gArgs.AddArg("-omnidebug=<category>", "Enable or disable log categories, can be \"all\" or \"none\"", false, OptionsCategory::OMNI);
+    gArgs.AddArg("-startclean", "Clear all persistence files on startup; triggers reparsing of Trade Layer transactions (default: 0)", false, OptionsCategory::OMNI);
+    gArgs.AddArg("-tltxcache", "The maximum number of transactions in the input transaction cache (default: 500000)", false, OptionsCategory::OMNI);
+    gArgs.AddArg("-tlprogressfrequency", "Time in seconds after which the initial scanning progress is reported (default: 30)", false, OptionsCategory::OMNI);
+    gArgs.AddArg("-tlseedblockfilter", "Set skipping of blocks without Trade Layer transactions during initial scan (default: 1)", false, OptionsCategory::OMNI);
+    gArgs.AddArg("-tllogfile", "The path of the log file (default: tradelayer.log)", false, OptionsCategory::OMNI);
+    gArgs.AddArg("-tldebug=<category>", "Enable or disable log categories, can be \"all\" or \"none\"", false, OptionsCategory::OMNI);
     gArgs.AddArg("-autocommit", "Enable or disable broadcasting of transactions, when creating transactions (default: 1)", false, OptionsCategory::OMNI);
     gArgs.AddArg("-overrideforcedshutdown", "Overwrite shutdown, triggered by an alert (default: 0)", false, OptionsCategory::OMNI);
-    gArgs.AddArg("-omnialertallowsender", "Whitelist senders of alerts, can be \"any\")", false, OptionsCategory::OMNI);
-    gArgs.AddArg("-omnialertignoresender", "Ignore senders of alerts", false, OptionsCategory::OMNI);
-    gArgs.AddArg("-omniactivationignoresender", "Ignore senders of activations", false, OptionsCategory::OMNI);
-    gArgs.AddArg("-omniactivationallowsender", "Whitelist senders of activations", false, OptionsCategory::OMNI);
+    gArgs.AddArg("-tlalertallowsender", "Whitelist senders of alerts, can be \"any\")", false, OptionsCategory::OMNI);
+    gArgs.AddArg("-tlalertignoresender", "Ignore senders of alerts", false, OptionsCategory::OMNI);
+    gArgs.AddArg("-tlactivationignoresender", "Ignore senders of activations", false, OptionsCategory::OMNI);
+    gArgs.AddArg("-tlactivationallowsender", "Whitelist senders of activations", false, OptionsCategory::OMNI);
     gArgs.AddArg("-disclaimer", "Explicitly show QT disclaimer on startup (default: 0)", false, OptionsCategory::OMNI);
-    gArgs.AddArg("-omniuiwalletscope", "Max. transactions to show in trade and transaction history (default: 65535)", false, OptionsCategory::OMNI);
-    gArgs.AddArg("-omnishowblockconsensushash", "Calculate and log the consensus hash for the specified block", false, OptionsCategory::OMNI);
-    gArgs.AddArg("-omniuseragent", "Show Omni and Omni version in user agent string (default: 1)", false, OptionsCategory::OMNI);
+    gArgs.AddArg("-tluiwalletscope", "Max. transactions to show in trade and transaction history (default: 65535)", false, OptionsCategory::OMNI);
+    gArgs.AddArg("-tlshowblockconsensushash", "Calculate and log the consensus hash for the specified block", false, OptionsCategory::OMNI);
+    gArgs.AddArg("-tluseragent", "Show Trade Layer and Trade Layer version in user agent string (default: 1)", false, OptionsCategory::OMNI);
 
 
 #if HAVE_DECL_DAEMON
@@ -584,8 +584,8 @@ void SetupServerArgs()
 
 std::string LicenseInfo()
 {
-    const std::string URL_SOURCE_CODE = "<https://github.com/OmniLayer/omnicore>";
-    const std::string URL_WEBSITE = "<https://omnilayer.org>";
+    const std::string URL_SOURCE_CODE = "<https://github.com/";
+    const std::string URL_WEBSITE = "<https://tradelayer.org>";
 
     return CopyrightHolders(strprintf(_("Copyright (C) %i-%i"), 2009, COPYRIGHT_YEAR) + " ") + "\n" +
            "\n" +
@@ -1375,8 +1375,8 @@ bool AppInitMain(InitInterfaces& interfaces)
         uacomments.push_back(cmt);
     }
 
-    if (gArgs.GetArg("-omniuseragent", true)) {
-        uacomments.emplace(uacomments.begin(), OMNI_CLIENT_NAME + ":" + FormatVersion(OMNI_USERAGENT_VERSION));
+    if (gArgs.GetArg("-tluseragent", true)) {
+        uacomments.emplace(uacomments.begin(), TL_CLIENT_NAME + ":" + FormatVersion(TL_USERAGENT_VERSION));
         strSubVersion = FormatSubVersion(CLIENT_NAME, CLIENT_VERSION, uacomments);
     } else {
         strSubVersion = FormatSubVersion(CLIENT_NAME, CLIENT_VERSION, uacomments);
@@ -1684,18 +1684,18 @@ bool AppInitMain(InitInterfaces& interfaces)
         g_txindex->Start();
     }
 
-    // ********************************************************* Step 8.5: load omni core
+    // ********************************************************* Step 8.5: load trade layer
 
     if (!gArgs.GetBoolArg("-txindex", DEFAULT_TXINDEX)) {
         // ask the user if they would like us to modify their config file for them
         std::string msg = _("Disabled transaction index detected.\n\n"
-                            "Omni Core requires an enabled transaction index. To enable "
+                            "Trade Layer requires an enabled transaction index. To enable "
                             "transaction indexing, please use the \"-txindex\" option as "
                             "command line argument or add \"txindex=1\" to your client "
                             "configuration file within your data directory.\n\n"
                             "Configuration file"); // allow translation of main text body while still allowing differing config file string
         msg += ": " + GetConfigFile(gArgs.GetArg("-conf", BITCOIN_CONF_FILENAME)).string() + "\n\n";
-        msg += _("Would you like Omni Core to attempt to update your configuration file accordingly?");
+        msg += _("Would you like Trade Layer to attempt to update your configuration file accordingly?");
         bool fRet = uiInterface.ThreadSafeMessageBox(msg, "", CClientUIInterface::MSG_INFORMATION | CClientUIInterface::BTN_OK | CClientUIInterface::MODAL | CClientUIInterface::BTN_ABORT);
         if (fRet) {
             // add txindex=1 to config file in GetConfigFile()
@@ -1705,7 +1705,7 @@ bool AppInitMain(InitInterfaces& interfaces)
                 std::string failMsg = _("Unable to update configuration file at");
                 failMsg += ":\n" + GetConfigFile(gArgs.GetArg("-conf", BITCOIN_CONF_FILENAME)).string() + "\n\n";
                 failMsg += _("The file may be write protected or you may not have the required permissions to edit it.\n");
-                failMsg += _("Please add txindex=1 to your configuration file manually.\n\nOmni Core will now shutdown.");
+                failMsg += _("Please add txindex=1 to your configuration file manually.\n\nTrade Layer will now shutdown.");
                 return InitError(failMsg);
             }
             fprintf(fp, "\ntxindex=1\n");
@@ -1713,15 +1713,15 @@ bool AppInitMain(InitInterfaces& interfaces)
             fclose(fp);
             std::string strUpdated = _(
                     "Your configuration file has been updated.\n\n"
-                    "Omni Core will now shutdown - please restart the client for your new configuration to take effect.");
+                    "Trade Layer will now shutdown - please restart the client for your new configuration to take effect.");
             uiInterface.ThreadSafeMessageBox(strUpdated, "", CClientUIInterface::MSG_INFORMATION | CClientUIInterface::BTN_OK | CClientUIInterface::MODAL);
             return false;
         } else {
-            return InitError(_("Please add txindex=1 to your configuration file manually.\n\nOmni Core will now shutdown."));
+            return InitError(_("Please add txindex=1 to your configuration file manually.\n\nTrade Layer will now shutdown."));
         }
     }
 
-    uiInterface.InitMessage(_("Parsing Omni Layer transactions..."));
+    uiInterface.InitMessage(_("Parsing Trade Layer transactions..."));
 
     mastercore_init();
 
@@ -1732,7 +1732,7 @@ bool AppInitMain(InitInterfaces& interfaces)
         }
     }
 
-    // Omni Core code should be initialized and wallet should now be loaded, perform an initial populat$
+    // Trade Layer code should be initialized and wallet should now be loaded, perform an initial populat$
     CheckWalletUpdate();
 
     // ********************************************************* Step 10: data directory maintenance

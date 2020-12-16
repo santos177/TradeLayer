@@ -120,8 +120,8 @@ private:
     GUIUtil::ClickableLabel* labelProxyIcon = nullptr;
     GUIUtil::ClickableLabel* connectionsControl = nullptr;
     GUIUtil::ClickableLabel* labelBlocksIcon = nullptr;
-    QLabel *labelOmniPendingIcon = nullptr;
-    QLabel *labelOmniPendingText = nullptr;
+    QLabel *labelTLPendingIcon = nullptr;
+    QLabel *labelTLPendingText = nullptr;
     QLabel* progressBarLabel = nullptr;
     GUIUtil::ClickableProgressBar* progressBar = nullptr;
     QProgressDialog* progressDialog = nullptr;
@@ -234,8 +234,8 @@ public Q_SLOTS:
     */
     void updateWalletStatus();
 
-    /** Set the Omni pending transactions label **/
-    void setOmniPendingStatus(bool pending);
+    /** Set the Tradelayer pending transactions label **/
+    void setTLPendingStatus(bool pending);
 
 private:
     /** Set the encryption status as shown in the UI.
@@ -270,8 +270,8 @@ public Q_SLOTS:
     void gotoBalancesPage();
     /** Switch to history (transactions) page */
     void gotoHistoryPage();
-    /** Switch directly to Omni history tab */
-    void gotoOmniHistoryTab();
+    /** Switch directly to TL history tab */
+    void gotoTLHistoryTab();
     /** Switch directly to bitcoin history tab */
     void gotoBitcoinHistoryTab();
     /** Switch to utility page */

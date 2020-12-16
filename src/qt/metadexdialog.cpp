@@ -5,26 +5,26 @@
 #include <qt/metadexdialog.h>
 #include <qt/forms/ui_metadexdialog.h>
 
-#include <qt/omnicore_qtutils.h>
+#include <qt/tradelayer_qtutils.h>
 
 #include <qt/clientmodel.h>
 #include <qt/walletmodel.h>
 
-#include <omnicore/createpayload.h>
-#include <omnicore/dbtradelist.h>
-#include <omnicore/errors.h>
-#include <omnicore/mdex.h>
-#include <omnicore/omnicore.h>
-#include <omnicore/parse_string.h>
-#include <omnicore/pending.h>
-#include <omnicore/rpctxobject.h>
-#include <omnicore/rules.h>
-#include <omnicore/sp.h>
-#include <omnicore/tally.h>
-#include <omnicore/uint256_extensions.h>
-#include <omnicore/utilsbitcoin.h>
-#include <omnicore/wallettxbuilder.h>
-#include <omnicore/walletutils.h>
+#include <tradelayer/createpayload.h>
+#include <tradelayer/dbtradelist.h>
+#include <tradelayer/errors.h>
+#include <tradelayer/mdex.h>
+#include <tradelayer/tradelayer.h>
+#include <tradelayer/parse_string.h>
+#include <tradelayer/pending.h>
+#include <tradelayer/rpctxobject.h>
+#include <tradelayer/rules.h>
+#include <tradelayer/sp.h>
+#include <tradelayer/tally.h>
+#include <tradelayer/uint256_extensions.h>
+#include <tradelayer/utilsbitcoin.h>
+#include <tradelayer/wallettxbuilder.h>
+#include <tradelayer/walletutils.h>
 
 #include <amount.h>
 #include <key_io.h>
@@ -117,9 +117,9 @@ void MetaDExDialog::setClientModel(ClientModel *model)
 {
     this->clientModel = model;
     if (nullptr != model) {
-        connect(model, &ClientModel::refreshOmniState, this, &MetaDExDialog::UpdateOffers);
-        connect(model, &ClientModel::refreshOmniBalance, this, &MetaDExDialog::BalanceOrderRefresh);
-        connect(model, &ClientModel::reinitOmniState, this, &MetaDExDialog::FullRefresh);
+        connect(model, &ClientModel::refreshTLState, this, &MetaDExDialog::UpdateOffers);
+        connect(model, &ClientModel::refreshTLBalance, this, &MetaDExDialog::BalanceOrderRefresh);
+        connect(model, &ClientModel::reinitTLState, this, &MetaDExDialog::FullRefresh);
     }
 }
 
@@ -560,6 +560,3 @@ void MetaDExDialog::sendTrade()
         }
     }
 }
-
-
-

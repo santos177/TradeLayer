@@ -38,7 +38,7 @@
 
 #include <walletinitinterface.h>
 
-#include <omnicore/utilsui.h>
+#include <tradelayer/utilsui.h>
 
 #include <memory>
 #include <stdint.h>

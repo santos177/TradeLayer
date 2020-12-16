@@ -5,12 +5,12 @@
 #include <qt/lookuptxdialog.h>
 #include <qt/forms/ui_lookuptxdialog.h>
 
-#include <omnicore/errors.h>
-#include <omnicore/rpc.h>
-#include <omnicore/rpctxobject.h>
+#include <tradelayer/errors.h>
+#include <tradelayer/rpc.h>
+#include <tradelayer/rpctxobject.h>
 
 #include <qt/walletmodel.h>
-#include <qt/omnicore_qtutils.h>
+#include <qt/tradelayer_qtutils.h>
 
 #include <uint256.h>
 
@@ -72,7 +72,7 @@ void LookupTXDialog::searchTX()
         std::string strText = "The transaction hash entered is ";
         switch(populateResult) {
             case MP_TX_NOT_FOUND:
-                strText += "not a valid Bitcoin or Omni transaction.  Please check the transaction hash "
+                strText += "not a valid Bitcoin or Tradelayer transaction.  Please check the transaction hash "
                            "entered and try again.";
             break;
             case MP_TX_UNCONFIRMED:
@@ -80,14 +80,14 @@ void LookupTXDialog::searchTX()
                            "confirmed transactions.\n\nTip: You can view your own outgoing unconfirmed "
                            "transactions in the transactions tab.";
             break;
-            case MP_TX_IS_NOT_OMNI_PROTOCOL:
+            case MP_TX_IS_NOT_TL_PROTOCOL:
                 strText += "a Bitcoin transaction only.\n\nTip: You can use the debug console "
                            "'gettransaction' command to lookup specific Bitcoin transactions.";
             break;
 
             default:
                 strText += "of an unknown type.  If you are seeing this message please raise a bug report "
-                           "with the transaction hash at github.com/OmniLayer/omnicore/issues.";
+                           "with the transaction hash at github.com/... ";
             break;
         }
         QString strQText = QString::fromStdString(strText);

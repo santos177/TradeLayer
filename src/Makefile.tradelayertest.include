@@ -1,0 +1,44 @@
+TRADELAYER_TEST_H = \
+  tradelayer/test/utils_tx.h
+
+TRADELAYER_TEST_CPP = \
+  tradelayer/test/alert_tests.cpp \
+  tradelayer/test/change_issuer_tests.cpp \
+  tradelayer/test/checkpoint_tests.cpp \
+  tradelayer/test/create_payload_tests.cpp \
+  tradelayer/test/create_tx_tests.cpp \
+  tradelayer/test/crowdsale_participation_tests.cpp \
+  tradelayer/test/dex_purchase_tests.cpp \
+  tradelayer/test/encoding_b_tests.cpp \
+  tradelayer/test/encoding_c_tests.cpp \
+  tradelayer/test/exodus_tests.cpp \
+  tradelayer/test/lock_tests.cpp \
+  tradelayer/test/marker_tests.cpp \
+  tradelayer/test/mbstring_tests.cpp \
+  tradelayer/test/params_tests.cpp \
+  tradelayer/test/obfuscation_tests.cpp \
+  tradelayer/test/output_restriction_tests.cpp \
+  tradelayer/test/parsing_a_tests.cpp \
+  tradelayer/test/parsing_b_tests.cpp \
+  tradelayer/test/parsing_c_tests.cpp \
+  tradelayer/test/rounduint64_tests.cpp \
+  tradelayer/test/rules_txs_tests.cpp \
+  tradelayer/test/script_dust_tests.cpp \
+  tradelayer/test/script_extraction_tests.cpp \
+  tradelayer/test/script_solver_tests.cpp \
+  tradelayer/test/sender_bycontribution_tests.cpp \
+  tradelayer/test/sender_firstin_tests.cpp \
+  tradelayer/test/strtoint64_tests.cpp \
+  tradelayer/test/swapbyteorder_tests.cpp \
+  tradelayer/test/tally_tests.cpp \
+  tradelayer/test/uint256_extensions_tests.cpp \
+  tradelayer/test/utils_tx.cpp \
+  tradelayer/test/version_tests.cpp
+
+BITCOIN_TESTS += \
+  $(TRADELAYER_TEST_CPP) \
+  $(TRADELAYER_TEST_H)
+
+CLEAN_TRADELAYER_TEST = tradelayer/test/*.gcda tradelayer/test/*.gcno
+
+CLEANFILES += $(CLEAN_TRADELAYER_TEST)

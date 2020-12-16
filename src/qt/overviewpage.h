@@ -41,12 +41,12 @@ public:
 
 public Q_SLOTS:
     void setBalance(const interfaces::WalletBalances& balances);
-    void updateOmni();
-    void reinitOmni();
+    void updateTL();
+    void reinitTL();
 
 Q_SIGNALS:
     void transactionClicked(const QModelIndex &index);
-    // void omniTransactionClicked(const uint256& txid);
+    // void tlTransactionClicked(const uint256& txid);
     void outOfSyncWarningClicked();
 
 private:
@@ -61,7 +61,7 @@ private:
 private Q_SLOTS:
     void updateDisplayUnit();
     void handleTransactionClicked(const QModelIndex &index);
-    void updateOmniAlerts();
+    void updateTLAlerts();
     void updateAlerts(const QString &warnings);
     void updateWatchOnlyLabels(bool showWatchOnly);
     void handleOutOfSyncWarningClicks();
