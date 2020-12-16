@@ -256,7 +256,7 @@ UniValue stop(const JSONRPCRequest& jsonRequest)
     if (jsonRequest.fHelp || jsonRequest.params.size() > 1)
         throw std::runtime_error(
             RPCHelpMan{"stop",
-                "\nStop Omni Core server.",
+                "\nStop Trade Layer server.",
                 {},
                 RPCResults{},
                 RPCExamples{""},
