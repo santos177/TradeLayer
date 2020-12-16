@@ -24,7 +24,7 @@ extern const char * const DEFAULT_DEBUGLOGFILE;
 extern bool fLogIPs;
 
 /** Flag to indicate, whether the Omni Core log file should be reopened. */
-extern std::atomic<bool> fReopenOmniCoreLog;
+extern std::atomic<bool> fReopenTradeLayerLog;
 
 struct CLogCategoryActive
 {

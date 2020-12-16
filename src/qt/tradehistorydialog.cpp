@@ -5,7 +5,7 @@
 #include <qt/tradehistorydialog.h>
 #include <qt/forms/ui_tradehistorydialog.h>
 
-#include <qt/omnicore_qtutils.h>
+#include <qt/tradelayer_qtutils.h>
 
 #include <qt/guiutil.h>
 #include <ui_interface.h>

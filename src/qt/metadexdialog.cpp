@@ -5,7 +5,7 @@
 #include <qt/metadexdialog.h>
 #include <qt/forms/ui_metadexdialog.h>
 
-#include <qt/omnicore_qtutils.h>
+#include <qt/tradelayer_qtutils.h>
 
 #include <qt/clientmodel.h>
 #include <qt/walletmodel.h>

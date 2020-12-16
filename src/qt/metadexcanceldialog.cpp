@@ -5,7 +5,7 @@
 #include <qt/metadexcanceldialog.h>
 #include <qt/forms/ui_metadexcanceldialog.h>
 
-#include <qt/omnicore_qtutils.h>
+#include <qt/tradelayer_qtutils.h>
 
 #include <qt/clientmodel.h>
 #include <key_io.h>

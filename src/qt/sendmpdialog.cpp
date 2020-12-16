@@ -5,7 +5,7 @@
 #include <qt/sendmpdialog.h>
 #include <qt/forms/ui_sendmpdialog.h>
 
-#include <qt/omnicore_qtutils.h>
+#include <qt/tradelayer_qtutils.h>
 
 #include <qt/clientmodel.h>
 #include <qt/walletmodel.h>

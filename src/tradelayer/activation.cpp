@@ -150,7 +150,7 @@ bool CheckActivationAuthorization(const std::string& sender)
 
     // Add manually whitelisted sources
     if (gArgs.IsArgSet("-tlactivationallowsender")) {
-        const std::vector<std::string>& sources = gArgs.GetArgs("-omniactivationallowsender");
+        const std::vector<std::string>& sources = gArgs.GetArgs("-tlactivationallowsender");
 
         for (std::vector<std::string>::const_iterator it = sources.begin(); it != sources.end(); ++it) {
             whitelisted.insert(*it);
@@ -159,7 +159,7 @@ bool CheckActivationAuthorization(const std::string& sender)
 
     // Remove manually ignored sources
     if (gArgs.IsArgSet("-tlactivationignoresender")) {
-        const std::vector<std::string>& sources = gArgs.GetArgs("-omniactivationignoresender");
+        const std::vector<std::string>& sources = gArgs.GetArgs("-tlactivationignoresender");
 
         for (std::vector<std::string>::const_iterator it = sources.begin(); it != sources.end(); ++it) {
             whitelisted.erase(*it);
@@ -175,7 +175,7 @@ bool CheckActivationAuthorization(const std::string& sender)
 /**
  * Determines whether the sender is an authorized source to deactivate features.
  *
- * The custom options "-tlactivationallowsender=source" and "-omniactivationignoresender=source" are also applied to deactivations.
+ * The custom options "-tlactivationallowsender=source" and "-tlactivationignoresender=source" are also applied to deactivations.
  */
 bool CheckDeactivationAuthorization(const std::string& sender)
 {
@@ -188,7 +188,7 @@ bool CheckDeactivationAuthorization(const std::string& sender)
 
     // Add manually whitelisted sources - custom sources affect both activation and deactivation
     if (gArgs.IsArgSet("-tlactivationallowsender")) {
-        const std::vector<std::string>& sources = gArgs.GetArgs("-omniactivationallowsender");
+        const std::vector<std::string>& sources = gArgs.GetArgs("-tlactivationallowsender");
 
         for (std::vector<std::string>::const_iterator it = sources.begin(); it != sources.end(); ++it) {
             whitelisted.insert(*it);
@@ -197,7 +197,7 @@ bool CheckDeactivationAuthorization(const std::string& sender)
 
     // Remove manually ignored sources - custom sources affect both activation and deactivation
     if (gArgs.IsArgSet("-tlactivationignoresender")) {
-        const std::vector<std::string>& sources = gArgs.GetArgs("-omniactivationignoresender");
+        const std::vector<std::string>& sources = gArgs.GetArgs("-tlactivationignoresender");
 
         for (std::vector<std::string>::const_iterator it = sources.begin(); it != sources.end(); ++it) {
             whitelisted.erase(*it);

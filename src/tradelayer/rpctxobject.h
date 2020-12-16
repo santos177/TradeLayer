@@ -18,27 +18,27 @@ int populateRPCTransactionObject(const CTransaction& tx, const uint256& blockHas
 
 void populateRPCTypeInfo(CMPTransaction& mp_obj, UniValue& txobj, uint32_t txType, bool extendedDetails, std::string extendedDetailsFilter, int confirmations, interfaces::Wallet* iWallet = nullptr);
 
-void populateRPCTypeSimpleSend(CMPTransaction& omniObj, UniValue& txobj);
-void populateRPCTypeSendToOwners(CMPTransaction& omniObj, UniValue& txobj, bool extendedDetails, std::string extendedDetailsFilter, interfaces::Wallet* iWallet = nullptr);
-void populateRPCTypeSendAll(CMPTransaction& omniObj, UniValue& txobj, int confirmations);
-void populateRPCTypeTradeOffer(CMPTransaction& omniObj, UniValue& txobj);
-void populateRPCTypeMetaDExTrade(CMPTransaction& omniObj, UniValue& txobj, bool extendedDetails);
-void populateRPCTypeMetaDExCancelPrice(CMPTransaction& omniObj, UniValue& txobj, bool extendedDetails);
-void populateRPCTypeMetaDExCancelPair(CMPTransaction& omniObj, UniValue& txobj, bool extendedDetails);
-void populateRPCTypeMetaDExCancelEcosystem(CMPTransaction& omniObj, UniValue& txobj, bool extendedDetails);
-void populateRPCTypeAcceptOffer(CMPTransaction& omniObj, UniValue& txobj);
-void populateRPCTypeCreatePropertyFixed(CMPTransaction& omniObj, UniValue& txobj, int confirmations);
-void populateRPCTypeCreatePropertyVariable(CMPTransaction& omniObj, UniValue& txobj, int confirmations);
-void populateRPCTypeCreatePropertyManual(CMPTransaction& omniObj, UniValue& txobj, int confirmations);
-void populateRPCTypeCloseCrowdsale(CMPTransaction& omniObj, UniValue& txobj);
-void populateRPCTypeGrant(CMPTransaction& omniObj, UniValue& txobj);
-void populateRPCTypeRevoke(CMPTransaction& omniOobj, UniValue& txobj);
-void populateRPCTypeChangeIssuer(CMPTransaction& omniObj, UniValue& txobj);
-void populateRPCTypeActivation(CMPTransaction& omniObj, UniValue& txobj);
-void populateRPCTypeEnableFreezing(CMPTransaction& omniObj, UniValue& txobj);
-void populateRPCTypeDisableFreezing(CMPTransaction& omniObj, UniValue& txobj);
-void populateRPCTypeFreezeTokens(CMPTransaction& omniObj, UniValue& txobj);
-void populateRPCTypeUnfreezeTokens(CMPTransaction& omniObj, UniValue& txobj);
+void populateRPCTypeSimpleSend(CMPTransaction& tlObj, UniValue& txobj);
+void populateRPCTypeSendToOwners(CMPTransaction& tlObj, UniValue& txobj, bool extendedDetails, std::string extendedDetailsFilter, interfaces::Wallet* iWallet = nullptr);
+void populateRPCTypeSendAll(CMPTransaction& tlObj, UniValue& txobj, int confirmations);
+void populateRPCTypeTradeOffer(CMPTransaction& tlObj, UniValue& txobj);
+void populateRPCTypeMetaDExTrade(CMPTransaction& tlObj, UniValue& txobj, bool extendedDetails);
+void populateRPCTypeMetaDExCancelPrice(CMPTransaction& tlObj, UniValue& txobj, bool extendedDetails);
+void populateRPCTypeMetaDExCancelPair(CMPTransaction& tlObj, UniValue& txobj, bool extendedDetails);
+void populateRPCTypeMetaDExCancelEcosystem(CMPTransaction& tlObj, UniValue& txobj, bool extendedDetails);
+void populateRPCTypeAcceptOffer(CMPTransaction& tlObj, UniValue& txobj);
+void populateRPCTypeCreatePropertyFixed(CMPTransaction& tlObj, UniValue& txobj, int confirmations);
+void populateRPCTypeCreatePropertyVariable(CMPTransaction& tlObj, UniValue& txobj, int confirmations);
+void populateRPCTypeCreatePropertyManual(CMPTransaction& tlObj, UniValue& txobj, int confirmations);
+void populateRPCTypeCloseCrowdsale(CMPTransaction& tlObj, UniValue& txobj);
+void populateRPCTypeGrant(CMPTransaction& tlObj, UniValue& txobj);
+void populateRPCTypeRevoke(CMPTransaction& tlOobj, UniValue& txobj);
+void populateRPCTypeChangeIssuer(CMPTransaction& tlObj, UniValue& txobj);
+void populateRPCTypeActivation(CMPTransaction& tlObj, UniValue& txobj);
+void populateRPCTypeEnableFreezing(CMPTransaction& tlObj, UniValue& txobj);
+void populateRPCTypeDisableFreezing(CMPTransaction& tlObj, UniValue& txobj);
+void populateRPCTypeFreezeTokens(CMPTransaction& tlObj, UniValue& txobj);
+void populateRPCTypeUnfreezeTokens(CMPTransaction& tlObj, UniValue& txobj);
 
 void populateRPCExtendedTypeSendToOwners(const uint256 txid, std::string extendedDetailsFilter, UniValue& txobj, uint16_t version, interfaces::Wallet* iWallet = nullptr);
 void populateRPCExtendedTypeMetaDExTrade(const uint256& txid, uint32_t propertyIdForSale, int64_t amountForSale, UniValue& txobj);

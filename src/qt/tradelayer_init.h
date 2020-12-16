@@ -1,7 +1,7 @@
-#ifndef BITCOIN_QT_OMNICORE_INIT_H
-#define BITCOIN_QT_OMNICORE_INIT_H
+#ifndef BITCOIN_QT_TRADELAYER_INIT_H
+#define BITCOIN_QT_TRADELAYER_INIT_H
 
-namespace OmniCore
+namespace TradeLayer
 {
     //! Shows an user dialog with general warnings and potential risks
     bool AskUserToAcknowledgeRisks();
@@ -10,4 +10,4 @@ namespace OmniCore
     bool Initialize();
 }
 
-#endif // BITCOIN_QT_OMNICORE_INIT_H
+#endif // BITCOIN_QT_TRADELAYER_INIT_H

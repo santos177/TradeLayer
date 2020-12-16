@@ -10,7 +10,7 @@
 #include <tradelayer/rpctxobject.h>
 
 #include <qt/walletmodel.h>
-#include <qt/omnicore_qtutils.h>
+#include <qt/tradelayer_qtutils.h>
 
 #include <uint256.h>
 

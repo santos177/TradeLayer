@@ -5,7 +5,7 @@
 #include <qt/txhistorydialog.h>
 #include <qt/forms/ui_txhistorydialog.h>
 
-#include <qt/omnicore_qtutils.h>
+#include <qt/tradelayer_qtutils.h>
 
 #include <qt/clientmodel.h>
 #include <qt/guiutil.h>

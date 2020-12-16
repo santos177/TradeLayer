@@ -16,7 +16,7 @@
 #include <string>
 #include <vector>
 
-BOOST_FIXTURE_TEST_SUITE(omnicore_encoding_b_tests, BasicTestingSetup)
+BOOST_FIXTURE_TEST_SUITE(tradelayer_encoding_b_tests, BasicTestingSetup)
 
 BOOST_AUTO_TEST_CASE(class_b_empty)
 {

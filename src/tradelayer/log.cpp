@@ -108,8 +108,8 @@ static std::once_flag debugLogInitFlag;
  */
 static FILE* fileout = nullptr;
 static std::mutex* mutexDebugLog = nullptr;
-/** Flag to indicate, whether the Omni Core log file should be reopened. */
-extern std::atomic<bool> fReopenOmniCoreLog;
+/** Flag to indicate, whether the Tradelayer log file should be reopened. */
+extern std::atomic<bool> fReopenTradeLayerLog;
 /**
  * Returns path for debug log file.
  *
@@ -188,8 +188,8 @@ int LogFilePrint(const std::string& str)
         std::lock_guard<std::mutex> lock(*mutexDebugLog);
 
         // Reopen the log file, if requested
-        if (fReopenOmniCoreLog) {
-            fReopenOmniCoreLog = false;
+        if (fReopenTradeLayerLog) {
+            fReopenTradeLayerLog = false;
             fs::path pathDebug = GetLogPath();
             if (freopen(pathDebug.string().c_str(), "a", fileout) != nullptr) {
                 setbuf(fileout, nullptr); // Unbuffered

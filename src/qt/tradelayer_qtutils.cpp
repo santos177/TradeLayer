@@ -1,4 +1,4 @@
-#include <qt/omnicore_qtutils.h>
+#include <qt/tradelayer_qtutils.h>
 
 #include <qt/guiutil.h>
 

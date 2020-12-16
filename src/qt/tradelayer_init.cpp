@@ -1,4 +1,4 @@
-#include <qt/omnicore_init.h>
+#include <qt/tradelayer_init.h>
 
 #include <chainparams.h>
 #include <util/system.h>
@@ -8,7 +8,7 @@
 #include <QMessageBox>
 #include <QSettings>
 
-namespace OmniCore {
+namespace TradeLayer {
 
 /**
  * Creates a message box with general warnings and potential risks
@@ -76,7 +76,7 @@ static bool showDisclaimer()
     QSettings settings;
 
     // Check whether the disclaimer was acknowledged before
-    return settings.value("OmniCore/fShowDisclaimer", true).toBool();
+    return settings.value("TradeLayer/fShowDisclaimer", true).toBool();
 }
 
 /**
@@ -98,7 +98,7 @@ bool AskUserToAcknowledgeRisks()
     bool fAccepted = getDisclaimerDialogResult();
 
     // Store decision and show next time, if declined
-    settings.setValue("OmniCore/fShowDisclaimer", !fAccepted);
+    settings.setValue("TradeLayer/fShowDisclaimer", !fAccepted);
 
     return fAccepted;
 }
@@ -116,4 +116,4 @@ bool Initialize()
     return true;
 }
 
-} // namespace OmniCore
+} // namespace TradeLayer
