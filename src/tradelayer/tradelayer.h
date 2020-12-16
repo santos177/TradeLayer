@@ -173,7 +173,7 @@ enum TransactionType {
 #define ACTIONINVALID  3
 
 /*24 horus to blocks*/
-const int dayblocks = 576;
+const int dayblocks = 144;
 
 // channels definitions
 #define TYPE_COMMIT                     "commit"
