@@ -191,12 +191,6 @@ const rational_t factor2 = rational_t(20,100); // normal limits
 
 
 // forward declarations
-// std::string FormatDivisibleMP(int64_t amount, bool fSign = false);
-// std::string FormatDivisibleShortMP(int64_t amount);
-// std::string FormatMP(uint32_t propertyId, int64_t amount, bool fSign = false);
-// std::string FormatShortMP(uint32_t propertyId, int64_t amount);
-// std::string FormatByType(int64_t amount, uint16_t propertyType);
-// std::string FormatByDivisibility(int64_t amount, bool divisible);
 double FormatContractShortMP(int64_t n);
 long int FormatShortIntegerMP(int64_t n);
 // uint64_t int64ToUint64(int64_t value);
@@ -262,8 +256,6 @@ double PNL_function(double entry_price, double exit_price, int64_t amount_trd, s
 void fillingMatrix(MatrixTLS &M_file, MatrixTLS &ndatabase, std::vector<std::map<std::string, std::string>> &path_ele);
 inline int64_t clamp_function(int64_t diff, int64_t nclamp);
 bool TxValidNodeReward(std::string ConsensusHash, std::string Tx);
-
-
 
 /** Scans for marker and if one is found, add transaction to marker cache. */
 void TryToAddToMarkerCache(const CTransactionRef& tx);

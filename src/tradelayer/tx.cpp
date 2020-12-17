@@ -84,7 +84,6 @@ std::string mastercore::strTransactionType(uint16_t txType)
         case MSC_TYPE_CREATE_PROPERTY_FIXED: return "Create Property - Fixed";
         case MSC_TYPE_CREATE_PROPERTY_VARIABLE: return "Create Property - Variable";
         case MSC_TYPE_PROMOTE_PROPERTY: return "Promote Property";
-        case MSC_TYPE_CLOSE_CROWDSALE: return "Close Crowdsale";
         case MSC_TYPE_CREATE_PROPERTY_MANUAL: return "Create Property - Manual";
         case MSC_TYPE_GRANT_PROPERTY_TOKENS: return "Grant Property Tokens";
         case MSC_TYPE_REVOKE_PROPERTY_TOKENS: return "Revoke Property Tokens";
@@ -169,9 +168,6 @@ bool CMPTransaction::interpret_Transaction()
 
         case MSC_TYPE_CREATE_PROPERTY_VARIABLE:
             return interpret_CreatePropertyVariable();
-
-        case MSC_TYPE_CLOSE_CROWDSALE:
-            return interpret_CloseCrowdsale();
 
         case MSC_TYPE_CREATE_PROPERTY_MANUAL:
             return interpret_CreatePropertyManaged();
@@ -665,22 +661,6 @@ bool CMPTransaction::interpret_CreatePropertyVariable()
     if (isOverrun(p)) {
         PrintToLog("%s(): rejected: malformed string value(s)\n", __func__);
         return false;
-    }
-
-    return true;
-}
-
-/** Tx 53 */
-bool CMPTransaction::interpret_CloseCrowdsale()
-{
-    if (pkt_size < 8) {
-        return false;
-    }
-    memcpy(&property, &pkt[4], 4);
-    SwapByteOrder32(property);
-
-    if ((!rpcOnly && msc_debug_packets) || msc_debug_packets_readonly) {
-        PrintToLog("\t        property: %d (%s)\n", property, strMPProperty(property));
     }
 
     return true;
@@ -1679,9 +1659,6 @@ int CMPTransaction::interpretPacket()
         case MSC_TYPE_CREATE_PROPERTY_VARIABLE:
             return logicMath_CreatePropertyVariable();
 
-        case MSC_TYPE_CLOSE_CROWDSALE:
-            return logicMath_CloseCrowdsale();
-
         case MSC_TYPE_CREATE_PROPERTY_MANUAL:
             return logicMath_CreatePropertyManaged();
 
@@ -1841,85 +1818,6 @@ int CMPTransaction::logicMath_CommitChannel()
     return 0;
 }
 
-/** Passive effect of crowdsale participation. */
-int CMPTransaction::logicHelper_CrowdsaleParticipation()
-{
-    CMPCrowd* pcrowdsale = getCrowd(receiver);
-
-    // No active crowdsale
-    if (pcrowdsale == nullptr) {
-        return (PKT_ERROR_CROWD -1);
-    }
-    // Active crowdsale, but not for this property
-    if (pcrowdsale->getCurrDes() != property) {
-        return (PKT_ERROR_CROWD -2);
-    }
-
-    CMPSPInfo::Entry sp;
-    assert(pDbSpInfo->getSP(pcrowdsale->getPropertyId(), sp));
-    PrintToLog("INVESTMENT SEND to Crowdsale Issuer: %s\n", receiver);
-
-    // Holds the tokens to be credited to the sender and issuer
-    std::pair<int64_t, int64_t> tokens;
-
-    // Passed by reference to determine, if max_tokens has been reached
-    bool close_crowdsale = false;
-
-    // Units going into the calculateFundraiser function must match the unit of
-    // the fundraiser's property_type. By default this means satoshis in and
-    // satoshis out. In the condition that the fundraiser is divisible, but
-    // indivisible tokens are accepted, it must account for .0 Div != 1 Indiv,
-    // but actually 1.0 Div == 100000000 Indiv. The unit must be shifted or the
-    // values will be incorrect, which is what is checked below.
-    bool inflateAmount = isPropertyDivisible(property) ? false : true;
-
-    // Calculate the amounts to credit for this fundraiser
-    calculateFundraiser(inflateAmount, nValue, sp.early_bird, sp.deadline, blockTime,
-            sp.num_tokens, sp.percentage, getTotalTokens(pcrowdsale->getPropertyId()),
-            tokens, close_crowdsale);
-
-    if (msc_debug_sp) {
-        PrintToLog("%s(): granting via crowdsale to user: %s %d (%s)\n",
-                __func__, FormatMP(property, tokens.first), property, strMPProperty(property));
-        PrintToLog("%s(): granting via crowdsale to issuer: %s %d (%s)\n",
-                __func__, FormatMP(property, tokens.second), property, strMPProperty(property));
-    }
-
-    // Update the crowdsale object
-    pcrowdsale->incTokensUserCreated(tokens.first);
-    pcrowdsale->incTokensIssuerCreated(tokens.second);
-
-    // Data to pass to txFundraiserData
-    int64_t txdata[] = {(int64_t) nValue, blockTime, tokens.first, tokens.second};
-    std::vector<int64_t> txDataVec(txdata, txdata + sizeof(txdata) / sizeof(txdata[0]));
-
-    // Insert data about crowdsale participation
-    pcrowdsale->insertDatabase(txid, txDataVec);
-
-    // Credit tokens for this fundraiser
-    if (tokens.first > 0) {
-        assert(update_tally_map(sender, pcrowdsale->getPropertyId(), tokens.first, BALANCE));
-    }
-    if (tokens.second > 0) {
-        assert(update_tally_map(receiver, pcrowdsale->getPropertyId(), tokens.second, BALANCE));
-    }
-
-    // Number of tokens has changed, update fee distribution thresholds
-    NotifyTotalTokensChanged(pcrowdsale->getPropertyId(), block);
-
-    // Close crowdsale, if we hit MAX_TOKENS
-    if (close_crowdsale) {
-        eraseMaxedCrowdsale(receiver, blockTime, block);
-    }
-
-    // Indicate, if no tokens were transferred
-    if (!tokens.first && !tokens.second) {
-        return (PKT_ERROR_CROWD -3);
-    }
-
-    return 0;
-}
-
 /** Tx 0 */
 int CMPTransaction::logicMath_SimpleSend()
 {
@@ -1961,7 +1859,7 @@ int CMPTransaction::logicMath_SimpleSend()
     assert(update_tally_map(receiver, property, nValue, BALANCE));
 
     // Is there an active crowdsale running from this recipient?
-    logicHelper_CrowdsaleParticipation();
+    // logicHelper_CrowdsaleParticipation();
 
     return 0;
 }
@@ -2580,18 +2478,18 @@ int CMPTransaction::logicMath_CreatePropertyVariable()
         return (PKT_ERROR_SP -21);
     }
 
-    if (IsFeatureActivated(FEATURE_SPCROWDCROSSOVER, block)) {
-    /**
-     * Ecosystem crossovers shall not be allowed after the feature was enabled.
-     */
-    if (isTestEcosystemProperty(ecosystem) != isTestEcosystemProperty(property)) {
-        PrintToLog("%s(): rejected: ecosystem %d of tokens to issue and desired property %d not in same ecosystem\n",
-                __func__,
-                ecosystem,
-                property);
-        return (PKT_ERROR_SP -50);
-    }
-    }
+    // if (IsFeatureActivated(FEATURE_SPCROWDCROSSOVER, block)) {
+    // /**
+    //  * Ecosystem crossovers shall not be allowed after the feature was enabled.
+    //  */
+    // if (isTestEcosystemProperty(ecosystem) != isTestEcosystemProperty(property)) {
+    //     PrintToLog("%s(): rejected: ecosystem %d of tokens to issue and desired property %d not in same ecosystem\n",
+    //             __func__,
+    //             ecosystem,
+    //             property);
+    //     return (PKT_ERROR_SP -50);
+    // }
+    // }
 
     if (!IsTransactionTypeAllowed(block, ecosystem, type, version)) {
         PrintToLog("%s(): rejected: type %d or version %d not permitted for property %d at block %d\n",
@@ -2628,10 +2526,6 @@ int CMPTransaction::logicMath_CreatePropertyVariable()
         return (PKT_ERROR_SP -38);
     }
 
-    if (nullptr != getCrowd(sender)) {
-        PrintToLog("%s(): rejected: sender %s has an active crowdsale\n", __func__, sender);
-        return (PKT_ERROR_SP -39);
-    }
 
     // ------------------------------------------
 
@@ -2656,76 +2550,7 @@ int CMPTransaction::logicMath_CreatePropertyVariable()
 
     const uint32_t propertyId = pDbSpInfo->putSP(ecosystem, newSP);
     assert(propertyId > 0);
-    my_crowds.insert(std::make_pair(sender, CMPCrowd(propertyId, nValue, property, deadline, early_bird, percentage, 0, 0)));
 
-    PrintToLog("CREATED CROWDSALE id: %d value: %d property: %d\n", propertyId, nValue, property);
-
-    return 0;
-}
-
-/** Tx 53 */
-int CMPTransaction::logicMath_CloseCrowdsale()
-{
-    uint256 blockHash;
-    {
-        LOCK(cs_main);
-
-        CBlockIndex* pindex = chainActive[block];
-        if (pindex == nullptr) {
-            PrintToLog("%s(): ERROR: block %d not in the active chain\n", __func__, block);
-            return (PKT_ERROR_SP -20);
-        }
-        blockHash = pindex->GetBlockHash();
-    }
-
-    if (!IsTransactionTypeAllowed(block, property, type, version)) {
-        PrintToLog("%s(): rejected: type %d or version %d not permitted for property %d at block %d\n",
-                __func__,
-                type,
-                version,
-                property,
-                block);
-        return (PKT_ERROR_SP -22);
-    }
-
-    if (!IsPropertyIdValid(property)) {
-        PrintToLog("%s(): rejected: property %d does not exist\n", __func__, property);
-        return (PKT_ERROR_SP -24);
-    }
-
-    CrowdMap::iterator it = my_crowds.find(sender);
-    if (it == my_crowds.end()) {
-        PrintToLog("%s(): rejected: sender %s has no active crowdsale\n", __func__, sender);
-        return (PKT_ERROR_SP -40);
-    }
-
-    const CMPCrowd& crowd = it->second;
-    if (property != crowd.getPropertyId()) {
-        PrintToLog("%s(): rejected: property identifier mismatch [%d != %d]\n", __func__, property, crowd.getPropertyId());
-        return (PKT_ERROR_SP -41);
-    }
-
-    // ------------------------------------------
-
-    CMPSPInfo::Entry sp;
-    assert(pDbSpInfo->getSP(property, sp));
-
-    int64_t missedTokens = GetMissedIssuerBonus(sp, crowd);
-
-    sp.historicalData = crowd.getDatabase();
-    sp.update_block = blockHash;
-    sp.close_early = true;
-    sp.timeclosed = blockTime;
-    sp.txid_close = txid;
-    sp.missedTokens = missedTokens;
-
-    assert(pDbSpInfo->updateSP(property, sp));
-    if (missedTokens > 0) {
-        assert(update_tally_map(sp.issuer, property, missedTokens, BALANCE));
-    }
-    my_crowds.erase(it);
-
-    if (msc_debug_sp) PrintToLog("CLOSED CROWDSALE id: %d=%X\n", property, property);
 
     return 0;
 }
@@ -2872,10 +2697,10 @@ int CMPTransaction::logicMath_GrantTokens()
      * As long as the feature to disable the side effects of "granting tokens"
      * is not activated, "granting tokens" can trigger crowdsale participations.
      */
-    if (!IsFeatureActivated(FEATURE_GRANTEFFECTS, block)) {
-        // Is there an active crowdsale running from this recipient?
-        logicHelper_CrowdsaleParticipation();
-    }
+    // if (!IsFeatureActivated(FEATURE_GRANTEFFECTS, block)) {
+    //     // Is there an active crowdsale running from this recipient?
+    //     logicHelper_CrowdsaleParticipation();
+    // }
 
     NotifyTotalTokensChanged(property, block);
 
@@ -2990,19 +2815,9 @@ int CMPTransaction::logicMath_ChangeIssuer()
         return (PKT_ERROR_TOKENS -43);
     }
 
-    if (nullptr != getCrowd(sender)) {
-        PrintToLog("%s(): rejected: sender %s has an active crowdsale\n", __func__, sender);
-        return (PKT_ERROR_TOKENS -39);
-    }
-
     if (receiver.empty()) {
         PrintToLog("%s(): rejected: receiver is empty\n", __func__);
         return (PKT_ERROR_TOKENS -45);
-    }
-
-    if (nullptr != getCrowd(receiver)) {
-        PrintToLog("%s(): rejected: receiver %s has an active crowdsale\n", __func__, receiver);
-        return (PKT_ERROR_TOKENS -46);
     }
 
     // ------------------------------------------

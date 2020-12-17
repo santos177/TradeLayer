@@ -78,9 +78,6 @@ void PopulateFailure(int error)
             throw JSONRPCError(RPC_INVALID_ADDRESS_OR_KEY, "Unconfirmed transactions are not supported");
         case MP_BLOCK_NOT_IN_CHAIN:
             throw JSONRPCError(RPC_INVALID_ADDRESS_OR_KEY, "Transaction not part of the active chain");
-        case MP_CROWDSALE_WITHOUT_PROPERTY:
-            throw JSONRPCError(RPC_INTERNAL_ERROR, "Potential database corruption: \
-                                                  \"Crowdsale Purchase\" without valid property identifier");
         case MP_INVALID_TX_IN_DB_FOUND:
             throw JSONRPCError(RPC_INTERNAL_ERROR, "Potential database corruption: Invalid transaction found");
         case MP_TX_IS_NOT_TL_PROTOCOL:
@@ -702,10 +699,10 @@ static UniValue mscrpc(const JSONRPCRequest& request)
         }
         case 4:
         {
-            LOCK(cs_tally);
-            for (CrowdMap::const_iterator it = my_crowds.begin(); it != my_crowds.end(); ++it) {
-                (it->second).print(it->first);
-            }
+            // LOCK(cs_tally);
+            // for (CrowdMap::const_iterator it = my_crowds.begin(); it != my_crowds.end(); ++it) {
+            //     (it->second).print(it->first);
+            // }
             break;
         }
         case 5:
@@ -1305,246 +1302,6 @@ static UniValue tl_listproperties(const JSONRPCRequest& request)
 
             response.push_back(propertyObj);
         }
-    }
-
-    return response;
-}
-
-static UniValue tl_getcrowdsale(const JSONRPCRequest& request)
-{
-    if (request.fHelp || request.params.size() < 1 || request.params.size() > 2)
-        throw runtime_error(
-            RPCHelpMan{"tl_getcrowdsale",
-               "\nReturns information about a crowdsale.\n",
-               {
-                   {"propertyid", RPCArg::Type::NUM, RPCArg::Optional::NO, "the identifier of the crowdsale\n"},
-                   {"verbose", RPCArg::Type::BOOL, /* default */ "false", "list crowdsale participants\n"},
-               },
-               RPCResult{
-                   "{\n"
-                   "  \"propertyid\" : n,                     (number) the identifier of the crowdsale\n"
-                   "  \"name\" : \"name\",                      (string) the name of the tokens issued via the crowdsale\n"
-                   "  \"active\" : true|false,                (boolean) whether the crowdsale is still active\n"
-                   "  \"issuer\" : \"address\",                 (string) the Bitcoin address of the issuer on record\n"
-                   "  \"propertyiddesired\" : n,              (number) the identifier of the tokens eligible to participate in the crowdsale\n"
-                   "  \"tokensperunit\" : \"n.nnnnnnnn\",       (string) the amount of tokens granted per unit invested in the crowdsale\n"
-                   "  \"earlybonus\" : n,                     (number) an early bird bonus for participants in percent per week\n"
-                   "  \"percenttoissuer\" : n,                (number) a percentage of tokens that will be granted to the issuer\n"
-                   "  \"starttime\" : nnnnnnnnnn,             (number) the start time of the of the crowdsale as Unix timestamp\n"
-                   "  \"deadline\" : nnnnnnnnnn,              (number) the deadline of the crowdsale as Unix timestamp\n"
-                   "  \"amountraised\" : \"n.nnnnnnnn\",        (string) the amount of tokens invested by participants\n"
-                   "  \"tokensissued\" : \"n.nnnnnnnn\",        (string) the total number of tokens issued via the crowdsale\n"
-                   "  \"issuerbonustokens\" : \"n.nnnnnnnn\",   (string) the amount of tokens granted to the issuer as bonus\n"
-                   "  \"addedissuertokens\" : \"n.nnnnnnnn\",   (string) the amount of issuer bonus tokens not yet emitted\n"
-                   "  \"closedearly\" : true|false,           (boolean) whether the crowdsale ended early (if not active)\n"
-                   "  \"maxtokens\" : true|false,             (boolean) whether the crowdsale ended early due to reaching the limit of max. issuable tokens (if not active)\n"
-                   "  \"endedtime\" : nnnnnnnnnn,             (number) the time when the crowdsale ended (if closed early)\n"
-                   "  \"closetx\" : \"hash\",                   (string) the hex-encoded hash of the transaction that closed the crowdsale (if closed manually)\n"
-                   "  \"participanttransactions\": [          (array of JSON objects) a list of crowdsale participations (if verbose=true)\n"
-                   "    {\n"
-                   "      \"txid\" : \"hash\",                      (string) the hex-encoded hash of participation transaction\n"
-                   "      \"amountsent\" : \"n.nnnnnnnn\",          (string) the amount of tokens invested by the participant\n"
-                   "      \"participanttokens\" : \"n.nnnnnnnn\",   (string) the tokens granted to the participant\n"
-                   "      \"issuertokens\" : \"n.nnnnnnnn\"         (string) the tokens granted to the issuer as bonus\n"
-                   "    },\n"
-                   "    ...\n"
-                   "  ]\n"
-                   "}\n"
-               },
-               RPCExamples{
-                   HelpExampleCli("tl_getcrowdsale", "3 true")
-                   + HelpExampleRpc("tl_getcrowdsale", "3, true")
-               }
-            }.ToString());
-
-    uint32_t propertyId = ParsePropertyId(request.params[0]);
-    bool showVerbose = (request.params.size() > 1) ? request.params[1].get_bool() : false;
-
-    RequireExistingProperty(propertyId);
-    RequireCrowdsale(propertyId);
-
-    CMPSPInfo::Entry sp;
-    {
-        LOCK(cs_tally);
-        if (!pDbSpInfo->getSP(propertyId, sp)) {
-            throw JSONRPCError(RPC_INVALID_PARAMETER, "Property identifier does not exist");
-        }
-    }
-
-    const uint256& creationHash = sp.txid;
-
-    bool f_txindex_ready = false;
-    if (g_txindex) {
-        f_txindex_ready = g_txindex->BlockUntilSyncedToCurrentChain();
-    }
-
-    CTransactionRef tx;
-    uint256 hashBlock;
-    if (!GetTransaction(creationHash, tx, Params().GetConsensus(), hashBlock)) {
-        if (!f_txindex_ready) {
-            PopulateFailure(MP_TXINDEX_STILL_SYNCING);
-        } else {
-            PopulateFailure(MP_TX_NOT_FOUND);
-        }
-    }
-
-    UniValue response(UniValue::VOBJ);
-    bool active = isCrowdsaleActive(propertyId);
-    std::map<uint256, std::vector<int64_t> > database;
-
-    if (active) {
-        bool crowdFound = false;
-
-        LOCK(cs_tally);
-
-        for (CrowdMap::const_iterator it = my_crowds.begin(); it != my_crowds.end(); ++it) {
-            const CMPCrowd& crowd = it->second;
-            if (propertyId == crowd.getPropertyId()) {
-                crowdFound = true;
-                database = crowd.getDatabase();
-            }
-        }
-        if (!crowdFound) {
-            throw JSONRPCError(RPC_INTERNAL_ERROR, "Crowdsale is flagged active but cannot be retrieved");
-        }
-    } else {
-        database = sp.historicalData;
-    }
-
-    int64_t tokensIssued = getTotalTokens(propertyId);
-    const std::string& txidClosed = sp.txid_close.GetHex();
-
-    int64_t startTime = -1;
-    if (!hashBlock.IsNull() && GetBlockIndex(hashBlock)) {
-        startTime = GetBlockIndex(hashBlock)->nTime;
-    }
-
-    // note the database is already deserialized here and there is minimal performance penalty to iterate recipients to calculate amountRaised
-    int64_t amountRaised = 0;
-    int64_t amountIssuerTokens = 0;
-    uint16_t propertyIdType = isPropertyDivisible(propertyId) ? MSC_PROPERTY_TYPE_DIVISIBLE : MSC_PROPERTY_TYPE_INDIVISIBLE;
-    uint16_t desiredIdType = isPropertyDivisible(sp.property_desired) ? MSC_PROPERTY_TYPE_DIVISIBLE : MSC_PROPERTY_TYPE_INDIVISIBLE;
-    std::map<std::string, UniValue> sortMap;
-    for (std::map<uint256, std::vector<int64_t> >::const_iterator it = database.begin(); it != database.end(); it++) {
-        UniValue participanttx(UniValue::VOBJ);
-        std::string txid = it->first.GetHex();
-        amountRaised += it->second.at(0);
-        amountIssuerTokens += it->second.at(3);
-        participanttx.pushKV("txid", txid);
-        participanttx.pushKV("amountsent", FormatByType(it->second.at(0), desiredIdType));
-        participanttx.pushKV("participanttokens", FormatByType(it->second.at(2), propertyIdType));
-        participanttx.pushKV("issuertokens", FormatByType(it->second.at(3), propertyIdType));
-        std::string sortKey = strprintf("%d-%s", it->second.at(1), txid);
-        sortMap.insert(std::make_pair(sortKey, participanttx));
-    }
-
-    response.pushKV("propertyid", (uint64_t) propertyId);
-    response.pushKV("name", sp.name);
-    response.pushKV("active", active);
-    response.pushKV("issuer", sp.issuer);
-    response.pushKV("propertyiddesired", (uint64_t) sp.property_desired);
-    response.pushKV("tokensperunit", FormatMP(propertyId, sp.num_tokens));
-    response.pushKV("earlybonus", sp.early_bird);
-    response.pushKV("percenttoissuer", sp.percentage);
-    response.pushKV("starttime", startTime);
-    response.pushKV("deadline", sp.deadline);
-    response.pushKV("amountraised", FormatMP(sp.property_desired, amountRaised));
-    response.pushKV("tokensissued", FormatMP(propertyId, tokensIssued));
-    response.pushKV("issuerbonustokens", FormatMP(propertyId, amountIssuerTokens));
-    response.pushKV("addedissuertokens", FormatMP(propertyId, sp.missedTokens));
-
-    // TODO: return fields every time?
-    if (!active) response.pushKV("closedearly", sp.close_early);
-    if (!active) response.pushKV("maxtokens", sp.max_tokens);
-    if (sp.close_early) response.pushKV("endedtime", sp.timeclosed);
-    if (sp.close_early && !sp.max_tokens) response.pushKV("closetx", txidClosed);
-
-    if (showVerbose) {
-        UniValue participanttxs(UniValue::VARR);
-        for (std::map<std::string, UniValue>::iterator it = sortMap.begin(); it != sortMap.end(); ++it) {
-            participanttxs.push_back(it->second);
-        }
-        response.pushKV("participanttransactions", participanttxs);
-    }
-
-    return response;
-}
-
-static UniValue tl_getactivecrowdsales(const JSONRPCRequest& request)
-{
-    if (request.fHelp)
-        throw runtime_error(
-            RPCHelpMan{"tl_getactivecrowdsales",
-               "\nLists currently active crowdsales.\n",
-               {},
-               RPCResult{
-                   "[                                 (array of JSON objects)\n"
-                   "  {\n"
-                   "    \"propertyid\" : n,                 (number) the identifier of the crowdsale\n"
-                   "    \"name\" : \"name\",                  (string) the name of the tokens issued via the crowdsale\n"
-                   "    \"issuer\" : \"address\",             (string) the Bitcoin address of the issuer on record\n"
-                   "    \"propertyiddesired\" : n,          (number) the identifier of the tokens eligible to participate in the crowdsale\n"
-                   "    \"tokensperunit\" : \"n.nnnnnnnn\",   (string) the amount of tokens granted per unit invested in the crowdsale\n"
-                   "    \"earlybonus\" : n,                 (number) an early bird bonus for participants in percent per week\n"
-                   "    \"percenttoissuer\" : n,            (number) a percentage of tokens that will be granted to the issuer\n"
-                   "    \"starttime\" : nnnnnnnnnn,         (number) the start time of the of the crowdsale as Unix timestamp\n"
-                   "    \"deadline\" : nnnnnnnnnn           (number) the deadline of the crowdsale as Unix timestamp\n"
-                   "  },\n"
-                   "  ...\n"
-                   "]\n"
-               },
-               RPCExamples{
-                   HelpExampleCli("tl_getactivecrowdsales", "")
-                   + HelpExampleRpc("tl_getactivecrowdsales", "")
-               }
-            }.ToString());
-
-    UniValue response(UniValue::VARR);
-
-    LOCK2(cs_main, cs_tally);
-
-    for (CrowdMap::const_iterator it = my_crowds.begin(); it != my_crowds.end(); ++it) {
-        const CMPCrowd& crowd = it->second;
-        uint32_t propertyId = crowd.getPropertyId();
-
-        CMPSPInfo::Entry sp;
-        if (!pDbSpInfo->getSP(propertyId, sp)) {
-            continue;
-        }
-
-        const uint256& creationHash = sp.txid;
-
-        bool f_txindex_ready = false;
-        if (g_txindex) {
-            f_txindex_ready = g_txindex->BlockUntilSyncedToCurrentChain();
-        }
-
-        CTransactionRef tx;
-        uint256 hashBlock;
-        if (!GetTransaction(creationHash, tx, Params().GetConsensus(), hashBlock)) {
-            if (!f_txindex_ready) {
-                PopulateFailure(MP_TXINDEX_STILL_SYNCING);
-            } else {
-                PopulateFailure(MP_TX_NOT_FOUND);
-            }
-        }
-
-        int64_t startTime = -1;
-        if (!hashBlock.IsNull() && GetBlockIndex(hashBlock)) {
-            startTime = GetBlockIndex(hashBlock)->nTime;
-        }
-
-        UniValue responseObj(UniValue::VOBJ);
-        responseObj.pushKV("propertyid", (uint64_t) propertyId);
-        responseObj.pushKV("name", sp.name);
-        responseObj.pushKV("issuer", sp.issuer);
-        responseObj.pushKV("propertyiddesired", (uint64_t) sp.property_desired);
-        responseObj.pushKV("tokensperunit", FormatMP(propertyId, sp.num_tokens));
-        responseObj.pushKV("earlybonus", sp.early_bird);
-        responseObj.pushKV("percenttoissuer", sp.percentage);
-        responseObj.pushKV("starttime", startTime);
-        responseObj.pushKV("deadline", sp.deadline);
-        response.push_back(responseObj);
     }
 
     return response;
@@ -2683,10 +2440,8 @@ static const CRPCCommand commands[] =
     { "trade layer (data retrieval)", "tl_gettransaction",            &tl_gettransaction,             {"txid"} },
     { "trade layer (data retrieval)", "tl_getproperty",               &tl_getproperty,                {"propertyid"} },
     { "trade layer (data retrieval)", "tl_listproperties",            &tl_listproperties,             {} },
-    { "trade layer (data retrieval)", "tl_getcrowdsale",              &tl_getcrowdsale,               {"propertyid", "verbose"} },
     { "trade layer (data retrieval)", "tl_getgrants",                 &tl_getgrants,                  {"propertyid"} },
     { "trade layer (data retrieval)", "tl_getactivedexsells",         &tl_getactivedexsells,          {"address"} },
-    { "trade layer (data retrieval)", "tl_getactivecrowdsales",       &tl_getactivecrowdsales,        {} },
     { "trade layer (data retrieval)", "tl_getorderbook",              &tl_getorderbook,               {"propertyid", "propertyid"} },
     { "trade layer (data retrieval)", "tl_gettrade",                  &tl_gettrade,                   {"txid"} },
     { "trade layer (data retrieval)", "tl_getsto",                    &tl_getsto,                     {"txid", "recipientfilter"} },
@@ -2721,10 +2476,8 @@ static const CRPCCommand commands[] =
     { "hidden",                      "getallbalancesforid_MP",         &tl_getallbalancesforid,        {"propertyid"} },
     { "hidden",                      "getproperty_MP",                 &tl_getproperty,                {"propertyid"} },
     { "hidden",                      "listproperties_MP",              &tl_listproperties,             {} },
-    { "hidden",                      "getcrowdsale_MP",                &tl_getcrowdsale,               {"propertyid", "verbose"} },
     { "hidden",                      "getgrants_MP",                   &tl_getgrants,                  {"propertyid"} },
     { "hidden",                      "getactivedexsells_MP",           &tl_getactivedexsells,          {"address"} },
-    { "hidden",                      "getactivecrowdsales_MP",         &tl_getactivecrowdsales,        {} },
     { "hidden",                      "getsto_MP",                      &tl_getsto,                     {"txid", "recipientfilter"} },
     { "hidden",                      "getorderbook_MP",                &tl_getorderbook,               {"propertyid", "propertyiddesired"} },
     { "hidden",                      "gettrade_MP",                    &tl_gettrade,                   {"txid"} },

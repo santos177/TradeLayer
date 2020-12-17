@@ -310,7 +310,7 @@ void LookupSPDialog::updateDisplayedProperty()
     {
         ui->issuanceTypeLabel->setText("Crowdsale");
         // obtain crowdinfo
-        bool active = isCrowdsaleActive(propertyId);
+        bool active = false;
         int64_t deadline = sp.deadline;
         uint8_t earlyBonus = sp.early_bird;
         uint8_t percentToIssuer = sp.percentage;
