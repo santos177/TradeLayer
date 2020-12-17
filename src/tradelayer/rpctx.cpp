@@ -478,85 +478,6 @@ static UniValue tl_senddexaccept(const JSONRPCRequest& request)
     }
 }
 
-static UniValue tl_sendissuancecrowdsale(const JSONRPCRequest& request)
-{
-#ifdef ENABLE_WALLET
-    std::shared_ptr<CWallet> const wallet = GetWalletForJSONRPCRequest(request);
-    std::unique_ptr<interfaces::Wallet> pwallet = interfaces::MakeWallet(wallet);
-#else
-    std::unique_ptr<interfaces::Wallet> pwallet = interfaces::MakeWallet(nullptr);
-#endif
-
-    if (request.fHelp || request.params.size() != 14)
-        throw runtime_error(
-            RPCHelpMan{"tl_sendissuancecrowdsale",
-               "Create new tokens as crowdsale.",
-               {
-                   {"fromaddress", RPCArg::Type::STR, RPCArg::Optional::NO, "the address to send from\n"},
-                   {"ecosystem", RPCArg::Type::STR, RPCArg::Optional::NO, "the ecosystem to create the tokens in (1 for main ecosystem, 2 for test ecosystem)\n"},
-                   {"type", RPCArg::Type::NUM, RPCArg::Optional::NO, "the type of the tokens to create: (1 for indivisible tokens, 2 for divisible tokens)\n"},
-                   {"previousid", RPCArg::Type::NUM, RPCArg::Optional::NO, "an identifier of a predecessor token (0 for new crowdsales)\n"},
-                   {"category", RPCArg::Type::STR, RPCArg::Optional::NO, "a category for the new tokens (can be \"\")\n"},
-                   {"subcategory", RPCArg::Type::STR, RPCArg::Optional::NO, "a subcategory for the new tokens  (can be \"\")\n"},
-                   {"name", RPCArg::Type::STR, RPCArg::Optional::NO, "the name of the new tokens to create\n"},
-                   {"url", RPCArg::Type::STR, RPCArg::Optional::NO, "a URL for further information about the new tokens (can be \"\")\n"},
-                   {"data", RPCArg::Type::STR, RPCArg::Optional::NO, "a description for the new tokens (can be \"\")\n"},
-                   {"propertyiddesired", RPCArg::Type::NUM, RPCArg::Optional::NO, "the identifier of a token eligible to participate in the crowdsale\n"},
-                   {"tokensperunit", RPCArg::Type::STR, RPCArg::Optional::NO, "the amount of tokens granted per unit invested in the crowdsale\n"},
-                   {"deadline", RPCArg::Type::NUM, RPCArg::Optional::NO, "the deadline of the crowdsale as Unix timestamp\n"},
-                   {"earlybonus", RPCArg::Type::NUM, RPCArg::Optional::NO, "an early bird bonus for participants in percent per week\n"},
-                   {"issuerpercentage", RPCArg::Type::NUM, RPCArg::Optional::NO, "a percentage of tokens that will be granted to the issuer\n"},
-               },
-               RPCResult{
-                   "\"hash\"                  (string) the hex-encoded transaction hash\n"
-               },
-               RPCExamples{
-                   HelpExampleCli("tl_sendissuancecrowdsale", "\"3JYd75REX3HXn1vAU83YuGfmiPXW7BpYXo\" 2 1 0 \"Companies\" \"Bitcoin Mining\" \"Quantum Miner\" \"\" \"\" 2 \"100\" 1483228800 30 2")
-                   + HelpExampleRpc("tl_sendissuancecrowdsale", "\"3JYd75REX3HXn1vAU83YuGfmiPXW7BpYXo\", 2, 1, 0, \"Companies\", \"Bitcoin Mining\", \"Quantum Miner\", \"\", \"\", 2, \"100\", 1483228800, 30, 2")
-               }
-            }.ToString());
-
-    // obtain parameters & info
-    std::string fromAddress = ParseAddress(request.params[0]);
-    uint8_t ecosystem = ParseEcosystem(request.params[1]);
-    uint16_t type = ParsePropertyType(request.params[2]);
-    uint32_t previousId = ParsePreviousPropertyId(request.params[3]);
-    std::string category = ParseText(request.params[4]);
-    std::string subcategory = ParseText(request.params[5]);
-    std::string name = ParseText(request.params[6]);
-    std::string url = ParseText(request.params[7]);
-    std::string data = ParseText(request.params[8]);
-    uint32_t propertyIdDesired = ParsePropertyId(request.params[9]);
-    int64_t numTokens = ParseAmount(request.params[10], type);
-    int64_t deadline = ParseDeadline(request.params[11]);
-    uint8_t earlyBonus = ParseEarlyBirdBonus(request.params[12]);
-    uint8_t issuerPercentage = ParseIssuerBonus(request.params[13]);
-
-    // perform checks
-    RequirePropertyName(name);
-    RequireExistingProperty(propertyIdDesired);
-    RequireSameEcosystem(ecosystem, propertyIdDesired);
-
-    // create a payload for the transaction
-    std::vector<unsigned char> payload = CreatePayload_IssuanceVariable(ecosystem, type, previousId, category, subcategory, name, url, data, propertyIdDesired, numTokens, deadline, earlyBonus, issuerPercentage);
-
-    // request the wallet build the transaction (and if needed commit it)
-    uint256 txid;
-    std::string rawHex;
-    int result = WalletTxBuilder(fromAddress, "", "", 0, payload, txid, rawHex, autoCommit, pwallet.get());
-
-    // check error and return the txid (or raw hex depending on autocommit)
-    if (result != 0) {
-        throw JSONRPCError(result, error_str(result));
-    } else {
-        if (!autoCommit) {
-            return rawHex;
-        } else {
-            return txid.GetHex();
-        }
-    }
-}
-
 static UniValue tl_sendissuancefixed(const JSONRPCRequest& request)
 {
 #ifdef ENABLE_WALLET
@@ -856,62 +777,6 @@ static UniValue tl_sendrevoke(const JSONRPCRequest& request)
 
     // create a payload for the transaction
     std::vector<unsigned char> payload = CreatePayload_Revoke(propertyId, amount, memo);
-
-    // request the wallet build the transaction (and if needed commit it)
-    uint256 txid;
-    std::string rawHex;
-    int result = WalletTxBuilder(fromAddress, "", "", 0, payload, txid, rawHex, autoCommit, pwallet.get());
-
-    // check error and return the txid (or raw hex depending on autocommit)
-    if (result != 0) {
-        throw JSONRPCError(result, error_str(result));
-    } else {
-        if (!autoCommit) {
-            return rawHex;
-        } else {
-            return txid.GetHex();
-        }
-    }
-}
-
-static UniValue tl_sendclosecrowdsale(const JSONRPCRequest& request)
-{
-#ifdef ENABLE_WALLET
-    std::shared_ptr<CWallet> const wallet = GetWalletForJSONRPCRequest(request);
-    std::unique_ptr<interfaces::Wallet> pwallet = interfaces::MakeWallet(wallet);
-#else
-    std::unique_ptr<interfaces::Wallet> pwallet = interfaces::MakeWallet(nullptr);
-#endif
-
-    if (request.fHelp || request.params.size() != 2)
-        throw runtime_error(
-            RPCHelpMan{"tl_sendclosecrowdsale",
-               "\nManually close a crowdsale.\n",
-               {
-                   {"fromaddress", RPCArg::Type::STR, RPCArg::Optional::NO, "the address associated with the crowdsale to close\n"},
-                   {"propertyid", RPCArg::Type::NUM, RPCArg::Optional::NO, "the identifier of the crowdsale to close\n"},
-               },
-               RPCResult{
-                   "\"hash\"                  (string) the hex-encoded transaction hash\n"
-               },
-               RPCExamples{
-                   HelpExampleCli("tl_sendclosecrowdsale", "\"3JYd75REX3HXn1vAU83YuGfmiPXW7BpYXo\" 70")
-                   + HelpExampleRpc("tl_sendclosecrowdsale", "\"3JYd75REX3HXn1vAU83YuGfmiPXW7BpYXo\", 70")
-               }
-            }.ToString());
-
-    // obtain parameters & info
-    std::string fromAddress = ParseAddress(request.params[0]);
-    uint32_t propertyId = ParsePropertyId(request.params[1]);
-
-    // perform checks
-    RequireExistingProperty(propertyId);
-    RequireCrowdsale(propertyId);
-    RequireActiveCrowdsale(propertyId);
-    RequireTokenIssuer(fromAddress, propertyId);
-
-    // create a payload for the transaction
-    std::vector<unsigned char> payload = CreatePayload_CloseCrowdsale(propertyId);
 
     // request the wallet build the transaction (and if needed commit it)
     uint256 txid;
@@ -2942,7 +2807,6 @@ static const CRPCCommand commands[] =
     { "trade layer (transaction creation)", "tl_send",                    &tl_send,                    {"fromaddress", "toaddress", "propertyid", "amount", "redeemaddress", "referenceamount"} },
     { "trade layer (transaction creation)", "tl_senddexoffer",              &tl_senddexoffer,              {} },
     { "trade layer (transaction creation)", "tl_senddexaccept",           &tl_senddexaccept,           {"fromaddress", "toaddress", "propertyid", "amount", "override"} },
-    { "trade layer (transaction creation)", "tl_sendissuancecrowdsale",   &tl_sendissuancecrowdsale,   {"fromaddress", "ecosystem", "type", "previousid", "category", "subcategory", "name", "url", "data", "propertyiddesired", "tokensperunit", "deadline", "earlybonus", "issuerpercentage"} },
     { "trade layer (transaction creation)", "tl_sendissuancefixed",       &tl_sendissuancefixed,       {"fromaddress", "ecosystem", "type", "previousid", "category", "subcategory", "name", "url", "data", "amount"} },
     { "trade layer (transaction creation)", "tl_sendissuancemanaged",     &tl_sendissuancemanaged,     {"fromaddress", "ecosystem", "type", "previousid", "category", "subcategory", "name", "url", "data"} },
     { "trade layer (transaction creation)", "tl_sendtrade",               &tl_sendtrade,               {"fromaddress", "propertyidforsale", "amountforsale", "propertiddesired", "amountdesired"} },
@@ -2952,7 +2816,6 @@ static const CRPCCommand commands[] =
     { "trade layer (transaction creation)", "tl_sendsto",                 &tl_sendsto,                 {"fromaddress", "propertyid", "amount", "redeemaddress", "distributionproperty"} },
     { "trade layer (transaction creation)", "tl_sendgrant",               &tl_sendgrant,               {"fromaddress", "toaddress", "propertyid", "amount", "memo"} },
     { "trade layer (transaction creation)", "tl_sendrevoke",              &tl_sendrevoke,              {"fromaddress", "propertyid", "amount", "memo"} },
-    { "trade layer (transaction creation)", "tl_sendclosecrowdsale",      &tl_sendclosecrowdsale,      {"fromaddress", "propertyid"} },
     { "trade layer (transaction creation)", "tl_sendchangeissuer",        &tl_sendchangeissuer,        {"fromaddress", "toaddress", "propertyid"} },
     { "trade layer (transaction creation)", "tl_sendall",                 &tl_sendall,                 {"fromaddress", "toaddress", "ecosystem", "redeemaddress", "referenceamount"} },
     { "trade layer (transaction creation)", "tl_sendenablefreezing",      &tl_sendenablefreezing,      {"fromaddress", "propertyid"} },

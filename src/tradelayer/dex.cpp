@@ -142,29 +142,6 @@ CMPAccept* DEx_getAccept(const std::string& addressSeller, uint32_t propertyId, 
     return nullptr;
 }
 
-namespace legacy
-{
-/**
- * Legacy calculation of Master Core 0.0.9.
- *
- * @see:
- * https://github.com/mastercoin-MSC/mastercore/blob/mscore-0.0.9/src/mastercore_dex.cpp#L439-L449
- */
-static int64_t calculateDesiredBTC(const int64_t amountOffered, const int64_t amountDesired, const int64_t amountAvailable)
-{
-    uint64_t nValue = static_cast<uint64_t>(amountOffered);
-    uint64_t amount_des = static_cast<uint64_t>(amountDesired);
-    uint64_t balanceReallyAvailable = static_cast<uint64_t>(amountAvailable);
-
-    double BTC;
-
-    BTC = amount_des * balanceReallyAvailable;
-    BTC /= (double) nValue;
-    amount_des = rounduint64(BTC);
-
-    return static_cast<int64_t>(amount_des);
-}
-}
 
 /**
  * Determines the amount of bitcoins desired, in case it needs to be recalculated.
@@ -209,47 +186,19 @@ int DEx_offerCreate(const std::string& addressSeller, uint32_t propertyId, int64
         return (DEX_ERROR_SELLOFFER -10); // offer already exists
     }
 
-    // Ensure further there can only be one active offer
-    if (IsFeatureActivated(FEATURE_FREEDEX, block)) {
-        if (DEx_hasOffer(addressSeller)) {
-            return (DEX_ERROR_SELLOFFER -10); // offer already exists
-        }
-    }
 
     const std::string key = STR_SELLOFFER_ADDR_PROP_COMBO(addressSeller, propertyId);
     if (msc_debug_dex) PrintToLog("%s(%s|%s), nValue=%d)\n", __func__, addressSeller, key, amountOffered);
 
     const int64_t balanceReallyAvailable = GetTokenBalance(addressSeller, propertyId, BALANCE);
 
-    /**
-     * After this feature is enabled, it is no longer valid to create orders, which offer more than
-     * the seller has available, and the amounts are no longer adjusted based on the actual balance.
-     */
-    if (IsFeatureActivated(FEATURE_DEXMATH, block)) {
-        if (amountOffered > balanceReallyAvailable) {
-            PrintToLog("%s: rejected: sender %s has insufficient balance of property %d [%s < %s]\n", __func__,
-                        addressSeller, propertyId, FormatDivisibleMP(balanceReallyAvailable), FormatDivisibleMP(amountOffered));
-            return (DEX_ERROR_SELLOFFER -25);
-        }
-    }
 
-    // -------------------------------------------------------------------------
-    // legacy::
-
-    // if offering more than available -- put everything up on sale
     if (amountOffered > balanceReallyAvailable) {
-        PrintToLog("%s: adjusting order: %s offers %s %s, but has only %s %s available\n", __func__,
-                        addressSeller, FormatDivisibleMP(amountOffered), strMPProperty(propertyId),
-                        FormatDivisibleMP(balanceReallyAvailable), strMPProperty(propertyId));
-
-        // AND we must also re-adjust the BTC desired in this case...
-        amountDesired = legacy::calculateDesiredBTC(amountOffered, amountDesired, balanceReallyAvailable);
-        amountOffered = balanceReallyAvailable;
-        if (nAmended) *nAmended = amountOffered;
-
-        PrintToLog("%s: adjusting order: updated amount for sale: %s %s, offered for: %s BTC\n", __func__,
-                        FormatDivisibleMP(amountOffered), strMPProperty(propertyId), FormatDivisibleMP(amountDesired));
+        PrintToLog("%s: rejected: sender %s has insufficient balance of property %d [%s < %s]\n", __func__,
+             addressSeller, propertyId, FormatDivisibleMP(balanceReallyAvailable), FormatDivisibleMP(amountOffered));
+        return (DEX_ERROR_SELLOFFER -25);
     }
+
     // -------------------------------------------------------------------------
 
     if (amountOffered > 0) {
@@ -445,32 +394,6 @@ int DEx_acceptDestroy(const std::string& addressBuyer, const std::string& addres
     return rc;
 }
 
-namespace legacy
-{
-/**
- * Legacy calculation of Master Core 0.0.9.
- *
- * @see:
- * https://github.com/mastercoin-MSC/mastercore/blob/mscore-0.0.9/src/mastercore_dex.cpp#L660-L668
- */
-static int64_t calculateDExPurchase(const int64_t amountOffered, const int64_t amountDesired, const int64_t amountPaid)
-{
-    uint64_t acceptOfferAmount = static_cast<uint64_t>(amountOffered);
-    uint64_t acceptBTCDesired = static_cast<uint64_t>(amountDesired);
-    uint64_t BTC_paid = static_cast<uint64_t>(amountPaid);
-
-    const double BTC_desired_original = acceptBTCDesired;
-    const double offer_amount_original = acceptOfferAmount;
-
-    double perc_X = (double) BTC_paid / BTC_desired_original;
-    double Purchased = offer_amount_original * perc_X;
-
-    uint64_t units_purchased = rounduint64(Purchased);
-
-    return static_cast<int64_t>(units_purchased);
-}
-}
-
 /**
  * Determines the purchased amount of tokens.
  *
@@ -528,13 +451,17 @@ int DEx_payment(const uint256& txid, unsigned int vout, const std::string& addre
       }
 
       // buyer market maker?
-      p_accept = DEx_getAccept(addressBuyer, propertyId, addressSeller);
+      // if (IsFeatureActivated(FEATURE_DEX_BUY, block))
+      // {
+          p_accept = DEx_getAccept(addressBuyer, propertyId, addressSeller);
 
-      if (p_accept)
-      {
-          if (msc_debug_dex) PrintToLog("Found buyer market maker!\n");
-          break;
-      }
+          if (p_accept)
+          {
+              if (msc_debug_dex) PrintToLog("Found buyer market maker!\n");
+              break;
+          }
+
+      // }
 
 
   }
@@ -587,24 +514,8 @@ int DEx_payment(const uint256& txid, unsigned int vout, const std::string& addre
         return (DEX_ERROR_PAYMENT -2);
     }
 
-    int64_t amountPurchased = 0;
+    int64_t amountPurchased = calculateDExPurchase(amountOffered, amountDesired, amountPaid);
 
-    /**
-     * As long as this feature is disabled, floating point math is used to
-     * determine the purchased amount.
-     *
-     * After this feature is enabled, plain integer math is used to determine
-     * the purchased amount. The purchased amount is rounded up, which may be
-     * in favor of the buyer, to avoid small leftovers of 1 willet.
-     *
-     * This is not exploitable due to transaction fees.
-     */
-    if (IsFeatureActivated(FEATURE_DEXMATH, block)) {
-        amountPurchased = calculateDExPurchase(amountOffered, amountDesired, amountPaid);
-    } else {
-        // Fallback to original calculation:
-        amountPurchased = legacy::calculateDExPurchase(amountOffered, amountDesired, amountPaid);
-    }
 
     // -------------------------------------------------------------------------
 
@@ -716,7 +627,7 @@ int DEx_BuyOfferCreate(const std::string& addressMaker, uint32_t propertyId, int
     if (msc_debug_dex) PrintToLog("%s(%s|%s), nValue=%d)\n", __func__, addressMaker, key, amountOffered);
 
     // ------------------------------------------------------------------------
-    // On this part we need to put in reserve synth Litecoins.
+    // On this part we need to put in reserve synth Bitcoins(?).
     LOCK(cs_tally);
 
     CMPSPInfo* pDbSpInfo = NULL;

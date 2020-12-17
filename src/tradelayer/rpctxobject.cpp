@@ -215,9 +215,6 @@ void populateRPCTypeInfo(CMPTransaction& mp_obj, UniValue& txobj, uint32_t txTyp
         case MSC_TYPE_CREATE_PROPERTY_MANUAL:
             populateRPCTypeCreatePropertyManual(mp_obj, txobj, confirmations);
             break;
-        case MSC_TYPE_CLOSE_CROWDSALE:
-            populateRPCTypeCloseCrowdsale(mp_obj, txobj);
-            break;
         case MSC_TYPE_GRANT_PROPERTY_TOKENS:
             populateRPCTypeGrant(mp_obj, txobj);
             break;
@@ -261,7 +258,6 @@ bool showRefForTx(uint32_t txType)
         case MSC_TYPE_CREATE_PROPERTY_FIXED: return false;
         case MSC_TYPE_CREATE_PROPERTY_VARIABLE: return false;
         case MSC_TYPE_CREATE_PROPERTY_MANUAL: return false;
-        case MSC_TYPE_CLOSE_CROWDSALE: return false;
         case MSC_TYPE_GRANT_PROPERTY_TOKENS: return true;
         case MSC_TYPE_REVOKE_PROPERTY_TOKENS: return false;
         case MSC_TYPE_CHANGE_ISSUER_ADDRESS: return true;
@@ -278,30 +274,12 @@ bool showRefForTx(uint32_t txType)
 void populateRPCTypeSimpleSend(CMPTransaction& tlObj, UniValue& txobj)
 {
     uint32_t propertyId = tlObj.getProperty();
-    int64_t crowdPropertyId = 0, crowdTokens = 0, issuerTokens = 0;
     LOCK(cs_tally);
-    bool crowdPurchase = isCrowdsalePurchase(tlObj.getHash(), tlObj.getReceiver(), &crowdPropertyId, &crowdTokens, &issuerTokens);
-    if (crowdPurchase) {
-        CMPSPInfo::Entry sp;
-        if (false == pDbSpInfo->getSP(crowdPropertyId, sp)) {
-            PrintToLog("SP Error: Crowdsale purchase for non-existent property %d in transaction %s", crowdPropertyId, tlObj.getHash().GetHex());
-            return;
-        }
-        txobj.pushKV("type", "Crowdsale Purchase");
-        txobj.pushKV("propertyid", (uint64_t)propertyId);
-        txobj.pushKV("divisible", isPropertyDivisible(propertyId));
-        txobj.pushKV("amount", FormatMP(propertyId, tlObj.getAmount()));
-        txobj.pushKV("purchasedpropertyid", crowdPropertyId);
-        txobj.pushKV("purchasedpropertyname", sp.name);
-        txobj.pushKV("purchasedpropertydivisible", sp.isDivisible());
-        txobj.pushKV("purchasedtokens", FormatMP(crowdPropertyId, crowdTokens));
-        txobj.pushKV("issuertokens", FormatMP(crowdPropertyId, issuerTokens));
-    } else {
-        txobj.pushKV("type", "Simple Send");
-        txobj.pushKV("propertyid", (uint64_t)propertyId);
-        txobj.pushKV("divisible", isPropertyDivisible(propertyId));
-        txobj.pushKV("amount", FormatMP(propertyId, tlObj.getAmount()));
-    }
+    txobj.pushKV("type", "Simple Send");
+    txobj.pushKV("propertyid", (uint64_t)propertyId);
+    txobj.pushKV("divisible", isPropertyDivisible(propertyId));
+    txobj.pushKV("amount", FormatMP(propertyId, tlObj.getAmount()));
+
 }
 
 void populateRPCTypeSendToOwners(CMPTransaction& tlObj, UniValue& txobj, bool extendedDetails, std::string extendedDetailsFilter, interfaces::Wallet *iWallet)
@@ -485,10 +463,8 @@ void populateRPCTypeCreatePropertyVariable(CMPTransaction& tlObj, UniValue& txob
     std::string strPerUnit = FormatMP(tlObj.getProperty(), tlObj.getAmount());
     txobj.pushKV("tokensperunit", strPerUnit);
     txobj.pushKV("deadline", tlObj.getDeadline());
-    txobj.pushKV("earlybonus", tlObj.getEarlyBirdBonus());
-    txobj.pushKV("percenttoissuer", tlObj.getIssuerBonus());
     std::string strAmount = FormatByType(0, tlObj.getPropertyType());
-    txobj.pushKV("amount", strAmount); // crowdsale token creations don't issue tokens with the create tx
+    txobj.pushKV("amount", strAmount);
 }
 
 void populateRPCTypeCreatePropertyManual(CMPTransaction& tlObj, UniValue& txobj, int confirmations)
@@ -512,12 +488,6 @@ void populateRPCTypeCreatePropertyManual(CMPTransaction& tlObj, UniValue& txobj,
     txobj.pushKV("amount", strAmount); // managed token creations don't issue tokens with the create tx
 }
 
-void populateRPCTypeCloseCrowdsale(CMPTransaction& tlObj, UniValue& txobj)
-{
-    uint32_t propertyId = tlObj.getProperty();
-    txobj.pushKV("propertyid", (uint64_t)propertyId);
-    txobj.pushKV("divisible", isPropertyDivisible(propertyId));
-}
 
 void populateRPCTypeGrant(CMPTransaction& tlObj, UniValue& txobj)
 {

@@ -30,7 +30,6 @@ void populateRPCTypeAcceptOffer(CMPTransaction& tlObj, UniValue& txobj);
 void populateRPCTypeCreatePropertyFixed(CMPTransaction& tlObj, UniValue& txobj, int confirmations);
 void populateRPCTypeCreatePropertyVariable(CMPTransaction& tlObj, UniValue& txobj, int confirmations);
 void populateRPCTypeCreatePropertyManual(CMPTransaction& tlObj, UniValue& txobj, int confirmations);
-void populateRPCTypeCloseCrowdsale(CMPTransaction& tlObj, UniValue& txobj);
 void populateRPCTypeGrant(CMPTransaction& tlObj, UniValue& txobj);
 void populateRPCTypeRevoke(CMPTransaction& tlOobj, UniValue& txobj);
 void populateRPCTypeChangeIssuer(CMPTransaction& tlObj, UniValue& txobj);

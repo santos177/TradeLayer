@@ -149,9 +149,6 @@ static int nWaterlineBlock = 0;
  */
 bool autoCommit = true;
 
-//! Number of "Dev tl" of the last processed block
-int64_t exodus_prev = 0;
-
 //! Path for file based persistence
 fs::path pathStateFiles;
 
@@ -184,8 +181,6 @@ CTLFeeHistory* mastercore::pDbFeeHistory;
 OfferMap mastercore::my_offers;
 //! In-memory collection of DEx accepts
 AcceptMap mastercore::my_accepts;
-//! In-memory collection of active crowdsales
-CrowdMap mastercore::my_crowds;
 
 //! Set containing properties that have freezing enabled
 std::set<std::pair<uint32_t,int> > setFreezingEnabledProperties;
@@ -217,9 +212,9 @@ std::string mastercore::strMPProperty(uint32_t propertyId)
         switch (propertyId) {
             case TL_PROPERTY_BTC: str = "BTC";
                 break;
-            case TL_PROPERTY_MSC: str = "TL";
+            case TL_PROPERTY_MSC: str = "TOTAL";
                 break;
-            case TL_PROPERTY_TMSC: str = "TTL";
+            case TL_PROPERTY_TMSC: str = "TTOTAL";
                 break;
             default:
                 str = strprintf("SP token: %d", propertyId);
@@ -501,9 +496,9 @@ std::string mastercore::getTokenLabel(uint32_t propertyId)
     std::string tokenStr;
     if (propertyId < 3) {
         if (propertyId == 1) {
-            tokenStr = " TL";
+            tokenStr = " TOTAL";
         } else {
-            tokenStr = " TTL";
+            tokenStr = " TTOTAL";
         }
     } else {
         tokenStr = strprintf(" SPT#%d", propertyId);
@@ -603,61 +598,6 @@ bool mastercore::update_tally_map(const std::string& who, uint32_t propertyId, i
 // 10) need a locking mechanism between Core & Qt -- to retrieve the tally, for instance, this and similar to this: LOCK(wallet->cs_wallet);
 //
 
-/**
- * Calculates and updates the "development mastercoins".
- *
- * For every 10 MSC sold during the Exodus period, 1 additional "Dev MSC" was generated,
- * which are being awarded to the Exodus address slowly over the years.
- *
- * @see The "Dev MSC" specification:
- * https://github.com/
- *
- * Note:
- * If timestamps are out of order, then previously vested "Dev MSC" are not voided.
- *
- * @param nTime  The timestamp of the block to update the "Dev MSC" for
- * @return The number of "Dev MSC" generated
- */
-static int64_t calculate_and_update_devmsc(unsigned int nTime, int block)
-{
-    // do nothing if before end of fundraiser
-    if (nTime < 1377993874) return 0;
-
-    // taken mainly from msc_validate.py: def get_available_reward(height, c)
-    int64_t devmsc = 0;
-    int64_t exodus_delta = 0;
-    // spec constants:
-    const int64_t all_reward = 5631623576222;
-    const double seconds_in_one_year = 31556926;
-    const double seconds_passed = nTime - 1377993874; // exodus bootstrap deadline
-    const double years = seconds_passed / seconds_in_one_year;
-    const double part_available = 1 - pow(0.5, years);
-    const double available_reward = all_reward * part_available;
-
-    devmsc = rounduint64(available_reward);
-    exodus_delta = devmsc - exodus_prev;
-
-    if (msc_debug_exo) PrintToLog("devmsc=%d, exodus_prev=%d, exodus_delta=%d\n", devmsc, exodus_prev, exodus_delta);
-
-    // skip if a block's timestamp is older than that of a previous one!
-    if (0 > exodus_delta) return 0;
-
-    // sanity check that devmsc isn't an impossible value
-    if (devmsc > all_reward || 0 > devmsc) {
-        PrintToLog("%s(): ERROR: insane number of Dev TL (nTime=%d, exodus_prev=%d, devmsc=%d)\n", __func__, nTime, exodus_prev, devmsc);
-        return 0;
-    }
-
-    if (exodus_delta > 0) {
-        // update_tally_map(exodus_address, TL_PROPERTY_MSC, exodus_delta, BALANCE);
-        exodus_prev = devmsc;
-    }
-
-    NotifyTotalTokensChanged(TL_PROPERTY_MSC, block);
-
-    return exodus_delta;
-}
-
 uint32_t mastercore::GetNextPropertyId(bool maineco)
 {
     if (!pDbSpInfo)
@@ -729,35 +669,6 @@ void CheckWalletUpdate(bool forceUpdate)
     // signal an Trade Layer balance change
     uiInterface.TLBalanceChanged();
 #endif
-}
-
-/**
- * Executes Exodus crowdsale purchases.
- *
- * @return True, if it was a valid purchase
- */
-static bool TXExodusFundraiser(const CTransaction& tx, const std::string& sender, int64_t amountInvested, int nBlock, unsigned int nTime)
-{
-    const int secondsPerWeek = 60 * 60 * 24 * 7;
-    const CConsensusParams& params = ConsensusParams();
-
-    if (nBlock >= params.GENESIS_BLOCK && nBlock <= params.LAST_EXODUS_BLOCK) {
-        int deadlineTimeleft = params.exodusDeadline - nTime;
-        double bonusPercentage = params.exodusBonusPerWeek * deadlineTimeleft / secondsPerWeek;
-        double bonus = 1.0 + std::max(bonusPercentage, 0.0);
-
-        int64_t amountGenerated = round(params.exodusReward * amountInvested * bonus);
-        if (amountGenerated > 0) {
-            PrintToLog("Exodus Fundraiser tx detected, tx %s generated %s\n", tx.GetHash().ToString(), FormatDivisibleMP(amountGenerated));
-
-            assert(update_tally_map(sender, TL_PROPERTY_MSC, amountGenerated, BALANCE));
-            assert(update_tally_map(sender, TL_PROPERTY_TMSC, amountGenerated, BALANCE));
-
-            return true;
-        }
-    }
-
-    return false;
 }
 
 //! Cache for potential Trade Layer transactions
@@ -855,36 +766,24 @@ void creatingVestingTokens()
  * Returns the encoding class, used to embed a payload.
  *
  *   0 None
- *   1 Class A (p2pkh)
- *   2 Class B (multisig)
  *   3 Class C (op-return)
  */
 int mastercore::GetEncodingClass(const CTransaction& tx, int nBlock)
 {
-    bool hasMultisig = false;
     bool hasOpReturn = false;
-    bool hasMoney = false;
 
     /* Fast Search
-     * Perform a string comparison on hex for each scriptPubKey & look directly for Exodus hash160 bytes or Trade Layer marker bytes
+     * Perform a string comparison on hex for each scriptPubKey & look directly for Trade Layer marker bytes
      * This allows to drop non-Trade Layer transactions with less work
      */
     std::string strClassC = "6f6d6e69";
-    std::string strClassAB = "76a914946cb2e08075bcbaf157e47bcb67eb2b2339d24288ac";
     bool examineClosely = false;
     for (unsigned int n = 0; n < tx.vout.size(); ++n) {
         const CTxOut& output = tx.vout[n];
         std::string strSPB = HexStr(output.scriptPubKey.begin(), output.scriptPubKey.end());
-        if (strSPB != strClassAB) { // not an exodus marker
-            if (nBlock < 395000) { // class C not enabled yet, no need to search for marker bytes
-                continue;
-            } else {
-                if (strSPB.find(strClassC) != std::string::npos) {
-                    examineClosely = true;
-                    break;
-                }
-            }
-        } else {
+        if (nBlock < 395000) { // class C not enabled yet, no need to search for marker bytes
+            continue;
+        } else if (strSPB.find(strClassC) != std::string::npos) {
             examineClosely = true;
             break;
         }
@@ -908,9 +807,6 @@ int mastercore::GetEncodingClass(const CTransaction& tx, int nBlock)
             continue;
         }
 
-        if (outType == TX_MULTISIG) {
-            hasMultisig = true;
-        }
         if (outType == TX_NULL_DATA) {
             // Ensure there is a payload, and the first pushed element equals,
             // or starts with the "tl" marker
@@ -934,12 +830,7 @@ int mastercore::GetEncodingClass(const CTransaction& tx, int nBlock)
     if (hasOpReturn) {
         return TL_CLASS_C;
     }
-    if (hasMultisig) {
-        return TL_CLASS_B;
-    }
-    if (hasMoney) {
-        return TL_CLASS_A;
-    }
+
 
     return NO_MARKER;
 }
@@ -1037,85 +928,42 @@ static int parseTransaction(bool bRPConly, const CTransaction& wtx, int nBlock, 
     int64_t inAll = 0;
 
     { // needed to ensure the cache isn't cleared in the meantime when doing parallel queries
-    LOCK2(cs_main, cs_tx_cache); // cs_main should be locked first to avoid deadlocks with cs_tx_cache at FillTxInputCache(...)->GetTransaction(...)->LOCK(cs_main)
+        LOCK2(cs_main, cs_tx_cache); // cs_main should be locked first to avoid deadlocks with cs_tx_cache at FillTxInputCache(...)->GetTransaction(...)->LOCK(cs_main)
 
-    // Add previous transaction inputs to the cache
-    if (!FillTxInputCache(wtx, removedCoins)) {
-        PrintToLog("%s() ERROR: failed to get inputs for %s\n", __func__, wtx.GetHash().GetHex());
-        return -101;
-    }
-
-    assert(view.HaveInputs(wtx));
-
-    if (tlClass != TL_CLASS_C)
-    {
-        // OLD LOGIC - collect input amounts and identify sender via "largest input by sum"
-        std::map<std::string, int64_t> inputs_sum_of_values;
-
-        for (unsigned int i = 0; i < wtx.vin.size(); ++i) {
-            if (msc_debug_vin) PrintToLog("vin=%d:%s\n", i, ScriptToAsmStr(wtx.vin[i].scriptSig));
-
-            const CTxIn& txIn = wtx.vin[i];
-            const Coin& coin = view.AccessCoin(txIn.prevout);
-            const CTxOut& txOut = coin.out;
-
-            assert(!txOut.IsNull());
-
-            CTxDestination source;
-            txnouttype whichType;
-            if (!GetOutputType(txOut.scriptPubKey, whichType)) {
-                return -104;
-            }
-            if (!IsAllowedInputType(whichType, nBlock)) {
-                return -105;
-            }
-            if (ExtractDestination(txOut.scriptPubKey, source)) { // extract the destination of the previous transaction's vout[n] and check it's allowed type
-                inputs_sum_of_values[EncodeDestination(source)] += txOut.nValue;
-            }
-            else return -106;
+        // Add previous transaction inputs to the cache
+        if (!FillTxInputCache(wtx, removedCoins)) {
+            PrintToLog("%s() ERROR: failed to get inputs for %s\n", __func__, wtx.GetHash().GetHex());
+            return -101;
         }
 
-        int64_t nMax = 0;
-        for (std::map<std::string, int64_t>::iterator it = inputs_sum_of_values.begin(); it != inputs_sum_of_values.end(); ++it) { // find largest by sum
-            int64_t nTemp = it->second;
-            if (nTemp > nMax) {
-                strSender = it->first;
-                if (msc_debug_exo) PrintToLog("looking for The Sender: %s , nMax=%lu, nTemp=%d\n", strSender, nMax, nTemp);
-                nMax = nTemp;
-            }
-        }
-    }
-    else
-    {
+        assert(view.HaveInputs(wtx));
+
         // NEW LOGIC - the sender is chosen based on the first vin
 
         // determine the sender, but invalidate transaction, if the input is not accepted
-        {
-            unsigned int vin_n = 0; // the first input
-            if (msc_debug_vin) PrintToLog("vin=%d:%s\n", vin_n, ScriptToAsmStr(wtx.vin[vin_n].scriptSig));
+        unsigned int vin_n = 0; // the first input
+        if (msc_debug_vin) PrintToLog("vin=%d:%s\n", vin_n, ScriptToAsmStr(wtx.vin[vin_n].scriptSig));
 
-            const CTxIn& txIn = wtx.vin[vin_n];
-            const Coin& coin = view.AccessCoin(txIn.prevout);
-            const CTxOut& txOut = coin.out;
+        const CTxIn& txIn = wtx.vin[vin_n];
+        const Coin& coin = view.AccessCoin(txIn.prevout);
+        const CTxOut& txOut = coin.out;
 
-            assert(!txOut.IsNull());
+        assert(!txOut.IsNull());
 
-            txnouttype whichType;
-            if (!GetOutputType(txOut.scriptPubKey, whichType)) {
-                return -108;
-            }
-            if (!IsAllowedInputType(whichType, nBlock)) {
-                return -109;
-            }
-            CTxDestination source;
-            if (ExtractDestination(txOut.scriptPubKey, source)) {
-                strSender = EncodeDestination(source);
-            }
-            else return -110;
+        txnouttype whichType;
+        if (!GetOutputType(txOut.scriptPubKey, whichType)) {
+            return -108;
         }
-    }
+        if (!IsAllowedInputType(whichType, nBlock)) {
+            return -109;
+        }
+        CTxDestination source;
+        if (ExtractDestination(txOut.scriptPubKey, source)) {
+            strSender = EncodeDestination(source);
+        }
+        else return -110;
 
-    inAll = view.GetValueIn(wtx);
+        inAll = view.GetValueIn(wtx);
 
     } // end of LOCK(cs_tx_cache)
 
@@ -1156,67 +1004,8 @@ static int parseTransaction(bool bRPConly, const CTransaction& wtx, int nBlock, 
     }
     if (msc_debug_parser_data) PrintToLog(" address_data.size=%lu\n script_data.size=%lu\n value_data.size=%lu\n", address_data.size(), script_data.size(), value_data.size());
 
-    // ### CLASS A PARSING ###
-    if (tlClass == TL_CLASS_A) {
-        std::string strScriptData;
-        std::string strDataAddress;
-        std::string strRefAddress;
-        unsigned char dataAddressSeq = 0xFF;
-        unsigned char seq = 0xFF;
-        int64_t dataAddressValue = 0;
-        for (unsigned k = 0; k < script_data.size(); ++k) { // Step 1, locate the data packet
-            std::string strSub = script_data[k].substr(2,16); // retrieve bytes 1-9 of packet for peek & decode comparison
-            seq = (ParseHex(script_data[k].substr(0,2)))[0]; // retrieve sequence number
-            if ("0000000000000001" == strSub || "0000000000000002" == strSub) { // peek & decode comparison
-                if (strScriptData.empty()) { // confirm we have not already located a data address
-                    strScriptData = script_data[k].substr(2*1,2*PACKET_SIZE_CLASS_A); // populate data packet
-                    strDataAddress = address_data[k]; // record data address
-                    dataAddressSeq = seq; // record data address seq num for reference matching
-                    dataAddressValue = value_data[k]; // record data address amount for reference matching
-                    if (msc_debug_parser_data) PrintToLog("Data Address located - data[%d]:%s: %s (%s)\n", k, script_data[k], address_data[k], FormatDivisibleMP(value_data[k]));
-                } else { // invalidate - Class A cannot be more than one data packet - possible collision, treat as default (BTC payment)
-                    strDataAddress.clear(); //empty strScriptData to block further parsing
-                    if (msc_debug_parser_data) PrintToLog("Multiple Data Addresses found (collision?) Class A invalidated, defaulting to BTC payment\n");
-                    break;
-                }
-            }
-        }
-        if (!strDataAddress.empty()) { // Step 2, try to locate address with seqnum = DataAddressSeq+1 (also verify Step 1, we should now have a valid data packet)
-            unsigned char expectedRefAddressSeq = dataAddressSeq + 1;
-            for (unsigned k = 0; k < script_data.size(); ++k) { // loop through outputs
-                seq = (ParseHex(script_data[k].substr(0,2)))[0]; // retrieve sequence number
-                if ((address_data[k] != strDataAddress) && (expectedRefAddressSeq == seq)) { // found reference address with matching sequence number
-                    if (strRefAddress.empty()) { // confirm we have not already located a reference address
-                        strRefAddress = address_data[k]; // set ref address
-                        if (msc_debug_parser_data) PrintToLog("Reference Address located via seqnum - data[%d]:%s: %s (%s)\n", k, script_data[k], address_data[k], FormatDivisibleMP(value_data[k]));
-                    } else { // can't trust sequence numbers to provide reference address, there is a collision with >1 address with expected seqnum
-                        strRefAddress.clear(); // blank ref address
-                        if (msc_debug_parser_data) PrintToLog("Reference Address sequence number collision, will fall back to evaluating matching output amounts\n");
-                        break;
-                    }
-                }
-            }
-
-        } // end if (!strDataAddress.empty())
-        if (!strRefAddress.empty()) {
-            strReference = strRefAddress; // populate expected var strReference with chosen address (if not empty)
-        } else {
-            strDataAddress.clear(); // last validation step, if strRefAddress is empty, blank strDataAddress so we default to BTC payment
-        }
-
-        if (!strDataAddress.empty()) { // valid Class A packet almost ready
-            if (msc_debug_parser_data) PrintToLog("valid Class A:from=%s:to=%s:data=%s\n", strSender, strReference, strScriptData);
-            packet_size = PACKET_SIZE_CLASS_A;
-            memcpy(single_pkt, &ParseHex(strScriptData)[0], packet_size);
-        } else {
-            if ((!bRPConly || msc_debug_parser_readonly) && msc_debug_parser_dex) {
-                PrintToLog("!! sender: %s , receiver: %s\n", strSender, strReference);
-                PrintToLog("!! this may be the BTC payment for an offer !!\n");
-            }
-        }
-    }
     // ### CLASS B / CLASS C PARSING ###
-    if ((tlClass == TL_CLASS_B) || (tlClass == TL_CLASS_C)) {
+    if (tlClass == TL_CLASS_C) {
         if (msc_debug_parser_data) PrintToLog("Beginning reference identification\n");
         bool referenceFound = false; // bool to hold whether we've found the reference yet
         bool changeRemoved = false; // bool to hold whether we've ignored the first output to sender as change
@@ -1254,151 +1043,60 @@ static int parseTransaction(bool bRPConly, const CTransaction& wtx, int nBlock, 
 
         if (msc_debug_parser_data) PrintToLog("Ending reference identification\nFinal decision on reference identification is: %s\n", strReference);
 
-        // ### CLASS B SPECIFIC PARSING ###
-        if (tlClass == TL_CLASS_B) {
-            std::vector<std::string> multisig_script_data;
+        std::vector<std::string> op_return_script_data;
 
-            // ### POPULATE MULTISIG SCRIPT DATA ###
-            for (unsigned int i = 0; i < wtx.vout.size(); ++i) {
-                txnouttype whichType;
-                std::vector<CTxDestination> vDest;
-                int nRequired;
-                if (msc_debug_script) PrintToLog("scriptPubKey: %s\n", HexStr(wtx.vout[i].scriptPubKey));
-                if (!ExtractDestinations(wtx.vout[i].scriptPubKey, whichType, vDest, nRequired)) {
+        // ### POPULATE OP RETURN SCRIPT DATA ###
+        for (unsigned int n = 0; n < wtx.vout.size(); ++n) {
+            txnouttype whichType;
+            if (!GetOutputType(wtx.vout[n].scriptPubKey, whichType)) {
+                continue;
+            }
+            if (!IsAllowedOutputType(whichType, nBlock)) {
+                continue;
+            }
+            if (whichType == TX_NULL_DATA) {
+                // only consider outputs, which are explicitly tagged
+                std::vector<std::string> vstrPushes;
+                if (!GetScriptPushes(wtx.vout[n].scriptPubKey, vstrPushes)) {
                     continue;
                 }
-                if (whichType == TX_MULTISIG) {
-                    if (msc_debug_script) {
-                        PrintToLog(" >> multisig: ");
-                        for(const CTxDestination& dest : vDest) {
-                            PrintToLog("%s ; ", EncodeDestination(dest));
-                        }
-                        PrintToLog("\n");
-                    }
-                    // ignore first public key, as it should belong to the sender
-                    // and it be used to avoid the creation of unspendable dust
-                    GetScriptPushes(wtx.vout[i].scriptPubKey, multisig_script_data, true);
-                }
-            }
-
-            // The number of packets is limited to MAX_PACKETS,
-            // which allows, at least in theory, to add 1 byte
-            // sequence numbers to each packet.
-
-            // Transactions with more than MAX_PACKET packets
-            // are not invalidated, but trimmed.
-
-            unsigned int nPackets = multisig_script_data.size();
-            if (nPackets > MAX_PACKETS) {
-                nPackets = MAX_PACKETS;
-                PrintToLog("limiting number of packets to %d [extracted=%d]\n", nPackets, multisig_script_data.size());
-            }
-
-            // ### PREPARE A FEW VARS ###
-            std::string strObfuscatedHashes[1+MAX_SHA256_OBFUSCATION_TIMES];
-            PrepareObfuscatedHashes(strSender, 1+nPackets, strObfuscatedHashes);
-            unsigned char packets[MAX_PACKETS][32];
-            unsigned int mdata_count = 0;  // multisig data count
-
-            // ### DEOBFUSCATE MULTISIG PACKETS ###
-            for (unsigned int k = 0; k < nPackets; ++k) {
-                assert(mdata_count < MAX_PACKETS);
-                assert(mdata_count < MAX_SHA256_OBFUSCATION_TIMES);
-
-                std::vector<unsigned char> hash = ParseHex(strObfuscatedHashes[mdata_count+1]);
-                std::vector<unsigned char> packet = ParseHex(multisig_script_data[k].substr(2*1,2*PACKET_SIZE));
-                for (unsigned int i = 0; i < packet.size(); i++) { // this is a data packet, must deobfuscate now
-                    packet[i] ^= hash[i];
-                }
-                memcpy(&packets[mdata_count], &packet[0], PACKET_SIZE);
-                ++mdata_count;
-
-                if (msc_debug_parser_data) {
-                    CPubKey key(ParseHex(multisig_script_data[k]));
-                    CKeyID keyID = key.GetID();
-                    std::string strAddress = EncodeDestination(keyID);
-                    PrintToLog("multisig_data[%d]:%s: %s\n", k, multisig_script_data[k], strAddress);
-                }
-                if (msc_debug_parser) {
-                    if (!packet.empty()) {
-                        std::string strPacket = HexStr(packet.begin(), packet.end());
-                        PrintToLog("packet #%d: %s\n", mdata_count, strPacket);
-                    }
-                }
-            }
-            packet_size = mdata_count * (PACKET_SIZE - 1);
-            assert(packet_size <= sizeof(single_pkt));
-
-            // ### FINALIZE CLASS B ###
-            for (unsigned int m = 0; m < mdata_count; ++m) { // now decode mastercoin packets
-                if (msc_debug_parser) PrintToLog("m=%d: %s\n", m, HexStr(packets[m], PACKET_SIZE + packets[m], false));
-
-                // check to ensure the sequence numbers are sequential and begin with 01 !
-                if (1 + m != packets[m][0]) {
-                    if (msc_debug_spec) PrintToLog("Error: non-sequential seqnum ! expected=%d, got=%d\n", 1+m, packets[m][0]);
-                }
-
-                memcpy(m*(PACKET_SIZE-1)+single_pkt, 1+packets[m], PACKET_SIZE-1); // now ignoring sequence numbers for Class B packets
-            }
-        }
-
-        // ### CLASS C SPECIFIC PARSING ###
-        if (tlClass == TL_CLASS_C) {
-            std::vector<std::string> op_return_script_data;
-
-            // ### POPULATE OP RETURN SCRIPT DATA ###
-            for (unsigned int n = 0; n < wtx.vout.size(); ++n) {
-                txnouttype whichType;
-                if (!GetOutputType(wtx.vout[n].scriptPubKey, whichType)) {
-                    continue;
-                }
-                if (!IsAllowedOutputType(whichType, nBlock)) {
-                    continue;
-                }
-                if (whichType == TX_NULL_DATA) {
-                    // only consider outputs, which are explicitly tagged
-                    std::vector<std::string> vstrPushes;
-                    if (!GetScriptPushes(wtx.vout[n].scriptPubKey, vstrPushes)) {
+                // TODO: maybe encapsulate the following sort of messy code
+                if (!vstrPushes.empty()) {
+                    std::vector<unsigned char> vchMarker = GetTLMarker();
+                    std::vector<unsigned char> vchPushed = ParseHex(vstrPushes[0]);
+                    if (vchPushed.size() < vchMarker.size()) {
                         continue;
                     }
-                    // TODO: maybe encapsulate the following sort of messy code
-                    if (!vstrPushes.empty()) {
-                        std::vector<unsigned char> vchMarker = GetTLMarker();
-                        std::vector<unsigned char> vchPushed = ParseHex(vstrPushes[0]);
-                        if (vchPushed.size() < vchMarker.size()) {
-                            continue;
-                        }
-                        if (std::equal(vchMarker.begin(), vchMarker.end(), vchPushed.begin())) {
-                            size_t sizeHex = vchMarker.size() * 2;
-                            // strip out the marker at the very beginning
-                            vstrPushes[0] = vstrPushes[0].substr(sizeHex);
-                            // add the data to the rest
-                            op_return_script_data.insert(op_return_script_data.end(), vstrPushes.begin(), vstrPushes.end());
+                    if (std::equal(vchMarker.begin(), vchMarker.end(), vchPushed.begin())) {
+                        size_t sizeHex = vchMarker.size() * 2;
+                        // strip out the marker at the very beginning
+                        vstrPushes[0] = vstrPushes[0].substr(sizeHex);
+                        // add the data to the rest
+                        op_return_script_data.insert(op_return_script_data.end(), vstrPushes.begin(), vstrPushes.end());
 
-                            if (msc_debug_parser_data) {
-                                PrintToLog("Class C transaction detected: %s parsed to %s at vout %d\n", wtx.GetHash().GetHex(), vstrPushes[0], n);
-                            }
+                        if (msc_debug_parser_data) {
+                            PrintToLog("Class C transaction detected: %s parsed to %s at vout %d\n", wtx.GetHash().GetHex(), vstrPushes[0], n);
                         }
                     }
                 }
             }
-            // ### EXTRACT PAYLOAD FOR CLASS C ###
-            for (unsigned int n = 0; n < op_return_script_data.size(); ++n) {
-                if (!op_return_script_data[n].empty()) {
-                    assert(IsHex(op_return_script_data[n])); // via GetScriptPushes()
-                    std::vector<unsigned char> vch = ParseHex(op_return_script_data[n]);
-                    unsigned int payload_size = vch.size();
-                    if (packet_size + payload_size > MAX_PACKETS * PACKET_SIZE) {
-                        payload_size = MAX_PACKETS * PACKET_SIZE - packet_size;
-                        PrintToLog("limiting payload size to %d byte\n", packet_size + payload_size);
-                    }
-                    if (payload_size > 0) {
-                        memcpy(single_pkt+packet_size, &vch[0], payload_size);
-                        packet_size += payload_size;
-                    }
-                    if (MAX_PACKETS * PACKET_SIZE == packet_size) {
-                        break;
-                    }
+        }
+        // ### EXTRACT PAYLOAD FOR CLASS C ###
+        for (unsigned int n = 0; n < op_return_script_data.size(); ++n) {
+            if (!op_return_script_data[n].empty()) {
+                assert(IsHex(op_return_script_data[n])); // via GetScriptPushes()
+                std::vector<unsigned char> vch = ParseHex(op_return_script_data[n]);
+                unsigned int payload_size = vch.size();
+                if (packet_size + payload_size > MAX_PACKETS * PACKET_SIZE) {
+                    payload_size = MAX_PACKETS * PACKET_SIZE - packet_size;
+                    PrintToLog("limiting payload size to %d byte\n", packet_size + payload_size);
+                }
+                if (payload_size > 0) {
+                    memcpy(single_pkt+packet_size, &vch[0], payload_size);
+                    packet_size += payload_size;
+                }
+                if (MAX_PACKETS * PACKET_SIZE == packet_size) {
+                    break;
                 }
             }
         }
@@ -1622,7 +1320,6 @@ void clear_all_state()
     mp_tally_map.clear();
     my_offers.clear();
     my_accepts.clear();
-    my_crowds.clear();
     metadex.clear();
     my_pending.clear();
     ResetConsensusParams();
@@ -1639,7 +1336,6 @@ void clear_all_state()
     pDbFeeCache->Clear();
     pDbFeeHistory->Clear();
     assert(pDbTransactionList->setDBVersion() == DB_VERSION); // new set of databases, set DB version
-    exodus_prev = 0;
 }
 
 void RewindDBsAndState(int nHeight, int nBlockPrev = 0, bool fInitialParse = false)
@@ -1723,7 +1419,7 @@ int mastercore_init()
                 fs::path spPath = GetDataDir() / "MP_spinfo";
                 fs::path stoPath = GetDataDir() / "MP_stolist";
                 fs::path tlTXDBPath = GetDataDir() / "TL_TXDB";
-                fs::path feesPath = GetDataDir() / "TL_feecache";
+                // fs::path feesPath = GetDataDir() / "TL_feecache";
                 // fs::path feeHistoryPath = GetDataDir() / "TL_feehistory";
                 if (fs::exists(persistPath)) fs::remove_all(persistPath);
                 if (fs::exists(txlistPath)) fs::remove_all(txlistPath);
@@ -1731,7 +1427,7 @@ int mastercore_init()
                 if (fs::exists(spPath)) fs::remove_all(spPath);
                 if (fs::exists(stoPath)) fs::remove_all(stoPath);
                 if (fs::exists(tlTXDBPath)) fs::remove_all(tlTXDBPath);
-                if (fs::exists(feesPath)) fs::remove_all(feesPath);
+                // if (fs::exists(feesPath)) fs::remove_all(feesPath);
                 // if (fs::exists(feeHistoryPath)) fs::remove_all(feeHistoryPath);
                 PrintToLog("Success clearing persistence files in datadir %s\n", GetDataDir().string());
                 startClean = true;
@@ -1746,8 +1442,8 @@ int mastercore_init()
         pDbTransactionList = new CMPTxList(GetDataDir() / "MP_txlist", fReindex);
         pDbSpInfo = new CMPSPInfo(GetDataDir() / "MP_spinfo", fReindex);
         pDbTransaction = new CTLTransactionDB(GetDataDir() / "TL_TXDB", fReindex);
-        pDbFeeCache = new CTLFeeCache(GetDataDir() / "TL_feecache", fReindex);
-        pDbFeeHistory = new CTLFeeHistory(GetDataDir() / "TL_feehistory", fReindex);
+        // pDbFeeCache = new CTLFeeCache(GetDataDir() / "TL_feecache", fReindex);
+        // pDbFeeHistory = new CTLFeeHistory(GetDataDir() / "TL_feehistory", fReindex);
 
         pathStateFiles = GetDataDir() / "MP_persist";
         TryCreateDirectories(pathStateFiles);
@@ -1808,7 +1504,6 @@ int mastercore_init()
 
         if (nWaterlineBlock < snapshotHeight) {
             nWaterlineBlock = snapshotHeight;
-            exodus_prev = 0;
         }
 
         // advance the waterline so that we start on the next unaccounted for block
@@ -1878,14 +1573,6 @@ int mastercore_shutdown()
         delete pDbTransaction;
         pDbTransaction = nullptr;
     }
-    if (pDbFeeCache) {
-        delete pDbFeeCache;
-        pDbFeeCache = nullptr;
-    }
-    if (pDbFeeHistory) {
-        delete pDbFeeHistory;
-        pDbFeeHistory = nullptr;
-    }
 
     mastercoreInitialized = 0;
 
@@ -1906,13 +1593,6 @@ bool mastercore_handler_tx(const CTransaction& tx, int nBlock, unsigned int idx,
 {
     extern volatile int id_contract;
     extern std::vector<std::string> vestingAddresses;
-    extern volatile int64_t Lastx_Axis;
-    extern volatile int64_t LastLinear;
-    extern volatile int64_t LastQuad;
-    extern volatile int64_t LastLog;
-    extern std::vector<std::map<std::string, std::string>> lives_longs_vg;
-    extern std::vector<std::map<std::string, std::string>> lives_shorts_vg;
-    extern int BlockS;
 
     ui128 numLog128;
     ui128 numQuad128;
@@ -1934,262 +1614,11 @@ bool mastercore_handler_tx(const CTransaction& tx, int nBlock, unsigned int idx,
     int64_t nBlockTime = pBlockIndex->GetBlockTime();
 
 
-    int nBlockNow = GetHeight();
+    // int nBlockNow = GetHeight();
 
     /***********************************************************************/
-    /** Calling The Settlement Algorithm **/
-
-    if (nBlockNow%BlockS == 0 && nBlockNow != 0 && path_elef.size() != 0 && lastBlockg != nBlockNow) {
-
-      /*****************************************************************************/
-
-      if(msc_debug_handler_tx) PrintToLog("\nSettlement every 8 hours here. nBlockNow = %d\n", nBlockNow);
-      pt_ndatabase = new MatrixTLS(path_elef.size(), n_cols); MatrixTLS &ndatabase = *pt_ndatabase;
-      MatrixTLS M_file(path_elef.size(), n_cols);
-      fillingMatrix(M_file, ndatabase, path_elef);
-      n_rows = size(M_file, 0);
-      if(msc_debug_handler_tx) PrintToLog("Matrix for Settlement: dim = (%d, %d)\n\n", n_rows, n_cols);
-      //printing_matrix(M_file);
-
-      /**********************************************************************/
-      /** TWAP vector **/
-
-      if(msc_debug_handler_tx) PrintToLog("\nTWAP Prices = \n");
-      struct FutureContractObject *pfuture = getFutureContractObject(ALL_PROPERTY_TYPE_CONTRACT, "ALL F18");
-      uint32_t property_traded = pfuture->fco_propertyId;
-
-      // PrintToLog("\nVector CDExtwap_vec =\n");
-      // for (unsigned int i = 0; i < cdextwap_vec[property_traded].size(); i++)
-      //   PrintToLog("%s\n", FormatDivisibleMP(cdextwap_vec[property_traded][i]));
-
-      uint64_t num_cdex = accumulate(cdextwap_vec[property_traded].begin(), cdextwap_vec[property_traded].end(), 0.0);
-
-      rational_t twap_priceRatCDEx(num_cdex/COIN, cdextwap_vec[property_traded].size());
-      int64_t twap_priceCDEx = mastercore::RationalToInt64(twap_priceRatCDEx);
-      if(msc_debug_handler_tx) PrintToLog("\nTvwap Price CDEx = %s\n", FormatDivisibleMP(twap_priceCDEx));
-
-      struct TokenDataByName *pfuture_ALL = getTokenDataByName("ALL");
-      struct TokenDataByName *pfuture_USD = getTokenDataByName("dUSD");
-
-      uint32_t property_all = pfuture_ALL->data_propertyId;
-      uint32_t property_usd = pfuture_USD->data_propertyId;
-
-      // PrintToLog("\nVector MDExtwap_vec =\n");
-      // for (unsigned int i = 0; i < mdextwap_vec[property_all][property_usd].size(); i++)
-      //   PrintToLog("%s\n", FormatDivisibleMP(mdextwap_vec[property_all][property_usd][i]));
-
-      uint64_t num_mdex=accumulate(mdextwap_vec[property_all][property_usd].begin(),mdextwap_vec[property_all][property_usd].end(),0.0);
-
-      rational_t twap_priceRatMDEx(num_mdex/COIN, mdextwap_vec[property_all][property_usd].size());
-      int64_t twap_priceMDEx = mastercore::RationalToInt64(twap_priceRatMDEx);
-      if(msc_debug_handler_tx) PrintToLog("\nTvwap Price MDEx = %s\n", FormatDivisibleMP(twap_priceMDEx));
-
-      /** Interest formula:  **/
-      int64_t interest = clamp_function(abs(twap_priceCDEx-twap_priceMDEx), 0.05);
-      if(msc_debug_handler_tx) PrintToLog("Interes to Pay = %s", FormatDivisibleMP(interest));
-
-      /*****************************************************************************/
-      cout << "\n\n";
-      if(msc_debug_handler_tx) PrintToLog("\nCalling the Settlement Algorithm:\n\n");
-      settlement_algorithm_fifo(M_file, interest, twap_priceCDEx);
-
-      /**********************************************************************/
-      /** Unallocating Dynamic Memory **/
-
-      //path_elef.clear();
-      market_priceMap.clear();
-      numVWAPMap.clear();
-      denVWAPMap.clear();
-      VWAPMap.clear();
-      VWAPMapSubVector.clear();
-      numVWAPVector.clear();
-      denVWAPVector.clear();
-      mapContractAmountTimesPrice.clear();
-      mapContractVolume.clear();
-      VWAPMapContracts.clear();
-      cdextwap_vec.clear();
-      }
-      /***********************************************************************/
-      /** Vesting Tokens to Balance **/
-      /***********************************************************************/
-      /** Vesting Tokens to Balance **/
-
-      int64_t x_Axis = globalVolumeALL_LTC;
-      int64_t LogAxis = mastercore::DoubleToInt64(log(static_cast<double>(x_Axis)/COIN));
-
-      rational_t Factor1over3(1, 3);
-      int64_t Factor1over3_64t = mastercore::RationalToInt64(Factor1over3);
-
-      int64_t XAxis = x_Axis/COIN;
-      if(msc_debug_handler_tx) PrintToLog("\nXAxis Decimal Scale = %d, x_Axis = %s, Lastx_Axis = %s\n", XAxis, FormatDivisibleMP(x_Axis), FormatDivisibleMP(Lastx_Axis));
-
-      bool cond_first = x_Axis != 0;
-      bool cond_secnd = x_Axis != Lastx_Axis;
-      bool cond_third = vestingAddresses.size() != 0;
-
-      if (findConjTrueValue(cond_first, cond_secnd, cond_third))
-      {
-          int64_t line64_t = 0, quad64_t = 0, log64_t  = 0;
-
-          if(msc_debug_handler_tx)
-          {
-              PrintToLog("\nALLs UNVESTED = %d\n", GetTokenBalance(vestingAddresses[0], TL_PROPERTY_ALL, UNVESTED));
-              PrintToLog("ALLs BALANCE = %d\n", GetTokenBalance(vestingAddresses[0], TL_PROPERTY_ALL, BALANCE));
-          }
-
-          for (unsigned int i = 0; i < vestingAddresses.size(); i++)
-          {
-    	        if(msc_debug_handler_tx) PrintToLog("\nIteration #%d Inside Vesting function. Address = %s\n", i, vestingAddresses[i]);
-    	        int64_t vestingBalance = GetTokenBalance(vestingAddresses[i], TL_PROPERTY_VESTING, BALANCE);
-    	        int64_t unvestedALLBal = GetTokenBalance(vestingAddresses[i], TL_PROPERTY_ALL, UNVESTED);
-          	  if (vestingBalance != 0 && unvestedALLBal != 0)
-          	    {
-          	      if (XAxis >= 0 && XAxis <= 300000)
-          	  	{/** y = 1/3x **/
-
-    		      //PrintToLog("\nLinear Function\n");
-    		      arith_uint256 line256_t = mastercore::ConvertTo256(Factor1over3_64t)*mastercore::ConvertTo256(x_Axis)/COIN;
-    		      line64_t = mastercore::ConvertTo64(line256_t);
-
-    		      if(msc_debug_handler_tx) PrintToLog("line64_t = %s, LastLinear = %s\n", FormatDivisibleMP(line64_t), FormatDivisibleMP(LastLinear));
-          	  int64_t linearBalance = line64_t-LastLinear;
-          	  arith_uint256 linew256_t = mastercore::ConvertTo256(linearBalance)*mastercore::ConvertTo256(vestingBalance)/COIN;
-          	  int64_t linew64_t = mastercore::ConvertTo64(linew256_t);
-
-          	  rational_t linearRationalw(linew64_t, (int64_t)TOTAL_AMOUNT_VESTING_TOKENS);
-          	  int64_t linearWeighted = mastercore::RationalToInt64(linearRationalw);
-
-          	  if(msc_debug_handler_tx)
-              {
-                  PrintToLog("linearBalance = %s, vestingBalance = %s\n", FormatDivisibleMP(linearBalance), FormatDivisibleMP(vestingBalance));
-          	      PrintToLog("linearWeighted = %s\n", FormatDivisibleMP(linearWeighted));
-              }
-
-    		      assert(update_tally_map(vestingAddresses[i], TL_PROPERTY_ALL, -linearWeighted, UNVESTED));
-    		      assert(update_tally_map(vestingAddresses[i], TL_PROPERTY_ALL, linearWeighted, BALANCE));
-      } else if (XAxis > 300000 && XAxis <= 10000000)
-          		{ /** y = 100K+7/940900000(x^2-600Kx+90) */
-          		  //PrintToLog("\nQuadratic Function\n");
-
-          		  dec_float SecndTermnf = dec_float(7)*dec_float(XAxis)*dec_float(XAxis)/dec_float(940900000);
-          		  int64_t SecndTermn64_t = mastercore::StrToInt64(SecndTermnf.str(DISPLAY_PRECISION_LEN, std::ios_base::fixed), true);
-          		  if(msc_debug_handler_tx) PrintToLog("SecndTermnf = %d\n", FormatDivisibleMP(SecndTermn64_t));
-
-          		  dec_float ThirdTermnf = dec_float(7)*dec_float(600000)*dec_float(XAxis)/dec_float(940900000);
-          		  int64_t ThirdTermn64_t = mastercore::StrToInt64(ThirdTermnf.str(DISPLAY_PRECISION_LEN, std::ios_base::fixed), true);
-          		  if(msc_debug_handler_tx) PrintToLog("ThirdTermnf = %d\n", FormatDivisibleMP(ThirdTermn64_t));
-
-          		  dec_float ForthTermnf = dec_float(7)*dec_float(90000000000)/dec_float(940900000);
-          		  int64_t ForthTermn64_t = mastercore::StrToInt64(ForthTermnf.str(DISPLAY_PRECISION_LEN, std::ios_base::fixed), true);
-          		  if(msc_debug_handler_tx) PrintToLog("ForthTermnf = %d\n", FormatDivisibleMP(ForthTermn64_t));
-
-          		  quad64_t = (int64_t)(100000*COIN) + SecndTermn64_t - ThirdTermn64_t + ForthTermn64_t;
-          		  int64_t quadBalance = quad64_t - LastQuad;
-          		  if(msc_debug_handler_tx) PrintToLog("quad64_t = %s, LastQuad = %s\n", FormatDivisibleMP(quad64_t), FormatDivisibleMP(LastQuad));
-
-          		  multiply(numQuad128, (int64_t)quadBalance, (int64_t)vestingBalance);
-          		  if(msc_debug_handler_tx) PrintToLog("numQuad128 = %s\n", xToString(numQuad128/COIN));
-
-          		  rational_t quadRationalw(numQuad128/COIN, (int64_t)TOTAL_AMOUNT_VESTING_TOKENS);
-          		  int64_t quadWeighted = mastercore::RationalToInt64(quadRationalw);
-
-          		  if(msc_debug_handler_tx)
-                {
-                    PrintToLog("quadBalance = %s, vestingBalance = %s\n", FormatDivisibleMP(quadBalance), FormatDivisibleMP(vestingBalance));
-          		      PrintToLog("quadWeighted = %d\n", FormatDivisibleMP(quadWeighted));
-                }
-
-          		  assert(update_tally_map(vestingAddresses[i], TL_PROPERTY_ALL, -quadWeighted, UNVESTED));
-          		  assert(update_tally_map(vestingAddresses[i], TL_PROPERTY_ALL, quadWeighted, BALANCE));
-          		}
-          	      else if (XAxis > 10000000 && XAxis <= 1000000000)
-          		{ /** y =  -1650000 + (152003 * ln(x)) */
-
-               if(msc_debug_handler_tx) PrintToLog("\nLogarithmic Function\n");
-
-          		 arith_uint256 secndTermn256_t = mastercore::ConvertTo256((int64_t)(152003*COIN))*mastercore::ConvertTo256(LogAxis)/COIN;
-          		 int64_t secndTermn64_t = mastercore::ConvertTo64(secndTermn256_t);
-          		 if(msc_debug_handler_tx) PrintToLog("secndTermn64_t = %s\n", FormatDivisibleMP(secndTermn64_t));
-
-          		 log64_t = (int64_t)secndTermn64_t - (int64_t)(1650000*COIN);
-          		 if(msc_debug_handler_tx) PrintToLog("log64_t = %s\n", FormatDivisibleMP(log64_t));
-          		 int64_t logBalance = log64_t - LastLog;
-
-          		 if(msc_debug_handler_tx) PrintToLog("logBalance = %s, vestingBalance = %s\n", FormatDivisibleMP(logBalance), FormatDivisibleMP(vestingBalance));
-          		 multiply(numLog128, (int64_t)logBalance, (int64_t)vestingBalance);
-          		 if(msc_debug_handler_tx) PrintToLog("numLog128 = %s\n", xToString(numLog128/COIN));
-
-          		  rational_t logRationalw(numLog128/COIN, TOTAL_AMOUNT_VESTING_TOKENS);
-          		  int64_t logWeighted = mastercore::RationalToInt64(logRationalw);
-          		  if(msc_debug_handler_tx) PrintToLog("logWeighted = %s, LastLog = %s\n", FormatDivisibleMP(logWeighted), FormatDivisibleMP(LastLog));
-
-          		  if (logWeighted)
-          		    {
-          		      if (GetTokenBalance(vestingAddresses[i], TL_PROPERTY_ALL, UNVESTED) >= logWeighted)
-          			{
-          			  assert(update_tally_map(vestingAddresses[i], TL_PROPERTY_ALL, -logWeighted, UNVESTED));
-          			  assert(update_tally_map(vestingAddresses[i], TL_PROPERTY_ALL, logWeighted, BALANCE));
-          			}
-          		   else
-          			{
-          			  int64_t remaining = GetTokenBalance(vestingAddresses[i], TL_PROPERTY_ALL, UNVESTED);
-          			  if (GetTokenBalance(vestingAddresses[i], TL_PROPERTY_ALL, UNVESTED) >= remaining && remaining >= 0)
-          			    {
-          			      assert(update_tally_map(vestingAddresses[i], TL_PROPERTY_ALL, -remaining, UNVESTED));
-          			      assert(update_tally_map(vestingAddresses[i], TL_PROPERTY_ALL, remaining, BALANCE));
-          			    }
-          			}
-          		    }
-          		}
-          	      else if (XAxis > 1000000000 && GetTokenBalance(vestingAddresses[i], TL_PROPERTY_ALL, UNVESTED) != 0)
-          		{
-          		  // PrintToLog("\nLogarithmic Function\n");
-
-          		  arith_uint256 secndTermn256_t = mastercore::ConvertTo256((int64_t)(152003*COIN))*mastercore::ConvertTo256(LogAxis)/COIN;
-          		  int64_t secndTermn64_t = mastercore::ConvertTo64(secndTermn256_t);
-          		  if(msc_debug_handler_tx) PrintToLog("secndTermn64_t = %s\n", FormatDivisibleMP(secndTermn64_t));
-
-          		  log64_t = (int64_t)secndTermn64_t - (int64_t)(1650000*COIN);
-          		  if(msc_debug_handler_tx) PrintToLog("log64_t = %s\n", FormatDivisibleMP(log64_t));
-          		  int64_t logBalance = log64_t - LastLog;
-
-          		  if(msc_debug_handler_tx) PrintToLog("logBalance = %s, vestingBalance = %s\n", FormatDivisibleMP(logBalance), FormatDivisibleMP(vestingBalance));
-          		  multiply(numLog128, (int64_t)logBalance, (int64_t)vestingBalance);
-          		  if(msc_debug_handler_tx) PrintToLog("numLog128 = %s\n", xToString(numLog128/COIN));
-
-          		  rational_t logRationalw(numLog128/COIN, TOTAL_AMOUNT_VESTING_TOKENS);
-          		  int64_t logWeighted = mastercore::RationalToInt64(logRationalw);
-
-          		  if (GetTokenBalance(vestingAddresses[i], TL_PROPERTY_ALL, UNVESTED))
-          		    {
-          		      if (GetTokenBalance(vestingAddresses[i], TL_PROPERTY_ALL, UNVESTED) < logWeighted)
-          			{
-          			  int64_t remaining = GetTokenBalance(vestingAddresses[i], TL_PROPERTY_ALL, UNVESTED);
-          			  assert(update_tally_map(vestingAddresses[i], TL_PROPERTY_ALL, -remaining, UNVESTED));
-          			  assert(update_tally_map(vestingAddresses[i], TL_PROPERTY_ALL, remaining, BALANCE));
-          			}
-          		      else
-          			{
-          			  assert(update_tally_map(vestingAddresses[i], TL_PROPERTY_ALL, -logWeighted, UNVESTED));
-          			  assert(update_tally_map(vestingAddresses[i], TL_PROPERTY_ALL, logWeighted, BALANCE));
-          			}
-          		    }
-          		}
-    	    }
-    	}
-          if(msc_debug_handler_tx)
-          {
-              PrintToLog("\nALLs UNVESTED = %d\n", GetTokenBalance(vestingAddresses[0], TL_PROPERTY_ALL, UNVESTED));
-              PrintToLog("ALLs BALANCE = %d\n", GetTokenBalance(vestingAddresses[0], TL_PROPERTY_ALL, BALANCE));
-          }
-
-          Lastx_Axis = x_Axis;
-          LastLinear = line64_t;
-          LastQuad = quad64_t;
-          LastLog = log64_t;
-        }
-
-    /***********************************************/
+    /** Calling The Settlement Algorithm Here **/
+    /************************************************************************/
 
     CMPTransaction mp_obj;
     mp_obj.unlockLogic();
@@ -2224,19 +1653,6 @@ bool mastercore_handler_tx(const CTransaction& tx, int nBlock, unsigned int idx,
 
     bool fFoundTx = false;
     int pop_ret = parseTransaction(false, tx, nBlock, idx, mp_obj, nBlockTime, removedCoins);
-
-    if (pop_ret >= 0) {
-        assert(mp_obj.getEncodingClass() != NO_MARKER);
-        assert(mp_obj.getSender().empty() == false);
-
-        int interp_ret = mp_obj.interpretPacket();
-
-        // extra iteration of the outputs for every transaction, not needed on mainnet after Exodus closed
-        const CConsensusParams& params = ConsensusParams();
-        // if (isNonMainNet() || nBlock <= params.LAST_EXODUS_BLOCK) {
-        //     fFoundTx |= HandleExodusPurchase(tx, nBlock, mp_obj.getSender(), nBlockTime);
-        // }
-    }
 
     if (0 == pop_ret) {
         int interp_ret = mp_obj.interpretPacket();
@@ -2300,15 +1716,12 @@ int mastercore_handler_block_begin(int nBlockPrev, CBlockIndex const * pBlockInd
     // handle any features that go live with this block
     CheckLiveActivations(pBlockIndex->nHeight);
 
-    eraseExpiredCrowdsale(pBlockIndex);
-
     // handle any features that go live with this block
     makeWithdrawals(pBlockIndex->nHeight);
     CheckLiveActivations(pBlockIndex->nHeight);
     update_sum_upnls();
     // marginMain(pBlockIndex->nHeight);
     // addInterestPegged(nBlockPrev,pBlockIndex);
-    // eraseExpiredCrowdsale(pBlockIndex);
     // _my_sps->rollingContractsBlock(pBlockIndex); // NOTE: we are checking every contract expiration
 
     return 0;
@@ -2330,17 +1743,13 @@ int mastercore_handler_block_end(int nBlockNow, CBlockIndex const * pBlockIndex,
     // 1) remove expired entries from the accept list (per spec accept entries are
     //    valid until their blocklimit expiration; because the customer can keep
     //    paying BTC for the offer in several installments)
-    // 2) update the amount in the Exodus address
-    int64_t devmsc = 0;
+
     unsigned int how_many_erased = eraseExpiredAccepts(nBlockNow);
 
     if (how_many_erased) {
         PrintToLog("%s(%d); erased %u accepts this block, line %d, file: %s\n",
             __FUNCTION__, how_many_erased, nBlockNow, __LINE__, __FILE__);
     }
-
-    // calculate devmsc as of this block and update the Exodus' balance
-    devmsc = calculate_and_update_devmsc(pBlockIndex->GetBlockTime(), nBlockNow);
 
     // if (msc_debug_exo) {
     //     int64_t balance = GetTokenBalance(exodus_address, TL_PROPERTY_MSC, BALANCE);
@@ -2970,8 +2379,6 @@ bool mastercore::ContInst_Fees(const std::string& firstAddr,const std::string& s
         fee = (ConvertTo256(amountToReserve) * ConvertTo256(5)) / (ConvertTo256(4000) * ConvertTo256(COIN));
     }
 
-    PrintToLog("%s: checkpoin 1\n",__func__);
-
     int64_t uFee = ConvertTo64(fee);
 
 
@@ -2980,8 +2387,6 @@ bool mastercore::ContInst_Fees(const std::string& firstAddr,const std::string& s
     int64_t totalAmount = uFee + amountToReserve;
     int64_t firstRem = static_cast<int64_t>(pDbTradeList->getRemaining(channelAddr, firstAddr, colateral));
 
-    PrintToLog("%s: checkpoin 2\n",__func__);
-
     if (firstRem < totalAmount)
     {
 
@@ -2989,8 +2394,6 @@ bool mastercore::ContInst_Fees(const std::string& firstAddr,const std::string& s
 
             return false;
     }
-
-    PrintToLog("%s: checkpoin 3\n",__func__);
 
     int64_t secondRem = static_cast<int64_t>(pDbTradeList->getRemaining(channelAddr, secondAddr, colateral));
 
@@ -3005,11 +2408,9 @@ bool mastercore::ContInst_Fees(const std::string& firstAddr,const std::string& s
 
     update_tally_map(channelAddr, colateral, -2*uFee, CHANNEL_RESERVE);
 
-    PrintToLog("%s: checkpoin 5\n",__func__);
     // % to feecache
     cachefees[colateral] += 2*uFee;
 
-    PrintToLog("%s: checkpoin 6\n",__func__);
     return true;
 }
 
@@ -3189,7 +2590,7 @@ bool mastercore::makeWithdrawals(int Block)
  */
 const std::vector<unsigned char> GetTLMarker()
 {
-    static unsigned char pch[] = {0x6f, 0x6d, 0x6e, 0x69}; // Hex-encoded: "tl"
+    static unsigned char pch[] = {0x6f, 0x6d, 0x6e, 0x69}; // Hex-encoded: "tdly"
 
     return std::vector<unsigned char>(pch, pch + sizeof(pch) / sizeof(pch[0]));
 }

@@ -84,14 +84,6 @@ std::string GenerateConsensusString(const CMPMetaDEx& tradeObj)
             tradeObj.getDesProperty(), tradeObj.getAmountDesired(), tradeObj.getAmountRemaining());
 }
 
-// Generates a consensus string for hashing based on a crowdsale object
-std::string GenerateConsensusString(const CMPCrowd& crowdObj)
-{
-    return strprintf("%d|%d|%d|%d|%d",
-            crowdObj.getPropertyId(), crowdObj.getCurrDes(), crowdObj.getDeadline(), crowdObj.getUserCreated(),
-            crowdObj.getIssuerCreated());
-}
-
 // Generates a consensus string for hashing based on a property issuer
 std::string GenerateConsensusString(const uint32_t propertyId, const std::string& address)
 {
@@ -230,24 +222,6 @@ uint256 GetConsensusHash()
     for (std::vector<std::pair<arith_uint256, std::string> >::iterator it = vecMetaDExTrades.begin(); it != vecMetaDExTrades.end(); ++it) {
         const std::string& dataStr = it->second;
         if (msc_debug_consensus_hash) PrintToLog("Adding MetaDEx trade data to consensus hash: %s\n", dataStr);
-        SHA256_Update(&shaCtx, dataStr.c_str(), dataStr.length());
-    }
-
-    // Crowdsales - loop through open crowdsales and add to the consensus hash (ordered by property ID)
-    // Note: the variables of the crowdsale (amount, bonus etc) are not part of the crowdsale map and not included here to
-    // avoid additionalal loading of SP entries from the database
-    // Placeholders: "propertyid|propertyiddesired|deadline|usertokens|issuertokens"
-    std::vector<std::pair<uint32_t, std::string> > vecCrowds;
-    for (CrowdMap::const_iterator it = my_crowds.begin(); it != my_crowds.end(); ++it) {
-        const CMPCrowd& crowd = it->second;
-        uint32_t propertyId = crowd.getPropertyId();
-        std::string dataStr = GenerateConsensusString(crowd);
-        vecCrowds.push_back(std::make_pair(propertyId, dataStr));
-    }
-    std::sort (vecCrowds.begin(), vecCrowds.end());
-    for (std::vector<std::pair<uint32_t, std::string> >::iterator it = vecCrowds.begin(); it != vecCrowds.end(); ++it) {
-        std::string dataStr = (*it).second;
-        if (msc_debug_consensus_hash) PrintToLog("Adding Crowdsale entry to consensus hash: %s\n", dataStr);
         SHA256_Update(&shaCtx, dataStr.c_str(), dataStr.length());
     }
 

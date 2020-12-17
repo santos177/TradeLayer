@@ -43,9 +43,6 @@ extern std::map<std::string,vector<withdrawalAccepted>> withdrawal_Map;
 extern std::map<std::string,channel> channels_Map;
 extern uint64_t marketP[NPTYPES];
 
-//! Number of "Dev TL" of the last processed block (needed to save global state)
-extern int64_t exodus_prev;
-
 //! Path for file based persistence
 extern fs::path pathStateFiles;
 
@@ -54,7 +51,6 @@ enum FILETYPES {
   FILETYPE_OFFERS,
   FILETYPE_ACCEPTS,
   FILETYPE_GLOBALS,
-  FILETYPE_CROWDSALES,
   FILETYPE_MDEXORDERS,
   FILETYPE_MARKETPRICES,
   FILETYPE_CDEXORDERS,
@@ -69,7 +65,6 @@ static char const * const statePrefix[NUM_FILETYPES] = {
     "offers",
     "accepts",
     "globals",
-    "crowdsales",
     "mdexorders",
     "cdexorders",
 };
@@ -175,8 +170,7 @@ static int write_globals_state(std::ofstream& file, SHA256_CTX* shaCtx)
 {
     uint32_t nextSPID = pDbSpInfo->peekNextSPID(TL_PROPERTY_MSC);
     uint32_t nextTestSPID = pDbSpInfo->peekNextSPID(TL_PROPERTY_TMSC);
-    std::string lineOut = strprintf("%d,%d,%d",
-            exodus_prev,
+    std::string lineOut = strprintf("%d,%d",
             nextSPID,
             nextTestSPID);
 
@@ -185,17 +179,6 @@ static int write_globals_state(std::ofstream& file, SHA256_CTX* shaCtx)
 
     // write the line
     file << lineOut << std::endl;
-
-    return 0;
-}
-
-static int write_mp_crowdsales(std::ofstream& file, SHA256_CTX* shaCtx)
-{
-    for (CrowdMap::const_iterator it = my_crowds.begin(); it != my_crowds.end(); ++it) {
-        // decompose the key for address
-        const CMPCrowd& crowd = it->second;
-        crowd.saveCrowdSale(file, shaCtx, it->first);
-    }
 
     return 0;
 }
@@ -425,66 +408,16 @@ static int input_mp_accepts_string(const std::string& s)
 // exodus_prev
 static int input_globals_state_string(const std::string& s)
 {
-    int64_t exodusPrev;
     uint32_t nextSPID, nextTestSPID;
     std::vector<std::string> vstr;
     boost::split(vstr, s, boost::is_any_of(" ,="), boost::token_compress_on);
-    if (3 != vstr.size()) return -1;
+    if (2 != vstr.size()) return -1;
 
     int i = 0;
-    exodusPrev = boost::lexical_cast<int64_t>(vstr[i++]);
     nextSPID = boost::lexical_cast<uint32_t>(vstr[i++]);
     nextTestSPID = boost::lexical_cast<uint32_t>(vstr[i++]);
 
-    exodus_prev = exodusPrev;
     pDbSpInfo->init(nextSPID, nextTestSPID);
-    return 0;
-}
-
-// addr,propertyId,nValue,property_desired,deadline,early_bird,percentage,txid
-static int input_mp_crowdsale_string(const std::string& s)
-{
-    std::vector<std::string> vstr;
-    boost::split(vstr, s, boost::is_any_of(" ,"), boost::token_compress_on);
-
-    if (9 > vstr.size()) return -1;
-
-    unsigned int i = 0;
-
-    std::string sellerAddr = vstr[i++];
-    uint32_t propertyId = boost::lexical_cast<uint32_t>(vstr[i++]);
-    int64_t nValue = boost::lexical_cast<int64_t>(vstr[i++]);
-    uint32_t property_desired = boost::lexical_cast<uint32_t>(vstr[i++]);
-    int64_t deadline = boost::lexical_cast<int64_t>(vstr[i++]);
-    uint8_t early_bird = boost::lexical_cast<unsigned int>(vstr[i++]); // lexical_cast can't handle char!
-    uint8_t percentage = boost::lexical_cast<unsigned int>(vstr[i++]); // lexical_cast can't handle char!
-    int64_t u_created = boost::lexical_cast<int64_t>(vstr[i++]);
-    int64_t i_created = boost::lexical_cast<int64_t>(vstr[i++]);
-
-    CMPCrowd newCrowdsale(propertyId, nValue, property_desired, deadline, early_bird, percentage, u_created, i_created);
-
-    // load the remaining as database pairs
-    while (i < vstr.size()) {
-        std::vector<std::string> entryData;
-        boost::split(entryData, vstr[i++], boost::is_any_of("="), boost::token_compress_on);
-        if (2 != entryData.size()) return -1;
-
-        std::vector<std::string> valueData;
-        boost::split(valueData, entryData[1], boost::is_any_of(";"), boost::token_compress_on);
-
-        std::vector<int64_t> vals;
-        for (std::vector<std::string>::const_iterator it = valueData.begin(); it != valueData.end(); ++it) {
-            vals.push_back(boost::lexical_cast<int64_t>(*it));
-        }
-
-        uint256 txHash = uint256S(entryData[0]);
-        newCrowdsale.insertDatabase(txHash, vals);
-    }
-
-    if (!my_crowds.insert(std::make_pair(sellerAddr, newCrowdsale)).second) {
-        return -1;
-    }
-
     return 0;
 }
 
@@ -655,10 +588,6 @@ static int write_state_file(const CBlockIndex* pBlockIndex, int what)
             result = write_globals_state(file, &shaCtx);
             break;
 
-        case FILETYPE_CROWDSALES:
-            result = write_mp_crowdsales(file, &shaCtx);
-            break;
-
         case FILETYPE_MDEXORDERS:
             result = write_mp_metadex(file, &shaCtx);
             break;
@@ -774,7 +703,6 @@ int PersistInMemoryState(const CBlockIndex* pBlockIndex)
     write_state_file(pBlockIndex, FILETYPE_OFFERS);
     write_state_file(pBlockIndex, FILETYPE_ACCEPTS);
     write_state_file(pBlockIndex, FILETYPE_GLOBALS);
-    write_state_file(pBlockIndex, FILETYPE_CROWDSALES);
     write_state_file(pBlockIndex, FILETYPE_MDEXORDERS);
     write_state_file(pBlockIndex, FILETYPE_CDEXORDERS);
     write_state_file(pBlockIndex, FILETYPE_CACHEFEES);
@@ -819,11 +747,6 @@ int RestoreInMemoryState(const std::string& filename, int what, bool verifyHash)
 
         case FILETYPE_GLOBALS:
             inputLineFunc = input_globals_state_string;
-            break;
-
-        case FILETYPE_CROWDSALES:
-            my_crowds.clear();
-            inputLineFunc = input_mp_crowdsale_string;
             break;
 
         case FILETYPE_MDEXORDERS:
