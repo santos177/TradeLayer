@@ -131,8 +131,8 @@ void LookupSPDialog::searchSP()
         case 2: //search by address
            // iterate through my_sps looking for the issuer address and add any properties issued by said address to matchingcombo
            // talk with @Michael @Bart to see if perhaps a more efficient way to do this, but not major issue as only run on user request
-           nextSPID = pDbSpInfo->peekNextSPID(1);
-           nextTestSPID = pDbSpInfo->peekNextSPID(2);
+           nextSPID = pDbSpInfo->peekNextSPID();
+           nextTestSPID = pDbSpInfo->peekNextSPID();
            for (tmpPropertyId = 1; tmpPropertyId<nextSPID; tmpPropertyId++)
            {
                CMPSPInfo::Entry sp;
@@ -158,8 +158,8 @@ void LookupSPDialog::searchSP()
         break;
         case 3: //search by freetext
            // iterate through my_sps and see if property name contains the search text
-           nextSPID = pDbSpInfo->peekNextSPID(1);
-           nextTestSPID = pDbSpInfo->peekNextSPID(2);
+           nextSPID = pDbSpInfo->peekNextSPID();
+           nextTestSPID = pDbSpInfo->peekNextSPID();
            for (tmpPropertyId = 1; tmpPropertyId<nextSPID; tmpPropertyId++)
            {
                CMPSPInfo::Entry sp;
@@ -196,13 +196,13 @@ void LookupSPDialog::searchSP()
            }
         break;
         case 4: // grab everything
-           nextSPID = pDbSpInfo->peekNextSPID(1);
+           nextSPID = pDbSpInfo->peekNextSPID();
            for (tmpPropertyId = 1; tmpPropertyId<nextSPID; tmpPropertyId++)
            {
                CMPSPInfo::Entry sp;
                if (false != pDbSpInfo->getSP(tmpPropertyId, sp)) { addSPToMatchingResults(tmpPropertyId); }
            }
-           nextTestSPID = pDbSpInfo->peekNextSPID(2);
+           nextTestSPID = pDbSpInfo->peekNextSPID();
            for (tmpPropertyId = TEST_ECO_PROPERTY_1; tmpPropertyId<nextTestSPID; tmpPropertyId++)
            {
                CMPSPInfo::Entry sp;
@@ -248,7 +248,7 @@ void LookupSPDialog::updateDisplayedProperty()
     // populate the fields
     bool divisible=sp.isDivisible();
     if (divisible) { ui->divisibleLabel->setText("Yes"); } else { ui->divisibleLabel->setText("No"); }
-    if (isTestEcosystemProperty(propertyId)) { ui->ecosystemLabel->setText("Test"); } else { ui->ecosystemLabel->setText("Production"); }
+    ui->ecosystemLabel->setText("Production"); 
     ui->propertyIDLabel->setText(QString::fromStdString(FormatIndivisibleMP(propertyId)));
     if(sp.name.size()>maxLabelWidth) {
         ui->nameLabel->setText(QString::fromStdString(sp.name.substr(0,maxLabelWidth)+"..."));

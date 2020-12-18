@@ -395,19 +395,6 @@ int64_t GetFrozenTokenBalance(const std::string& address, uint32_t propertyId)
     return frozen;
 }
 
-bool mastercore::isTestEcosystemProperty(uint32_t propertyId)
-{
-    if ((TL_PROPERTY_TMSC == propertyId) || (TEST_ECO_PROPERTY_1 <= propertyId)) return true;
-
-    return false;
-}
-
-bool mastercore::isMainEcosystemProperty(uint32_t propertyId)
-{
-    if ((TL_PROPERTY_BTC != propertyId) && !isTestEcosystemProperty(propertyId)) return true;
-
-    return false;
-}
 
 void mastercore::ClearFreezeState()
 {
@@ -663,11 +650,8 @@ uint32_t mastercore::GetNextPropertyId(bool maineco)
     if (!pDbSpInfo)
         return 0;
 
-    if (maineco) {
-        return pDbSpInfo->peekNextSPID(1);
-    } else {
-        return pDbSpInfo->peekNextSPID(2);
-    }
+    return pDbSpInfo->peekNextSPID();
+
 }
 
 // Perform any actions that need to be taken when the total number of tokens for a property ID changes
@@ -2624,7 +2608,7 @@ bool mastercore::marginMain(int Block)
   //checking in map for address and the UPNL.
     if(msc_debug_margin_main) PrintToLog("%s: Block in marginMain: %d\n", __func__, Block);
     LOCK(cs_tally);
-    uint32_t nextSPID = pDbSpInfo->peekNextSPID(1);
+    uint32_t nextSPID = pDbSpInfo->peekNextSPID();
     for (uint32_t contractId = 1; contractId < nextSPID; contractId++)
     {
         CMPSPInfo::Entry sp;
@@ -2838,7 +2822,7 @@ void mastercore::update_sum_upnls()
         sum_upnls.clear();
 
     LOCK(cs_tally);
-    uint32_t nextSPID = pDbSpInfo->peekNextSPID(1);
+    uint32_t nextSPID = pDbSpInfo->peekNextSPID();
 
     for (uint32_t contractId = 1; contractId < nextSPID; contractId++)
     {

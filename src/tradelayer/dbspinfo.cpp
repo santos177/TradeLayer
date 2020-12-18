@@ -165,20 +165,10 @@ void CMPSPInfo::init(uint32_t nextSPID, uint32_t nextTestSPID)
     next_test_spid = nextTestSPID;
 }
 
-uint32_t CMPSPInfo::peekNextSPID(uint8_t ecosystem) const
+uint32_t CMPSPInfo::peekNextSPID() const
 {
     uint32_t nextId = 0;
-
-    switch (ecosystem) {
-        case TL_PROPERTY_MSC: // Main ecosystem, MSC: 1, TMSC: 2, First available SP = 3
-            nextId = next_spid;
-            break;
-        case TL_PROPERTY_TMSC: // Test ecosystem, same as above with high bit set
-            nextId = next_test_spid;
-            break;
-        default: // Non-standard ecosystem, ID's start at 0
-            nextId = 0;
-    }
+    nextId = next_spid;
 
     return nextId;
 }

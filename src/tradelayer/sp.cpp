@@ -104,13 +104,7 @@ bool mastercore::IsPropertyIdValid(uint32_t propertyId)
 {
     if (propertyId == 0) return false;
 
-    uint32_t nextId = 0;
-
-    if (propertyId < TEST_ECO_PROPERTY_1) {
-        nextId = pDbSpInfo->peekNextSPID(1);
-    } else {
-        nextId = pDbSpInfo->peekNextSPID(2);
-    }
+    uint32_t nextId = pDbSpInfo->peekNextSPID();
 
     if (propertyId < nextId) {
         return true;
@@ -312,7 +306,7 @@ bool mastercore::isCrowdsalePurchase(const uint256& txid, const std::string& add
     // if we still haven't found txid, check non active crowdsales to this address
     for (uint8_t ecosystem = 1; ecosystem <= 2; ecosystem++) {
         uint32_t startPropertyId = (ecosystem == 1) ? 1 : TEST_ECO_PROPERTY_1;
-        for (uint32_t loopPropertyId = startPropertyId; loopPropertyId < pDbSpInfo->peekNextSPID(ecosystem); loopPropertyId++) {
+        for (uint32_t loopPropertyId = startPropertyId; loopPropertyId < pDbSpInfo->peekNextSPID(); loopPropertyId++) {
             CMPSPInfo::Entry sp;
             if (!pDbSpInfo->getSP(loopPropertyId, sp)) continue;
             for (std::map<uint256, std::vector<int64_t> >::const_iterator it = sp.historicalData.begin(); it != sp.historicalData.end(); it++) {

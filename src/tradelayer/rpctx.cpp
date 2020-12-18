@@ -535,7 +535,6 @@ static UniValue tl_sendissuancecrowdsale(const JSONRPCRequest& request)
     // perform checks
     RequirePropertyName(name);
     RequireExistingProperty(propertyIdDesired);
-    RequireSameEcosystem(ecosystem, propertyIdDesired);
 
     // create a payload for the transaction
     std::vector<unsigned char> payload = CreatePayload_IssuanceVariable(ecosystem, type, previousId, category, subcategory, name, url, data, propertyIdDesired, numTokens, deadline, earlyBonus, issuerPercentage);
@@ -970,7 +969,6 @@ static UniValue tl_sendtrade(const JSONRPCRequest& request)
     RequireExistingProperty(propertyIdForSale);
     RequireExistingProperty(propertyIdDesired);
     RequireBalance(fromAddress, propertyIdForSale, amountForSale);
-    RequireSameEcosystem(propertyIdForSale, propertyIdDesired);
     RequireDifferentIds(propertyIdForSale, propertyIdDesired);
 
     // create a payload for the transaction
@@ -1033,7 +1031,6 @@ static UniValue tl_sendcanceltradesbyprice(const JSONRPCRequest& request)
     // perform checks
     RequireExistingProperty(propertyIdForSale);
     RequireExistingProperty(propertyIdDesired);
-    RequireSameEcosystem(propertyIdForSale, propertyIdDesired);
     RequireDifferentIds(propertyIdForSale, propertyIdDesired);
     // TODO: check, if there are matching offers to cancel
 
@@ -1093,7 +1090,6 @@ static UniValue tl_sendcanceltradesbypair(const JSONRPCRequest& request)
     // perform checks
     RequireExistingProperty(propertyIdForSale);
     RequireExistingProperty(propertyIdDesired);
-    RequireSameEcosystem(propertyIdForSale, propertyIdDesired);
     RequireDifferentIds(propertyIdForSale, propertyIdDesired);
     // TODO: check, if there are matching offers to cancel
 
@@ -1689,14 +1685,6 @@ static UniValue trade_MP(const JSONRPCRequest& request)
         case CMPTransaction::CANCEL_EVERYTHING:
         {
             uint8_t ecosystem = 0;
-            if (isMainEcosystemProperty(request.params[1].get_int64())
-                    && isMainEcosystemProperty(request.params[3].get_int64())) {
-                ecosystem = TL_PROPERTY_MSC;
-            }
-            if (isTestEcosystemProperty(request.params[1].get_int64())
-                    && isTestEcosystemProperty(request.params[3].get_int64())) {
-                ecosystem = TL_PROPERTY_TMSC;
-            }
             values.push_back(request.params[0]); // fromAddress
             values.push_back(ecosystem);
             return tl_sendcancelalltrades(request);

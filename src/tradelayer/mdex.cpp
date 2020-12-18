@@ -677,10 +677,6 @@ int mastercore::MetaDEx_CANCEL_EVERYTHING(const uint256& txid, unsigned int bloc
     for (md_PropertiesMap::iterator my_it = metadex.begin(); my_it != metadex.end(); ++my_it) {
         unsigned int prop = my_it->first;
 
-        // skip property, if it is not in the expected ecosystem
-        if (isMainEcosystemProperty(ecosystem) && !isMainEcosystemProperty(prop)) continue;
-        if (isTestEcosystemProperty(ecosystem) && !isTestEcosystemProperty(prop)) continue;
-
         PrintToLog(" ## property: %u\n", prop);
         md_PricesMap& prices = my_it->second;
 
@@ -2218,10 +2214,6 @@ const CMPMetaDEx* mastercore::MetaDEx_RetrieveTrade(const uint256& txid)
      {
          unsigned int prop = my_it->first;
 
-         // skip property, if it is not in the expected ecosystem
-         if (isMainEcosystemProperty(ecosystem) && !isMainEcosystemProperty(prop)) continue;
-         if (isTestEcosystemProperty(ecosystem) && !isTestEcosystemProperty(prop)) continue;
-
          if (msc_debug_contract_cancel_every) PrintToLog(" ## property: %u\n", prop);
          cd_PricesMap &prices = my_it->second;
 
@@ -2424,7 +2416,7 @@ const CMPMetaDEx* mastercore::MetaDEx_RetrieveTrade(const uint256& txid)
  int64_t mastercore::getVWAPPriceContracts(std::string namec)
  {
    LOCK(cs_tally);
-   uint32_t nextSPID = pDbSpInfo->peekNextSPID(1);
+   uint32_t nextSPID = pDbSpInfo->peekNextSPID();
 
    uint32_t nameId = 0;
    for (uint32_t propertyId = 1; propertyId < nextSPID; propertyId++)
@@ -2446,7 +2438,7 @@ const CMPMetaDEx* mastercore::MetaDEx_RetrieveTrade(const uint256& txid)
  int64_t mastercore::getVWAPPriceByPair(std::string num, std::string den)
  {
    LOCK(cs_tally);
-   uint32_t nextSPID = pDbSpInfo->peekNextSPID(1);
+   uint32_t nextSPID = pDbSpInfo->peekNextSPID();
 
    uint32_t numId = 0;
    uint32_t denId = 0;
@@ -2609,7 +2601,7 @@ const CMPMetaDEx* mastercore::MetaDEx_RetrieveTrade(const uint256& txid)
  int64_t mastercore::getPairMarketPrice(std::string num, std::string den)
  {
    LOCK(cs_tally);
-   uint32_t nextSPID = pDbSpInfo->peekNextSPID(1);
+   uint32_t nextSPID = pDbSpInfo->peekNextSPID();
 
    uint32_t numId = 0;
    uint32_t denId = 0;

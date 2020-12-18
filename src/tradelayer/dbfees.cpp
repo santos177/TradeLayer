@@ -158,30 +158,30 @@ void CTLFeeCache::AddFee(const uint32_t &propertyId, int block, const int64_t &a
 // Rolls back the cache to an earlier state (eg in event of a reorg) - block is *inclusive* (ie entries=block will get deleted)
 void CTLFeeCache::RollBackCache(int block)
 {
-    assert(pdb);
-    for (uint8_t ecosystem = 1; ecosystem <= 2; ecosystem++) {
-        uint32_t startPropertyId = (ecosystem == 1) ? 1 : TEST_ECO_PROPERTY_1;
-        for (uint32_t propertyId = startPropertyId; propertyId < mastercore::pDbSpInfo->peekNextSPID(ecosystem); propertyId++) {
-            const std::string key = strprintf("%010d", propertyId);
-            std::set<feeCacheItem> sCacheHistoryItems = GetCacheHistory(propertyId);
-            if (!sCacheHistoryItems.empty()) {
-                std::set<feeCacheItem>::iterator mostRecentIt = sCacheHistoryItems.end();
-                std::string newValue;
-                --mostRecentIt;
-                feeCacheItem mostRecentItem = *mostRecentIt;
-                if (mostRecentItem.first < block) continue; // all entries are unaffected by this rollback, nothing to do
-                for (std::set<feeCacheItem>::iterator it = sCacheHistoryItems.begin(); it != sCacheHistoryItems.end(); it++) {
-                    feeCacheItem tempItem = *it;
-                    if (tempItem.first >= block) continue; // discard this entry
-                    if (!newValue.empty()) newValue += ",";
-                    newValue += strprintf("%d:%d", tempItem.first, tempItem.second);
-                }
-                leveldb::Status status = pdb->Put(writeoptions, key, newValue);
-                assert(status.ok());
-                PrintToLog("Rolling back fee cache for property %d, new=%s [%s])\n", propertyId, newValue, status.ToString());
-            }
-        }
-    }
+    // assert(pdb);
+    // for (uint8_t ecosystem = 1; ecosystem <= 2; ecosystem++) {
+    //     uint32_t startPropertyId = (ecosystem == 1) ? 1 : TEST_ECO_PROPERTY_1;
+    //     for (uint32_t propertyId = startPropertyId; propertyId < mastercore::pDbSpInfo->peekNextSPID(ecosystem); propertyId++) {
+    //         const std::string key = strprintf("%010d", propertyId);
+    //         std::set<feeCacheItem> sCacheHistoryItems = GetCacheHistory(propertyId);
+    //         if (!sCacheHistoryItems.empty()) {
+    //             std::set<feeCacheItem>::iterator mostRecentIt = sCacheHistoryItems.end();
+    //             std::string newValue;
+    //             --mostRecentIt;
+    //             feeCacheItem mostRecentItem = *mostRecentIt;
+    //             if (mostRecentItem.first < block) continue; // all entries are unaffected by this rollback, nothing to do
+    //             for (std::set<feeCacheItem>::iterator it = sCacheHistoryItems.begin(); it != sCacheHistoryItems.end(); it++) {
+    //                 feeCacheItem tempItem = *it;
+    //                 if (tempItem.first >= block) continue; // discard this entry
+    //                 if (!newValue.empty()) newValue += ",";
+    //                 newValue += strprintf("%d:%d", tempItem.first, tempItem.second);
+    //             }
+    //             leveldb::Status status = pdb->Put(writeoptions, key, newValue);
+    //             assert(status.ok());
+    //             PrintToLog("Rolling back fee cache for property %d, new=%s [%s])\n", propertyId, newValue, status.ToString());
+    //         }
+    //     }
+    // }
 }
 
 // Evaluates fee caches for the property against threshold and executes distribution if threshold met
@@ -204,11 +204,11 @@ void CTLFeeCache::DistributeCache(const uint32_t &propertyId, int block)
     }
 
     OwnerAddrType receiversSet;
-    if (isTestEcosystemProperty(propertyId)) {
-        receiversSet = STO_GetReceivers("FEEDISTRIBUTION", TL_PROPERTY_TMSC, cachedAmount);
-    } else {
-        receiversSet = STO_GetReceivers("FEEDISTRIBUTION", TL_PROPERTY_MSC, cachedAmount);
-    }
+    // if (isTestEcosystemProperty(propertyId)) {
+    //     receiversSet = STO_GetReceivers("FEEDISTRIBUTION", TL_PROPERTY_TMSC, cachedAmount);
+    // } else {
+    //     receiversSet = STO_GetReceivers("FEEDISTRIBUTION", TL_PROPERTY_MSC, cachedAmount);
+    // }
 
     uint64_t numberOfReceivers = receiversSet.size(); // there will always be addresses holding TL, so no need to check size>0
     PrintToLog("Starting fee distribution for property %d to %d recipients...\n", propertyId, numberOfReceivers);

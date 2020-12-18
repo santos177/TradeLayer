@@ -173,8 +173,8 @@ static int write_mp_accepts(std::ofstream& file, SHA256_CTX* shaCtx)
 
 static int write_globals_state(std::ofstream& file, SHA256_CTX* shaCtx)
 {
-    uint32_t nextSPID = pDbSpInfo->peekNextSPID(TL_PROPERTY_MSC);
-    uint32_t nextTestSPID = pDbSpInfo->peekNextSPID(TL_PROPERTY_TMSC);
+    uint32_t nextSPID = pDbSpInfo->peekNextSPID();
+    uint32_t nextTestSPID = pDbSpInfo->peekNextSPID();
     std::string lineOut = strprintf("%d,%d,%d",
             exodus_prev,
             nextSPID,

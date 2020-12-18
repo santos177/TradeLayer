@@ -109,7 +109,6 @@ void MetaDexObjectToJSON(const CMPMetaDEx& obj, UniValue& metadex_obj)
     // add data to JSON object
     metadex_obj.pushKV("address", obj.getAddr());
     metadex_obj.pushKV("txid", obj.getHash().GetHex());
-    if (obj.getAction() == 4) metadex_obj.pushKV("ecosystem", isTestEcosystemProperty(obj.getProperty()) ? "test" : "main");
     metadex_obj.pushKV("propertyidforsale", (uint64_t) obj.getProperty());
     metadex_obj.pushKV("propertyidforsaleisdivisible", propertyIdForSaleIsDivisible);
     metadex_obj.pushKV("amountforsale", FormatMP(obj.getProperty(), obj.getAmountForSale()));
@@ -341,17 +340,15 @@ static UniValue tl_getfeetrigger(const JSONRPCRequest& request)
 
     UniValue response(UniValue::VARR);
 
-    for (uint8_t ecosystem = 1; ecosystem <= 2; ecosystem++) {
-        uint32_t startPropertyId = (ecosystem == 1) ? 1 : TEST_ECO_PROPERTY_1;
-        for (uint32_t itPropertyId = startPropertyId; itPropertyId < pDbSpInfo->peekNextSPID(ecosystem); itPropertyId++) {
-            if (propertyId == 0 || propertyId == itPropertyId) {
-                int64_t feeTrigger = pDbFeeCache->GetDistributionThreshold(itPropertyId);
-                std::string strFeeTrigger = FormatMP(itPropertyId, feeTrigger);
-                UniValue cacheObj(UniValue::VOBJ);
-                cacheObj.pushKV("propertyid", (uint64_t)itPropertyId);
-                cacheObj.pushKV("feetrigger", strFeeTrigger);
-                response.push_back(cacheObj);
-            }
+    uint32_t startPropertyId = 1;
+    for (uint32_t itPropertyId = startPropertyId; itPropertyId < pDbSpInfo->peekNextSPID(); itPropertyId++) {
+        if (propertyId == 0 || propertyId == itPropertyId) {
+            int64_t feeTrigger = pDbFeeCache->GetDistributionThreshold(itPropertyId);
+            std::string strFeeTrigger = FormatMP(itPropertyId, feeTrigger);
+            UniValue cacheObj(UniValue::VOBJ);
+            cacheObj.pushKV("propertyid", (uint64_t)itPropertyId);
+            cacheObj.pushKV("feetrigger", strFeeTrigger);
+            response.push_back(cacheObj);
         }
     }
 
@@ -477,7 +474,7 @@ static UniValue tl_getfeecache(const JSONRPCRequest& request)
 
     for (uint8_t ecosystem = 1; ecosystem <= 2; ecosystem++) {
         uint32_t startPropertyId = (ecosystem == 1) ? 1 : TEST_ECO_PROPERTY_1;
-        for (uint32_t itPropertyId = startPropertyId; itPropertyId < pDbSpInfo->peekNextSPID(ecosystem); itPropertyId++) {
+        for (uint32_t itPropertyId = startPropertyId; itPropertyId < pDbSpInfo->peekNextSPID(); itPropertyId++) {
             if (propertyId == 0 || propertyId == itPropertyId) {
                 int64_t cachedFee = pDbFeeCache->GetCachedAmount(itPropertyId);
                 if (cachedFee == 0) {
@@ -1283,7 +1280,7 @@ static UniValue tl_listproperties(const JSONRPCRequest& request)
 
     LOCK(cs_tally);
 
-    uint32_t nextSPID = pDbSpInfo->peekNextSPID(1);
+    uint32_t nextSPID = pDbSpInfo->peekNextSPID();
     for (uint32_t propertyId = 1; propertyId < nextSPID; propertyId++) {
         CMPSPInfo::Entry sp;
         if (pDbSpInfo->getSP(propertyId, sp)) {
@@ -1295,7 +1292,7 @@ static UniValue tl_listproperties(const JSONRPCRequest& request)
         }
     }
 
-    uint32_t nextTestSPID = pDbSpInfo->peekNextSPID(2);
+    uint32_t nextTestSPID = pDbSpInfo->peekNextSPID();
     for (uint32_t propertyId = TEST_ECO_PROPERTY_1; propertyId < nextTestSPID; propertyId++) {
         CMPSPInfo::Entry sp;
         if (pDbSpInfo->getSP(propertyId, sp)) {
@@ -1682,7 +1679,6 @@ static UniValue tl_getorderbook(const JSONRPCRequest& request)
         propertyIdDesired = ParsePropertyId(request.params[1]);
 
         RequireExistingProperty(propertyIdDesired);
-        RequireSameEcosystem(propertyIdForSale, propertyIdDesired);
         RequireDifferentIds(propertyIdForSale, propertyIdDesired);
     }
 
@@ -1841,7 +1837,6 @@ static UniValue tl_gettradehistoryforpair(const JSONRPCRequest& request)
 
     RequireExistingProperty(propertyIdSideA);
     RequireExistingProperty(propertyIdSideB);
-    RequireSameEcosystem(propertyIdSideA, propertyIdSideB);
     RequireDifferentIds(propertyIdSideA, propertyIdSideB);
 
     // request pair trade history from trade db

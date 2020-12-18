@@ -255,7 +255,6 @@ static UniValue tl_createpayload_issuancecrowdsale(const JSONRPCRequest& request
     uint8_t issuerPercentage = ParseIssuerBonus(request.params[12]);
 
     RequirePropertyName(name);
-    RequireSameEcosystem(ecosystem, propertyIdDesired);
 
     std::vector<unsigned char> payload = CreatePayload_IssuanceVariable(ecosystem, type, previousId, category, subcategory, name, url, data, propertyIdDesired, numTokens, deadline, earlyBonus, issuerPercentage);
 
@@ -441,7 +440,6 @@ static UniValue tl_createpayload_trade(const JSONRPCRequest& request)
     int64_t amountForSale = ParseAmount(request.params[1], isPropertyDivisible(propertyIdForSale));
     uint32_t propertyIdDesired = ParsePropertyId(request.params[2]);
     int64_t amountDesired = ParseAmount(request.params[3], isPropertyDivisible(propertyIdDesired));
-    RequireSameEcosystem(propertyIdForSale, propertyIdDesired);
     RequireDifferentIds(propertyIdForSale, propertyIdDesired);
     RequireDifferentIds(propertyIdForSale, propertyIdDesired);
 
@@ -476,7 +474,6 @@ static UniValue tl_createpayload_canceltradesbyprice(const JSONRPCRequest& reque
     int64_t amountForSale = ParseAmount(request.params[1], isPropertyDivisible(propertyIdForSale));
     uint32_t propertyIdDesired = ParsePropertyId(request.params[2]);
     int64_t amountDesired = ParseAmount(request.params[3], isPropertyDivisible(propertyIdDesired));
-    RequireSameEcosystem(propertyIdForSale, propertyIdDesired);
     RequireDifferentIds(propertyIdForSale, propertyIdDesired);
 
     std::vector<unsigned char> payload = CreatePayload_MetaDExCancelPrice(propertyIdForSale, amountForSale, propertyIdDesired, amountDesired);
@@ -505,7 +502,6 @@ static UniValue tl_createpayload_canceltradesbypair(const JSONRPCRequest& reques
 
     uint32_t propertyIdForSale = ParsePropertyId(request.params[0]);
     uint32_t propertyIdDesired = ParsePropertyId(request.params[1]);
-    RequireSameEcosystem(propertyIdForSale, propertyIdDesired);
     RequireDifferentIds(propertyIdForSale, propertyIdDesired);
 
     std::vector<unsigned char> payload = CreatePayload_MetaDExCancelPair(propertyIdForSale, propertyIdDesired);

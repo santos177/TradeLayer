@@ -119,7 +119,6 @@ private:
     uint32_t notional_size;
     uint32_t collateral_currency;
     uint32_t margin_requirement;
-    uint32_t ecosystemSP;
     uint32_t attribute_type;
     uint64_t leverage;
     uint32_t denomination;
@@ -160,7 +159,6 @@ private:
     bool interpret_MetaDExTrade();
     bool interpret_MetaDExCancelPrice();
     bool interpret_MetaDExCancelPair();
-    bool interpret_MetaDExCancelEcosystem();
     bool interpret_AcceptOfferBTC();
     bool interpret_CreatePropertyFixed();
     bool interpret_CreatePropertyVariable();
@@ -176,11 +174,10 @@ private:
     bool interpret_Activation();
     bool interpret_Deactivation();
     bool interpret_Alert();
-    /** New things for Contract */
+
     bool interpret_ContractDexTrade();
     bool interpret_CreateContractDex();
     bool interpret_ContractDexCancelPrice();
-    bool interpret_ContractDexCancelEcosystem();
     bool interpret_CreatePeggedCurrency();
     bool interpret_RedemptionPegged();
     bool interpret_SendPeggedCurrency();
@@ -215,7 +212,6 @@ private:
     int logicMath_MetaDExTrade();
     int logicMath_MetaDExCancelPrice();
     int logicMath_MetaDExCancelPair();
-    int logicMath_MetaDExCancelEcosystem();
     int logicMath_CreatePropertyFixed();
     int logicMath_CreatePropertyVariable();
     int logicMath_CloseCrowdsale();
@@ -233,7 +229,6 @@ private:
     int logicMath_ContractDexTrade();
     int logicMath_CreateContractDex();
     int logicMath_ContractDexCancelPrice();
-    int logicMath_ContractDexCancelEcosystem();
     int logicMath_CreatePeggedCurrency();
     int logicMath_RedemptionPegged();
     int logicMath_SendPeggedCurrency();

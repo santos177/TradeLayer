@@ -503,7 +503,7 @@ int64_t calculateDExPurchase(const int64_t amountOffered, const int64_t amountDe
 int DEx_payment(const uint256& txid, unsigned int vout, const std::string& addressSeller, const std::string& addressBuyer, int64_t amountPaid, int block, uint64_t* nAmended)
 {
   CMPSPInfo* pDbSpInfo = NULL;
-  uint32_t nextSPID = pDbSpInfo->peekNextSPID(1);
+  uint32_t nextSPID = pDbSpInfo->peekNextSPID();
 
   if (msc_debug_dex) PrintToLog("%s(%s, %s)\n", __func__, addressSeller, addressBuyer);
   int rc = DEX_ERROR_PAYMENT;
@@ -716,13 +716,13 @@ int DEx_BuyOfferCreate(const std::string& addressMaker, uint32_t propertyId, int
     if (msc_debug_dex) PrintToLog("%s(%s|%s), nValue=%d)\n", __func__, addressMaker, key, amountOffered);
 
     // ------------------------------------------------------------------------
-    // On this part we need to put in reserve synth Litecoins.
+    // On this part we need to put in reserve synth Bitcoins (?).
     LOCK(cs_tally);
 
     CMPSPInfo* pDbSpInfo = NULL;
 
     arith_uint256 sumValues;
-    uint32_t nextSPID = pDbSpInfo->peekNextSPID(1);
+    uint32_t nextSPID = pDbSpInfo->peekNextSPID();
 
     for (uint32_t propertyId = 1; propertyId < nextSPID; propertyId++)
     {
